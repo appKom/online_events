@@ -17,3 +17,19 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+      - family: SourceSans
+        fonts:
+          - asset: assets/fonts/SourceSans3-ExtraLight.ttf
+            weight: 200
+          - asset: assets/fonts/SourceSans3-Light.ttf
+            weight: 300
+          - asset: assets/fonts/SourceSans3-Regular.ttf
+            weight: 400
+          - asset: assets/fonts/SourceSans3-Medium.ttf
+            weight: 500
+          - asset: assets/fonts/SourceSans3-SemiBold.ttf
+            weight: 600
+          - asset: assets/fonts/SourceSans3-Bold.ttf
+            weight: 700
