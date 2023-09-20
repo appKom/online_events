@@ -1,12 +1,3 @@
-enum Category {
-  bedpress,
-  sosialt,
-  utflukt,
-  kurs,
-  ekskursjon,
-  annet,
-}
-
 /// Model for events visible in the ListView on the initial page.
 class ListEventModel {
   /// Event name

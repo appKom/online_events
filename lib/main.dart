@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/models/list_event.dart';
-import 'package:online_events/theme.dart';
-import 'package:online_events/upcoming_card.dart';
+import 'package:flutter_svg/svg.dart';
+import '/models/list_event.dart';
+import '/upcoming_card.dart';
+import '/theme.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,7 +13,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding;
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return MaterialApp(
       title: 'Online Events',
@@ -20,8 +21,33 @@ class MainApp extends StatelessWidget {
       color: OnlineTheme.background,
       home: Padding(
         padding: padding,
-        child: UpcomingEventsList(
-          models: testModels,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 17),
+            SvgPicture.asset(
+              'assets/header.svg',
+              height: 48,
+            ),
+            Column(
+              children: [
+                const SizedBox(height: 60),
+                Container(
+                  height: 200,
+                  decoration: const BoxDecoration(
+                    color: OnlineTheme.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                UpcomingEventsList(
+                  models: testModels,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -45,12 +71,9 @@ class UpcomingEventsList<T> extends StatelessWidget {
       decoration: TextDecoration.none,
     );
 
-    return Stack(
+    return Column(
       children: [
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
+        const SizedBox(
           height: 15,
           child: Center(
             child: Text(
@@ -59,12 +82,28 @@ class UpcomingEventsList<T> extends StatelessWidget {
             ),
           ),
         ),
-        Positioned.fill(
-          top: 15,
-          child: ListView.builder(
-            itemBuilder: buildItem,
-            itemCount: testModels.length,
-          ),
+        const SizedBox(height: 10),
+        buildItem(context, 0),
+        buildItem(context, 1),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'MER',
+              style: OnlineTheme.eventListSubHeader.copyWith(fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(width: 2),
+            const Padding(
+              padding: EdgeInsets.only(top: 4),
+              child: Icon(
+                Icons.navigate_next,
+                color: OnlineTheme.gray9,
+                size: 15,
+              ),
+            ),
+          ],
         ),
       ],
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/models/list_event.dart';
-import 'package:online_events/theme.dart';
+import '/models/list_event.dart';
+import '/theme.dart';
 
 class UpcomingCard extends StatelessWidget {
   const UpcomingCard({super.key, required this.model});
@@ -51,7 +51,7 @@ class UpcomingCard extends StatelessWidget {
         children: [
           // Event Icon
           Positioned(
-            left: 17,
+            left: 0,
             top: 10,
             width: 84,
             height: 84,
@@ -66,7 +66,7 @@ class UpcomingCard extends StatelessWidget {
           ),
           // Headers
           Positioned(
-            left: 117,
+            left: 100,
             top: 10,
             right: 0,
             height: 70,
