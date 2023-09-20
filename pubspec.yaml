@@ -21,15 +21,15 @@ flutter:
   fonts:
       - family: SourceSans
         fonts:
-          - asset: assets/fonts/SourceSans3-ExtraLight.ttf
+          - asset: assets/fonts/Poppins-ExtraLight.ttf
             weight: 200
-          - asset: assets/fonts/SourceSans3-Light.ttf
+          - asset: assets/fonts/Poppins-Light.ttf
             weight: 300
-          - asset: assets/fonts/SourceSans3-Regular.ttf
+          - asset: assets/fonts/Poppins-Regular.ttf
             weight: 400
-          - asset: assets/fonts/SourceSans3-Medium.ttf
+          - asset: assets/fonts/Poppins-Medium.ttf
             weight: 500
-          - asset: assets/fonts/SourceSans3-SemiBold.ttf
+          - asset: assets/fonts/Poppins-SemiBold.ttf
             weight: 600
-          - asset: assets/fonts/SourceSans3-Bold.ttf
+          - asset: assets/fonts/Poppins-Bold.ttf
             weight: 700

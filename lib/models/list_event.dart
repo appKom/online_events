@@ -9,9 +9,6 @@ enum Category {
 
 /// Model for events visible in the ListView on the initial page.
 class ListEventModel {
-  /// Event category. (Sosialt, Bedriftspresentasjon, etc.)
-  final Category category;
-
   /// Event name
   final String name;
 
@@ -25,7 +22,6 @@ class ListEventModel {
   final int registered;
 
   ListEventModel({
-    required this.category,
     required this.name,
     required this.date,
     required this.capacity,

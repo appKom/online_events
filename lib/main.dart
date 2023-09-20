@@ -11,11 +11,39 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    const textStyle = TextStyle(
+      color: OnlineTheme.black,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'SourceSans',
+      fontSize: 15,
+      fontStyle: FontStyle.normal,
+      decoration: TextDecoration.none,
+    );
+
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.all(20);
+
+    return MaterialApp(
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: EventList(),
+        body: Padding(
+          padding: padding,
+          child: const Stack(
+            children: [
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 25,
+                height: 100,
+                child: Text(
+                  'Kommende arrangementer',
+                  style: textStyle,
+                ),
+              ),
+              Positioned.fill(top: 50, child: EventList()),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -121,22 +149,22 @@ class EventListItem extends StatelessWidget {
       decoration: const BoxDecoration(border: Border(top: BorderSide(color: OnlineTheme.gray, width: 1))),
       height: 30,
       child: Row(children: [
-        SizedBox.square(
-          dimension: 30,
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            width: 10,
-            height: 10,
-            color: color,
-          ),
-        ),
-        SizedBox(
-          width: 100,
-          child: Text(
-            categoryLabel,
-            style: textStyle.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
+        // SizedBox.square(
+        //   dimension: 30,
+        //   child: Container(
+        //     margin: const EdgeInsets.all(10),
+        //     width: 10,
+        //     height: 10,
+        //     color: color,
+        //   ),
+        // ),
+        // SizedBox(
+        //   width: 80,
+        //   child: Text(
+        //     categoryLabel,
+        //     style: textStyle.copyWith(fontWeight: FontWeight.bold),
+        //   ),
+        // ),
         Expanded(
           child: Text(
             _model.name,
