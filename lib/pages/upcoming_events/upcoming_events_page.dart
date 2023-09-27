@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/bedpress.dart';
 
 import 'upcoming_events.dart';
 import '/theme.dart';
@@ -12,6 +13,7 @@ class UpcomingEventsPage extends StatelessWidget {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
+      color: OnlineTheme.background,
       child: Padding(
         padding: padding,
         child: Column(
@@ -43,6 +45,7 @@ class UpcomingEventsPage extends StatelessWidget {
                         models: testModels,
                       ),
                     ),
+                    Bedpress(models: bedpressModels,),
                   ],
                 ),
               ),
