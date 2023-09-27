@@ -29,23 +29,30 @@ class MainApp extends StatelessWidget {
               'assets/header.svg',
               height: 48,
             ),
-            Column(
-              children: [
-                const SizedBox(height: 60),
-                Container(
-                  height: 200,
-                  decoration: const BoxDecoration(
-                    color: OnlineTheme.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
+            const SizedBox(height: 60),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 200,
+                      decoration: const BoxDecoration(
+                        color: OnlineTheme.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      height: 276,
+                      child: UpcomingEventsList(
+                        models: testModels,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 30),
-                UpcomingEventsList(
-                  models: testModels,
-                ),
-              ],
+              ),
             ),
           ],
         ),
