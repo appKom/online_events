@@ -4,20 +4,28 @@ import '/models/list_event.dart';
 import '/upcoming_card.dart';
 import '/theme.dart';
 
+class Bedpress extends StatelessWidget {
+  const Bedpress({super.key});
 
-class mainBedpress extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
-
-  
+    return const SizedBox(
+      height: 300,
+      child: Column(
+        children: [
+          SizedBox(height: 50, child: Text('Bedriftpresentasjoner')),
+          Expanded(
+            child: Row(
+              
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-
-
-
-
-class upcomingBedpress<T> extends StatelessWidget{
-
-
-
-
-}
+// class UpcomingBedpress extends StatelessWidget {}
