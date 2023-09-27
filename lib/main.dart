@@ -19,22 +19,3 @@ class MainApp extends StatelessWidget {
     );
   }
 }
-
-class Example extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        SizedBox(
-          height: 50,
-          child: Text('Bedriftspresentasjoner'),
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-          ),
-        ),
-      ],
-    );
-  }
-}
