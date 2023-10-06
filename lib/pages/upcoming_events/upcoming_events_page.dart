@@ -12,6 +12,7 @@ class UpcomingEventsPage extends StatelessWidget {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
+      color: OnlineTheme.background,
       child: Padding(
         padding: padding,
         child: Column(

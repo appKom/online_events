@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/upcoming_events/upcoming_events_page.dart';
+import '/pages/event/event_page.dart';
 import '/theme.dart';
 
 void main() {
@@ -15,7 +16,8 @@ class MainApp extends StatelessWidget {
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
       color: OnlineTheme.background,
-      home: UpcomingEventsPage(),
+      // home: UpcomingEventsPage(),
+      home: EventPage(),
     );
   }
 }
