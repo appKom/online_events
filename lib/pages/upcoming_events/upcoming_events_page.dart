@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/bedpress.dart';
 
 import 'upcoming_events.dart';
 import '/theme.dart';
@@ -44,6 +45,7 @@ class UpcomingEventsPage extends StatelessWidget {
                         models: testModels,
                       ),
                     ),
+                    Bedpress(models: bedpressModels,),
                   ],
                 ),
               ),
