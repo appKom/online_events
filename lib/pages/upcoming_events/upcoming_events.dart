@@ -27,7 +27,7 @@ class UpcomingEventsList extends StatelessWidget {
           height: 15,
           child: Center(
             child: Text(
-              'UPCOMING EVENTS',
+              'KOMMENDE ARRANGEMENTER',
               style: upcomingEvents,
             ),
           ),
