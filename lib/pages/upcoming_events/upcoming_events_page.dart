@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/bedpress.dart';
+import 'package:online_events/pages/upcoming_events/profile_button.dart';
 
 import 'upcoming_events.dart';
 import '/theme.dart';
@@ -10,7 +11,8 @@ class UpcomingEventsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
       color: OnlineTheme.background,
@@ -22,29 +24,14 @@ class UpcomingEventsPage extends StatelessWidget {
             const SizedBox(height: 17),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(
                   'assets/header.svg',
-                  height: 48,
+                  height: 30,
+                  fit: BoxFit.fitHeight,
                 ),
-                SizedBox.square(
-                  dimension: 48,
-                  child: Center(
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/profile_picture.png',
-                        width: 40,
-                        height: 40,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    // child: Icon(
-                    //   Icons.person,
-                    //   color: OnlineTheme.white,
-                    //   size: 40,
-                    // ),
-                  ),
-                ),
+                const ProfileButton()
               ],
             ),
             const SizedBox(height: 60),
