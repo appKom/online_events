@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/services/app_navigator.dart';
 import 'pages/upcoming_events/upcoming_events_page.dart';
-import '/pages/event/event_page.dart';
 import '/theme.dart';
 
 void main() {
@@ -12,11 +12,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      navigatorKey: AppNavigator.navigator,
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
       color: OnlineTheme.background,
-      home: UpcomingEventsPage(),
+      home: const UpcomingEventsPage(),
       // home: EventPage(),
     );
   }
