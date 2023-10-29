@@ -20,6 +20,7 @@ sealed class OnlineTheme {
   static const gray11 = Color(0xFFDBDDE1);
   static const gray12 = Color(0xFFEDEEF0);
   static const gray13 = Color(0xFF131315);
+  static const gray14 = Color(0xFF4C566A);
 
   // Fonts
   static const font = 'Poppins';
