@@ -148,21 +148,10 @@ class BedpressCard extends StatelessWidget {
                 style: OnlineTheme.eventNumberOfPeople.copyWith(color: OnlineTheme.white),
               ),
             ),
+            
             Positioned(
               right: 48,
               bottom: 12,
-              child: SizedBox(
-                // color: Colors.red,
-                height: 17,
-                child: SvgPicture.asset(
-                  'assets/icons/users.svg',
-                  height: 17,
-                ),
-              ),
-            ),
-            Positioned(
-              right: 48,
-              bottom: 26,
               child: SizedBox(
                 // color: Colors.red,
                 height: 17,
