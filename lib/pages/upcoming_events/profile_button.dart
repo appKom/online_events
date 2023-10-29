@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/theme.dart';
 
 import '../../services/app_navigator.dart';
@@ -25,7 +26,7 @@ class ProfileButton extends StatelessWidget {
       AppNavigator.navigateToRoute(
       CupertinoPageRoute(
         builder: (context) {
-          return const EventPage(); // TODO: Change destination
+          return const ProfilePage();
         },
         maintainState: false,
         // fullscreenDialog:
