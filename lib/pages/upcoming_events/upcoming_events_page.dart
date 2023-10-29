@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/pages/upcoming_events/bedpress.dart';
 import 'package:online_events/pages/upcoming_events/profile_button.dart';
+import 'package:online_events/pages/upcoming_events/promoted_article.dart';
 
 import 'upcoming_events.dart';
 import '/theme.dart';
