@@ -20,9 +20,32 @@ class UpcomingEventsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 17),
-            SvgPicture.asset(
-              'assets/header.svg',
-              height: 48,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SvgPicture.asset(
+                  'assets/header.svg',
+                  height: 48,
+                ),
+                SizedBox.square(
+                  dimension: 48,
+                  child: Center(
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/profile_picture.heic',
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // child: Icon(
+                    //   Icons.person,
+                    //   color: OnlineTheme.white,
+                    //   size: 40,
+                    // ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 60),
             Expanded(
@@ -45,7 +68,9 @@ class UpcomingEventsPage extends StatelessWidget {
                         models: testModels,
                       ),
                     ),
-                    Bedpress(models: bedpressModels,),
+                    Bedpress(
+                      models: bedpressModels,
+                    ),
                   ],
                 ),
               ),
