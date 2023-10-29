@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/bedpress.dart';
+import 'package:online_events/pages/upcoming_events/promoted_article.dart';
 import 'package:online_events/pages/upcoming_events/profile_button.dart';
 
 import 'upcoming_events.dart';
@@ -11,8 +12,7 @@ class UpcomingEventsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
       color: OnlineTheme.background,
@@ -39,15 +39,7 @@ class UpcomingEventsPage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
-                      height: 200,
-                      decoration: const BoxDecoration(
-                        color: OnlineTheme.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
-                        ),
-                      ),
-                    ),
+                    const PromotedArticle(),
                     const SizedBox(height: 30),
                     SizedBox(
                       height: 276,
