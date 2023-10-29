@@ -43,7 +43,7 @@ class Bedpress extends StatelessWidget {
       model: models[index],
     );
   }
-}//hello
+} //hello
 
 class BedpressCard extends StatelessWidget {
   final CardEventModel model;
@@ -54,15 +54,133 @@ class BedpressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 240,
-      height: 222,
+      height: 222 + 20,
+      padding: EdgeInsets.only(bottom: 20),
       margin: const EdgeInsets.only(right: 20),
-      decoration: const BoxDecoration(
-        color: OnlineTheme.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        // decoration: const BoxDecoration(
+        //   color: OnlineTheme.white,
+        //   borderRadius: BorderRadius.all(
+        //     Radius.circular(12),
+        //   ),
+        // ),
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              height: 111,
+              child: SizedBox(
+                // color: Colors.red,
+                height: 17,
+                child: Image.asset(
+                  'assets/example/kake.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Positioned(
+                left: 0,
+                right: 0,
+                top: 111,
+                height: 200,
+                child: Container(
+                  color: OnlineTheme.gray13,
+                )),
+            Positioned(
+                left: 15,
+                bottom: 77,
+                child: Text(
+                  'Sep',
+                  style: OnlineTheme.eventDateMonth
+                      .copyWith(color: OnlineTheme.blue2),
+                )),
+            Positioned(
+                left: 15,
+                bottom: 45,
+                child: Text(
+                  '18',
+                  style: OnlineTheme.eventDateNumber
+                      .copyWith(color: OnlineTheme.white),
+                )),
+            Positioned(
+                left: 65,
+                bottom: 53,
+                right: 10,
+                top: 130,
+                child: Text(
+                  'Kakebake kurs med Appkom',
+                  style: OnlineTheme.eventBedpressHeader
+                      .copyWith(color: OnlineTheme.white),
+                )),
+            Positioned(
+              left: 15,
+              right: 160,
+              bottom: 15,
+              height: 20,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: OnlineTheme.green2,
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                child: Center(
+                  child: Text(
+                    'Sosialt',
+                    style: OnlineTheme.eventListHeader
+                        .copyWith(color: OnlineTheme.green1, height: 1),
+                  ),
+                ),
+              ),
+            ),
+            // Positioned(
+            //     left: 24,
+            //     bottom: 15,
+            //     // top: 210,
+            //     // height: 200,
+            //     height: 24,
+            //     child: Text(
+            //       'Sosialt',
+            //       style: OnlineTheme.eventListHeader
+            //           .copyWith(color: OnlineTheme.green1),
+            //     )),
+            Positioned(
+              bottom: 12,
+              right: 12,
+              child: Text(
+                '30/50',
+                style: OnlineTheme.eventNumberOfPeople
+                    .copyWith(color: OnlineTheme.white),
+              ),
+            ),
+            Positioned(
+              right: 48,
+              bottom: 12,
+              child: SizedBox(
+                // color: Colors.red,
+                height: 17,
+                child: SvgPicture.asset(
+                  'assets/icons/users.svg',
+                  height: 17,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 48,
+              bottom: 26,
+              child: SizedBox(
+                // color: Colors.red,
+                height: 17,
+                child: SvgPicture.asset(
+                  'assets/icons/people.svg',
+                  height: 17,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-      // color: OnlineTheme.white,
     );
   }
 }

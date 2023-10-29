@@ -21,6 +21,8 @@ flutter:
 
   assets:
     - assets/header.svg
+    - assets/icons/
+    - assets/example/
 
   fonts:
       - family: SourceSans
