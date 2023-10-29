@@ -16,8 +16,8 @@ class MainApp extends StatelessWidget {
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
       color: OnlineTheme.background,
-      // home: UpcomingEventsPage(),
-      home: EventPage(),
+      home: UpcomingEventsPage(),
+      // home: EventPage(),
     );
   }
 }
