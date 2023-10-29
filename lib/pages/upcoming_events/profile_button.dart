@@ -45,8 +45,8 @@ class ProfileButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           child: Image.asset(
             'assets/images/profile_picture.png',
-            width: 40,
-            height: 40,
+            width: 48,
+            height: 48,
             fit: BoxFit.cover,
           ),
         ),

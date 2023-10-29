@@ -28,7 +28,7 @@ class UpcomingEventsPage extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   'assets/header.svg',
-                  height: 30,
+                  height: 36,
                   fit: BoxFit.fitHeight,
                 ),
                 const ProfileButton()
