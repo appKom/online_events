@@ -20,7 +20,6 @@ sealed class OnlineTheme {
   static const gray11 = Color(0xFFDBDDE1);
   static const gray12 = Color(0xFFEDEEF0);
   static const gray13 = Color(0xFF131315);
-  
 
   // Fonts
   static const font = 'Poppins';
@@ -104,4 +103,26 @@ sealed class OnlineTheme {
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,
   );
+}
+
+extension ColorEffects on Color {
+  Color lighten(double pct) {
+    pct = (pct / 100) + 1;
+
+    int r = (red * pct).toInt().clamp(0, 255);
+    int g = (green * pct).toInt().clamp(0, 255);
+    int b = (blue * pct).toInt().clamp(0, 255);
+
+    return Color.fromARGB(alpha, r, g, b);
+  }
+
+  Color darken(double pct) {
+    pct = 1 - (pct / 100);
+
+    int r = (red * pct).toInt().clamp(0, 255);
+    int g = (green * pct).toInt().clamp(0, 255);
+    int b = (blue * pct).toInt().clamp(0, 255);
+
+    return Color.fromARGB(alpha, r, g, b);
+  }
 }
