@@ -32,7 +32,7 @@ class UpcomingEventsPage extends StatelessWidget {
                   child: Center(
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/profile_picture.heic',
+                        'assets/images/profile_picture.png',
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,
