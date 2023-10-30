@@ -141,7 +141,7 @@ class BedpressCard extends StatelessWidget {
             //           .copyWith(color: OnlineTheme.green1),
             //     )),
             Positioned(
-              bottom: 12,
+              bottom: 15,
               right: 12,
               child: Text(
                 '30/50',
@@ -151,7 +151,7 @@ class BedpressCard extends StatelessWidget {
             
             Positioned(
               right: 48,
-              bottom: 12,
+              bottom: 15,
               child: SizedBox(
                 // color: Colors.red,
                 height: 17,

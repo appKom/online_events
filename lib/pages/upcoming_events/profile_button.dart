@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:online_events/pages/loginn/log_inn_page.dart';
+
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/theme.dart';
 
 import '../../services/app_navigator.dart';
 import '../event/event_page.dart';
 
-bool loggedIn = true;
+bool loggedIn = false;
 
 class ProfileButton extends StatelessWidget {
   const ProfileButton({super.key});
@@ -35,6 +38,16 @@ class ProfileButton extends StatelessWidget {
     );
     } else {
       // TODO: Login page
+      AppNavigator.navigateToRoute(
+      CupertinoPageRoute(
+        builder: (context) {
+          return const LogInnPage(); // TODO: Change destination
+        },
+        maintainState: false,
+        // fullscreenDialog:
+      ),
+      additive: true,
+    );
     }
   }
 
@@ -45,7 +58,7 @@ class ProfileButton extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Image.asset(
-            'assets/images/profile_picture.png',
+            'assets/images/better_profile_picture.jpg',
             width: 48,
             height: 48,
             fit: BoxFit.cover,

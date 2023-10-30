@@ -10,6 +10,9 @@ sealed class OnlineTheme {
 
   static const green1 = Color.fromARGB(255, 37, 208, 171);
   static const green2 = Color.fromARGB(255, 4, 49, 44);
+  static const green3 = Color(0xFF83AF89);
+
+  static const red1 = Color(0xFFF43145);
 
   static const yellow = Color(0xFFFAB759);
   static const orange10 = Color(0xFFFFEDB3); // More like yellow10
@@ -20,7 +23,8 @@ sealed class OnlineTheme {
   static const gray11 = Color(0xFFDBDDE1);
   static const gray12 = Color(0xFFEDEEF0);
   static const gray13 = Color(0xFF131315);
-  static const gray14 = Color(0xFF4C566A);
+  static const gray14 = Color(0xFF22272F);
+  static const gray15 = Color(0xFF4C566A);
 
   // Fonts
   static const font = 'Poppins';
@@ -100,6 +104,75 @@ sealed class OnlineTheme {
     color: yellow,
     fontWeight: FontWeight.w400,
     fontSize: 13,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const promotedArticleText = TextStyle(
+    fontFamily: font,
+    color: yellow,
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const promotedArticleAuthor = TextStyle(
+    fontFamily: font,
+    color: yellow,
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const promotedArticleDate = TextStyle(
+    fontFamily: font,
+    color: yellow,
+    fontWeight: FontWeight.w500,
+    fontSize: 11,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const logInnPageHeader = TextStyle(
+    fontFamily: font,
+    color: white,
+    fontWeight: FontWeight.w600,
+    fontSize: 18,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const logInnPageEmail = TextStyle(
+    fontFamily: font,
+    color: white,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+  static const logInnPageInput = TextStyle(
+    fontFamily: font,
+    color: gray15,
+    fontWeight: FontWeight.w400,
+    fontSize: 13,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const logInnPageButton = TextStyle(
+    fontFamily: font,
+    color: white,
+    fontWeight: FontWeight.w700,
+    fontSize: 18,
     height: 1.5,
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,
