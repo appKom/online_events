@@ -31,7 +31,7 @@ class PromotedArticle extends StatelessWidget {
                 // color: Colors.red,
                 height: 17,
                 child: Image.asset(
-                  'assets/images/fadderuka.png',
+                  'assets/images/fadderuka2.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -46,11 +46,11 @@ class PromotedArticle extends StatelessWidget {
                 )),
           
             Positioned(
-                left: 15,
-                bottom: 30,
+                left: 20,
+                bottom: 52,
                 child: Text(
-                  '18',
-                  style: OnlineTheme.eventDateNumber.copyWith(color: OnlineTheme.white),
+                  'Fadderuka 2023',
+                  style: OnlineTheme.promotedArticleText.copyWith(color: OnlineTheme.white),
                 )),
             Positioned(
                 left: 65,
@@ -74,11 +74,20 @@ class PromotedArticle extends StatelessWidget {
             //           .copyWith(color: OnlineTheme.green1),
             //     )),
             Positioned(
-              bottom: 15,
-              right: 12,
+              bottom: 34,
+              left: 20,
               child: Text(
-                '30/50',
-                style: OnlineTheme.eventNumberOfPeople.copyWith(color: OnlineTheme.white),
+                'Isabelle Nordin, Linn Zhu Yu Grotnes',
+                style: OnlineTheme.promotedArticleAuthor.copyWith(color: OnlineTheme.white),
+              ),
+            ),
+
+            Positioned(
+              bottom: 5,
+              left: 20,
+              child: Text(
+                '26.6.2023',
+                style: OnlineTheme.promotedArticleDate.copyWith(color: OnlineTheme.white),
               ),
             ),
             

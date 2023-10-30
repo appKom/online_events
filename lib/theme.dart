@@ -103,6 +103,36 @@ sealed class OnlineTheme {
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,
   );
+
+  static const promotedArticleText = TextStyle(
+    fontFamily: font,
+    color: yellow,
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const promotedArticleAuthor = TextStyle(
+    fontFamily: font,
+    color: yellow,
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const promotedArticleDate = TextStyle(
+    fontFamily: font,
+    color: yellow,
+    fontWeight: FontWeight.w500,
+    fontSize: 11,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
 }
 
 extension ColorEffects on Color {

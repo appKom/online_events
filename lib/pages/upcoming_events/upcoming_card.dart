@@ -74,12 +74,12 @@ class UpcomingCard extends StatelessWidget {
               top: 10,
               width: 84,
               height: 84,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: OnlineTheme.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
+              child: SizedBox(
+                // color: Colors.red,
+                height: 17,
+                child: Image.asset(
+                  'assets/images/buldring.png',
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
