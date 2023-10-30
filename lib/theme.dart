@@ -143,7 +143,7 @@ sealed class OnlineTheme {
     fontFamily: font,
     color: white,
     fontWeight: FontWeight.w600,
-    fontSize: 20,
+    fontSize: 18,
     height: 1.5,
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,

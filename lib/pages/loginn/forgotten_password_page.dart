@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/pages/loginn/forgotten_password_page.dart';
+import 'package:online_events/pages/loginn/email_sent_page.dart';
 import 'package:online_events/pages/upcoming_events/profile_button.dart';
 import 'package:online_events/pages/upcoming_events/promoted_article.dart';
 import 'package:online_events/pages/upcoming_events/upcoming_events_page.dart';
@@ -9,8 +9,8 @@ import 'package:online_events/theme.dart';
 import '../upcoming_events/bedpress.dart';
 import '../upcoming_events/upcoming_events.dart';
 
-class LogInnPage extends StatelessWidget {
-  const LogInnPage({super.key});
+class ForgottenPasswordPage extends StatelessWidget {
+  const ForgottenPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +59,13 @@ class LogInnPage extends StatelessWidget {
                     top: 0,
                     height: 111,
                     child: Text(
-                      'Log inn to your Online Account',
+                      'So you have forgotten your password...',
                       style: OnlineTheme.logInnPageHeader,
                     )
                   ),
                   const Positioned(
                       left: 15,
-                      top: 45,
+                      top: 60,
                       child: Text(
                         'Email:',
                         style: OnlineTheme.logInnPageEmail,
@@ -73,7 +73,7 @@ class LogInnPage extends StatelessWidget {
                   const Positioned(
                       left: 15,
                       right: 15,
-                      top: 75,
+                      top: 95,
                       child: TextField(
                         obscureText: false,
                         style: OnlineTheme.logInnPageEmail,
@@ -91,48 +91,19 @@ class LogInnPage extends StatelessWidget {
                           )
                         ),
                       )),
-                  const Positioned(
-                      left: 15,
-                      top: 130,
-                      child: Text(
-                        'Password:',
-                        style: OnlineTheme.logInnPageEmail,
-                      )),
-                  const Positioned(
-                      left: 15,
-                      right: 15,
-                      top: 160,
-                      child: TextField(
-                        obscureText: true,
-                        style: OnlineTheme.logInnPageEmail,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: OnlineTheme.gray14,
-                          hintText: 'Enter your password',
-                          hintStyle: OnlineTheme.logInnPageInput,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: OnlineTheme.gray15),
-                            
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: OnlineTheme.gray15),
-                          )
-                        ),
-                      )),
-                  Positioned(
+                      Positioned(
               left: 15,
-              right: 160,
-              top: 230,
+              right: 0,
+              top: 170,
               height: 65,
               child: GestureDetector(
-              onTap: () {
-                  loggedIn = true; // Set the loggedIn to true when the green button is clicked
-                  Navigator.push(
-                  context,
-                 MaterialPageRoute(builder: (context) => const UpcomingEventsPage()), // Replace with the page you want to navigate to
+    onTap: () {
+      // Navigate to another page when the red box is tapped
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const EmailSentPage()), // Replace with the page you want to navigate to
       );
-                // Here you can also navigate to another page or show a dialog if needed
-              },
+    },
               child: Container(
                 decoration: BoxDecoration(
                   color: OnlineTheme.green3,
@@ -140,42 +111,14 @@ class LogInnPage extends StatelessWidget {
                 ),
                 child: const Center(
                   child: Text(
-                    'Log Inn',
+                    'Send Inn',
                     style: OnlineTheme.logInnPageButton,
                   ),
                 ),
               ),
-              )
                   ),
-
-                  Positioned(
-                    left: 160,
-                    right: 15,
-                    top: 230,
-                    height: 65,
-                    child: GestureDetector(
-    onTap: () {
-      // Navigate to another page when the red box is tapped
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ForgottenPasswordPage()), // Replace with the page you want to navigate to
-      );
-    },
-    child: Container(
-      decoration: BoxDecoration(
-        color: OnlineTheme.red1,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: const Center(
-        child: Text(
-          'Forgotten Password',
-          style: OnlineTheme.logInnPageButton,
-        ),
-      ),
-    ),
-  ),
-),
-                  
+                      
+                      )
                 ],
               ),
             )
