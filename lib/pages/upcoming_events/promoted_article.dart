@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/article/article_page.dart';
 
 import '/theme.dart';
 
@@ -7,20 +8,23 @@ class PromotedArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 340,
-      height: 200,
-      padding: EdgeInsets.only(bottom: 20),
-      margin: const EdgeInsets.only(right: 20),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        // decoration: const BoxDecoration(
-        //   color: OnlineTheme.white,
-        //   borderRadius: BorderRadius.all(
-        //     Radius.circular(12),
-        //   ),
-        // ),
-        child: Stack(
+    // Wrap the Container with GestureDetector
+    return GestureDetector(
+      onTap: () {
+        // Navigate to another page when the stack is tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ArticlePage()), // Replace with your page route
+        );
+      },
+      child: Container(
+        width: 340,
+        height: 200,
+        padding: EdgeInsets.only(bottom: 20),
+        margin: const EdgeInsets.only(right: 20),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Stack(
           children: [
             Positioned(
               left: 0,
@@ -95,6 +99,8 @@ class PromotedArticle extends StatelessWidget {
           ],
         ),
       ),
+    )
     );
+    
   }
 }
