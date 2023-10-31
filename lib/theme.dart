@@ -121,7 +121,7 @@ sealed class OnlineTheme {
 
   static const promotedArticleAuthor = TextStyle(
     fontFamily: font,
-    color: yellow,
+    color: white,
     fontWeight: FontWeight.w400,
     fontSize: 12,
     height: 1.5,

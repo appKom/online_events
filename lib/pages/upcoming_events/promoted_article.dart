@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/article/article_page.dart';
 
 import '/theme.dart';
 
@@ -10,15 +11,24 @@ class PromotedArticle extends StatelessWidget {
     const date = '26.6.2023';
     const timeToRead = '5 min';
 
-    return SizedBox(
-      width: 340,
-      height: 200,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+    return GestureDetector( // Wrap with GestureDetector
+      onTap: () {
+        // Define the action to take on tap
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ArticlePage()), // Navigate to ArticlePage
+        );
+      },
+      child: SizedBox(
+        width: 340,
+        height: 200,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+
             Expanded(
               child: Image.asset(
                 'assets/images/fadderuka2.png',
@@ -62,6 +72,8 @@ class PromotedArticle extends StatelessWidget {
           ],
         ),
       ),
+    )
     );
+    
   }
 }

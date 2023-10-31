@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/models/card_event.dart';
-import '/models/list_event.dart';
+
 import '/theme.dart';
 
 class Bedpress extends StatelessWidget {
@@ -10,7 +10,6 @@ class Bedpress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return SizedBox(
       height: 300,

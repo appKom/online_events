@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/pages/loginn/forgotten_password_page.dart';
+
 import 'package:online_events/pages/upcoming_events/profile_button.dart';
-import 'package:online_events/pages/upcoming_events/promoted_article.dart';
 import 'package:online_events/pages/upcoming_events/upcoming_events_page.dart';
 import 'package:online_events/theme.dart';
 
-import '../upcoming_events/bedpress.dart';
-import '../upcoming_events/upcoming_events.dart';
 
 class EmailSentPage extends StatelessWidget {
   const EmailSentPage({super.key});
