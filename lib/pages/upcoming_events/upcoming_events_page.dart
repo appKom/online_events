@@ -58,6 +58,7 @@ class UpcomingEventsPage extends StatelessWidget {
                       const SizedBox(height: 30),
                       const PromotedArticle(),
                       const SizedBox(height: 24),
+                      const SizedBox(height: 24),
                       const SizedBox(height: 30),
                       SizedBox(
                         height: 276,
