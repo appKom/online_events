@@ -4,16 +4,16 @@ import '/pages/upcoming_events/profile_button.dart';
 import '/pages/upcoming_events/upcoming_events_page.dart';
 import '/theme.dart';
 
-const double above = 25;
-const double below = 25;
-
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
+
     return OnlineScaffold(
       content: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 30),
           const Center(
@@ -23,6 +23,7 @@ class ProfilePage extends StatelessWidget {
                 fontFamily: OnlineTheme.font,
                 fontSize: 24,
                 color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -54,6 +55,7 @@ class ProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           Row(
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
@@ -82,32 +84,25 @@ class ProfilePage extends StatelessWidget {
               fontFamily: OnlineTheme.font,
               fontSize: 20,
               color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          // const SizedBox(height: above),
           Padding(
-            padding: const EdgeInsets.only(top: above, bottom: below),
+            padding: aboveBelowPadding,
             child: textInput('Brukernavn', 'Fredrikbobo'),
           ),
-          // const SizedBox(height: below),
-          const Divider(
-            color: OnlineTheme.gray14,
-            thickness: 1,
+          // const Separator(),
+          Padding(
+            padding: aboveBelowPadding,
+            child: textInput('Telefon', '+47 123 45 678'),
           ),
-          const SizedBox(height: above),
-          textInput('Telefon', '+47 123 45 678'),
-          const SizedBox(height: below),
-          const Divider(
-            color: OnlineTheme.gray14,
-            thickness: 1,
+          // const Separator(),
+          Padding(
+            padding: aboveBelowPadding,
+            child: textInput('E-post', 'fredrik@stud.ntnu.no'),
           ),
-          const SizedBox(height: above),
-          textInput('E-post', 'fredrik@stud.ntnu.no'),
-          const SizedBox(height: below),
-          const Divider(
-            color: OnlineTheme.gray14,
-            thickness: 1,
-          ),
+          const SizedBox(height: 24),
+          const Separator(),
           const SizedBox(height: 40),
           const Text(
             'Studie',
@@ -115,36 +110,35 @@ class ProfilePage extends StatelessWidget {
               fontFamily: OnlineTheme.font,
               fontSize: 20,
               color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: above),
-          textInput('Klassetrinn', '1. klasse'),
-          const SizedBox(height: below),
-          const Divider(
-            color: OnlineTheme.gray14,
-            thickness: 1,
+          Padding(
+            padding: aboveBelowPadding,
+            child: textInput('Klassetrinn', '1. klasse'),
           ),
-          const SizedBox(height: above),
-          textInput('Startår', '2023'),
-          const SizedBox(height: below),
-          const Divider(
-            color: OnlineTheme.gray14,
-            thickness: 1,
+          Padding(
+            padding: aboveBelowPadding,
+            child: textInput('Startår', '2023'),
           ),
-          const SizedBox(height: above),
+          const SizedBox(height: 16),
           const Text(
             'Studieløp',
             style: TextStyle(
               fontFamily: OnlineTheme.font,
-              fontSize: 13,
+              fontSize: 16,
               color: OnlineTheme.gray11,
             ),
           ),
-          const SizedBox(height: below),
-          const Divider(
-            color: OnlineTheme.gray14,
-            thickness: 1,
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 40,
+            child: CustomPaint(
+              painter: StudyCoursePainter(year: 5.5),
+            ),
           ),
+          const SizedBox(height: 40),
+          const Separator(),
           const SizedBox(height: 40),
           const Text(
             'Eksterne sider',
@@ -152,26 +146,22 @@ class ProfilePage extends StatelessWidget {
               fontFamily: OnlineTheme.font,
               fontSize: 20,
               color: OnlineTheme.gray11,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: below),
-          textInput('Github', 'Github'),
-          const SizedBox(height: below),
-          const Divider(
-            color: OnlineTheme.gray14,
-            thickness: 1,
+          Padding(
+            padding: aboveBelowPadding,
+            child: textInput('Github', 'Github'),
           ),
-          const SizedBox(height: above),
-          textInput('Linkedin', 'Linkedin'),
-          const SizedBox(height: below),
-          const Divider(
-            color: OnlineTheme.gray14,
-            thickness: 1,
+          Padding(
+            padding: aboveBelowPadding,
+            child: textInput('Linkedin', 'Linkedin'),
           ),
-          const SizedBox(height: above),
-          textInput('Hjemmeside', 'online.ntnu.no'),
-          const SizedBox(height: below),
-
+          Padding(
+            padding: aboveBelowPadding,
+            child: textInput('Hjemmeside', 'online.ntnu.no'),
+          ),
+          const Separator(),
           const SizedBox(height: 40), // Space from the previous content
           Center(
             child: ElevatedButton(
@@ -183,10 +173,16 @@ class ProfilePage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: OnlineTheme.red1, // Set the text color to white
+                foregroundColor: OnlineTheme.white, backgroundColor: OnlineTheme.red1, // Set the text color to white
                 minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
               ),
-              child: const Text('Logg Ut'),
+              child: const Text(
+                'Logg Ut',
+                style: TextStyle(
+                  fontFamily: OnlineTheme.font,
+                  fontSize: 16,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 40), // Space at the bottom
@@ -210,14 +206,14 @@ class ProfilePage extends StatelessWidget {
         ),
         SizedBox(
           width: 200,
-          height: 50,
+          height: 40,
           child: TextField(
             cursorColor: OnlineTheme.gray8,
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: const TextStyle(
                 fontFamily: OnlineTheme.font,
-                fontSize: 16.0,
+                fontSize: 16,
                 color: Color(0xFF4C566A),
               ),
               enabledBorder: const OutlineInputBorder(
@@ -241,4 +237,106 @@ class ProfilePage extends StatelessWidget {
       ],
     );
   }
+}
+
+class Separator extends StatelessWidget {
+  const Separator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 1,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF000212),
+            Color(0xFF2E3440),
+            Color(0xFF000212),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class StudyCoursePainter extends CustomPainter {
+  final double year;
+
+  StudyCoursePainter({super.repaint, required this.year});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const gray = Color(0xFF153E75);
+    const green = Color(0xFF36B37E);
+
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..color = gray;
+
+    final cy = size.height / 2; // Center Y
+
+    final fraction = size.width / 6;
+    final segment1 = fraction * 3 - 18;
+    final segment2 = fraction * 2 + 9;
+    final segment3 = fraction - 9;
+
+    final c1 = Offset(18, cy);
+    final c2 = Offset(9 + (segment1 - 36) / 2, cy);
+    final c3 = Offset((segment1 - 36), cy);
+
+    final c4 = Offset(segment1 + 36, cy);
+    final c5 = Offset(segment1 + segment2 - 36, cy);
+
+    final c6 = Offset(size.width - 18, cy);
+
+    line(year >= 1, c1, c2, canvas, paint);
+    circle(year >= 1, c1, canvas, paint);
+    line(year > 2, c2, c3, canvas, paint);
+    circle(year > 1, c2, canvas, paint);
+    line(year > 3, c3, Offset(segment1, cy), canvas, paint);
+    circle(year > 2, c3, canvas, paint);
+
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
+
+    line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
+    line(year >= 5, c4, c5, canvas, paint);
+    circle(year > 4, c4, canvas, paint);
+    line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
+    circle(year >= 5, c5, canvas, paint);
+
+    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
+
+    line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
+    circle(year >= 6, c6, canvas, paint);
+  }
+
+  void line(bool active, Offset start, Offset end, Canvas canvas, Paint paint) {
+    final color = active ? green : gray;
+    paint.color = color;
+    canvas.drawLine(start, end, paint);
+  }
+
+  // static const gray = Color(0xFF153E75);
+  static const gray = OnlineTheme.gray0;
+  static const green = Color(0xFF36B37E);
+
+  void circle(bool active, Offset c, Canvas canvas, Paint paint) {
+    final color = active ? green : gray;
+
+    paint.color = OnlineTheme.background;
+    paint.style = PaintingStyle.fill;
+
+    canvas.drawCircle(c, 15, paint);
+
+    paint.color = color;
+    paint.style = PaintingStyle.stroke;
+    canvas.drawCircle(c, 16, paint);
+
+    paint.style = PaintingStyle.fill;
+    canvas.drawCircle(c, 8, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
