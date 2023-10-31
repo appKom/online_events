@@ -38,17 +38,6 @@ class ProfilePage extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              // decoration: const BoxDecoration(
-              //   shape: BoxShape.circle,
-              //   color: OnlineTheme.blue1,
-              // ),
-              // child: const Center(
-              //   child: Icon(
-              //     Icons.person,
-              //     color: Colors.white,
-              //     size: 100,
-              //   ),
-              // ),
             ),
           ),
           const SizedBox(height: 15),
