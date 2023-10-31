@@ -38,8 +38,10 @@ class UpcomingEventsPage extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const PromotedArticle(),
+                    const SizedBox(height: 24),
                     const SizedBox(height: 30),
                     SizedBox(
                       height: 276,
