@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:online_events/pages/upcoming_events/upcoming_events_page.dart';
-import 'package:online_events/pages/upcoming_events/profile_button.dart';
+
+import '/pages/upcoming_events/profile_button.dart';
+import '/pages/upcoming_events/upcoming_events_page.dart';
 import '/theme.dart';
 
 const double above = 25;
@@ -12,32 +12,9 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
-
     return OnlineScaffold(
       content: Column(
         children: [
-          // AppBar(
-          //   actionsIconTheme: const IconThemeData(color: OnlineTheme.background),
-          //   title: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          //     Icon(Icons.account_circle_rounded),
-          //     SizedBox(width: 8),
-          //     Text('Min profil'),
-          //     SizedBox(
-          //       width: 25,
-          //     )
-          //   ]),
-          //   centerTitle: true,
-          //   backgroundColor: OnlineTheme.background,
-          //   leading: IconButton(
-          //     icon: const Icon(Icons.menu),
-          //     tooltip: 'Menu Icon',
-          //     onPressed: () {},
-          //   ),
-          //   actions: const [
-          //     Icon(Icons.menu),
-          //   ],
-          // ),
           const SizedBox(height: 30),
           const Center(
             child: Text(
@@ -51,30 +28,39 @@ class ProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           Center(
-              child: Container(
-            width: 100,
-            height: 100,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: OnlineTheme.blue1,
-            ),
-            child: const Center(
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 100,
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.asset(
+                  'assets/images/better_profile_picture.jpg',
+                  fit: BoxFit.cover,
+                ),
               ),
+              // decoration: const BoxDecoration(
+              //   shape: BoxShape.circle,
+              //   color: OnlineTheme.blue1,
+              // ),
+              // child: const Center(
+              //   child: Icon(
+              //     Icons.person,
+              //     color: Colors.white,
+              //     size: 100,
+              //   ),
+              // ),
             ),
-          )),
+          ),
           const SizedBox(height: 15),
           const Center(
             child: Text(
               'Oppdater profilbilde og info',
               style: TextStyle(
                 fontFamily: OnlineTheme.font,
-                fontSize: 10,
+                fontSize: 12,
                 color: Colors.white,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
           const SizedBox(height: 15),
