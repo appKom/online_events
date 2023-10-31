@@ -125,7 +125,6 @@ class ArticlePage extends StatelessWidget {
                   fit: BoxFit.cover,
                     
                 ),
-
                 const SizedBox(height: 5),
 
                   const Text(
@@ -140,13 +139,6 @@ class ArticlePage extends StatelessWidget {
                       'Det er viktig at alle har gode og trygge opplevelser under og etter fadderukene, men det kan dessverre oppstå uønskede situasjoner. I slike tilfeller har Online et uavhengig varslingssystem kalt Debug, som du kan kontakte hvis du opplever eller observerer noe ubehagelig i studietiden. Kort forklart kan Debug bistå med konfliktløsning og gi råd, og kan kontaktes på Online sin nettside ved å klikke på det oransje utropstegnet. Hvis du vil vite mer i detalj hva Debug gjør og er, så er det bare å lese videre her: https://online.ntnu.no/articles/136',
                       style: OnlineTheme.promotedArticleAuthor,
                     ),
-
-                  
-
-
-
-
-                  
                 ],
               ),
             )

@@ -1,47 +1,48 @@
+
 import 'package:flutter/material.dart';
 import 'package:online_events/pages/article/article_page.dart';
-
 import '/theme.dart';
 
 class PromotedArticle extends StatelessWidget {
   const PromotedArticle({super.key});
+
+  void _goToArticle() {
+    AppNavigator.navigateToRoute(
+      CupertinoPageRoute(
+        builder: (context) {
+          return const ArticlePage();
+        },
+        maintainState: false,
+      ),
+      additive: true,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     const date = '26.6.2023';
     const timeToRead = '5 min';
 
-    return GestureDetector( // Wrap with GestureDetector
-      onTap: () {
-        // Define the action to take on tap
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ArticlePage()), // Navigate to ArticlePage
-        );
-      },
-      child: SizedBox(
-        width: 340,
-        height: 200,
+    return SizedBox(
+      width: 340,
+      height: 200,
+      child: GestureDetector(
+        onTap: _goToArticle,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-
-            Expanded(
-              child: Image.asset(
-                'assets/images/fadderuka2.png',
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
+              Expanded(
+                child: Image.asset(
+                  'assets/images/fadderuka2.png',
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            Expanded(
-              child: Stack(
+              Expanded(
+                  child: Stack(
                 children: [
-                  Positioned.fill(
-                    child: Container(color: OnlineTheme.gray13),
-                  ),
+                  Positioned.fill(child: Container(color: OnlineTheme.gray13)),
                   Positioned(
                     left: 20,
                     bottom: 60,
@@ -67,9 +68,9 @@ class PromotedArticle extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ],
+              ))
+            ],
+          ),
         ),
       ),
     )
