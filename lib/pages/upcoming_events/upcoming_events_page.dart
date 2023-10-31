@@ -12,6 +12,39 @@ class UpcomingEventsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return OnlineScaffold(
+      header: const ProfileButton(),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const PromotedArticle(),
+          const SizedBox(height: 24),
+          const SizedBox(height: 24),
+          const SizedBox(height: 30),
+          SizedBox(
+            height: 276,
+            child: UpcomingEventsList(
+              models: testModels,
+            ),
+          ),
+          Bedpress(
+            models: bedpressModels,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Online logo, valgfri header og scrollbart innhold med fade
+class OnlineScaffold extends StatelessWidget {
+  final Widget? header;
+  final Widget content;
+
+  const OnlineScaffold({super.key, this.header, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
@@ -31,7 +64,7 @@ class UpcomingEventsPage extends StatelessWidget {
                   height: 36,
                   fit: BoxFit.fitHeight,
                 ),
-                const ProfileButton()
+                if (header != null) header!,
               ],
             ),
             const SizedBox(height: 30),
@@ -56,19 +89,7 @@ class UpcomingEventsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 30),
-                      const PromotedArticle(),
-                      const SizedBox(height: 24),
-                      const SizedBox(height: 24),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        height: 276,
-                        child: UpcomingEventsList(
-                          models: testModels,
-                        ),
-                      ),
-                      Bedpress(
-                        models: bedpressModels,
-                      ),
+                      content,
                     ],
                   ),
                 ),
