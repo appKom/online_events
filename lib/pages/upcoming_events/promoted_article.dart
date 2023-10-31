@@ -1,6 +1,6 @@
-
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:online_events/pages/article/article_page.dart';
+import '/services/app_navigator.dart';
 import '/theme.dart';
 
 class PromotedArticle extends StatelessWidget {
@@ -73,8 +73,6 @@ class PromotedArticle extends StatelessWidget {
           ),
         ),
       ),
-    )
     );
-    
   }
 }
