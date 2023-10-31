@@ -1,9 +1,23 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:online_events/pages/article/article_page.dart';
+import 'package:online_events/services/app_navigator.dart';
 
 import '/theme.dart';
 
 class PromotedArticle extends StatelessWidget {
   const PromotedArticle({super.key});
+
+  void _goToArticle() {
+    AppNavigator.navigateToRoute(
+      CupertinoPageRoute(
+        builder: (context) {
+          return const ArticlePage();
+        },
+        maintainState: false,
+      ),
+      additive: true,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,53 +27,56 @@ class PromotedArticle extends StatelessWidget {
     return SizedBox(
       width: 340,
       height: 200,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Image.asset(
-                'assets/images/fadderuka2.png',
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
+      child: GestureDetector(
+        onTap: _goToArticle,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Image.asset(
+                  'assets/images/fadderuka2.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                ),
               ),
-            ),
-            Expanded(
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Container(color: OnlineTheme.gray13),
-                  ),
-                  Positioned(
-                    left: 20,
-                    bottom: 60,
-                    child: Text(
-                      'Fadderuka 2023',
-                      style: OnlineTheme.promotedArticleText.copyWith(color: OnlineTheme.white),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Container(color: OnlineTheme.gray13),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 42,
-                    left: 20,
-                    child: Text(
-                      'Isabelle Nordin, Linn Zhu Yu Grotnes',
-                      style: OnlineTheme.promotedArticleAuthor.copyWith(color: OnlineTheme.gray9),
+                    Positioned(
+                      left: 20,
+                      bottom: 60,
+                      child: Text(
+                        'Fadderuka 2023',
+                        style: OnlineTheme.promotedArticleText.copyWith(color: OnlineTheme.white),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 12,
-                    left: 20,
-                    child: Text(
-                      '$date • $timeToRead å lese',
-                      style: OnlineTheme.promotedArticleDate.copyWith(color: OnlineTheme.gray9),
+                    Positioned(
+                      bottom: 42,
+                      left: 20,
+                      child: Text(
+                        'Isabelle Nordin, Linn Zhu Yu Grotnes',
+                        style: OnlineTheme.promotedArticleAuthor.copyWith(color: OnlineTheme.gray9),
+                      ),
                     ),
-                  ),
-                ],
+                    Positioned(
+                      bottom: 12,
+                      left: 20,
+                      child: Text(
+                        '$date • $timeToRead å lese',
+                        style: OnlineTheme.promotedArticleDate.copyWith(color: OnlineTheme.gray9),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

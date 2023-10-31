@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:online_events/pages/upcoming_events/upcoming_events_page.dart';
+import 'package:online_events/pages/upcoming_events/profile_button.dart';
 import '/theme.dart';
 
 const double above = 25;
@@ -9,9 +10,13 @@ const double below = 25;
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    
 
     return Material(
       color: OnlineTheme.background,
@@ -212,6 +217,25 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(height: above),
               textInput('Hjemmeside'),
               const SizedBox(height: below),
+
+              const SizedBox(height: 40), // Space from the previous content
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    loggedIn = false;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const UpcomingEventsPage()), // Replace with your page class
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, backgroundColor: OnlineTheme.red1, // Set the text color to white
+                    minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
+                  ),
+                  child: const Text('Log Out'),
+                ),
+              ),
+              const SizedBox(height: 40), // Space at the bottom
             ],
           ),
         ),

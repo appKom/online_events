@@ -7,7 +7,7 @@ import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/theme.dart';
 
 import '../../services/app_navigator.dart';
-import '../event/event_page.dart';
+
 
 bool loggedIn = false;
 
