@@ -34,25 +34,42 @@ class UpcomingEventsPage extends StatelessWidget {
                 const ProfileButton()
               ],
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 30),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const PromotedArticle(),
-                    const SizedBox(height: 24),
-                    const SizedBox(height: 30),
-                    SizedBox(
-                      height: 276,
-                      child: UpcomingEventsList(
-                        models: testModels,
+              child: ShaderMask(
+                shaderCallback: (bounds) {
+                  return const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0x00FFFFFF),
+                      Color(0xFFFFFFFF),
+                    ],
+                    stops: [
+                      0.0,
+                      0.05,
+                    ],
+                  ).createShader(bounds);
+                },
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 30),
+                      const PromotedArticle(),
+                      const SizedBox(height: 24),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        height: 276,
+                        child: UpcomingEventsList(
+                          models: testModels,
+                        ),
                       ),
-                    ),
-                    Bedpress(
-                      models: bedpressModels,
-                    ),
-                  ],
+                      Bedpress(
+                        models: bedpressModels,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
