@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:online_events/pages/loginn/log_inn_page.dart';
+import 'package:online_events/pages/login/login_page.dart';
 
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/theme.dart';
 
 import '../../services/app_navigator.dart';
-
 
 bool loggedIn = false;
 
@@ -27,27 +26,27 @@ class ProfileButton extends StatelessWidget {
 
     if (loggedIn) {
       AppNavigator.navigateToRoute(
-      CupertinoPageRoute(
-        builder: (context) {
-          return const ProfilePage();
-        },
-        maintainState: false,
-        // fullscreenDialog:
-      ),
-      additive: true,
-    );
+        CupertinoPageRoute(
+          builder: (context) {
+            return const ProfilePage();
+          },
+          maintainState: false,
+          // fullscreenDialog:
+        ),
+        additive: true,
+      );
     } else {
       // TODO: Login page
       AppNavigator.navigateToRoute(
-      CupertinoPageRoute(
-        builder: (context) {
-          return const LogInnPage(); // TODO: Change destination
-        },
-        maintainState: false,
-        // fullscreenDialog:
-      ),
-      additive: true,
-    );
+        CupertinoPageRoute(
+          builder: (context) {
+            return const LoginPage(); // TODO: Change destination
+          },
+          maintainState: false,
+          // fullscreenDialog:
+        ),
+        additive: true,
+      );
     }
   }
 

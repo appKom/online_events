@@ -17,6 +17,7 @@ sealed class OnlineTheme {
   static const yellow = Color(0xFFFAB759);
   static const orange10 = Color(0xFFFFEDB3); // More like yellow10
 
+  static const gray0 = Color(0xFF22272F);
   static const gray8 = Color(0xFFA6ABB5);
   static const gray9 = Color(0xFFB7BBC3);
   static const gray10 = Color(0xFFC9CCD2);

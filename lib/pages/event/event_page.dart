@@ -23,14 +23,19 @@ class EventPage extends StatelessWidget {
             const Padding(
               padding: horizontalPadding,
               child: Text(
-                'Surfetur til Portugal 2023',
+                'Halloweenfest på A4',
                 style: OnlineTheme.eventHeader,
               ),
             ),
             const SizedBox(height: 24),
             const Padding(
               padding: horizontalPadding,
-              child: EventPageAttendanceCard(),
+              child: RegistrationCard(),
+            ),
+            const SizedBox(height: 24),
+            const Padding(
+              padding: horizontalPadding,
+              child: AttendanceCard(),
             ),
           ],
         ),
@@ -39,9 +44,91 @@ class EventPage extends StatelessWidget {
   }
 }
 
-/// Oppmøte.
-class EventPageAttendanceCard extends StatelessWidget {
-  const EventPageAttendanceCard({super.key});
+// enum EventState {
+//   /// Du kan ikke melde deg på arrangementet enda
+//   eventWillOpen,
+//   /// Arangementet er åpent for påmelding
+//   eventOpen,
+
+//   // Arrangementet er
+//   eventClosed,
+// }
+
+// enum RegistrationState {
+//   /// Du er påmeldt arrangementet
+//   registered,
+
+//   /// Du er påmeldt og avmeldingsfristen har utløpt
+//   registeredLocked,
+
+//   /// Du er på venteliste
+//   waitlist,
+
+//   /// Du er ikke påmeldt
+//   unregistered,
+// }
+
+/// Påmelding
+class RegistrationCard extends StatelessWidget {
+  // final EventState eventState;
+
+  const RegistrationCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: OnlineTheme.background.lighten(20),
+        border: Border.all(color: OnlineTheme.gray10.darken(80), width: 1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [header()],
+      ),
+    );
+  }
+
+  /// Card header
+  Widget header() {
+    return SizedBox(
+      height: 32,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(
+            'Påmelding',
+            style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
+          ),
+          Container(
+            height: 20,
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(99, 133, 26, 2),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: const Color.fromARGB(255, 195, 3, 3),
+              ),
+            ),
+            child: const Text(
+              'Stengt',
+              style: TextStyle(
+                color: Color.fromARGB(255, 195, 3, 3),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Oppmøte
+class AttendanceCard extends StatelessWidget {
+  const AttendanceCard({super.key});
 
   @override
   Widget build(BuildContext context) {
