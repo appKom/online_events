@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/upcoming_events/more_events_page.dart';
 import '/models/list_event.dart';
 import '/theme.dart';
 
@@ -23,38 +24,10 @@ class UpcomingEventsList extends StatelessWidget {
 
     return Column(
       children: [
-        const SizedBox(
-          height: 15,
-          child: Center(
-            child: Text(
-              'KOMMENDE ARRANGEMENTER',
-              style: upcomingEvents,
-            ),
-          ),
-        ),
         const SizedBox(height: 10),
         buildItem(context, 0),
         buildItem(context, 1),
         const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'MER',
-              style: OnlineTheme.eventListSubHeader.copyWith(fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(width: 2),
-            const Padding(
-              padding: EdgeInsets.only(top: 4),
-              child: Icon(
-                Icons.navigate_next,
-                color: OnlineTheme.gray9,
-                size: 15,
-              ),
-            ),
-          ],
-        ),
       ],
     );
   }

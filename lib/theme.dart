@@ -112,7 +112,7 @@ sealed class OnlineTheme {
 
   static const promotedArticleText = TextStyle(
     fontFamily: font,
-    color: yellow,
+    color: white,
     fontWeight: FontWeight.w600,
     fontSize: 14,
     height: 1.5,
@@ -174,6 +174,26 @@ sealed class OnlineTheme {
     color: white,
     fontWeight: FontWeight.w700,
     fontSize: 18,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const GoToButton = TextStyle(
+    fontFamily: font,
+    color: white,
+    fontWeight: FontWeight.w700,
+    fontSize: 18,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+
+  static const UpcommingEventstext = TextStyle(
+    fontFamily: font,
+    color: white,
+    fontWeight: FontWeight.w500,
+    fontSize: 12,
     height: 1.5,
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,

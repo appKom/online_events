@@ -10,7 +10,6 @@ class Bedpress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       height: 300,
       child: Column(
@@ -74,7 +73,7 @@ class BedpressCard extends StatelessWidget {
                 // color: Colors.red,
                 height: 17,
                 child: Image.asset(
-                  'assets/images/cake.png',
+                  'assets/images/heart.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -92,14 +91,16 @@ class BedpressCard extends StatelessWidget {
                 bottom: 77,
                 child: Text(
                   'Sep',
-                  style: OnlineTheme.eventDateMonth.copyWith(color: OnlineTheme.blue2),
+                  style: OnlineTheme.eventDateMonth
+                      .copyWith(color: OnlineTheme.blue2),
                 )),
             Positioned(
                 left: 15,
                 bottom: 45,
                 child: Text(
                   '18',
-                  style: OnlineTheme.eventDateNumber.copyWith(color: OnlineTheme.white),
+                  style: OnlineTheme.eventDateNumber
+                      .copyWith(color: OnlineTheme.white),
                 )),
             Positioned(
                 left: 65,
@@ -107,8 +108,9 @@ class BedpressCard extends StatelessWidget {
                 right: 10,
                 top: 130,
                 child: Text(
-                  'Kakebake kurs med Appkom',
-                  style: OnlineTheme.eventBedpressHeader.copyWith(color: OnlineTheme.white),
+                  'Flørtekurs med Appkom',
+                  style: OnlineTheme.eventBedpressHeader
+                      .copyWith(color: OnlineTheme.white),
                 )),
             Positioned(
               left: 15,
@@ -123,7 +125,8 @@ class BedpressCard extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'Sosialt',
-                    style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.green1, height: 1),
+                    style: OnlineTheme.eventListHeader
+                        .copyWith(color: OnlineTheme.green1, height: 1),
                   ),
                 ),
               ),
@@ -144,10 +147,11 @@ class BedpressCard extends StatelessWidget {
               right: 12,
               child: Text(
                 '30/50',
-                style: OnlineTheme.eventNumberOfPeople.copyWith(color: OnlineTheme.white),
+                style: OnlineTheme.eventNumberOfPeople
+                    .copyWith(color: OnlineTheme.white),
               ),
             ),
-            
+
             Positioned(
               right: 48,
               bottom: 15,
