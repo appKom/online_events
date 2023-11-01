@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/theme.dart';
+import 'package:online_events/widgets/event/event_participants.dart';
 
 class EventPage extends StatelessWidget {
   const EventPage({super.key});
@@ -36,6 +37,11 @@ class EventPage extends StatelessWidget {
             const Padding(
               padding: horizontalPadding,
               child: AttendanceCard(),
+            ),
+            const SizedBox(height: 24),
+            const Padding(
+              padding: horizontalPadding,
+              child: EventParticipants(),
             ),
           ],
         ),

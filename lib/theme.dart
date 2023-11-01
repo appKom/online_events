@@ -178,6 +178,33 @@ sealed class OnlineTheme {
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,
   );
+  static const eventCardParticipantsHeader = TextStyle(
+    fontFamily: font,
+    color: gray11,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+  static const eventCardDue = TextStyle(
+    fontFamily: font,
+    color: gray11,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
+  static const eventCardLocation = TextStyle(
+    fontFamily: font,
+    color: gray11,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    height: 1.5,
+    fontStyle: FontStyle.normal,
+    decoration: TextDecoration.none,
+  );
 }
 
 extension ColorEffects on Color {
