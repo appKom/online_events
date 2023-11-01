@@ -87,9 +87,47 @@ class ProfilePage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          const SizedBox(height: 8),
+          const Separator(),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Brukernavn', 'Fredrikbobo'),
+            child: Row(
+              children: [
+                const Text(
+                  'NTNU-brukernavn:',
+                  style: TextStyle(
+              fontFamily: OnlineTheme.font,
+              fontSize: 15,
+              color: Colors.white,
+              fontWeight: FontWeight.w400,
+            ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: 120, // Set the same fixed width
+                      decoration: BoxDecoration(
+                        color: OnlineTheme.gray14,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Text(
+                            'fredrikbobo',
+                            style: OnlineTheme.eventListHeader
+                                .copyWith(color: OnlineTheme.white, height: 1),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           // const Separator(),
           Padding(
@@ -113,23 +151,119 @@ class ProfilePage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          const SizedBox(height: 5),
+          const Separator(),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Klassetrinn', '1. klasse'),
-          ),
-          Padding(
-            padding: aboveBelowPadding,
-            child: textInput('Startår', '2023'),
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'Studieløp',
-            style: TextStyle(
-              fontFamily: OnlineTheme.font,
-              fontSize: 16,
-              color: OnlineTheme.gray11,
+            child: Row(
+              children: [
+                Text(
+                  'Klassetrinn',
+                  style: OnlineTheme.eventListHeader
+                      .copyWith(color: OnlineTheme.white, height: 1),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: 100, // Set a fixed width
+                      decoration: BoxDecoration(
+                        color: OnlineTheme.gray14,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Text(
+                            '2. klasse',
+                            style: OnlineTheme.eventListHeader
+                                .copyWith(color: OnlineTheme.white, height: 1),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+          Padding(
+            padding: aboveBelowPadding,
+            child: Row(
+              children: [
+                Text(
+                  'Startår',
+                  style: OnlineTheme.eventListHeader
+                      .copyWith(color: OnlineTheme.white, height: 1),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: 100, // Set the same fixed width
+                      decoration: BoxDecoration(
+                        color: OnlineTheme.gray14,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Text(
+                            '2022',
+                            style: OnlineTheme.eventListHeader
+                                .copyWith(color: OnlineTheme.white, height: 1),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            width: 300,
+            height: 50,
+            padding: const EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(right: 20),
+            child: const Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Center(
+                    child: Text(
+                      'Bachelor',
+                      style: OnlineTheme.eventListHeader,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Center(
+                    child: Text(
+                      'Master',
+                      style: OnlineTheme.eventListHeader,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Text(
+                      'PhD',
+                      style: OnlineTheme.eventListHeader,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           const SizedBox(height: 16),
           SizedBox(
             height: 40,
@@ -169,12 +303,17 @@ class ProfilePage extends StatelessWidget {
                 loggedIn = false;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const UpcomingEventsPage()), // Replace with your page class
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const UpcomingEventsPage()), // Replace with your page class
                 );
               },
               style: ElevatedButton.styleFrom(
-                foregroundColor: OnlineTheme.white, backgroundColor: OnlineTheme.red1, // Set the text color to white
-                minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
+                foregroundColor: OnlineTheme.white,
+                backgroundColor:
+                    OnlineTheme.red1, // Set the text color to white
+                minimumSize: const Size(double.infinity,
+                    50), // Set the button to take the full width
               ),
               child: const Text(
                 'Logg Ut',
@@ -297,7 +436,8 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
+        paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -305,7 +445,8 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0),
+        Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);

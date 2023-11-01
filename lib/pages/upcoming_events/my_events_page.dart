@@ -3,72 +3,71 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/pages/upcoming_events/bedpress.dart';
 import 'package:online_events/pages/upcoming_events/profile_button.dart';
 import 'package:online_events/pages/upcoming_events/promoted_article.dart';
+import 'package:online_events/pages/upcoming_events/upcoming_events_page.dart';
 
-import 'more_events_page.dart';
 import 'upcoming_events.dart';
 import '/theme.dart';
 
-class UpcomingEventsPage extends StatelessWidget {
-  const UpcomingEventsPage({super.key});
+class MyEventsPage extends StatelessWidget {
+  const MyEventsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return OnlineScaffold(
       header: const ProfileButton(),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const PromotedArticle(),
-          const SizedBox(height: 24),
-          const SizedBox(height: 24),
-          const SizedBox(
-            height: 15,
-            child: Center(
-              child: Text('KOMMENDE ARRANGEMENTER',
-                  style: OnlineTheme.UpcommingEventstext),
+      content: SingleChildScrollView(
+        // Wrap the Column with SingleChildScrollView
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 10),
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 242,
-            child: UpcomingEventsList(
-              models: testModels,
+            const Center(
+              child: Text(
+                'Mine Arrangementer',
+                style: OnlineTheme.UpcommingEventstext,
+              ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MoreEventsPage()),
-                  );
-                },
-                child: Text(
-                  'MER',
-                  style: OnlineTheme.UpcommingEventstext.copyWith(
-                      fontWeight: FontWeight.w500),
-                ),
+            SizedBox(
+              height: 242,
+              child: UpcomingEventsList(
+                models: testModels,
               ),
-              const SizedBox(width: 2),
-              const Padding(
-                padding: EdgeInsets.only(top: 4),
-                child: Icon(
-                  Icons.navigate_next,
-                  color: OnlineTheme.gray9,
-                  size: 15,
-                ),
+            ),
+            const Center(
+              child: Text(
+                'Tidligere Arrangementer',
+                style: OnlineTheme.UpcommingEventstext,
               ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Bedpress(
-            models: bedpressModels,
-          ),
-        ],
+            ),
+            SizedBox(
+              height: 242,
+              child: UpcomingEventsList(
+                models: testModels,
+              ),
+            ),
+            SizedBox(
+              height: 242,
+              child: UpcomingEventsList(
+                models: testModels,
+              ),
+            ),
+            SizedBox(
+              height: 242,
+              child: UpcomingEventsList(
+                models: testModels,
+              ),
+            ),
+            SizedBox(
+              height: 242,
+              child: UpcomingEventsList(
+                models: testModels,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -98,12 +97,20 @@ class OnlineScaffold extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  'assets/header.svg',
-                  height: 36,
-                  fit: BoxFit.fitHeight,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UpcomingEventsPage()),
+                    );
+                  },
+                  child: SvgPicture.asset(
+                    'assets/header.svg',
+                    height: 36,
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
-                if (header != null) header!,
               ],
             ),
             const SizedBox(height: 30),

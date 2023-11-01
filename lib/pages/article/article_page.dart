@@ -27,7 +27,6 @@ class ArticlePage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // Navigate to another page when the SVG image is tapped
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const UpcomingEventsPage()), // Replace with your page class
@@ -44,12 +43,11 @@ class ArticlePage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
             Container(
-              width: 300,
-              height: 1500,
+              // width: 300,
+              // height: 1500,
               padding: const EdgeInsets.only(bottom: 20),
-              margin: const EdgeInsets.only(right: 20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
                       'Fadderuka 2023',
@@ -88,7 +86,7 @@ class ArticlePage extends StatelessWidget {
                       thickness: 1,
                     ),
 
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 2),
 
                   const Text(
                       'Fadderukene🫐',
