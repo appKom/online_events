@@ -3,6 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/theme.dart';
 import 'package:online_events/widgets/event/event_participants.dart';
 
+import '../../widgets/event/EventCardButtons.dart';
+import '../../widgets/event/EventCardCountdown.dart';
+
 class EventPage extends StatelessWidget {
   const EventPage({super.key});
 
@@ -39,9 +42,9 @@ class EventPage extends StatelessWidget {
               child: AttendanceCard(),
             ),
             const SizedBox(height: 24),
-            const Padding(
+            Padding(
               padding: horizontalPadding,
-              child: EventParticipants(),
+              child: EventCardButtons(),
             ),
           ],
         ),
@@ -76,9 +79,7 @@ class EventPage extends StatelessWidget {
 
 /// Påmelding
 class RegistrationCard extends StatelessWidget {
-  // final EventState eventState;
-
-  const RegistrationCard({super.key});
+  const RegistrationCard({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +92,18 @@ class RegistrationCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [header()],
+        children: [
+          header(),
+          const SizedBox(height: 16),
+          EventParticipants(),
+          const SizedBox(height: 16),
+          EventCardCountdown(), // Add the countdown widget here
+        ],
       ),
     );
   }
+}
+
 
   /// Card header
   Widget header() {
@@ -130,7 +139,6 @@ class RegistrationCard extends StatelessWidget {
       ),
     );
   }
-}
 
 /// Oppmøte
 class AttendanceCard extends StatelessWidget {

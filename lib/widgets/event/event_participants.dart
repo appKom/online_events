@@ -45,7 +45,7 @@ class EventParticipants extends StatelessWidget {
                   overflow: TextOverflow.visible,
                 ),
                 Center(
-                  child: Expanded(child: Text('10/10', style: OnlineTheme.eventCardDue)),
+                  child: Expanded(child: Text('10/10', style: OnlineTheme.eventParticipantsNumber)),
                 ),
               ],
             ),
@@ -67,7 +67,7 @@ class EventParticipants extends StatelessWidget {
                   overflow: TextOverflow.visible,
                 ),
                 Center(
-                  child: Expanded(child: Text('10/10', style: OnlineTheme.eventCardDue)),
+                  child: Expanded(child: Text('10/10', style: OnlineTheme.eventParticipantsNumber)),
                 ),
               ],
             ),
@@ -90,7 +90,7 @@ class EventParticipants extends StatelessWidget {
                 ),
                 // Center text
                 Center(
-                  child: Expanded(child: Text('10/10', style: OnlineTheme.eventCardDue)),
+                  child: Expanded(child: Text('10/10', style: OnlineTheme.eventParticipantsNumber)),
                 ),
               ],
             ),
