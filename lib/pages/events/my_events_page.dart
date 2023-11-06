@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '/pages/home/profile_button.dart';
-import '/online_scaffold.dart';
+import '../../components/online_scaffold.dart';
 import '../home/event_card.dart';
-import '/theme.dart';
+import '../../theme/theme.dart';
 import '/main.dart';
 
 class MyEventsPage extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../home/home_page.dart';
 import '../home/profile_button.dart';
 import '/pages/login/email_sent_page.dart';
-import 'package:online_events/theme.dart';
+import 'package:online_events/theme/theme.dart';
 
 class ForgottenPasswordPage extends StatelessWidget {
   const ForgottenPasswordPage({super.key});

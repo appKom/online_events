@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:online_events/pages/article/article_page.dart';
 import '/services/app_navigator.dart';
-import '/theme.dart';
+import '../../theme/theme.dart';
 
 class PromotedArticle extends StatelessWidget {
   const PromotedArticle({super.key});

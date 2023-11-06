@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/pages/login/forgotten_password_page.dart';
-import 'package:online_events/theme.dart';
+import 'package:online_events/theme/theme.dart';
 import '/pages/profile/profile_page.dart';
 import '/pages/home/profile_button.dart';
 import '/services/app_navigator.dart';

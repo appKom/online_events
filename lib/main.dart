@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/list_event.dart';
 import 'pages/home/home_page.dart';
 import '/services/app_navigator.dart';
-import '/theme.dart';
+import 'theme/theme.dart';
 
 final testModels = [
   ListEventModel(

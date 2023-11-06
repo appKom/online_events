@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:online_events/pages/login/login_page.dart';
 
 import 'package:online_events/pages/profile/profile_page.dart';
-import 'package:online_events/theme.dart';
+import 'package:online_events/theme/theme.dart';
 
 import '../../services/app_navigator.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:online_events/theme.dart';
-import '/online_scaffold.dart';
+import 'package:online_events/theme/theme.dart';
+import '../../components/online_scaffold.dart';
 
 class ArticlePage extends StatelessWidget {
   const ArticlePage({super.key});

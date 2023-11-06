@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:online_events/pages/home/profile_button.dart';
 import 'package:online_events/pages/home/home_page.dart';
-import 'package:online_events/theme.dart';
+import 'package:online_events/theme/theme.dart';
 
 class EmailSentPage extends StatelessWidget {
   const EmailSentPage({super.key});

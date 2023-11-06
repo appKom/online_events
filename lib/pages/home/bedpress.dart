@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/pages/home/event_card.dart';
 
 import '/models/card_event.dart';
-import '/theme.dart';
+import '../../theme/theme.dart';
 
 class Bedpress extends StatelessWidget {
   final List<CardEventModel> models;

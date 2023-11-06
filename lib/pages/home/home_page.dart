@@ -7,8 +7,8 @@ import '/services/app_navigator.dart';
 import '/pages/home/event_card.dart';
 import '../events/events_page.dart';
 import '/pages/home/bedpress.dart';
-import '/online_scaffold.dart';
-import '/theme.dart';
+import '../../components/online_scaffold.dart';
+import '../../theme/theme.dart';
 import '/main.dart';
 
 class HomePage extends StatelessWidget {

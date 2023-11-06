@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/pages/event/event_page.dart';
 import '/services/app_navigator.dart';
 import '/models/list_event.dart';
-import '/theme.dart';
+import '../../theme/theme.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({super.key, required this.model});

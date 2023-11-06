@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/pages/home/home_page.dart';
 
-import 'services/app_navigator.dart';
-import 'theme.dart';
+import '/services/app_navigator.dart';
+import '/pages/home/home_page.dart';
+import '../theme/theme.dart';
 
 /// Online logo, valgfri header og scrollbart innhold med fade
 class OnlineScaffold extends StatelessWidget {

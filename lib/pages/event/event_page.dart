@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/theme.dart';
+import 'package:online_events/theme/theme.dart';
 
 class EventPage extends StatelessWidget {
   const EventPage({super.key});
@@ -15,9 +15,12 @@ class EventPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              color: OnlineTheme.white,
+            SizedBox(
               height: 267,
+              child: Image.asset(
+                'assets/images/cake.png',
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 24),
             const Padding(

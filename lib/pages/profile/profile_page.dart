@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/online_scaffold.dart';
+import 'package:flutter/services.dart';
+import 'package:online_events/services/app_navigator.dart';
+import 'package:online_events/theme/themed_icon.dart';
+import 'package:online_events/theme/themed_icon_button.dart';
 
-import '../../components/separator.dart';
+import '/components/separator.dart';
 import '../home/profile_button.dart';
 import '../home/home_page.dart';
-import '/theme.dart';
+import '/components/online_scaffold.dart';
+import '../../theme/theme.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -47,13 +51,6 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15),
-          Center(
-            child: Text(
-              'Oppdater profilbilde og info',
-              style: OnlineTheme.textStyle(),
-              textAlign: TextAlign.center,
-            ),
-          ),
           const SizedBox(height: 15),
           Row(
             mainAxisSize: MainAxisSize.max,
@@ -125,10 +122,7 @@ class ProfilePage extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Bachelor',
-                      style: OnlineTheme.textStyle(
-                        color: OnlineTheme.gray11,
-                        weight: 5,
-                      ),
+                      style: OnlineTheme.textStyle(),
                     ),
                   ),
                 ),
@@ -137,10 +131,7 @@ class ProfilePage extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Master',
-                      style: OnlineTheme.textStyle(
-                        color: OnlineTheme.gray11,
-                        weight: 5,
-                      ),
+                      style: OnlineTheme.textStyle(),
                     ),
                   ),
                 ),
@@ -149,10 +140,7 @@ class ProfilePage extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'PhD',
-                      style: OnlineTheme.textStyle(
-                        color: OnlineTheme.gray11,
-                        weight: 5,
-                      ),
+                      style: OnlineTheme.textStyle(),
                     ),
                   ),
                 ),
@@ -189,10 +177,7 @@ class ProfilePage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   loggedIn = false;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
-                  );
+                  AppNavigator.navigateTo(const HomePage(), additive: false);
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: OnlineTheme.white,
@@ -224,20 +209,39 @@ class ProfilePage extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.only(left: 12),
               decoration: BoxDecoration(
                 color: OnlineTheme.gray14,
                 borderRadius: BorderRadius.circular(3),
               ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  value,
-                  style: OnlineTheme.textStyle(
-                    height: 1,
+              child: Stack(children: [
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      value,
+                      style: OnlineTheme.textStyle(
+                        height: 1,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 40,
+                  child: ThemedIconButton(
+                    onPressed: () {
+                      HapticFeedback.mediumImpact();
+                    },
+                    size: 16,
+                    icon: IconType.copy,
+                    color: OnlineTheme.gray11,
+                    hoverColor: OnlineTheme.white,
+                  ),
+                ),
+              ]),
             ),
           ),
         ],
