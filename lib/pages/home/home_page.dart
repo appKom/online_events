@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:online_events/main.dart';
-import 'package:online_events/pages/home/event_card.dart';
-import 'package:online_events/services/app_navigator.dart';
 
 import '/pages/home/promoted_article.dart';
 import '/pages/home/profile_button.dart';
+import '/services/app_navigator.dart';
+import '/pages/home/event_card.dart';
+import '../events/events_page.dart';
 import '/pages/home/bedpress.dart';
 import '/online_scaffold.dart';
-import 'more_events_page.dart';
-import 'upcoming_events.dart';
 import '/theme.dart';
+import '/main.dart';
 
-class UpcomingEventsPage extends StatelessWidget {
-  const UpcomingEventsPage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class UpcomingEventsPage extends StatelessWidget {
               AppNavigator.navigateToRoute(
                 CupertinoPageRoute(
                   builder: (context) {
-                    return const MoreEventsPage();
+                    return const EventsPage();
                   },
                   maintainState: false,
                   // fullscreenDialog:

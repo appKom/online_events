@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '/pages/home/profile_button.dart';
-import '/online_scaffold.dart';
 import 'my_events_page.dart';
-import 'event_card.dart';
+import '../home/event_card.dart';
+import '/online_scaffold.dart';
 import '/theme.dart';
 import '/main.dart';
 
-class MoreEventsPage extends StatelessWidget {
-  const MoreEventsPage({super.key});
+class EventsPage extends StatelessWidget {
+  const EventsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,36 +54,6 @@ class MoreEventsPage extends StatelessWidget {
                 ),
               ),
             ),
-            // SizedBox(
-            //   height: 242,
-            //   child: UpcomingEventsList(
-            //     models: testModels,
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 242,
-            //   child: UpcomingEventsList(
-            //     models: testModels,
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 242,
-            //   child: UpcomingEventsList(
-            //     models: testModels,
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 242,
-            //   child: UpcomingEventsList(
-            //     models: testModels,
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 242,
-            //   child: UpcomingEventsList(
-            //     models: testModels,
-            //   ),
-            // ),
           ],
         ),
       ),

@@ -30,8 +30,7 @@ class ArticlePage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const UpcomingEventsPage()), // Replace with your page class
+                          MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
                         );
                       },
                       child: SvgPicture.asset(

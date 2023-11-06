@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/main.dart';
 
 import '/pages/home/profile_button.dart';
 import '/online_scaffold.dart';
-import 'event_card.dart';
+import '../home/event_card.dart';
 import '/theme.dart';
+import '/main.dart';
 
 class MyEventsPage extends StatelessWidget {
   const MyEventsPage({super.key});
@@ -28,10 +28,16 @@ class MyEventsPage extends StatelessWidget {
                 style: OnlineTheme.UpcommingEventstext,
               ),
             ),
-            ListView.builder(
-              itemCount: 1,
-              itemBuilder: (c, i) => EventCard(
-                model: testModels[0],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              height: 111 * 1,
+              child: ListView.builder(
+                itemCount: 6,
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (c, i) => EventCard(
+                  model: testModels[0],
+                ),
               ),
             ),
             const Center(
@@ -40,10 +46,16 @@ class MyEventsPage extends StatelessWidget {
                 style: OnlineTheme.UpcommingEventstext,
               ),
             ),
-            ListView.builder(
-              itemCount: 6,
-              itemBuilder: (c, i) => EventCard(
-                model: testModels[0],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              height: 111 * 6,
+              child: ListView.builder(
+                itemCount: 6,
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (c, i) => EventCard(
+                  model: testModels[0],
+                ),
               ),
             ),
           ],

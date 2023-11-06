@@ -30,8 +30,7 @@ class ForgottenPasswordPage extends StatelessWidget {
                     // Navigate to another page when the SVG image is tapped
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const UpcomingEventsPage()), // Replace with your page class
+                      MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
                     );
                   },
                   child: SvgPicture.asset(

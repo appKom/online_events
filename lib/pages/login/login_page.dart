@@ -30,8 +30,7 @@ class LoginPage extends StatelessWidget {
                     // Navigate to another page when the SVG image is tapped
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const UpcomingEventsPage()), // Replace with your page class
+                      MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
                     );
                   },
                   child: SvgPicture.asset(
@@ -124,7 +123,7 @@ class LoginPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const UpcomingEventsPage()), // Replace with the page you want to navigate to
+                                    const HomePage()), // Replace with the page you want to navigate to
                           );
                           // Here you can also navigate to another page or show a dialog if needed
                         },
