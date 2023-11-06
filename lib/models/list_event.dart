@@ -1,5 +1,8 @@
 /// Model for events visible in the ListView on the initial page.
 class ListEventModel {
+  /// Path to image
+  final String imageSource;
+
   /// Event name
   final String name;
 
@@ -13,6 +16,7 @@ class ListEventModel {
   final int registered;
 
   ListEventModel({
+    required this.imageSource,
     required this.name,
     required this.date,
     required this.capacity,

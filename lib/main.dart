@@ -6,22 +6,46 @@ import '/theme.dart';
 
 final testModels = [
   ListEventModel(
-    name: 'Buldring med OIL!',
-    date: DateTime(2023, 9, 25),
-    registered: 20,
+    imageSource: 'assets/images/buldring.png',
+    name: 'Buldring med Maddy Z',
+    date: DateTime(2023, 12, 5),
+    registered: 18,
     capacity: 20,
   ),
   ListEventModel(
-    name: 'Bedriftspresentasjon med Sopra Steria',
-    date: DateTime(2023, 9, 26),
-    registered: 40,
-    capacity: 40,
+    imageSource: 'assets/images/cake.png',
+    name: 'Kakebakekurs med Fredrik',
+    date: DateTime(2023, 11, 26),
+    registered: 10,
+    capacity: 12,
   ),
   ListEventModel(
-    name: 'genVORS høst 2023',
+    imageSource: 'assets/images/heart.png',
+    name: 'Flørtekurs med Maddy B',
     date: DateTime(2023, 9, 27),
-    registered: 13,
-    capacity: 200,
+    registered: 5,
+    capacity: 5,
+  ),
+  ListEventModel(
+    imageSource: 'assets/images/buldring.png',
+    name: 'Buldring med Maddy Z',
+    date: DateTime(2023, 12, 5),
+    registered: 18,
+    capacity: 20,
+  ),
+  ListEventModel(
+    imageSource: 'assets/images/cake.png',
+    name: 'Kakebakekurs med Fredrik',
+    date: DateTime(2023, 11, 26),
+    registered: 10,
+    capacity: 12,
+  ),
+  ListEventModel(
+    imageSource: 'assets/images/heart.png',
+    name: 'Flørtekurs med Maddy B',
+    date: DateTime(2023, 9, 27),
+    registered: 5,
+    capacity: 5,
   ),
 ];
 

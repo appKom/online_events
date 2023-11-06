@@ -74,11 +74,10 @@ class EventCard extends StatelessWidget {
               top: 10,
               width: 84,
               height: 84,
-              child: SizedBox(
-                // color: Colors.red,
-                height: 17,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
                 child: Image.asset(
-                  'assets/images/buldring.png',
+                  model.imageSource,
                   fit: BoxFit.cover,
                 ),
               ),

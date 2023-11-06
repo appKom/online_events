@@ -4,6 +4,7 @@ class CardEventModel extends ListEventModel {
   final EventCategory category;
 
   CardEventModel({
+    required super.imageSource,
     required super.name,
     required super.date,
     required super.capacity,

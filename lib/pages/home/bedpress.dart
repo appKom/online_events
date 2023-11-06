@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/models/card_event.dart';
+import 'package:online_events/pages/home/event_card.dart';
 
+import '/models/card_event.dart';
 import '/theme.dart';
 
 class Bedpress extends StatelessWidget {
@@ -24,6 +25,7 @@ class Bedpress extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
+              itemCount: bedpressModels.length,
               itemBuilder: buildItem,
               scrollDirection: Axis.horizontal,
               // itemExtent: 240 + 20,
@@ -35,33 +37,36 @@ class Bedpress extends StatelessWidget {
   }
 
   Widget? buildItem(BuildContext context, int index) {
-    if (index >= models.length) return null;
     return BedpressCard(
       model: models[index],
     );
   }
-} //hello
+}
 
 class BedpressCard extends StatelessWidget {
   final CardEventModel model;
 
   const BedpressCard({super.key, required this.model});
 
+  String categoryToString() {
+    final cat = model.category;
+    final lowercase = cat.toString().split('.').last;
+    return lowercase[0].toUpperCase() + lowercase.substring(1);
+  }
+
+  String monthToString() {
+    return EventCard.months[model.date.month - 1].substring(0, 3);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 240,
       height: 222 + 20,
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       margin: const EdgeInsets.only(right: 20),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        // decoration: const BoxDecoration(
-        //   color: OnlineTheme.white,
-        //   borderRadius: BorderRadius.all(
-        //     Radius.circular(12),
-        //   ),
-        // ),
         child: Stack(
           children: [
             Positioned(
@@ -69,49 +74,46 @@ class BedpressCard extends StatelessWidget {
               right: 0,
               top: 0,
               height: 111,
-              child: SizedBox(
-                // color: Colors.red,
-                height: 17,
-                child: Image.asset(
-                  'assets/images/heart.png',
-                  fit: BoxFit.cover,
-                ),
+              child: Image.asset(
+                model.imageSource,
+                fit: BoxFit.cover,
               ),
             ),
             Positioned(
-                left: 0,
-                right: 0,
-                top: 111,
-                height: 200,
-                child: Container(
-                  color: OnlineTheme.gray13,
-                )),
+              left: 0,
+              right: 0,
+              top: 111,
+              height: 200,
+              child: Container(
+                color: OnlineTheme.gray13,
+              ),
+            ),
             Positioned(
-                left: 15,
-                bottom: 77,
-                child: Text(
-                  'Sep',
-                  style: OnlineTheme.eventDateMonth
-                      .copyWith(color: OnlineTheme.blue2),
-                )),
+              left: 15,
+              bottom: 77,
+              child: Text(
+                monthToString(),
+                style: OnlineTheme.eventDateMonth.copyWith(color: OnlineTheme.blue2),
+              ),
+            ),
             Positioned(
-                left: 15,
-                bottom: 45,
-                child: Text(
-                  '18',
-                  style: OnlineTheme.eventDateNumber
-                      .copyWith(color: OnlineTheme.white),
-                )),
+              left: 15,
+              bottom: 45,
+              child: Text(
+                model.date.day.toString(),
+                style: OnlineTheme.eventDateNumber.copyWith(color: OnlineTheme.white),
+              ),
+            ),
             Positioned(
-                left: 65,
-                bottom: 53,
-                right: 10,
-                top: 130,
-                child: Text(
-                  'Flørtekurs med Appkom',
-                  style: OnlineTheme.eventBedpressHeader
-                      .copyWith(color: OnlineTheme.white),
-                )),
+              left: 65,
+              bottom: 53,
+              right: 10,
+              top: 130,
+              child: Text(
+                model.name,
+                style: OnlineTheme.eventBedpressHeader.copyWith(color: OnlineTheme.white),
+              ),
+            ),
             Positioned(
               left: 15,
               right: 160,
@@ -124,39 +126,24 @@ class BedpressCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Sosialt',
-                    style: OnlineTheme.eventListHeader
-                        .copyWith(color: OnlineTheme.green1, height: 1),
+                    categoryToString(),
+                    style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.green1, height: 1),
                   ),
                 ),
               ),
             ),
-            // Positioned(
-            //     left: 24,
-            //     bottom: 15,
-            //     // top: 210,
-            //     // height: 200,
-            //     height: 24,
-            //     child: Text(
-            //       'Sosialt',
-            //       style: OnlineTheme.eventListHeader
-            //           .copyWith(color: OnlineTheme.green1),
-            //     )),
             Positioned(
               bottom: 15,
               right: 12,
               child: Text(
-                '30/50',
-                style: OnlineTheme.eventNumberOfPeople
-                    .copyWith(color: OnlineTheme.white),
+                '${model.registered}/${model.capacity}',
+                style: OnlineTheme.eventNumberOfPeople.copyWith(color: OnlineTheme.white),
               ),
             ),
-
             Positioned(
               right: 48,
               bottom: 15,
               child: SizedBox(
-                // color: Colors.red,
                 height: 17,
                 child: SvgPicture.asset(
                   'assets/icons/people.svg',
@@ -173,31 +160,25 @@ class BedpressCard extends StatelessWidget {
 
 final bedpressModels = [
   CardEventModel(
-    name: 'Kakebakekurs med Appkom',
-    date: DateTime(2023, 9, 18),
-    capacity: 50,
-    registered: 30,
-    category: EventCategory.sosialt,
-  ),
+      imageSource: 'assets/images/buldring.png',
+      name: 'Bedpress i klatreparken',
+      date: DateTime(2023, 12, 5),
+      registered: 20,
+      capacity: 20,
+      category: EventCategory.sosialt),
   CardEventModel(
-    name: 'Kakebakekurs med Appkom',
-    date: DateTime(2023, 9, 18),
-    capacity: 50,
-    registered: 30,
-    category: EventCategory.sosialt,
-  ),
+      imageSource: 'assets/images/cake.png',
+      name: 'Bedpress og brownies',
+      date: DateTime(2023, 11, 26),
+      registered: 40,
+      capacity: 40,
+      category: EventCategory.kurs),
   CardEventModel(
-    name: 'Kakebakekurs med Appkom',
-    date: DateTime(2023, 9, 18),
-    capacity: 50,
-    registered: 30,
-    category: EventCategory.sosialt,
-  ),
-  CardEventModel(
-    name: 'Kakebakekurs med Appkom',
-    date: DateTime(2023, 9, 18),
-    capacity: 50,
-    registered: 30,
-    category: EventCategory.sosialt,
+    imageSource: 'assets/images/heart.png',
+    name: 'Bedpress med Tinder',
+    date: DateTime(2023, 9, 27),
+    registered: 5,
+    capacity: 5,
+    category: EventCategory.kurs,
   ),
 ];
