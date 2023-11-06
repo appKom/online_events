@@ -96,7 +96,10 @@ class EventCard extends StatelessWidget {
                     height: 24,
                     child: Text(
                       shortenName(),
-                      style: OnlineTheme.eventListHeader,
+                      style: OnlineTheme.textStyle(
+                        color: OnlineTheme.gray11,
+                        weight: 5,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

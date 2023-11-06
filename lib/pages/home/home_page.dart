@@ -16,6 +16,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = OnlineTheme.textStyle(weight: 5, size: 12);
+
     return OnlineScaffold(
       header: const ProfileButton(),
       content: Column(
@@ -24,10 +26,13 @@ class HomePage extends StatelessWidget {
           const PromotedArticle(),
           const SizedBox(height: 24),
           const SizedBox(height: 24),
-          const SizedBox(
+          SizedBox(
             height: 15,
             child: Center(
-              child: Text('KOMMENDE ARRANGEMENTER', style: OnlineTheme.upcomingEventsText),
+              child: Text(
+                'KOMMENDE ARRANGEMENTER',
+                style: style,
+              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -62,7 +67,7 @@ class HomePage extends StatelessWidget {
               children: [
                 Text(
                   'MER',
-                  style: OnlineTheme.upcomingEventsText.copyWith(fontWeight: FontWeight.w500),
+                  style: style,
                 ),
                 const SizedBox(width: 2),
                 const Padding(

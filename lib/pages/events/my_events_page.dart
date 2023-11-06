@@ -11,6 +11,8 @@ class MyEventsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = OnlineTheme.textStyle(weight: 5, size: 12);
+
     return OnlineScaffold(
       header: const ProfileButton(),
       content: SingleChildScrollView(
@@ -22,10 +24,10 @@ class MyEventsPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Center(
+            Center(
               child: Text(
                 'Mine Arrangementer',
-                style: OnlineTheme.upcomingEventsText,
+                style: style,
               ),
             ),
             Container(
@@ -40,10 +42,10 @@ class MyEventsPage extends StatelessWidget {
                 ),
               ),
             ),
-            const Center(
+            Center(
               child: Text(
                 'Tidligere Arrangementer',
-                style: OnlineTheme.upcomingEventsText,
+                style: style,
               ),
             ),
             Container(

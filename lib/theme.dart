@@ -189,27 +189,43 @@ sealed class OnlineTheme {
     decoration: TextDecoration.none,
   );
 
-  static const upcomingEventsText = TextStyle(
-    fontFamily: font,
-    color: white,
-    fontWeight: FontWeight.w500,
-    fontSize: 12,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
+  static FontWeight _translateWeight(int weight) {
+    switch (weight) {
+      case == 9:
+        return FontWeight.w900;
+      case == 8:
+        return FontWeight.w800;
+      case == 7:
+        return FontWeight.w700;
+      case == 6:
+        return FontWeight.w600;
+      case == 5:
+        return FontWeight.w500;
+      case == 4:
+        return FontWeight.w400;
+      case == 3:
+        return FontWeight.w300;
+      case == 2:
+        return FontWeight.w200;
+      case == 1:
+        return FontWeight.w100;
+      default:
+        throw Exception('Unsupported fontWeight. Must be in the range 1-9.');
+    }
+  }
 
   static textStyle({
     Color color = white,
-    FontWeight weight = FontWeight.normal,
+    int weight = 4,
+    double size = 16,
     double height = 1.5,
   }) {
     return TextStyle(
       fontFamily: font,
       color: color,
-      fontWeight: weight,
-      fontSize: 13,
-      height: 1.5,
+      fontWeight: _translateWeight(weight),
+      fontSize: size,
+      height: height,
       fontStyle: FontStyle.normal,
       decoration: TextDecoration.none,
     );
