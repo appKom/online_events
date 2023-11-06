@@ -100,7 +100,7 @@ class BedpressCard extends StatelessWidget {
               left: 15,
               bottom: 45,
               child: Text(
-                model.date.day.toString(),
+                model.date.day.toString().padLeft(2, '0'),
                 style: OnlineTheme.eventDateNumber.copyWith(color: OnlineTheme.white),
               ),
             ),

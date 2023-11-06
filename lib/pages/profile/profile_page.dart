@@ -23,14 +23,12 @@ class ProfilePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 30),
-          const Center(
+          Center(
             child: Text(
               'Fredrik Hansteen',
-              style: TextStyle(
-                fontFamily: OnlineTheme.font,
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+              style: OnlineTheme.textStyle(
+                size: 20,
+                weight: 7,
               ),
             ),
           ),
@@ -49,14 +47,10 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15),
-          const Center(
+          Center(
             child: Text(
               'Oppdater profilbilde og info',
-              style: TextStyle(
-                fontFamily: OnlineTheme.font,
-                fontSize: 12,
-                color: Colors.white,
-              ),
+              style: OnlineTheme.textStyle(),
               textAlign: TextAlign.center,
             ),
           ),
@@ -92,35 +86,7 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(height: 8),
           Padding(
             padding: aboveBelowPadding,
-            child: SizedBox(
-              height: 40,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'NTNU-brukernavn:',
-                      style: OnlineTheme.textStyle(),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: OnlineTheme.gray14,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'fredrikbobo',
-                          style: OnlineTheme.textStyle(
-                            height: 1,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: constValueTextInput('NTNU-brukernavn', 'fredrikbobo'),
           ),
           // const Separator(),
           Padding(
@@ -140,71 +106,11 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(height: 5),
           Padding(
             padding: aboveBelowPadding,
-            child: Row(
-              children: [
-                Text(
-                  'Klassetrinn',
-                  style: OnlineTheme.textStyle(),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: 100, // Set a fixed width
-                      decoration: BoxDecoration(
-                        color: OnlineTheme.gray14,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text(
-                            '2. klasse',
-                            style: OnlineTheme.textStyle(height: 1),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: constValueTextInput('Klassetrinn', '5. klasse'),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: Row(
-              children: [
-                Text(
-                  'Startår',
-                  style: OnlineTheme.textStyle(),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: 100, // Set the same fixed width
-                      decoration: BoxDecoration(
-                        color: OnlineTheme.gray14,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text(
-                            '2022',
-                            style: OnlineTheme.textStyle(
-                              height: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: constValueTextInput('Startår', '2022'),
           ),
           const SizedBox(height: 16),
           Container(
@@ -296,6 +202,40 @@ class ProfilePage extends StatelessWidget {
                 child: Text(
                   'Logg Ut',
                   style: OnlineTheme.textStyle(weight: 5),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget constValueTextInput(String label, String value) {
+    return SizedBox(
+      height: 40,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: OnlineTheme.textStyle(),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: OnlineTheme.gray14,
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  value,
+                  style: OnlineTheme.textStyle(
+                    height: 1,
+                  ),
                 ),
               ),
             ),
