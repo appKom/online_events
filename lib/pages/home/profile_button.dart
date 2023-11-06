@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:online_events/pages/login/login_page.dart';
-
-import 'package:online_events/pages/profile/profile_page.dart';
-import 'package:online_events/theme/theme.dart';
-
-import '../../services/app_navigator.dart';
+import '/pages/profile/profile_page.dart';
+import '/pages/login/login_page.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 
 bool loggedIn = false;
 
@@ -22,8 +20,6 @@ class ProfileButton extends StatelessWidget {
   }
 
   void onTap() {
-    print("Logged in: $loggedIn");
-
     if (loggedIn) {
       AppNavigator.navigateToRoute(
         CupertinoPageRoute(

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:online_events/services/app_navigator.dart';
-import 'package:online_events/theme/themed_icon.dart';
-import 'package:online_events/theme/themed_icon_button.dart';
 
-import '/components/separator.dart';
-import '../home/profile_button.dart';
-import '../home/home_page.dart';
 import '/components/online_scaffold.dart';
+import '/theme/themed_icon_button.dart';
+import '/services/app_navigator.dart';
+import '../home/profile_button.dart';
+import '/components/separator.dart';
+import '/theme/themed_icon.dart';
+import '../home/home_page.dart';
 import '../../theme/theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -26,56 +26,60 @@ class ProfilePage extends StatelessWidget {
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 30),
-          Center(
-            child: Text(
-              'Fredrik Hansteen',
-              style: OnlineTheme.textStyle(
-                size: 20,
-                weight: 7,
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Center(
-            child: SizedBox(
-              width: 100,
-              height: 100,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.asset(
-                  'assets/images/better_profile_picture.jpg',
-                  fit: BoxFit.cover,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Center(
+              child: Text(
+                'Fredrik Hansteen',
+                style: OnlineTheme.textStyle(
+                  size: 20,
+                  weight: 7,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 15),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: OnlineTheme.white,
-                  foregroundColor: OnlineTheme.blue1,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Center(
+              child: SizedBox(
+                width: 100,
+                height: 100,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.asset(
+                    'assets/images/better_profile_picture.jpg',
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                child: const Text('Avbryt'),
               ),
-              const SizedBox(width: 16),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: OnlineTheme.blue1,
-                  foregroundColor: OnlineTheme.white,
-                ),
-                child: const Text('Lagre'),
-              ),
-            ],
+            ),
           ),
-          const SizedBox(height: 25),
+          // const SizedBox(height: 15),
+          // const SizedBox(height: 15),
+          // Row(
+          //   mainAxisSize: MainAxisSize.max,
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     ElevatedButton(
+          //       onPressed: () {},
+          //       style: ElevatedButton.styleFrom(
+          //         backgroundColor: OnlineTheme.white,
+          //         foregroundColor: OnlineTheme.blue1,
+          //       ),
+          //       child: const Text('Avbryt'),
+          //     ),
+          //     const SizedBox(width: 16),
+          //     ElevatedButton(
+          //       onPressed: () {},
+          //       style: ElevatedButton.styleFrom(
+          //         backgroundColor: OnlineTheme.blue1,
+          //         foregroundColor: OnlineTheme.white,
+          //       ),
+          //       child: const Text('Lagre'),
+          //     ),
+          //   ],
+          // ),
+          const SizedBox(height: 24),
           Text(
             'Kontakt',
             style: headerStyle,
@@ -110,11 +114,8 @@ class ProfilePage extends StatelessWidget {
             child: constValueTextInput('Startår', '2022'),
           ),
           const SizedBox(height: 16),
-          Container(
-            width: 300,
-            height: 50,
-            padding: const EdgeInsets.only(bottom: 20),
-            margin: const EdgeInsets.only(right: 20),
+          SizedBox(
+            height: 40,
             child: Row(
               children: [
                 Expanded(
@@ -234,10 +235,11 @@ class ProfilePage extends StatelessWidget {
                   child: ThemedIconButton(
                     onPressed: () {
                       HapticFeedback.mediumImpact();
+                      Clipboard.setData(ClipboardData(text: value));
                     },
                     size: 16,
                     icon: IconType.copy,
-                    color: OnlineTheme.gray11,
+                    color: const Color(0xFF4C566A),
                     hoverColor: OnlineTheme.white,
                   ),
                 ),
@@ -283,7 +285,7 @@ class ProfilePage extends StatelessWidget {
                 fillColor: OnlineTheme.gray0,
               ),
               style: OnlineTheme.textStyle(
-                color: OnlineTheme.gray8,
+                color: OnlineTheme.white,
                 height: 1.5,
               ),
             ),
