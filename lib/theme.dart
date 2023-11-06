@@ -140,7 +140,7 @@ sealed class OnlineTheme {
     decoration: TextDecoration.none,
   );
 
-  static const logInnPageHeader = TextStyle(
+  static const loginPageHeader = TextStyle(
     fontFamily: font,
     color: white,
     fontWeight: FontWeight.w600,
@@ -150,7 +150,7 @@ sealed class OnlineTheme {
     decoration: TextDecoration.none,
   );
 
-  static const logInnPageEmail = TextStyle(
+  static const loginPageEmail = TextStyle(
     fontFamily: font,
     color: white,
     fontWeight: FontWeight.w400,
@@ -179,7 +179,7 @@ sealed class OnlineTheme {
     decoration: TextDecoration.none,
   );
 
-  static const GoToButton = TextStyle(
+  static const goToButton = TextStyle(
     fontFamily: font,
     color: white,
     fontWeight: FontWeight.w700,
@@ -189,7 +189,7 @@ sealed class OnlineTheme {
     decoration: TextDecoration.none,
   );
 
-  static const UpcommingEventstext = TextStyle(
+  static const upcomingEventsText = TextStyle(
     fontFamily: font,
     color: white,
     fontWeight: FontWeight.w500,
@@ -198,6 +198,22 @@ sealed class OnlineTheme {
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,
   );
+
+  static textStyle({
+    Color color = white,
+    FontWeight weight = FontWeight.normal,
+    double height = 1.5,
+  }) {
+    return TextStyle(
+      fontFamily: font,
+      color: color,
+      fontWeight: weight,
+      fontSize: 13,
+      height: 1.5,
+      fontStyle: FontStyle.normal,
+      decoration: TextDecoration.none,
+    );
+  }
 }
 
 extension ColorEffects on Color {

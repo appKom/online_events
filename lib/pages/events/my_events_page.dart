@@ -25,7 +25,7 @@ class MyEventsPage extends StatelessWidget {
             const Center(
               child: Text(
                 'Mine Arrangementer',
-                style: OnlineTheme.UpcommingEventstext,
+                style: OnlineTheme.upcomingEventsText,
               ),
             ),
             Container(
@@ -43,7 +43,7 @@ class MyEventsPage extends StatelessWidget {
             const Center(
               child: Text(
                 'Tidligere Arrangementer',
-                style: OnlineTheme.UpcommingEventstext,
+                style: OnlineTheme.upcomingEventsText,
               ),
             ),
             Container(

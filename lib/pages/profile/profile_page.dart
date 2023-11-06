@@ -160,7 +160,7 @@ class ProfilePage extends StatelessWidget {
                   'Klassetrinn',
                   style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.white, height: 1),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Align(
                     alignment: Alignment.centerRight,
@@ -172,7 +172,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
                             '2. klasse',
                             style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.white, height: 1),

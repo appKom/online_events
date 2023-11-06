@@ -36,7 +36,7 @@ class EventsPage extends StatelessWidget {
               ),
               child: const Text(
                 'Gå til mine kommende arrangementer',
-                style: OnlineTheme.GoToButton,
+                style: OnlineTheme.goToButton,
               ),
             ),
             const SizedBox(

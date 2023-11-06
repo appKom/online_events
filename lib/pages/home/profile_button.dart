@@ -36,15 +36,8 @@ class ProfileButton extends StatelessWidget {
         additive: true,
       );
     } else {
-      // TODO: Login page
       AppNavigator.navigateToRoute(
-        CupertinoPageRoute(
-          builder: (context) {
-            return const LoginPage(); // TODO: Change destination
-          },
-          maintainState: false,
-          // fullscreenDialog:
-        ),
+        LoginPage(),
         additive: true,
       );
     }

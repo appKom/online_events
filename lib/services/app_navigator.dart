@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 // This class is a service provider. Helping the user navigate the app is the service it provides.
 class AppNavigator {
@@ -32,6 +32,19 @@ class AppNavigator {
     navigator.currentState!.push(route).then((value) {
       if (!additive) navigator.currentState!.pushAndRemoveUntil(route, (route) => false);
     });
+  }
+
+  static void iosNavigateTo(Widget target) {
+    AppNavigator.navigateToRoute(
+      CupertinoPageRoute(
+        builder: (context) {
+          return target;
+        },
+        maintainState: false,
+        fullscreenDialog: false,
+      ),
+      additive: true,
+    );
   }
 
   static void pop() {

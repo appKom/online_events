@@ -1,179 +1,143 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-import '../home/home_page.dart';
-import '../home/profile_button.dart';
 import '/pages/login/forgotten_password_page.dart';
 import 'package:online_events/theme.dart';
+import '/pages/profile/profile_page.dart';
+import '/pages/home/profile_button.dart';
+import '/services/app_navigator.dart';
+import '/menu.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-
+class LoginPage extends Menu {
   @override
-  Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
-
-    return Material(
-      color: OnlineTheme.background,
-      child: Padding(
-        padding: padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 17),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    // Navigate to another page when the SVG image is tapped
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
-                    );
-                  },
-                  child: SvgPicture.asset(
-                    'assets/header.svg',
-                    height: 36,
-                    fit: BoxFit.fitHeight,
-                  ),
+  Widget content(BuildContext context, Animation<double> animation) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Logg Inn',
+            style: OnlineTheme.loginPageHeader,
+          ),
+          const SizedBox(height: 24),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 30,
+                child: Text(
+                  'Email',
+                  style: OnlineTheme.loginPageEmail,
                 ),
-                const ProfileButton()
-              ],
-            ),
-            const SizedBox(height: 60),
-            Container(
-              width: 300,
-              height: 330,
-              padding: const EdgeInsets.only(bottom: 20),
-              margin: const EdgeInsets.only(right: 20),
-              child: Stack(
-                children: [
-                  const Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      height: 111,
-                      child: Text(
-                        'Log inn to your Online Account',
-                        style: OnlineTheme.logInnPageHeader,
-                      )),
-                  const Positioned(
-                      left: 15,
-                      top: 45,
-                      child: Text(
-                        'Email:',
-                        style: OnlineTheme.logInnPageEmail,
-                      )),
-                  const Positioned(
-                      left: 15,
-                      right: 15,
-                      top: 75,
-                      child: TextField(
-                        obscureText: false,
-                        style: OnlineTheme.logInnPageEmail,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: OnlineTheme.gray14,
-                            hintText: 'Enter your Email',
-                            hintStyle: OnlineTheme.logInnPageInput,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: OnlineTheme.gray15),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: OnlineTheme.gray15),
-                            )),
-                      )),
-                  const Positioned(
-                      left: 15,
-                      top: 130,
-                      child: Text(
-                        'Password:',
-                        style: OnlineTheme.logInnPageEmail,
-                      )),
-                  const Positioned(
-                      left: 15,
-                      right: 15,
-                      top: 160,
-                      child: TextField(
-                        obscureText: true,
-                        style: OnlineTheme.logInnPageEmail,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: OnlineTheme.gray14,
-                            hintText: 'Enter your password',
-                            hintStyle: OnlineTheme.logInnPageInput,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: OnlineTheme.gray15),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: OnlineTheme.gray15),
-                            )),
-                      )),
-                  Positioned(
-                      left: 15,
-                      right: 160,
-                      top: 230,
-                      height: 65,
-                      child: GestureDetector(
-                        onTap: () {
-                          loggedIn = true; // Set the loggedIn to true when the green button is clicked
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const HomePage()), // Replace with the page you want to navigate to
-                          );
-                          // Here you can also navigate to another page or show a dialog if needed
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: OnlineTheme.green3,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Log Inn',
-                              style: OnlineTheme.logInnPageButton,
-                            ),
-                          ),
-                        ),
-                      )),
-                  Positioned(
-                    left: 160,
-                    right: 15,
-                    top: 230,
-                    height: 65,
-                    child: GestureDetector(
-                      onTap: () {
-                        // Navigate to another page when the red box is tapped
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ForgottenPasswordPage()), // Replace with the page you want to navigate to
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: OnlineTheme.red1,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Forgotten Password',
-                            style: OnlineTheme.logInnPageButton,
-                          ),
-                        ),
-                      ),
+              ),
+              SizedBox(
+                height: 40,
+                child: TextField(
+                  obscureText: false,
+                  autocorrect: false,
+                  style: OnlineTheme.loginPageEmail,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: OnlineTheme.gray14,
+                    hintText: 'fredrik@stud.ntnu.no',
+                    hintStyle: OnlineTheme.logInnPageInput,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.gray15),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.gray15),
                     ),
                   ),
-                ],
+                ),
               ),
-            )
-          ],
-        ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 30,
+                child: Text(
+                  'Passord',
+                  style: OnlineTheme.loginPageEmail,
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                child: TextField(
+                  obscureText: true,
+                  autocorrect: false,
+                  style: OnlineTheme.loginPageEmail,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: OnlineTheme.gray14,
+                    hintText: 'fredrik_er_b0b0',
+                    hintStyle: OnlineTheme.logInnPageInput,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.gray15),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.gray15),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    loggedIn = true;
+                    AppNavigator.pop();
+                    AppNavigator.iosNavigateTo(const ProfilePage());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: OnlineTheme.white,
+                    backgroundColor: OnlineTheme.green3, // Set the text color to white
+                    minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
+                  ),
+                  child: const Text(
+                    'Logg Inn',
+                    style: TextStyle(
+                      fontFamily: OnlineTheme.font,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    AppNavigator.pop();
+                    AppNavigator.iosNavigateTo(const ForgottenPasswordPage());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: OnlineTheme.white,
+                    backgroundColor: OnlineTheme.red1, // Set the text color to white
+                    minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
+                  ),
+                  child: const Text(
+                    'Glemt Passord',
+                    style: TextStyle(
+                      fontFamily: OnlineTheme.font,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // const SizedBox(height: 100),
+        ],
       ),
     );
   }

@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 15,
             child: Center(
-              child: Text('KOMMENDE ARRANGEMENTER', style: OnlineTheme.UpcommingEventstext),
+              child: Text('KOMMENDE ARRANGEMENTER', style: OnlineTheme.upcomingEventsText),
             ),
           ),
           const SizedBox(height: 12),
@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
               children: [
                 Text(
                   'MER',
-                  style: OnlineTheme.UpcommingEventstext.copyWith(fontWeight: FontWeight.w500),
+                  style: OnlineTheme.upcomingEventsText.copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(width: 2),
                 const Padding(

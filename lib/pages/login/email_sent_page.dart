@@ -56,7 +56,7 @@ class EmailSentPage extends StatelessWidget {
                       height: 111,
                       child: Text(
                         'An Email has been sent to you',
-                        style: OnlineTheme.logInnPageHeader,
+                        style: OnlineTheme.loginPageHeader,
                       )),
                   Positioned(
                     left: 0,

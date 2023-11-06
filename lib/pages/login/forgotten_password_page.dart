@@ -57,14 +57,14 @@ class ForgottenPasswordPage extends StatelessWidget {
                       height: 111,
                       child: Text(
                         'So you have forgotten your password...',
-                        style: OnlineTheme.logInnPageHeader,
+                        style: OnlineTheme.loginPageHeader,
                       )),
                   const Positioned(
                       left: 15,
                       top: 60,
                       child: Text(
                         'Email:',
-                        style: OnlineTheme.logInnPageEmail,
+                        style: OnlineTheme.loginPageEmail,
                       )),
                   const Positioned(
                       left: 15,
@@ -72,7 +72,7 @@ class ForgottenPasswordPage extends StatelessWidget {
                       top: 95,
                       child: TextField(
                         obscureText: false,
-                        style: OnlineTheme.logInnPageEmail,
+                        style: OnlineTheme.loginPageEmail,
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: OnlineTheme.gray14,
