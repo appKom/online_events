@@ -5,8 +5,8 @@ import '/services/app_navigator.dart';
 import '/models/list_event.dart';
 import '/theme.dart';
 
-class UpcomingCard extends StatelessWidget {
-  const UpcomingCard({super.key, required this.model});
+class EventCard extends StatelessWidget {
+  const EventCard({super.key, required this.model});
 
   final ListEventModel model;
 
@@ -61,11 +61,11 @@ class UpcomingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: showInfo,
-      child: SizedBox(
-        height: 111,
+    return SizedBox(
+      height: 111,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: showInfo,
         child: Stack(
           children: [
             // Event Icon

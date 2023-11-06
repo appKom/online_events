@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/online_scaffold.dart';
 
-import '/pages/upcoming_events/profile_button.dart';
-import '/pages/upcoming_events/upcoming_events_page.dart';
+import '../home/profile_button.dart';
+import '../home/home_page.dart';
 import '/theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -96,13 +97,13 @@ class ProfilePage extends StatelessWidget {
                 const Text(
                   'NTNU-brukernavn:',
                   style: TextStyle(
-              fontFamily: OnlineTheme.font,
-              fontSize: 15,
-              color: Colors.white,
-              fontWeight: FontWeight.w400,
-            ),
+                    fontFamily: OnlineTheme.font,
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Align(
                     alignment: Alignment.centerRight,
@@ -114,12 +115,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                       child: Center(
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
                             'fredrikbobo',
-                            style: OnlineTheme.eventListHeader
-                                .copyWith(color: OnlineTheme.white, height: 1),
+                            style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.white, height: 1),
                           ),
                         ),
                       ),
@@ -159,8 +158,7 @@ class ProfilePage extends StatelessWidget {
               children: [
                 Text(
                   'Klassetrinn',
-                  style: OnlineTheme.eventListHeader
-                      .copyWith(color: OnlineTheme.white, height: 1),
+                  style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.white, height: 1),
                 ),
                 SizedBox(width: 16),
                 Expanded(
@@ -174,12 +172,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                       child: Center(
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
                             '2. klasse',
-                            style: OnlineTheme.eventListHeader
-                                .copyWith(color: OnlineTheme.white, height: 1),
+                            style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.white, height: 1),
                           ),
                         ),
                       ),
@@ -195,10 +191,9 @@ class ProfilePage extends StatelessWidget {
               children: [
                 Text(
                   'Startår',
-                  style: OnlineTheme.eventListHeader
-                      .copyWith(color: OnlineTheme.white, height: 1),
+                  style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.white, height: 1),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Align(
                     alignment: Alignment.centerRight,
@@ -210,12 +205,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                       child: Center(
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
                             '2022',
-                            style: OnlineTheme.eventListHeader
-                                .copyWith(color: OnlineTheme.white, height: 1),
+                            style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.white, height: 1),
                           ),
                         ),
                       ),
@@ -303,17 +296,13 @@ class ProfilePage extends StatelessWidget {
                 loggedIn = false;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const UpcomingEventsPage()), // Replace with your page class
+                  MaterialPageRoute(builder: (context) => const UpcomingEventsPage()), // Replace with your page class
                 );
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: OnlineTheme.white,
-                backgroundColor:
-                    OnlineTheme.red1, // Set the text color to white
-                minimumSize: const Size(double.infinity,
-                    50), // Set the button to take the full width
+                backgroundColor: OnlineTheme.red1, // Set the text color to white
+                minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
               ),
               child: const Text(
                 'Logg Ut',
@@ -405,20 +394,15 @@ class StudyCoursePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    const gray = Color(0xFF153E75);
-    const green = Color(0xFF36B37E);
-
     final paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3
-      ..color = gray;
+      ..strokeWidth = 3;
 
     final cy = size.height / 2; // Center Y
 
     final fraction = size.width / 6;
     final segment1 = fraction * 3 - 18;
     final segment2 = fraction * 2 + 9;
-    final segment3 = fraction - 9;
 
     final c1 = Offset(18, cy);
     final c2 = Offset(9 + (segment1 - 36) / 2, cy);
@@ -436,8 +420,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
-        paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -445,8 +428,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0),
-        Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);

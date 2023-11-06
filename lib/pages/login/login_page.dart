@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '/pages/upcoming_events/upcoming_events_page.dart';
-import '/pages/upcoming_events/profile_button.dart';
+import '../home/home_page.dart';
+import '../home/profile_button.dart';
 import '/pages/login/forgotten_password_page.dart';
 import 'package:online_events/theme.dart';
 
