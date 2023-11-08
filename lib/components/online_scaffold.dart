@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/components/animated_button.dart';
 
 import '/services/app_navigator.dart';
 import '/pages/home/home_page.dart';
@@ -161,18 +162,18 @@ class NavbarState extends State<Navbar> {
     return Expanded(
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          key: UniqueKey(),
-          onTap: () {
-            setState(() {
-              selected = i;
-              buttons[i].onPressed?.call();
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 50, top: 30),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 50, top: 30),
+          child: AnimatedButton(
+            behavior: HitTestBehavior.opaque,
+            onPressed: () {
+              setState(() {
+                selected = i;
+                buttons[i].onPressed?.call();
+              });
+            },
             child: ThemedIcon(
+              key: UniqueKey(),
               icon: active ? buttons[i].activeIcon : buttons[i].icon,
               size: 24,
               color: active ? OnlineTheme.yellow : OnlineTheme.white,
