@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/online_header.dart';
+import 'package:online_events/components/online_scaffold.dart';
 
-import '/pages/login/forgotten_password_page.dart';
 import 'package:online_events/theme/theme.dart';
+import '../../main.dart';
 import '/pages/profile/profile_page.dart';
 import '/pages/home/profile_button.dart';
 import '/services/app_navigator.dart';
-import '/menu.dart';
 
-class LoginPage extends Menu {
+class LoginPage extends StaticPage {
+  const LoginPage({super.key});
+
   @override
-  Widget content(BuildContext context, Animation<double> animation) {
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
     final hintStyle = OnlineTheme.textStyle(
       color: const Color(0xFF4C566A),
       height: 1,
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +109,6 @@ class LoginPage extends Menu {
                 child: ElevatedButton(
                   onPressed: () {
                     loggedIn = true;
-                    AppNavigator.pop();
                     PageNavigator.navigateTo(const ProfilePage());
                     // AppNavigator.iosNavigateTo(const ProfilePage());
                   },
@@ -123,7 +130,7 @@ class LoginPage extends Menu {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    AppNavigator.pop();
+                    // AppNavigator.pop();
 
                     // TODO: Forgotten password page
                     // AppNavigator.iosNavigateTo(const ForgottenPasswordPage());

@@ -20,27 +20,27 @@ class EmailSentPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 17),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    // Navigate to another page when the SVG image is tapped
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
-                    );
-                  },
-                  child: SvgPicture.asset(
-                    'assets/header.svg',
-                    height: 36,
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                const ProfileButton()
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: [
+            //     GestureDetector(
+            //       onTap: () {
+            //         // Navigate to another page when the SVG image is tapped
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
+            //         );
+            //       },
+            //       child: SvgPicture.asset(
+            //         'assets/header.svg',
+            //         height: 36,
+            //         fit: BoxFit.fitHeight,
+            //       ),
+            //     ),
+            //     const ProfileButton()
+            //   ],
+            // ),
             const SizedBox(height: 60),
             Container(
               width: 300,

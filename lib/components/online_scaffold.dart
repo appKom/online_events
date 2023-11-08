@@ -42,12 +42,7 @@ abstract class StaticPage extends OnlinePage {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 30),
-        content(context),
-      ],
-    );
+    return content(context);
   }
 }
 

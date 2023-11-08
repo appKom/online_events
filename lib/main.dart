@@ -50,6 +50,8 @@ final testModels = [
   ),
 ];
 
+bool loggedIn = false;
+
 void main() {
   runApp(const MainApp());
 }
