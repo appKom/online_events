@@ -85,6 +85,7 @@ class HomePage extends StatelessWidget {
           Bedpress(
             models: bedpressModels,
           ),
+          const SizedBox(height: 75),
         ],
       ),
     );

@@ -10,6 +10,11 @@ import '/menu.dart';
 class LoginPage extends Menu {
   @override
   Widget content(BuildContext context, Animation<double> animation) {
+    final hintStyle = OnlineTheme.textStyle(
+      color: const Color(0xFF4C566A),
+      height: 1,
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -21,10 +26,10 @@ class LoginPage extends Menu {
             style: OnlineTheme.loginPageHeader,
           ),
           const SizedBox(height: 24),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 30,
                 child: Text(
                   'Email',
@@ -41,11 +46,11 @@ class LoginPage extends Menu {
                     filled: true,
                     fillColor: OnlineTheme.gray14,
                     hintText: 'fredrik@stud.ntnu.no',
-                    hintStyle: OnlineTheme.logInnPageInput,
-                    border: OutlineInputBorder(
+                    hintStyle: hintStyle,
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(color: OnlineTheme.gray15),
                     ),
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: OnlineTheme.gray15),
                     ),
                   ),
@@ -54,10 +59,10 @@ class LoginPage extends Menu {
             ],
           ),
           const SizedBox(height: 24),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 30,
                 child: Text(
                   'Passord',
@@ -74,11 +79,11 @@ class LoginPage extends Menu {
                     filled: true,
                     fillColor: OnlineTheme.gray14,
                     hintText: 'fredrik_er_b0b0',
-                    hintStyle: OnlineTheme.logInnPageInput,
-                    border: OutlineInputBorder(
+                    hintStyle: hintStyle,
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(color: OnlineTheme.gray15),
                     ),
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: OnlineTheme.gray15),
                     ),
                   ),

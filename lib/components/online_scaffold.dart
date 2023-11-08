@@ -14,6 +14,8 @@ class OnlineScaffold extends StatelessWidget {
 
   final bool scrollable;
 
+  static final scaffoldKey = GlobalKey();
+
   const OnlineScaffold({super.key, this.header, required this.content, this.scrollable = true});
 
   @override
@@ -117,19 +119,24 @@ class Navbar extends StatefulWidget {
 }
 
 class NavbarState extends State<Navbar> {
-  static const buttons = [
+  static final buttons = [
     NavbarButton(
       icon: IconType.home,
       activeIcon: IconType.homeFilled,
       name: 'Hjem',
+      onPressed: () => AppNavigator.navigateTo(const HomePage(), additive: false),
     ),
-    NavbarButton(icon: IconType.calendarClock, name: 'Events'),
-    NavbarButton(
+    const NavbarButton(
+      icon: IconType.calendarClock,
+      activeIcon: IconType.calendarClockFilled,
+      name: 'Events',
+    ),
+    const NavbarButton(
       icon: IconType.beer,
       activeIcon: IconType.beerFilled,
       name: 'Leker',
     ),
-    NavbarButton(
+    const NavbarButton(
       icon: IconType.settings,
       activeIcon: IconType.settingsFilled,
       name: 'Innstillinger',
@@ -167,9 +174,12 @@ class NavbarState extends State<Navbar> {
           child: AnimatedButton(
             behavior: HitTestBehavior.opaque,
             onPressed: () {
+              if (active) return;
+
+              buttons[i].onPressed?.call();
+
               setState(() {
                 selected = i;
-                buttons[i].onPressed?.call();
               });
             },
             child: ThemedIcon(

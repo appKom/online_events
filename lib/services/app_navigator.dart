@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 // This class is a service provider. Helping the user navigate the app is the service it provides.
-class AppNavigator {
+abstract class AppNavigator {
   static GlobalKey<NavigatorState> navigator = GlobalKey<NavigatorState>();
 
   static const Duration transitionDuration = Duration(milliseconds: 0); // 250

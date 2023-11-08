@@ -9,6 +9,7 @@ enum IconType {
   people,
   copy,
   calendarClock,
+  calendarClockFilled,
   settings,
   settingsFilled,
   home,
