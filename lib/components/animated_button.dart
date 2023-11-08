@@ -17,17 +17,6 @@ class AnimatedButton extends StatefulWidget {
 }
 
 class AnimatedButtonState extends State<AnimatedButton> with TickerProviderStateMixin {
-  // late final AnimationController controller;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   controller = AnimationController(
-  //     vsync: this,
-  //     duration: const Duration(milliseconds: 100),
-  //   );
-  // }
-
   bool down = false;
 
   void onPointerDown(PointerDownEvent evt) {
@@ -46,7 +35,7 @@ class AnimatedButtonState extends State<AnimatedButton> with TickerProviderState
   @override
   Widget build(BuildContext context) {
     return Listener(
-      behavior: HitTestBehavior.deferToChild,
+      behavior: widget.behavior,
       onPointerDown: onPointerDown,
       onPointerUp: onPointerUp,
       child: AnimatedScale(
@@ -54,7 +43,6 @@ class AnimatedButtonState extends State<AnimatedButton> with TickerProviderState
         duration: Duration(milliseconds: down ? 100 : 1000),
         alignment: Alignment.center,
         curve: down ? Curves.linear : Curves.elasticOut,
-        // curve: Curves.elasticInOut,
         child: widget.child,
       ),
     );
