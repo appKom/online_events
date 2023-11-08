@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:online_events/components/navbar.dart';
+import 'package:online_events/components/online_header.dart';
 
 import '/components/online_scaffold.dart';
 import '/theme/themed_icon_button.dart';
@@ -10,11 +12,16 @@ import '/theme/themed_icon.dart';
 import '../home/home_page.dart';
 import '../../theme/theme.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends ScrollablePage {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
     const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
 
     final headerStyle = OnlineTheme.textStyle(
@@ -22,12 +29,16 @@ class ProfilePage extends StatelessWidget {
       weight: 7,
     );
 
-    return OnlineScaffold(
-      content: Column(
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    return Padding(
+      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          SizedBox(height: OnlineHeader.height(context)),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: Center(
               child: Text(
                 'Fredrik Hansteen',
@@ -54,31 +65,6 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
           ),
-          // const SizedBox(height: 15),
-          // const SizedBox(height: 15),
-          // Row(
-          //   mainAxisSize: MainAxisSize.max,
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     ElevatedButton(
-          //       onPressed: () {},
-          //       style: ElevatedButton.styleFrom(
-          //         backgroundColor: OnlineTheme.white,
-          //         foregroundColor: OnlineTheme.blue1,
-          //       ),
-          //       child: const Text('Avbryt'),
-          //     ),
-          //     const SizedBox(width: 16),
-          //     ElevatedButton(
-          //       onPressed: () {},
-          //       style: ElevatedButton.styleFrom(
-          //         backgroundColor: OnlineTheme.blue1,
-          //         foregroundColor: OnlineTheme.white,
-          //       ),
-          //       child: const Text('Lagre'),
-          //     ),
-          //   ],
-          // ),
           const SizedBox(height: 24),
           Text(
             'Kontakt',
@@ -178,7 +164,7 @@ class ProfilePage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   loggedIn = false;
-                  AppNavigator.navigateTo(const HomePage(), additive: false);
+                  PageNavigator.navigateTo(const HomePage());
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: OnlineTheme.white,
@@ -192,6 +178,7 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: Navbar.height(context)),
         ],
       ),
     );

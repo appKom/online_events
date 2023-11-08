@@ -102,7 +102,8 @@ class LoginPage extends Menu {
                   onPressed: () {
                     loggedIn = true;
                     AppNavigator.pop();
-                    AppNavigator.iosNavigateTo(const ProfilePage());
+                    PageNavigator.navigateTo(const ProfilePage());
+                    // AppNavigator.iosNavigateTo(const ProfilePage());
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: OnlineTheme.white,
@@ -123,7 +124,9 @@ class LoginPage extends Menu {
                 child: ElevatedButton(
                   onPressed: () {
                     AppNavigator.pop();
-                    AppNavigator.iosNavigateTo(const ForgottenPasswordPage());
+
+                    // TODO: Forgotten password page
+                    // AppNavigator.iosNavigateTo(const ForgottenPasswordPage());
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: OnlineTheme.white,

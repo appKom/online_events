@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/online_scaffold.dart';
 import 'models/list_event.dart';
 import 'pages/home/home_page.dart';
 import '/services/app_navigator.dart';
@@ -63,7 +64,7 @@ class MainApp extends StatelessWidget {
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
       color: OnlineTheme.background,
-      home: const HomePage(),
+      home: const OnlineScaffold(),
     );
   }
 }

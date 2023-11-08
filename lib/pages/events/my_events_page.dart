@@ -13,56 +13,50 @@ class MyEventsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = OnlineTheme.textStyle(weight: 5, size: 12);
 
-    return OnlineScaffold(
-      header: const ProfileButton(),
-      content: SingleChildScrollView(
-        // Wrap the Column with SingleChildScrollView
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 10),
-            const SizedBox(
-              height: 20,
-            ),
-            Center(
-              child: Text(
-                'Mine Arrangementer',
-                style: style,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              height: 111 * 1,
-              child: ListView.builder(
-                itemCount: 6,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (c, i) => EventCard(
-                  model: testModels[0],
-                ),
-              ),
-            ),
-            Center(
-              child: Text(
-                'Tidligere Arrangementer',
-                style: style,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              height: 111 * 6,
-              child: ListView.builder(
-                itemCount: 6,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (c, i) => EventCard(
-                  model: testModels[0],
-                ),
-              ),
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 10),
+        const SizedBox(
+          height: 20,
         ),
-      ),
+        Center(
+          child: Text(
+            'Mine Arrangementer',
+            style: style,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          height: 111 * 1,
+          child: ListView.builder(
+            itemCount: 6,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (c, i) => EventCard(
+              model: testModels[0],
+            ),
+          ),
+        ),
+        Center(
+          child: Text(
+            'Tidligere Arrangementer',
+            style: style,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          height: 111 * 6,
+          child: ListView.builder(
+            itemCount: 6,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (c, i) => EventCard(
+              model: testModels[0],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:online_events/components/online_header.dart';
 
 import '/pages/home/promoted_article.dart';
-import '/pages/home/profile_button.dart';
 import '/services/app_navigator.dart';
 import '/pages/home/event_card.dart';
 import '../events/events_page.dart';
@@ -11,18 +11,25 @@ import '../../components/online_scaffold.dart';
 import '../../theme/theme.dart';
 import '/main.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ScrollablePage {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final style = OnlineTheme.textStyle(weight: 5, size: 12);
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
 
-    return OnlineScaffold(
-      header: const ProfileButton(),
-      content: Column(
+  @override
+  Widget content(BuildContext context) {
+    final style = OnlineTheme.textStyle(weight: 5, size: 12);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    return Padding(
+      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          SizedBox(height: OnlineHeader.height(context)),
           const PromotedArticle(),
           const SizedBox(height: 24),
           const SizedBox(height: 24),
