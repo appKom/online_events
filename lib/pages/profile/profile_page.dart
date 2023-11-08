@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/pages/login/login_page.dart';
 
-import '../../main.dart';
 import '/components/online_scaffold.dart';
+import '/components/online_header.dart';
 import '/theme/themed_icon_button.dart';
 import '/services/app_navigator.dart';
-import '../home/profile_button.dart';
+import '/pages/login/login_page.dart';
 import '/components/separator.dart';
+import '/components/navbar.dart';
 import '/theme/themed_icon.dart';
-import '../home/home_page.dart';
-import '../../theme/theme.dart';
+import '/theme/theme.dart';
+import '/main.dart';
 
 class ProfilePage extends ScrollablePage {
   const ProfilePage({super.key});

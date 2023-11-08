@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
 
 import 'package:online_events/theme/theme.dart';
-import '../../main.dart';
+import '/components/online_scaffold.dart';
+import '/components/animated_button.dart';
 import '/pages/profile/profile_page.dart';
-import '/pages/home/profile_button.dart';
+import '/components/online_header.dart';
 import '/services/app_navigator.dart';
+import 'forgotten_password_page.dart';
+import '/main.dart';
 
 class LoginPage extends StaticPage {
   const LoginPage({super.key});
@@ -18,30 +19,37 @@ class LoginPage extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
     final hintStyle = OnlineTheme.textStyle(
       color: const Color(0xFF4C566A),
       height: 1,
     );
 
+    final headerStyle = OnlineTheme.textStyle(
+      size: 20,
+      weight: 7,
+    );
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: EdgeInsets.only(left: padding.left, right: padding.right),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             'Logg Inn',
-            style: OnlineTheme.loginPageHeader,
+            style: headerStyle,
           ),
           const SizedBox(height: 24),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 30,
                 child: Text(
                   'Email',
-                  style: OnlineTheme.loginPageEmail,
+                  style: OnlineTheme.textStyle(),
                 ),
               ),
               SizedBox(
@@ -70,11 +78,11 @@ class LoginPage extends StaticPage {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 30,
                 child: Text(
                   'Passord',
-                  style: OnlineTheme.loginPageEmail,
+                  style: OnlineTheme.textStyle(),
                 ),
               ),
               SizedBox(
@@ -106,45 +114,41 @@ class LoginPage extends StaticPage {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                child: ElevatedButton(
+                child: AnimatedButton(
                   onPressed: () {
                     loggedIn = true;
                     PageNavigator.navigateTo(const ProfilePage());
-                    // AppNavigator.iosNavigateTo(const ProfilePage());
                   },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: OnlineTheme.white,
-                    backgroundColor: OnlineTheme.green3, // Set the text color to white
-                    minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
-                  ),
-                  child: const Text(
-                    'Logg Inn',
-                    style: TextStyle(
-                      fontFamily: OnlineTheme.font,
-                      fontSize: 16,
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: OnlineTheme.green3,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Logg Inn',
+                        style: OnlineTheme.textStyle(),
+                      ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(width: 24),
               Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // AppNavigator.pop();
-
-                    // TODO: Forgotten password page
-                    // AppNavigator.iosNavigateTo(const ForgottenPasswordPage());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: OnlineTheme.white,
-                    backgroundColor: OnlineTheme.red1, // Set the text color to white
-                    minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
-                  ),
-                  child: const Text(
-                    'Glemt Passord',
-                    style: TextStyle(
-                      fontFamily: OnlineTheme.font,
-                      fontSize: 16,
+                child: AnimatedButton(
+                  onPressed: () => PageNavigator.navigateTo(const ForgottenPasswordPage()),
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: OnlineTheme.red1,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Glemt Passord',
+                        style: OnlineTheme.textStyle(),
+                      ),
                     ),
                   ),
                 ),

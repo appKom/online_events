@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/pages/home/profile_button.dart';
-import '../../components/online_scaffold.dart';
 import '../home/event_card.dart';
 import '../../theme/theme.dart';
 import '/main.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/pages/home/profile_button.dart';
 import 'my_events_page.dart';
 import '../home/event_card.dart';
 import '../../components/online_scaffold.dart';

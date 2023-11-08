@@ -1,125 +1,106 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_svg/svg.dart';
+import 'package:flutter/material.dart';
 
-// import '../home/home_page.dart';
-// import '../home/profile_button.dart';
-// import '/pages/login/email_sent_page.dart';
-// import 'package:online_events/theme/theme.dart';
+import '../../services/app_navigator.dart';
+import '/pages/login/email_sent_page.dart';
+import '/components/online_scaffold.dart';
+import '/components/animated_button.dart';
+import '/components/online_header.dart';
+import '/theme/theme.dart';
 
-// class ForgottenPasswordPage extends StatelessWidget {
-//   const ForgottenPasswordPage({super.key});
+class ForgottenPasswordPage extends StaticPage {
+  const ForgottenPasswordPage({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
 
-//     return Material(
-//       color: OnlineTheme.background,
-//       child: Padding(
-//         padding: padding,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const SizedBox(height: 17),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: [
-//                 GestureDetector(
-//                   onTap: () {
-//                     // Navigate to another page when the SVG image is tapped
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
-//                     );
-//                   },
-//                   child: SvgPicture.asset(
-//                     'assets/header.svg',
-//                     height: 36,
-//                     fit: BoxFit.fitHeight,
-//                   ),
-//                 ),
-//                 // const ProfileButton()
-//               ],
-//             ),
-//             const SizedBox(height: 60),
-//             Container(
-//               width: 300,
-//               height: 330,
-//               padding: const EdgeInsets.only(bottom: 20),
-//               margin: const EdgeInsets.only(right: 20),
-//               child: Stack(
-//                 children: [
-//                   const Positioned(
-//                       left: 0,
-//                       right: 0,
-//                       top: 0,
-//                       height: 111,
-//                       child: Text(
-//                         'So you have forgotten your password...',
-//                         style: OnlineTheme.loginPageHeader,
-//                       )),
-//                   const Positioned(
-//                       left: 15,
-//                       top: 60,
-//                       child: Text(
-//                         'Email:',
-//                         style: OnlineTheme.loginPageEmail,
-//                       )),
-//                   const Positioned(
-//                       left: 15,
-//                       right: 15,
-//                       top: 95,
-//                       child: TextField(
-//                         obscureText: false,
-//                         style: OnlineTheme.loginPageEmail,
-//                         decoration: InputDecoration(
-//                             filled: true,
-//                             fillColor: OnlineTheme.gray14,
-//                             hintText: 'Enter your Email',
-//                             hintStyle: OnlineTheme.logInnPageInput,
-//                             border: OutlineInputBorder(
-//                               borderSide: BorderSide(color: OnlineTheme.gray15),
-//                             ),
-//                             enabledBorder: OutlineInputBorder(
-//                               borderSide: BorderSide(color: OnlineTheme.gray15),
-//                             )),
-//                       )),
-//                   Positioned(
-//                     left: 15,
-//                     right: 0,
-//                     top: 170,
-//                     height: 65,
-//                     child: GestureDetector(
-//                       onTap: () {
-//                         // Navigate to another page when the red box is tapped
-//                         Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                               builder: (context) =>
-//                                   const EmailSentPage()), // Replace with the page you want to navigate to
-//                         );
-//                       },
-//                       child: Container(
-//                         decoration: BoxDecoration(
-//                           color: OnlineTheme.green3,
-//                           borderRadius: BorderRadius.circular(5),
-//                         ),
-//                         child: const Center(
-//                           child: Text(
-//                             'Send Inn',
-//                             style: OnlineTheme.logInnPageButton,
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget content(BuildContext context) {
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    final hintStyle = OnlineTheme.textStyle(
+      color: const Color(0xFF4C566A),
+      height: 1,
+    );
+
+    final headerStyle = OnlineTheme.textStyle(
+      size: 20,
+      weight: 7,
+    );
+
+    return Padding(
+      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Glemt Passord',
+            style: headerStyle,
+          ),
+          const SizedBox(height: 24),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 30,
+                child: Text(
+                  'Email',
+                  style: OnlineTheme.textStyle(),
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                child: TextField(
+                  obscureText: true,
+                  autocorrect: false,
+                  style: OnlineTheme.loginPageEmail,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: OnlineTheme.gray14,
+                    hintText: 'fredrik@ntnu.no',
+                    hintStyle: hintStyle,
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.gray15),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.gray15),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: AnimatedButton(
+                  onPressed: () => PageNavigator.navigateTo(const EmailSentPage()),
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: OnlineTheme.green3,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Send Mail',
+                        style: OnlineTheme.textStyle(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // const SizedBox(height: 100),
+        ],
+      ),
+    );
+  }
+}
