@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/theme/theme.dart';
+
+import 'theme.dart';
 
 enum IconType {
   dateTime,
   location,
   people,
   copy,
+  calendarClock,
+  settings,
+  settingsFilled,
+  home,
+  homeFilled,
+  beer,
+  beerFilled,
 }
 
 class ThemedIcon extends StatelessWidget {
