@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
+import 'package:online_events/pages/settings/settings.dart';
 
 import '/components/online_scaffold.dart';
 import '/theme/themed_icon_button.dart';
@@ -29,7 +31,8 @@ class ProfilePage extends ScrollablePage {
       weight: 7,
     );
 
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -39,14 +42,33 @@ class ProfilePage extends ScrollablePage {
           SizedBox(height: OnlineHeader.height(context)),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Center(
-              child: Text(
-                'Fredrik Hansteen',
-                style: OnlineTheme.textStyle(
-                  size: 20,
-                  weight: 7,
+            child: Row(
+              mainAxisSize: MainAxisSize.min, // Use min to wrap content by size
+              children: [
+                const SizedBox(width: 60),
+                Text(
+                  'Fredrik Hansteen',
+                  style: OnlineTheme.textStyle(
+                    size: 20,
+                    weight: 7,
+                  ),
                 ),
-              ),
+                const SizedBox(
+                    width: 50), // Add some space between the text and the icon
+                GestureDetector(
+                  onTap: () {
+                    // Navigate to the desired page when the SVG icon is tapped
+                    PageNavigator.navigateTo(const SettingsPage());
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: SvgPicture.asset(
+                      'assets/icons/varsling.svg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -168,8 +190,10 @@ class ProfilePage extends ScrollablePage {
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: OnlineTheme.white,
-                  backgroundColor: OnlineTheme.red1, // Set the text color to white
-                  minimumSize: const Size(double.infinity, 50), // Set the button to take the full width
+                  backgroundColor:
+                      OnlineTheme.red1, // Set the text color to white
+                  minimumSize: const Size(double.infinity,
+                      50), // Set the button to take the full width
                 ),
                 child: Text(
                   'Logg Ut',
@@ -316,7 +340,8 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
+        paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -324,7 +349,8 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0),
+        Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);
