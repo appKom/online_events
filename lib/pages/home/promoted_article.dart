@@ -43,7 +43,7 @@ class PromotedArticle extends StatelessWidget {
                     bottom: 42,
                     left: 20,
                     child: Text(
-                      'Isabelle Nordin, Linn Zhu Yu Grotnes',
+                      'Isabelle Nordin, Linn Grotnes',
                       style: OnlineTheme.promotedArticleAuthor.copyWith(color: OnlineTheme.gray9),
                     ),
                   ),

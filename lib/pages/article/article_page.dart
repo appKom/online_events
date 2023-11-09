@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
+import 'package:online_events/components/separator.dart';
 import 'package:online_events/pages/home/profile_button.dart';
 
 import 'package:online_events/theme/theme.dart';
@@ -49,36 +50,21 @@ class ArticlePage extends ScrollablePage {
                 'Skrevet av: Isabelle Mac Quarrie Nordin, Linn Zhu Yu Grotnes',
                 style: OnlineTheme.textStyle(),
               ),
-              const Divider(
-                color: OnlineTheme.gray14,
-                thickness: 1,
-                height: 40,
-              ),
-              const SizedBox(height: 5),
+              const Separator(margin: 20),
               Text(
                 'Hei og masse velkommen til den beste, morsomste og kuleste linjen NTNU har å by på, nemlig informatikk! Vi gleder oss masse til å bli kjent med nettopp deg og derfor har vi planlagt to helt fantastiske fadderuker som du kan være med på!',
                 style: OnlineTheme.textStyle(),
               ),
-              const Divider(
-                color: OnlineTheme.gray14,
-                thickness: 1,
-                height: 40,
-              ),
-              const SizedBox(height: 2),
+              const Separator(margin: 20),
               Text(
                 'Fadderukene',
                 style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
-              const SizedBox(height: 5),
               Text(
                 'Fadderukene kommer kanskje til å være ditt første møte med universitetet og flotte Trondheim. Vi har laget en plan full av morsomme aktiviteter som skal hjelpe deg med å bli kjent med dine nye medstudenter, fremtidige bestevenner, campus, linjen og selvfølgelig Trondheim selv! Det å bli en selvstendig student er ikke bare blåbær, så det er kun teknostart og andre IDI arrangementer som er obligatoriske (dette vil dere få mer informasjon om fra instituttet). Likevel anbefaler vi å være med på så mye sosialt som du orker, men ikke slit deg selv helt ut! Online har alltid morsomme arrangementer man kan være med på etter fadderukene også<3! Noen av arrangementene krever påmelding og det er derfor viktig at du får laget en Online-bruker så fort som mulig slik at dere kan bli med på disse. Frykt ikke, dette kan fadderne dine hjelpe deg med om det oppstår problemer! I tillegg er det noen av påmeldingsarrangementene du må betale litt. Dette kommer ikke til å koste skjorta, men kanskje en kaffe på cafe, aka 50 kr.',
                 style: OnlineTheme.textStyle(),
               ),
-              const Divider(
-                color: OnlineTheme.gray14,
-                thickness: 1,
-                height: 40,
-              ),
+              const Separator(margin: 20),
               Text(
                 'Ukeplan',
                 style: OnlineTheme.textStyle(size: 20, weight: 7),
@@ -94,11 +80,7 @@ class ArticlePage extends ScrollablePage {
                   fit: BoxFit.cover,
                 ),
               ),
-              const Divider(
-                color: OnlineTheme.gray14,
-                thickness: 1,
-                height: 40,
-              ),
+              const Separator(margin: 20),
               Text(
                 'Debug',
                 style: OnlineTheme.textStyle(size: 20, weight: 7),

@@ -36,16 +36,13 @@ class ProfilePage extends ScrollablePage {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: OnlineHeader.height(context)),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Center(
-              child: Text(
-                'Fredrik Hansteen',
-                style: OnlineTheme.textStyle(
-                  size: 20,
-                  weight: 7,
-                ),
+          SizedBox(height: OnlineHeader.height(context) + 40),
+          Center(
+            child: Text(
+              'Fredrik Hansteen',
+              style: OnlineTheme.textStyle(
+                size: 20,
+                weight: 7,
               ),
             ),
           ),
