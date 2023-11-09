@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/pages/drikkeleker/drikkeleker_home.dart';
 import 'package:online_events/pages/events/my_events_page.dart';
+import 'package:online_events/pages/settings/settings.dart';
 
 import '/pages/login/login_page.dart';
 import '/pages/profile/profile_page.dart';
@@ -40,13 +41,7 @@ class NavbarState extends State<Navbar> {
     NavbarButton(
       icon: IconType.settings,
       activeIcon: IconType.settingsFilled,
-      onPressed: () {
-        if (loggedIn) {
-          PageNavigator.navigateTo(const ProfilePage());
-        } else {
-          PageNavigator.navigateTo(const LoginPage());
-        }
-      },
+      onPressed: () => PageNavigator.navigateTo(const SettingsPage()),
     ),
   ];
 
