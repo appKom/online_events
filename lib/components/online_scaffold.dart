@@ -44,6 +44,8 @@ abstract class StaticPage extends OnlinePage {
   Widget build(BuildContext context) {
     return content(context);
   }
+
+  
 }
 
 abstract class OnlinePage extends StatelessWidget {

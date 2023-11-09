@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/drikkeleker/drikkeleker_home.dart';
 import 'package:online_events/pages/events/my_events_page.dart';
 
 import '/pages/login/login_page.dart';
@@ -31,9 +32,10 @@ class NavbarState extends State<Navbar> {
       activeIcon: IconType.calendarClockFilled,
       onPressed: () => PageNavigator.navigateTo(const MyEventsPage()),
     ),
-    const NavbarButton(
+    NavbarButton(
       icon: IconType.beer,
       activeIcon: IconType.beerFilled,
+      onPressed: () => PageNavigator.navigateTo(const DrikkelekerHome()),
     ),
     NavbarButton(
       icon: IconType.settings,
