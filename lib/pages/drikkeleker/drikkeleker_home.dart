@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
 import 'package:online_events/pages/drikkeleker/dice.dart';
+import 'package:online_events/pages/drikkeleker/lambo.dart';
 import 'package:online_events/services/app_navigator.dart';
 import 'package:online_events/theme/theme.dart';
 
@@ -19,7 +20,7 @@ class DrikkelekerHome extends ScrollablePage {
         const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
-      padding: padding,
+      padding: EdgeInsets.only(left: padding.left, right: padding.right),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +69,12 @@ class DrikkelekerHome extends ScrollablePage {
 
             const ClipRRect(child: SizedBox(height: 35)),
 
-            ClipRRect(
+
+            InkWell(
+              onTap: () {
+                PageNavigator.navigateTo(const LamboPage());
+              },
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
                 width: double.infinity, // as wide as the parent allows
@@ -101,6 +107,7 @@ class DrikkelekerHome extends ScrollablePage {
                   ],
                 ),
               ),
+            ),
             ),
             const ClipRRect(child: SizedBox(height: 35)),
             ClipRRect(
