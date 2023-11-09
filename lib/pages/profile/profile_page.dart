@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:online_events/pages/home/home_page.dart';
 
 import '/components/online_scaffold.dart';
 import '/components/online_header.dart';
 import '/theme/themed_icon_button.dart';
-import '/services/app_navigator.dart';
-import '/pages/login/login_page.dart';
+import '../../services/page_navigator.dart';
 import '/components/separator.dart';
 import '/components/navbar.dart';
 import '/theme/themed_icon.dart';
@@ -164,7 +164,7 @@ class ProfilePage extends ScrollablePage {
               child: ElevatedButton(
                 onPressed: () {
                   loggedIn = false;
-                  PageNavigator.navigateTo(const LoginPage());
+                  PageNavigator.navigateTo(const HomePage());
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: OnlineTheme.white,

@@ -5,7 +5,7 @@ import '/components/online_scaffold.dart';
 import '/components/animated_button.dart';
 import '/pages/profile/profile_page.dart';
 import '/components/online_header.dart';
-import '/services/app_navigator.dart';
+import '../../services/page_navigator.dart';
 import 'forgotten_password_page.dart';
 import '/main.dart';
 

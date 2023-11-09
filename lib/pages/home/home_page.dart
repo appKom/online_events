@@ -1,22 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:online_events/components/online_header.dart';
 
 import '/pages/home/promoted_article.dart';
-import '/services/app_navigator.dart';
+import '../../services/page_navigator.dart';
 import '/pages/home/event_card.dart';
 import '../events/events_page.dart';
 import '/pages/home/bedpress.dart';
 import '../../components/online_scaffold.dart';
 import '../../theme/theme.dart';
 import '/main.dart';
+import 'profile_button.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader();
+    return OnlineHeader(
+      buttons: const [
+        ProfileButton(),
+      ],
+    );
   }
 
   @override
@@ -30,9 +34,10 @@ class HomePage extends ScrollablePage {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: OnlineHeader.height(context)),
-          const PromotedArticle(),
-          const SizedBox(height: 24),
-          const SizedBox(height: 24),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 40),
+            child: PromotedArticle(),
+          ),
           SizedBox(
             height: 15,
             child: Center(
@@ -57,16 +62,7 @@ class HomePage extends ScrollablePage {
           ),
           GestureDetector(
             onTap: () {
-              AppNavigator.navigateToRoute(
-                CupertinoPageRoute(
-                  builder: (context) {
-                    return const EventsPage();
-                  },
-                  maintainState: false,
-                  // fullscreenDialog:
-                ),
-                additive: true,
-              );
+              PageNavigator.navigateTo(const EventsPage());
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:online_events/components/separator.dart';
 import '/pages/event/event_page.dart';
-import '/services/app_navigator.dart';
+import '../../services/page_navigator.dart';
 import '/models/list_event.dart';
 import '../../theme/theme.dart';
 
@@ -47,16 +47,7 @@ class EventCard extends StatelessWidget {
   }
 
   void showInfo() {
-    AppNavigator.navigateToRoute(
-      CupertinoPageRoute(
-        builder: (context) {
-          return const EventPage();
-        },
-        maintainState: false,
-        // fullscreenDialog:
-      ),
-      additive: true,
-    );
+    PageNavigator.navigateTo(const EventPage());
   }
 
   @override
@@ -133,22 +124,12 @@ class EventCard extends StatelessWidget {
               ),
             ),
             // Bottom Separator
-            Positioned(
+            const Positioned(
               left: 0,
               right: 0,
               bottom: 0,
               height: 1,
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF000212),
-                      Color(0xFF2E3440),
-                      Color(0xFF000212),
-                    ],
-                  ),
-                ),
-              ),
+              child: Separator(),
             ),
           ],
         ),

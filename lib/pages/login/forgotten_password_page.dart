@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../services/app_navigator.dart';
+import '../../services/page_navigator.dart';
 import '/pages/login/email_sent_page.dart';
 import '/components/online_scaffold.dart';
 import '/components/animated_button.dart';

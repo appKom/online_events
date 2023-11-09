@@ -1,48 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/components/online_scaffold.dart';
 import 'package:online_events/theme/theme.dart';
 
-class EventPage extends StatelessWidget {
+import '../../components/online_header.dart';
+import '../home/profile_button.dart';
+
+class EventPage extends ScrollablePage {
   const EventPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
+  Widget? header(BuildContext context) {
+    return OnlineHeader(
+      buttons: const [
+        ProfileButton(),
+      ],
+    );
+  }
 
-    return Material(
-      color: OnlineTheme.background,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 267,
-              child: Image.asset(
-                'assets/images/cake.png',
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: horizontalPadding,
-              child: Text(
-                'Halloweenfest på A4',
-                style: OnlineTheme.eventHeader,
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: horizontalPadding,
-              child: RegistrationCard(),
-            ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: horizontalPadding,
-              child: AttendanceCard(),
-            ),
-          ],
+  @override
+  Widget content(BuildContext context) {
+    const horizontalPadding = EdgeInsets.symmetric(horizontal: 25);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(height: OnlineHeader.height(context)),
+        SizedBox(
+          height: 267,
+          child: Image.asset(
+            'assets/images/cake.png',
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
+        const SizedBox(height: 24),
+        const Padding(
+          padding: horizontalPadding,
+          child: Text(
+            'Halloweenfest på A4',
+            style: OnlineTheme.eventHeader,
+          ),
+        ),
+        const SizedBox(height: 24),
+        const Padding(
+          padding: horizontalPadding,
+          child: RegistrationCard(),
+        ),
+        const SizedBox(height: 24),
+        const Padding(
+          padding: horizontalPadding,
+          child: AttendanceCard(),
+        ),
+      ],
     );
   }
 }

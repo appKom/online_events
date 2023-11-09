@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/events/my_events_page.dart';
 
 import '/pages/login/login_page.dart';
 import '/pages/profile/profile_page.dart';
-import '/services/app_navigator.dart';
+import '../services/page_navigator.dart';
 import '/pages/home/home_page.dart';
 import '/theme/themed_icon.dart';
 import 'animated_button.dart';
@@ -25,9 +26,10 @@ class NavbarState extends State<Navbar> {
       activeIcon: IconType.homeFilled,
       onPressed: () => PageNavigator.navigateTo(const HomePage()),
     ),
-    const NavbarButton(
+    NavbarButton(
       icon: IconType.calendarClock,
       activeIcon: IconType.calendarClockFilled,
+      onPressed: () => PageNavigator.navigateTo(const MyEventsPage()),
     ),
     const NavbarButton(
       icon: IconType.beer,

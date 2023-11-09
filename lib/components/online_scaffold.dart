@@ -25,10 +25,10 @@ abstract class ScrollablePage extends OnlinePage {
         ).createShader(bounds);
       },
       child: SingleChildScrollView(
+        padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 30),
             content(context),
           ],
         ),
@@ -55,18 +55,12 @@ abstract class OnlinePage extends StatelessWidget {
 
 /// Online logo, valgfri header og scrollbart innhold med fade
 class OnlineScaffold extends StatelessWidget {
-  // final Widget? header;
-  // final Widget content;
-  // final bool scrollable;
-
   const OnlineScaffold({super.key});
 
   static ValueNotifier<OnlinePage> page = ValueNotifier(const HomePage());
 
   @override
   Widget build(BuildContext context) {
-    // final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
-
     return Material(
       color: OnlineTheme.background,
       child: Stack(
