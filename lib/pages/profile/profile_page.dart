@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/pages/home/home_page.dart';
 
 import '/components/online_scaffold.dart';
@@ -29,8 +30,7 @@ class ProfilePage extends ScrollablePage {
       weight: 7,
     );
 
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -158,22 +158,22 @@ class ProfilePage extends ScrollablePage {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  loggedIn = false;
-                  PageNavigator.navigateTo(const HomePage());
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: OnlineTheme.white,
-                  backgroundColor:
-                      OnlineTheme.red1, // Set the text color to white
-                  minimumSize: const Size(double.infinity,
-                      50), // Set the button to take the full width
+            child: AnimatedButton(
+              onPressed: () {
+                loggedIn = false;
+                PageNavigator.navigateTo(const HomePage());
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: OnlineTheme.red1,
+                  borderRadius: BorderRadius.circular(5),
                 ),
-                child: Text(
-                  'Logg Ut',
-                  style: OnlineTheme.textStyle(weight: 5),
+                child: Center(
+                  child: Text(
+                    'Logg Ut',
+                    style: OnlineTheme.textStyle(weight: 5),
+                  ),
                 ),
               ),
             ),
@@ -316,8 +316,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
-        paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -325,8 +324,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0),
-        Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);
