@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-import 'package:online_events/pages/home/profile_button.dart';
-import 'package:online_events/pages/home/home_page.dart';
-import 'package:online_events/theme/theme.dart';
+import '/components/online_scaffold.dart';
+import '../../services/page_navigator.dart';
+import '/pages/home/home_page.dart';
+import '/theme/theme.dart';
 
-class EmailSentPage extends StatelessWidget {
+class EmailSentPage extends StaticPage {
   const EmailSentPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
@@ -20,27 +20,6 @@ class EmailSentPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 17),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    // Navigate to another page when the SVG image is tapped
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()), // Replace with your page class
-                    );
-                  },
-                  child: SvgPicture.asset(
-                    'assets/header.svg',
-                    height: 36,
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                const ProfileButton()
-              ],
-            ),
             const SizedBox(height: 60),
             Container(
               width: 300,
@@ -66,11 +45,7 @@ class EmailSentPage extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         // Navigate to another page when the red box is tapped
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()), // Replace with the page you want to navigate to
-                        );
+                        PageNavigator.navigateTo(const HomePage());
                       },
                       child: Container(
                         decoration: BoxDecoration(

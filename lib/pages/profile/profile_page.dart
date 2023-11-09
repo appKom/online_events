@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/pages/settings/settings.dart';
+import 'package:online_events/pages/home/home_page.dart';
 
 import '/components/online_scaffold.dart';
+import '/components/online_header.dart';
 import '/theme/themed_icon_button.dart';
-import '/services/app_navigator.dart';
-import '../home/profile_button.dart';
+import '../../services/page_navigator.dart';
 import '/components/separator.dart';
+import '/components/navbar.dart';
 import '/theme/themed_icon.dart';
-import '../home/home_page.dart';
-import '../../theme/theme.dart';
+import '/theme/theme.dart';
+import '/main.dart';
 
 class ProfilePage extends ScrollablePage {
   const ProfilePage({super.key});
@@ -39,36 +37,14 @@ class ProfilePage extends ScrollablePage {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: OnlineHeader.height(context)),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisSize: MainAxisSize.min, // Use min to wrap content by size
-              children: [
-                const SizedBox(width: 60),
-                Text(
-                  'Fredrik Hansteen',
-                  style: OnlineTheme.textStyle(
-                    size: 20,
-                    weight: 7,
-                  ),
-                ),
-                const SizedBox(
-                    width: 50), // Add some space between the text and the icon
-                GestureDetector(
-                  onTap: () {
-                    // Navigate to the desired page when the SVG icon is tapped
-                    PageNavigator.navigateTo(const SettingsPage());
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: SvgPicture.asset(
-                      'assets/icons/varsling.svg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ],
+          SizedBox(height: OnlineHeader.height(context) + 40),
+          Center(
+            child: Text(
+              'Fredrik Hansteen',
+              style: OnlineTheme.textStyle(
+                size: 20,
+                weight: 7,
+              ),
             ),
           ),
           Padding(

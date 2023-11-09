@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/pages/drikkeleker/drikkeleker_home.dart';
+import 'package:online_events/pages/events/my_events_page.dart';
 
+import '/pages/login/login_page.dart';
 import '/pages/profile/profile_page.dart';
-import '/services/app_navigator.dart';
+import '../services/page_navigator.dart';
 import '/pages/home/home_page.dart';
 import '/theme/themed_icon.dart';
 import 'animated_button.dart';
 import '/theme/theme.dart';
+import '/main.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -24,9 +27,10 @@ class NavbarState extends State<Navbar> {
       activeIcon: IconType.homeFilled,
       onPressed: () => PageNavigator.navigateTo(const HomePage()),
     ),
-    const NavbarButton(
+    NavbarButton(
       icon: IconType.calendarClock,
       activeIcon: IconType.calendarClockFilled,
+      onPressed: () => PageNavigator.navigateTo(const MyEventsPage()),
     ),
     NavbarButton(
       icon: IconType.beer,
@@ -36,7 +40,13 @@ class NavbarState extends State<Navbar> {
     NavbarButton(
       icon: IconType.settings,
       activeIcon: IconType.settingsFilled,
-      onPressed: () => PageNavigator.navigateTo(const ProfilePage()),
+      onPressed: () {
+        if (loggedIn) {
+          PageNavigator.navigateTo(const ProfilePage());
+        } else {
+          PageNavigator.navigateTo(const LoginPage());
+        }
+      },
     ),
   ];
 
@@ -71,8 +81,6 @@ class NavbarState extends State<Navbar> {
           child: AnimatedButton(
             behavior: HitTestBehavior.opaque,
             onPressed: () {
-              if (active) return;
-
               buttons[i].onPressed?.call();
 
               setState(() {

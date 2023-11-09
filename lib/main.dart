@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/online_scaffold.dart';
 import 'models/list_event.dart';
-import '/services/app_navigator.dart';
 import 'theme/theme.dart';
 
 final testModels = [
@@ -49,6 +48,8 @@ final testModels = [
   ),
 ];
 
+bool loggedIn = false;
+
 void main() {
   runApp(const MainApp());
 }
@@ -58,12 +59,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: AppNavigator.navigator,
+    return const MaterialApp(
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
       color: OnlineTheme.background,
-      home: const OnlineScaffold(),
+      home: OnlineScaffold(),
     );
   }
 }

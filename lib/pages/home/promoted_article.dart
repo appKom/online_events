@@ -1,22 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:online_events/pages/article/article_page.dart';
-import '/services/app_navigator.dart';
+import '../../services/page_navigator.dart';
 import '../../theme/theme.dart';
 
 class PromotedArticle extends StatelessWidget {
   const PromotedArticle({super.key});
-
-  void _goToArticle() {
-    AppNavigator.navigateToRoute(
-      CupertinoPageRoute(
-        builder: (context) {
-          return const ArticlePage();
-        },
-        maintainState: false,
-      ),
-      additive: true,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +15,7 @@ class PromotedArticle extends StatelessWidget {
       width: 340,
       height: 200,
       child: GestureDetector(
-        onTap: _goToArticle,
+        onTap: () => PageNavigator.navigateTo(const ArticlePage()),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: Column(
@@ -55,7 +43,7 @@ class PromotedArticle extends StatelessWidget {
                     bottom: 42,
                     left: 20,
                     child: Text(
-                      'Isabelle Nordin, Linn Zhu Yu Grotnes',
+                      'Isabelle Nordin, Linn Grotnes',
                       style: OnlineTheme.promotedArticleAuthor.copyWith(color: OnlineTheme.gray9),
                     ),
                   ),

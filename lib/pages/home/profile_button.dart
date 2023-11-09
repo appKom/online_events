@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
 import '/pages/profile/profile_page.dart';
 import '/pages/login/login_page.dart';
-import '/services/app_navigator.dart';
+import '../../services/page_navigator.dart';
 import '/theme/theme.dart';
-
-bool loggedIn = false;
 
 class ProfileButton extends StatelessWidget {
   const ProfileButton({super.key});
@@ -21,34 +19,22 @@ class ProfileButton extends StatelessWidget {
 
   void onTap() {
     if (loggedIn) {
-      AppNavigator.navigateToRoute(
-        CupertinoPageRoute(
-          builder: (context) {
-            return const ProfilePage();
-          },
-          maintainState: false,
-          // fullscreenDialog:
-        ),
-        additive: true,
-      );
+      PageNavigator.navigateTo(const ProfilePage());
     } else {
-      AppNavigator.navigateToRoute(
-        LoginPage(),
-        additive: true,
-      );
+      PageNavigator.navigateTo(const LoginPage());
     }
   }
 
   Widget loggedInContent() {
     return SizedBox.square(
-      dimension: 48,
+      dimension: 40,
       child: Center(
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(20),
           child: Image.asset(
             'assets/images/better_profile_picture.jpg',
-            width: 48,
-            height: 48,
+            width: 40,
+            height: 40,
             fit: BoxFit.cover,
           ),
         ),
@@ -58,7 +44,7 @@ class ProfileButton extends StatelessWidget {
 
   Widget loggedOutContent() {
     return SizedBox.square(
-      dimension: 48,
+      dimension: 40,
       child: Center(
         child: Container(
           width: 40,

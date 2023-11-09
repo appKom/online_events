@@ -1,60 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/navbar.dart';
+import 'package:online_events/components/online_header.dart';
+import 'package:online_events/components/online_scaffold.dart';
 
 import '../home/event_card.dart';
 import '../../theme/theme.dart';
 import '/main.dart';
 
-class MyEventsPage extends StatelessWidget {
+class MyEventsPage extends ScrollablePage {
   const MyEventsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final style = OnlineTheme.textStyle(weight: 5, size: 12);
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const SizedBox(height: 10),
-        const SizedBox(
-          height: 20,
-        ),
-        Center(
-          child: Text(
-            'Mine Arrangementer',
-            style: style,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          height: 111 * 1,
-          child: ListView.builder(
-            itemCount: 6,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (c, i) => EventCard(
-              model: testModels[0],
+  @override
+  Widget content(BuildContext context) {
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    final style = OnlineTheme.textStyle(size: 20, weight: 7);
+
+    return Padding(
+      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: OnlineHeader.height(context) + 40),
+          Center(
+            child: Text(
+              'Mine Arrangementer',
+              style: style,
             ),
           ),
-        ),
-        Center(
-          child: Text(
-            'Tidligere Arrangementer',
-            style: style,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          height: 111 * 6,
-          child: ListView.builder(
-            itemCount: 6,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (c, i) => EventCard(
-              model: testModels[0],
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 111 * 1,
+            child: ListView.builder(
+              itemCount: 6,
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (c, i) => EventCard(
+                model: testModels[i % 6],
+              ),
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: 24),
+          Center(
+            child: Text(
+              'Tidligere Arrangementer',
+              style: style,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 111 * 6,
+            child: ListView.builder(
+              itemCount: 6,
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (c, i) => EventCard(
+                model: testModels[i % 6],
+              ),
+            ),
+          ),
+          SizedBox(height: Navbar.height(context)),
+        ],
+      ),
     );
   }
 }

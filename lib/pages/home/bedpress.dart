@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/pages/event/event_page.dart';
 import 'package:online_events/pages/home/event_card.dart';
+import 'package:online_events/services/page_navigator.dart';
 
 import '/models/card_event.dart';
 import '../../theme/theme.dart';
@@ -67,91 +69,94 @@ class BedpressCard extends StatelessWidget {
       margin: const EdgeInsets.only(right: 20),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              height: 111,
-              child: Image.asset(
-                model.imageSource,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 111,
-              height: 200,
-              child: Container(
-                color: OnlineTheme.gray13,
-              ),
-            ),
-            Positioned(
-              left: 15,
-              bottom: 77,
-              child: Text(
-                monthToString(),
-                style: OnlineTheme.eventDateMonth.copyWith(color: OnlineTheme.blue2),
-              ),
-            ),
-            Positioned(
-              left: 15,
-              bottom: 45,
-              child: Text(
-                model.date.day.toString().padLeft(2, '0'),
-                style: OnlineTheme.eventDateNumber.copyWith(color: OnlineTheme.white),
-              ),
-            ),
-            Positioned(
-              left: 65,
-              bottom: 53,
-              right: 10,
-              top: 130,
-              child: Text(
-                model.name,
-                style: OnlineTheme.eventBedpressHeader.copyWith(color: OnlineTheme.white),
-              ),
-            ),
-            Positioned(
-              left: 15,
-              right: 160,
-              bottom: 15,
-              height: 20,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: OnlineTheme.green2,
-                  borderRadius: BorderRadius.circular(3),
+        child: GestureDetector(
+          onTap: () => PageNavigator.navigateTo(const EventPage()),
+          child: Stack(
+            children: [
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                height: 111,
+                child: Image.asset(
+                  model.imageSource,
+                  fit: BoxFit.cover,
                 ),
-                child: Center(
-                  child: Text(
-                    categoryToString(),
-                    style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.green1, height: 1),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 111,
+                height: 200,
+                child: Container(
+                  color: OnlineTheme.gray13,
+                ),
+              ),
+              Positioned(
+                left: 15,
+                bottom: 77,
+                child: Text(
+                  monthToString(),
+                  style: OnlineTheme.eventDateMonth.copyWith(color: OnlineTheme.blue2),
+                ),
+              ),
+              Positioned(
+                left: 15,
+                bottom: 45,
+                child: Text(
+                  model.date.day.toString().padLeft(2, '0'),
+                  style: OnlineTheme.eventDateNumber.copyWith(color: OnlineTheme.white),
+                ),
+              ),
+              Positioned(
+                left: 65,
+                bottom: 53,
+                right: 10,
+                top: 130,
+                child: Text(
+                  model.name,
+                  style: OnlineTheme.eventBedpressHeader.copyWith(color: OnlineTheme.white),
+                ),
+              ),
+              Positioned(
+                left: 15,
+                right: 160,
+                bottom: 15,
+                height: 20,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: OnlineTheme.green2,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: Center(
+                    child: Text(
+                      categoryToString(),
+                      style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.green1, height: 1),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 15,
-              right: 12,
-              child: Text(
-                '${model.registered}/${model.capacity}',
-                style: OnlineTheme.eventNumberOfPeople.copyWith(color: OnlineTheme.white),
-              ),
-            ),
-            Positioned(
-              right: 48,
-              bottom: 15,
-              child: SizedBox(
-                height: 17,
-                child: SvgPicture.asset(
-                  'assets/icons/people.svg',
-                  height: 17,
+              Positioned(
+                bottom: 15,
+                right: 12,
+                child: Text(
+                  '${model.registered}/${model.capacity}',
+                  style: OnlineTheme.eventNumberOfPeople.copyWith(color: OnlineTheme.white),
                 ),
               ),
-            ),
-          ],
+              Positioned(
+                right: 48,
+                bottom: 15,
+                child: SizedBox(
+                  height: 17,
+                  child: SvgPicture.asset(
+                    'assets/icons/people.svg',
+                    height: 17,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
