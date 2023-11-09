@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/home/profile_button.dart';
-import 'package:online_events/pages/home/home_page.dart';
 import 'package:online_events/theme/theme.dart';
 
 class SettingsPage extends OnlinePage {
@@ -67,21 +64,32 @@ class __SettingsContentState extends State<_SettingsContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: categories.keys.map((String key) {
-        return CheckboxListTile(
-          title: Text(key),
-          value: categories[key],
-          activeColor: Colors.green, // use your theme color here
-          checkColor: Colors.white, // use your theme color here
-          tileColor: OnlineTheme.gray8,
-          onChanged: (bool? value) {
-            setState(() {
-              categories[key] = value!;
-            });
-          },
-        );
-      }).toList(),
+    // Override the checkbox theme for this column only
+    return Theme(
+      data: Theme.of(context).copyWith(
+        checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          side: const BorderSide(color: Colors.white), // Outline color for unchecked checkbox
+        ),
+      ),
+      child: Column(
+        children: categories.keys.map((String key) {
+          return CheckboxListTile(
+            title: Text(key, style: OnlineTheme.eventListHeader),
+            value: categories[key],
+            activeColor: Colors.green, // Color for the filled part of the checkbox when checked
+            checkColor: Colors.white, // Color for the check icon when checked
+            tileColor: OnlineTheme.gray14,
+            onChanged: (bool? value) {
+              setState(() {
+                categories[key] = value!;
+              });
+            },
+          );
+        }).toList(),
+      ),
     );
   }
 }
