@@ -5,8 +5,7 @@ import '/components/online_scaffold.dart';
 import '/components/animated_button.dart';
 import '/pages/profile/profile_page.dart';
 import '/components/online_header.dart';
-import '../../services/page_navigator.dart';
-import 'forgotten_password_page.dart';
+import '/services/page_navigator.dart';
 import '/main.dart';
 
 class LoginPage extends StaticPage {
@@ -119,6 +118,7 @@ class LoginPage extends StaticPage {
                     loggedIn = true;
                     PageNavigator.navigateTo(const ProfilePage());
                   },
+                  scale: 0.9,
                   child: Container(
                     height: 40,
                     decoration: BoxDecoration(
@@ -128,25 +128,6 @@ class LoginPage extends StaticPage {
                     child: Center(
                       child: Text(
                         'Logg Inn',
-                        style: OnlineTheme.textStyle(),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 24),
-              Expanded(
-                child: AnimatedButton(
-                  onPressed: () => PageNavigator.navigateTo(const ForgottenPasswordPage()),
-                  child: Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: OnlineTheme.red1,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Glemt Passord',
                         style: OnlineTheme.textStyle(),
                       ),
                     ),

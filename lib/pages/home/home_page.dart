@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 
 import '/pages/home/promoted_article.dart';
@@ -25,7 +26,7 @@ class HomePage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final style = OnlineTheme.textStyle(weight: 5, size: 12);
+    // final style = OnlineTheme.textStyle(weight: 5);
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
@@ -38,14 +39,10 @@ class HomePage extends ScrollablePage {
             padding: EdgeInsets.symmetric(vertical: 40),
             child: PromotedArticle(),
           ),
-          SizedBox(
-            height: 15,
-            child: Center(
-              child: Text(
-                'KOMMENDE ARRANGEMENTER',
-                style: style,
-              ),
-            ),
+          Text(
+            'Kommende Arrangementer',
+            style: OnlineTheme.textStyle(weight: 7),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           Container(
@@ -70,7 +67,7 @@ class HomePage extends ScrollablePage {
               children: [
                 Text(
                   'MER',
-                  style: style,
+                  style: OnlineTheme.textStyle(weight: 4),
                 ),
                 const SizedBox(width: 2),
                 const Padding(
@@ -88,7 +85,7 @@ class HomePage extends ScrollablePage {
           Bedpress(
             models: bedpressModels,
           ),
-          const SizedBox(height: 75),
+          SizedBox(height: Navbar.height(context) + 24),
         ],
       ),
     );

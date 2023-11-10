@@ -13,7 +13,7 @@ class PromotedArticle extends StatelessWidget {
 
     return SizedBox(
       width: 340,
-      height: 200,
+      height: 222,
       child: GestureDetector(
         onTap: () => PageNavigator.navigateTo(const ArticlePage()),
         child: ClipRRect(
@@ -28,35 +28,44 @@ class PromotedArticle extends StatelessWidget {
                 ),
               ),
               Expanded(
-                  child: Stack(
-                children: [
-                  Positioned.fill(child: Container(color: OnlineTheme.gray13)),
-                  Positioned(
-                    left: 20,
-                    bottom: 60,
-                    child: Text(
-                      'Fadderuka 2023',
-                      style: OnlineTheme.promotedArticleText.copyWith(color: OnlineTheme.white),
+                child: Stack(
+                  children: [
+                    Positioned.fill(child: Container(color: OnlineTheme.gray13)),
+                    Positioned(
+                      left: 20,
+                      bottom: 60,
+                      child: Text(
+                        'Fadderuka 2023',
+                        style: OnlineTheme.textStyle(weight: 5),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 42,
-                    left: 20,
-                    child: Text(
-                      'Isabelle Nordin, Linn Grotnes',
-                      style: OnlineTheme.promotedArticleAuthor.copyWith(color: OnlineTheme.gray9),
+                    Positioned(
+                      bottom: 42,
+                      left: 20,
+                      child: Text(
+                        'Isabelle Nordin, Linn Grotnes',
+                        style: OnlineTheme.textStyle(
+                          size: 14,
+                          weight: 5,
+                          color: OnlineTheme.gray9,
+                        ),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 12,
-                    left: 20,
-                    child: Text(
-                      '$date • $timeToRead å lese',
-                      style: OnlineTheme.promotedArticleDate.copyWith(color: OnlineTheme.gray9),
+                    Positioned(
+                      bottom: 12,
+                      left: 20,
+                      child: Text(
+                        '$date • $timeToRead å lese',
+                        style: OnlineTheme.textStyle(
+                          size: 14,
+                          weight: 5,
+                          color: OnlineTheme.gray9,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ))
+                  ],
+                ),
+              ),
             ],
           ),
         ),

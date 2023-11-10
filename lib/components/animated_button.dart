@@ -5,8 +5,11 @@ class AnimatedButton extends StatefulWidget {
     super.key,
     this.onPressed,
     this.behavior = HitTestBehavior.deferToChild,
+    this.scale = 0.8,
     required this.child,
   });
+
+  final double scale;
 
   final Widget child;
   final void Function()? onPressed;
@@ -19,27 +22,38 @@ class AnimatedButton extends StatefulWidget {
 class AnimatedButtonState extends State<AnimatedButton> with TickerProviderStateMixin {
   bool down = false;
 
-  void onPointerDown(PointerDownEvent evt) {
+  void _onTapDown(TapDownDetails _) {
     setState(() {
       down = true;
     });
   }
 
-  void onPointerUp(PointerUpEvent evt) {
+  void _onTap() {
+    widget.onPressed?.call();
+  }
+
+  void _onTapUp(TapUpDetails _) {
     setState(() {
       down = false;
     });
-    widget.onPressed?.call();
+  }
+
+  void _onTapCancel() {
+    setState(() {
+      down = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
+    return GestureDetector(
       behavior: widget.behavior,
-      onPointerDown: onPointerDown,
-      onPointerUp: onPointerUp,
+      onTapDown: _onTapDown,
+      onTap: _onTap,
+      onTapUp: _onTapUp,
+      onTapCancel: _onTapCancel,
       child: AnimatedScale(
-        scale: down ? 0.8 : 1,
+        scale: down ? widget.scale : 1,
         duration: Duration(milliseconds: down ? 100 : 1000),
         alignment: Alignment.center,
         curve: down ? Curves.linear : Curves.elasticOut,

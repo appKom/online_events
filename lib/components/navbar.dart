@@ -12,7 +12,10 @@ import '/theme/theme.dart';
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
 
-  static double height(BuildContext context) => 75 + 24;
+  static double height(BuildContext context) {
+    final padding = MediaQuery.of(context).padding.bottom;
+    return padding + 40 + 24;
+  }
 
   @override
   State<StatefulWidget> createState() => NavbarState();
@@ -46,6 +49,8 @@ class NavbarState extends State<Navbar> {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).padding;
+
     return Container(
       decoration: BoxDecoration(
         color: OnlineTheme.background.withOpacity(0.9),
@@ -56,20 +61,20 @@ class NavbarState extends State<Navbar> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: List.generate(
           buttons.length,
-          navButton,
+          (i) => navButton(i, padding.bottom),
         ),
       ),
     );
   }
 
-  Widget navButton(int i) {
+  Widget navButton(int i, double padding) {
     final active = i == selected;
 
     return Expanded(
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 50, top: 25),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: padding),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
           child: AnimatedButton(
             behavior: HitTestBehavior.opaque,
             onPressed: () {
@@ -79,11 +84,14 @@ class NavbarState extends State<Navbar> {
                 selected = i;
               });
             },
-            child: ThemedIcon(
-              key: UniqueKey(),
-              icon: active ? buttons[i].activeIcon : buttons[i].icon,
-              size: 24,
-              color: active ? OnlineTheme.yellow : OnlineTheme.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: ThemedIcon(
+                key: UniqueKey(),
+                icon: active ? buttons[i].activeIcon : buttons[i].icon,
+                size: 24,
+                color: active ? OnlineTheme.yellow : OnlineTheme.white,
+              ),
             ),
           ),
         ),

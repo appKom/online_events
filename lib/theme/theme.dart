@@ -40,111 +40,21 @@ sealed class OnlineTheme {
     decoration: TextDecoration.none,
   );
 
-  static const eventBedpressHeader = TextStyle(
-    fontFamily: font,
-    color: gray11,
-    fontWeight: FontWeight.w400,
-    fontSize: 16,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const eventListSubHeader = TextStyle(
-    fontFamily: font,
-    color: gray9,
-    fontWeight: FontWeight.w400,
-    fontSize: 12,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
+  // static const eventBedpressHeader = TextStyle(
+  //   fontFamily: font,
+  //   color: gray11,
+  //   fontWeight: FontWeight.w400,
+  //   fontSize: 16,
+  //   height: 1.5,
+  //   fontStyle: FontStyle.normal,
+  //   decoration: TextDecoration.none,
+  // );
 
   static const eventHeader = TextStyle(
     fontFamily: font,
     color: white,
     fontWeight: FontWeight.w700,
     fontSize: 24,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const eventCardDate = TextStyle(
-    fontFamily: font,
-    color: yellow,
-    fontWeight: FontWeight.w400,
-    fontSize: 20,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const eventDateNumber = TextStyle(
-    fontFamily: font,
-    color: yellow,
-    fontWeight: FontWeight.w700,
-    fontSize: 25,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const eventDateMonth = TextStyle(
-    fontFamily: font,
-    color: yellow,
-    fontWeight: FontWeight.w700,
-    fontSize: 18,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const eventNumberOfPeople = TextStyle(
-    fontFamily: font,
-    color: yellow,
-    fontWeight: FontWeight.w400,
-    fontSize: 13,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const promotedArticleText = TextStyle(
-    fontFamily: font,
-    color: white,
-    fontWeight: FontWeight.w600,
-    fontSize: 14,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const promotedArticleAuthor = TextStyle(
-    fontFamily: font,
-    color: white,
-    fontWeight: FontWeight.w400,
-    fontSize: 12,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const promotedArticleDate = TextStyle(
-    fontFamily: font,
-    color: yellow,
-    fontWeight: FontWeight.w500,
-    fontSize: 11,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const loginPageHeader = TextStyle(
-    fontFamily: font,
-    color: white,
-    fontWeight: FontWeight.w600,
-    fontSize: 18,
     height: 1.5,
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,
@@ -159,6 +69,7 @@ sealed class OnlineTheme {
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,
   );
+
   static const logInnPageInput = TextStyle(
     fontFamily: font,
     color: gray15,

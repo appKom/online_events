@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/theme/theme.dart';
+
+import '/components/online_scaffold.dart';
+import '/theme/theme.dart';
 
 class SettingsPage extends OnlinePage {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
       color: OnlineTheme.background,
@@ -18,17 +18,18 @@ class SettingsPage extends OnlinePage {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 17),
-            // ... other widget code ...
             const SizedBox(height: 40),
             const Text(
               'Innstillinger',
               style: OnlineTheme.eventHeader,
+              textAlign: TextAlign.center,
             ),
-
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'Huk av de kategoriene du ønsker varslinger for',
-              style: OnlineTheme.eventListSubHeader,
+              style: OnlineTheme.textStyle(
+                color: OnlineTheme.gray9,
+              ),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -68,11 +69,11 @@ class __SettingsContentState extends State<_SettingsContent> {
     return Theme(
       data: Theme.of(context).copyWith(
         checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          side: const BorderSide(color: Colors.white), // Outline color for unchecked checkbox
-        ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              side: const BorderSide(color: Colors.white), // Outline color for unchecked checkbox
+            ),
       ),
       child: Column(
         children: categories.keys.map((String key) {

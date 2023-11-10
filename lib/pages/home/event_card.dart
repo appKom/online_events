@@ -89,15 +89,19 @@ class EventCard extends StatelessWidget {
                       shortenName(),
                       style: OnlineTheme.textStyle(
                         color: OnlineTheme.gray11,
-                        weight: 5,
+                        weight: 7,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  // Date
-                  subHeader(Icons.calendar_month_outlined, dateToString()),
-                  // Registered and Capacity
-                  subHeader(Icons.people_outline, '${model.registered}/${model.capacity}'),
+                  subHeader(
+                    Icons.calendar_month_outlined,
+                    dateToString(),
+                  ),
+                  subHeader(
+                    Icons.people_outline,
+                    '${model.registered}/${model.capacity}',
+                  ),
                 ],
               ),
             ),
@@ -109,7 +113,11 @@ class EventCard extends StatelessWidget {
                 children: [
                   Text(
                     'INFO',
-                    style: OnlineTheme.eventListSubHeader.copyWith(fontWeight: FontWeight.w500),
+                    style: OnlineTheme.textStyle(
+                      color: OnlineTheme.gray9,
+                      weight: 5,
+                      size: 14,
+                    ),
                   ),
                   const SizedBox(width: 2),
                   const Padding(
@@ -144,17 +152,21 @@ class EventCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 2),
+            padding: const EdgeInsets.only(top: 4),
             child: Icon(
               icon,
               color: OnlineTheme.gray9,
-              size: 12,
+              size: 14,
             ),
           ),
           const SizedBox(width: 5),
           Text(
             text,
-            style: OnlineTheme.eventListSubHeader,
+            style: OnlineTheme.textStyle(
+              size: 14,
+              weight: 5,
+              color: OnlineTheme.gray9,
+            ),
             overflow: TextOverflow.ellipsis,
           ),
         ],

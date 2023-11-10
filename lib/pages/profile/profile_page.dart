@@ -163,6 +163,7 @@ class ProfilePage extends ScrollablePage {
                 loggedIn = false;
                 PageNavigator.navigateTo(const HomePage());
               },
+              scale: 0.9,
               child: Container(
                 height: 40,
                 decoration: BoxDecoration(

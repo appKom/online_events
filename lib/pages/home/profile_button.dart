@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/animated_button.dart';
 
 import '../../main.dart';
 import '/pages/profile/profile_page.dart';
@@ -11,13 +12,13 @@ class ProfileButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
+    return AnimatedButton(
+      onPressed: onPressed,
       child: loggedIn ? loggedInContent() : loggedOutContent(),
     );
   }
 
-  void onTap() {
+  void onPressed() {
     if (loggedIn) {
       PageNavigator.navigateTo(const ProfilePage());
     } else {

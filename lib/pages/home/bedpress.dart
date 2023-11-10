@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:online_events/pages/event/event_page.dart';
-import 'package:online_events/pages/home/event_card.dart';
-import 'package:online_events/services/page_navigator.dart';
+import 'package:online_events/components/animated_button.dart';
+
+import '/services/page_navigator.dart';
+import '/pages/event/event_page.dart';
+import '/pages/home/event_card.dart';
+import '/theme/themed_icon.dart';
 
 import '/models/card_event.dart';
 import '../../theme/theme.dart';
@@ -13,34 +15,33 @@ class Bedpress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(
-            height: 50,
-            child: Text(
-              'Bedriftpresentasjoner',
-              style: OnlineTheme.eventListHeader,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 24),
+        Text(
+          'Bedriftpresentasjoner',
+          style: OnlineTheme.textStyle(size: 20, weight: 7),
+        ),
+        const SizedBox(height: 24),
+        SizedBox(
+          height: 333,
+          child: ListView.builder(
+            itemCount: bedpressModels.length,
+            itemBuilder: buildItem,
+            scrollDirection: Axis.horizontal,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: bedpressModels.length,
-              itemBuilder: buildItem,
-              scrollDirection: Axis.horizontal,
-              // itemExtent: 240 + 20,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget? buildItem(BuildContext context, int index) {
-    return BedpressCard(
-      model: models[index],
+    return Container(
+      margin: const EdgeInsets.only(right: 24),
+      child: BedpressCard(
+        model: models[index],
+      ),
     );
   }
 }
@@ -62,97 +63,92 @@ class BedpressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 240,
-      height: 222 + 20,
-      padding: const EdgeInsets.only(bottom: 20),
-      margin: const EdgeInsets.only(right: 20),
+    return AnimatedButton(
+      onPressed: () => PageNavigator.navigateTo(const EventPage()),
+      scale: 0.9,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: GestureDetector(
-          onTap: () => PageNavigator.navigateTo(const EventPage()),
+        child: Container(
+          width: 222,
+          color: OnlineTheme.gray13,
           child: Stack(
             children: [
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 0,
-                height: 111,
+              Positioned.fill(
+                bottom: 111,
                 child: Image.asset(
                   model.imageSource,
                   fit: BoxFit.cover,
                 ),
               ),
               Positioned(
-                left: 0,
-                right: 0,
-                top: 111,
-                height: 200,
-                child: Container(
-                  color: OnlineTheme.gray13,
-                ),
-              ),
-              Positioned(
-                left: 15,
-                bottom: 77,
+                right: 15,
+                top: 222 + 10,
                 child: Text(
                   monthToString(),
-                  style: OnlineTheme.eventDateMonth.copyWith(color: OnlineTheme.blue2),
+                  style: OnlineTheme.textStyle(
+                    size: 16,
+                    weight: 7,
+                    color: OnlineTheme.blue2,
+                  ),
                 ),
               ),
               Positioned(
-                left: 15,
-                bottom: 45,
+                right: 15,
+                top: 222 + 25,
                 child: Text(
                   model.date.day.toString().padLeft(2, '0'),
-                  style: OnlineTheme.eventDateNumber.copyWith(color: OnlineTheme.white),
+                  style: OnlineTheme.textStyle(
+                    size: 22,
+                    weight: 7,
+                  ),
                 ),
               ),
               Positioned(
-                left: 65,
-                bottom: 53,
-                right: 10,
-                top: 130,
+                right: 80,
+                top: 222 + 10,
+                left: 15,
                 child: Text(
                   model.name,
-                  style: OnlineTheme.eventBedpressHeader.copyWith(color: OnlineTheme.white),
+                  style: OnlineTheme.textStyle(
+                    color: OnlineTheme.gray11,
+                    weight: 7,
+                  ),
                 ),
               ),
               Positioned(
                 left: 15,
-                right: 160,
                 bottom: 15,
-                height: 20,
                 child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
                   decoration: BoxDecoration(
                     color: OnlineTheme.green2,
                     borderRadius: BorderRadius.circular(3),
                   ),
-                  child: Center(
-                    child: Text(
-                      categoryToString(),
-                      style: OnlineTheme.eventListHeader.copyWith(color: OnlineTheme.green1, height: 1),
-                    ),
+                  child: Text(
+                    categoryToString(),
+                    style: OnlineTheme.textStyle(weight: 5, size: 14),
                   ),
                 ),
               ),
               Positioned(
                 bottom: 15,
                 right: 12,
-                child: Text(
-                  '${model.registered}/${model.capacity}',
-                  style: OnlineTheme.eventNumberOfPeople.copyWith(color: OnlineTheme.white),
-                ),
-              ),
-              Positioned(
-                right: 48,
-                bottom: 15,
-                child: SizedBox(
-                  height: 17,
-                  child: SvgPicture.asset(
-                    'assets/icons/people.svg',
-                    height: 17,
-                  ),
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 2),
+                      child: ThemedIcon(
+                        icon: IconType.people,
+                        size: 16,
+                        color: OnlineTheme.green1,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '${model.registered}/${model.capacity}',
+                      style: OnlineTheme.textStyle(size: 14),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -164,6 +160,28 @@ class BedpressCard extends StatelessWidget {
 }
 
 final bedpressModels = [
+  CardEventModel(
+      imageSource: 'assets/images/buldring.png',
+      name: 'Bedpress i klatreparken',
+      date: DateTime(2023, 12, 5),
+      registered: 20,
+      capacity: 20,
+      category: EventCategory.sosialt),
+  CardEventModel(
+      imageSource: 'assets/images/cake.png',
+      name: 'Bedpress og brownies',
+      date: DateTime(2023, 11, 26),
+      registered: 40,
+      capacity: 40,
+      category: EventCategory.kurs),
+  CardEventModel(
+    imageSource: 'assets/images/heart.png',
+    name: 'Bedpress med Tinder',
+    date: DateTime(2023, 9, 27),
+    registered: 5,
+    capacity: 5,
+    category: EventCategory.kurs,
+  ),
   CardEventModel(
       imageSource: 'assets/images/buldring.png',
       name: 'Bedpress i klatreparken',
