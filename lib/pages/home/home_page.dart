@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 
@@ -57,10 +58,9 @@ class HomePage extends ScrollablePage {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              PageNavigator.navigateTo(const EventsPage());
-            },
+          AnimatedButton(
+            onPressed: () => PageNavigator.navigateTo(const EventsPage()),
+            behavior: HitTestBehavior.opaque,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

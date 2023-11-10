@@ -23,6 +23,7 @@ flutter:
     - assets/online_logo.svg
     - assets/icons/
     - assets/images/
+    - assets/models/
 
   fonts:
       - family: SourceSans
