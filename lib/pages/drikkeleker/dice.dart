@@ -43,8 +43,7 @@ class _DiceHomePageState extends State<DiceHomePage>
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     )..addListener(() {
         setState(() {
-          diceRoll = _random.nextInt(6) +
-              1; // This will change the dice number randomly
+          diceRoll = _random.nextInt(6) + 1;
         });
       });
   }
@@ -69,17 +68,30 @@ class _DiceHomePageState extends State<DiceHomePage>
         AnimatedBuilder(
           animation: _animation,
           builder: (context, child) {
-            return Text(
-              'Roll result: $diceRoll',
-              style: OnlineTheme.textStyle(),
+            return Column(
+              children: [
+                InkWell(
+                  onTap: rollDice,
+                  child:
+                Image.asset(
+                  'assets/images/dice$diceRoll.png',
+                  width: 300,
+                  height: 300,
+                ),
+                ),
+                Text(
+                  'Roll result: $diceRoll',
+                  style: OnlineTheme.textStyle(),
+                ),
+              ],
             );
           },
         ),
         const SizedBox(height: 24),
-        ElevatedButton(
-          onPressed: rollDice,
-          child: const Text('Roll the dice'),
-        ),
+        // ElevatedButton(
+        //   onPressed: rollDice,
+        //   child: const Text('Roll the dice'),
+        // ),
       ],
     );
   }
