@@ -79,21 +79,26 @@ class __SettingsContentState extends State<_SettingsContent> {
         children: [
           Column(
             children: categories.keys.map((String key) {
-              return CheckboxListTile(
-                title: Text(key, style: OnlineTheme.eventListHeader),
-                value: categories[key],
-                activeColor: Colors.green,
-                checkColor: Colors.white,
-                tileColor: OnlineTheme.gray14,
-                onChanged: (bool? value) {
-                  setState(() {
-                    categories[key] = value!;
-                  });
-                },
+              return Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: OnlineTheme.gray14,
+                child: CheckboxListTile(
+                  title: Text(key, style: OnlineTheme.eventListHeader),
+                  value: categories[key],
+                  activeColor: Colors.green,
+                  checkColor: Colors.white,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      categories[key] = value!;
+                    });
+                  },
+                ),
               );
             }).toList(),
           ),
-          const SizedBox(height: 20), // Space between checkboxes and button
+          const SizedBox(height: 20), // Space between checkboxes and buttone between checkboxes and button
           ElevatedButton(
             onPressed: () {
               // Add your save logic here
