@@ -20,7 +20,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/header.svg
+    - assets/online_logo.svg
     - assets/icons/
     - assets/images/
 

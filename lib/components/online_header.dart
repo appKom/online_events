@@ -41,9 +41,9 @@ class OnlineHeader extends StatelessWidget {
             GestureDetector(
               onTap: () => PageNavigator.navigateTo(const HomePage()),
               child: SvgPicture.asset(
-                'assets/header.svg',
+                'assets/online_logo.svg',
                 height: 36,
-                fit: BoxFit.fitHeight,
+                // fit: BoxFit.contain,
               ),
             ),
             Row(
