@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
 import 'package:online_events/theme/theme.dart';
@@ -25,8 +26,7 @@ class DiceHomePage extends StatefulWidget {
   _DiceHomePageState createState() => _DiceHomePageState();
 }
 
-class _DiceHomePageState extends State<DiceHomePage>
-    with SingleTickerProviderStateMixin {
+class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderStateMixin {
   int diceRoll = 1;
   late AnimationController _animationController;
   late Animation _animation;
@@ -68,30 +68,19 @@ class _DiceHomePageState extends State<DiceHomePage>
         AnimatedBuilder(
           animation: _animation,
           builder: (context, child) {
-            return Column(
-              children: [
-                InkWell(
-                  onTap: rollDice,
-                  child:
-                Image.asset(
+            return Center(
+              child: AnimatedButton(
+                onPressed: rollDice,
+                child: Image.asset(
                   'assets/images/dice$diceRoll.png',
                   width: 300,
                   height: 300,
                 ),
-                ),
-                Text(
-                  'Roll result: $diceRoll',
-                  style: OnlineTheme.textStyle(),
-                ),
-              ],
+              ),
             );
           },
         ),
         const SizedBox(height: 24),
-        // ElevatedButton(
-        //   onPressed: rollDice,
-        //   child: const Text('Roll the dice'),
-        // ),
       ],
     );
   }
