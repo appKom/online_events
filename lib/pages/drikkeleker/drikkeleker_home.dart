@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
+import 'package:online_events/pages/drikkeleker/bits/bits_home_page.dart';
 import 'package:online_events/pages/drikkeleker/dice.dart';
 import 'package:online_events/pages/drikkeleker/lambo.dart';
+import 'package:online_events/pages/drikkeleker/nu_klinger.dart';
 import 'package:online_events/services/app_navigator.dart';
 import 'package:online_events/theme/theme.dart';
 
@@ -56,7 +58,7 @@ class DrikkelekerHome extends ScrollablePage {
                           padding: const EdgeInsets.all(8.0),
                           color: Colors.black.withOpacity(0.5),
                           child: const Text(
-                            'Terning :)',
+                            'Terning',
                             style: OnlineTheme.eventListHeader,
                           ),
                         ),
@@ -98,7 +100,7 @@ class DrikkelekerHome extends ScrollablePage {
                         color: Colors.black.withOpacity(
                             0.5), // Semi-transparent background for the text
                         child: const Text(
-                          'LAMBO :)',
+                          'LAMBO',
                           style: OnlineTheme
                               .eventListHeader, // Ensure the text is visible against the background
                         ),
@@ -110,7 +112,11 @@ class DrikkelekerHome extends ScrollablePage {
             ),
             ),
             const ClipRRect(child: SizedBox(height: 35)),
-            ClipRRect(
+            InkWell(
+              onTap: () {
+                PageNavigator.navigateTo(const BitsHomePage());
+              },
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
                 width: double.infinity, // as wide as the parent allows
@@ -134,7 +140,7 @@ class DrikkelekerHome extends ScrollablePage {
                         color: Colors.black.withOpacity(
                             0.5), // Semi-transparent background for the text
                         child: const Text(
-                          'Bits :)',
+                          'Bits',
                           style: OnlineTheme
                               .eventListHeader, // Ensure the text is visible against the background
                         ),
@@ -144,6 +150,48 @@ class DrikkelekerHome extends ScrollablePage {
                 ),
               ),
             ),
+            ),
+            const ClipRRect(child: SizedBox(height: 35)),
+            InkWell(
+              onTap: () {
+                PageNavigator.navigateTo(const NuKlingerPage());
+              },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(
+                width: double.infinity, // as wide as the parent allows
+                height: 222, // fixed height
+
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.asset(
+                        'assets/images/nu_klinger.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(
+                            8.0), // Add some padding around the text
+                        color: Colors.black.withOpacity(
+                            0.5), // Semi-transparent background for the text
+                        child: const Text(
+                          'Nu Klinger',
+                          style: OnlineTheme
+                              .eventListHeader, // Ensure the text is visible against the background
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ),
+            
             const ClipRRect(child: SizedBox(height: 115)),
           ],
         ),

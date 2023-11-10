@@ -11,8 +11,11 @@ sealed class OnlineTheme {
   static const green1 = Color.fromARGB(255, 37, 208, 171);
   static const green2 = Color.fromARGB(255, 4, 49, 44);
   static const green3 = Color(0xFF83AF89);
+  static const green4 = Color(0xFF1E3822);
 
   static const red1 = Color(0xFFF43145);
+
+  static const pink1 = Color(0xFF5E0231);
 
   static const yellow = Color(0xFFFAB759);
   static const orange10 = Color(0xFFFFEDB3); // More like yellow10
