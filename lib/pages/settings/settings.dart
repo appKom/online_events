@@ -69,27 +69,45 @@ class __SettingsContentState extends State<_SettingsContent> {
     return Theme(
       data: Theme.of(context).copyWith(
         checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              side: const BorderSide(color: Colors.white), // Outline color for unchecked checkbox
-            ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          side: const BorderSide(color: Colors.white),
+        ),
       ),
       child: Column(
-        children: categories.keys.map((String key) {
-          return CheckboxListTile(
-            title: Text(key, style: OnlineTheme.eventListHeader),
-            value: categories[key],
-            activeColor: Colors.green, // Color for the filled part of the checkbox when checked
-            checkColor: Colors.white, // Color for the check icon when checked
-            tileColor: OnlineTheme.gray14,
-            onChanged: (bool? value) {
-              setState(() {
-                categories[key] = value!;
-              });
+        children: [
+          Column(
+            children: categories.keys.map((String key) {
+              return CheckboxListTile(
+                title: Text(key, style: OnlineTheme.eventListHeader),
+                value: categories[key],
+                activeColor: Colors.green,
+                checkColor: Colors.white,
+                tileColor: OnlineTheme.gray14,
+                onChanged: (bool? value) {
+                  setState(() {
+                    categories[key] = value!;
+                  });
+                },
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 20), // Space between checkboxes and button
+          ElevatedButton(
+            onPressed: () {
+              // Add your save logic here
             },
-          );
-        }).toList(),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white, 
+              backgroundColor: Colors.green, // Text color
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              textStyle: const TextStyle(fontSize: 20), // Increase font size for larger text
+              minimumSize: const Size(200, 60), // Minimum size of the button
+            ),
+            child: const Text('Lagre'),
+          ),
+        ],
       ),
     );
   }
