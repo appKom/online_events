@@ -3,14 +3,11 @@ import 'package:online_events/pages/drikkeleker/drikkeleker_home.dart';
 import 'package:online_events/pages/events/my_events_page.dart';
 import 'package:online_events/pages/settings/settings.dart';
 
-import '/pages/login/login_page.dart';
-import '/pages/profile/profile_page.dart';
 import '../services/page_navigator.dart';
 import '/pages/home/home_page.dart';
 import '/theme/themed_icon.dart';
 import 'animated_button.dart';
 import '/theme/theme.dart';
-import '/main.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});

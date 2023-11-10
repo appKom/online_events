@@ -44,7 +44,7 @@ class DrikkelekerHome extends ScrollablePage {
                     children: [
                       Positioned.fill(
                         child: Image.asset(
-                          'assets/images/dice.jpg',
+                          'assets/images/diceHeader.jpg',
                           fit: BoxFit.cover,
                         ),
                       ),
