@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/drikkeleker/bits/bits_home_page.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/drikkeleker/dice.dart';
@@ -73,7 +74,7 @@ class DrikkelekerHome extends ScrollablePage {
             const ClipRRect(child: SizedBox(height: 35)),
             InkWell(
               onTap: () {
-                PageNavigator.navigateTo(const NuKlingerPage());
+                PageNavigator.navigateTo(const BitsHomePage());
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),

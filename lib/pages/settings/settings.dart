@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/online_header.dart';
 
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
 
 class SettingsPage extends OnlinePage {
   const SettingsPage({super.key});
+
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
 
   @override
   Widget build(BuildContext context) {
