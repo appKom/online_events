@@ -71,7 +71,7 @@ class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderSt
               child: AnimatedButton(
                 onPressed: rollDice,
                 child: Image.asset(
-                  'assets/images/dice$diceRoll.png',
+                  'assets/images/dice/dice$diceRoll.png',
                   width: 300,
                   height: 300,
                 ),

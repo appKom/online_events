@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/drikkeleker/bits/bits_home_page.dart';
-import 'package:online_events/pages/drikkeleker/dice.dart';
-import 'package:online_events/pages/drikkeleker/drikkesanger.dart';
-import 'package:online_events/pages/drikkeleker/lambo.dart';
-import 'package:online_events/pages/drikkeleker/nu_klinger.dart';
-import 'package:online_events/services/app_navigator.dart';
-import 'package:online_events/theme/theme.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/pages/drikkeleker/dice.dart';
+import '/pages/drikkeleker/drikkesanger.dart';
+import '/pages/drikkeleker/nu_klinger.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 
 class DrikkelekerHome extends ScrollablePage {
   const DrikkelekerHome({super.key});
@@ -19,8 +17,7 @@ class DrikkelekerHome extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -97,14 +94,11 @@ class DrikkelekerHome extends ScrollablePage {
                         left: 0,
                         right: 0,
                         child: Container(
-                          padding: const EdgeInsets.all(
-                              8.0), // Add some padding around the text
-                          color: Colors.black.withOpacity(
-                              0.5), // Semi-transparent background for the text
+                          padding: const EdgeInsets.all(8.0), // Add some padding around the text
+                          color: Colors.black.withOpacity(0.5), // Semi-transparent background for the text
                           child: const Text(
                             'Bits',
-                            style: OnlineTheme
-                                .eventListHeader, // Ensure the text is visible against the background
+                            style: OnlineTheme.eventListHeader, // Ensure the text is visible against the background
                           ),
                         ),
                       ),
@@ -137,14 +131,11 @@ class DrikkelekerHome extends ScrollablePage {
                         left: 0,
                         right: 0,
                         child: Container(
-                          padding: const EdgeInsets.all(
-                              8.0), // Add some padding around the text
-                          color: Colors.black.withOpacity(
-                              0.5), // Semi-transparent background for the text
+                          padding: const EdgeInsets.all(8.0), // Add some padding around the text
+                          color: Colors.black.withOpacity(0.5), // Semi-transparent background for the text
                           child: const Text(
                             'Bytes',
-                            style: OnlineTheme
-                                .eventListHeader, // Ensure the text is visible against the background
+                            style: OnlineTheme.eventListHeader, // Ensure the text is visible against the background
                           ),
                         ),
                       ),
