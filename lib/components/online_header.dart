@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
+import 'package:online_events/pages/event/qr_code.dart';
+import 'package:online_events/services/app_navigator.dart';
 import 'package:online_events/theme/theme.dart';
 
 import '/pages/home/home_page.dart';
@@ -40,7 +42,10 @@ class OnlineHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AnimatedButton(
-              onPressed: () => PageNavigator.navigateTo(const HomePage()),
+              onPressed: () {
+                AppNavigator.navigateToRoute(QRCode(), additive: true);
+                // PageNavigator.navigateTo(const HomePage());
+              },
               scale: 0.9,
               child: SvgPicture.asset(
                 'assets/svg/online_logo.svg',
