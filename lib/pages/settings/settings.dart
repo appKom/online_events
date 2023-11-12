@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/online_header.dart';
 
 import '/components/online_scaffold.dart';
@@ -23,8 +24,7 @@ class SettingsPage extends OnlinePage {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 17),
-            const SizedBox(height: 40),
+            const SizedBox(height: 70),
             const Text(
               'Innstillinger',
               style: OnlineTheme.eventHeader,
@@ -105,18 +105,33 @@ class __SettingsContentState extends State<_SettingsContent> {
             }).toList(),
           ),
           const SizedBox(height: 20), // Space between checkboxes and buttone between checkboxes and button
-          ElevatedButton(
-            onPressed: () {
-              // Add your save logic here
-            },
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white, 
-              backgroundColor: Colors.green, // Text color
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              textStyle: const TextStyle(fontSize: 20), // Increase font size for larger text
-              minimumSize: const Size(200, 60), // Minimum size of the button
-            ),
-            child: const Text('Lagre'),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: AnimatedButton(
+                  onPressed: () {
+                    //Save logic
+                  },
+                  scale: 0.9,
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: OnlineTheme.green3,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Lagre',
+                        style: OnlineTheme.textStyle(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
