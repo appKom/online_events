@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
+import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 
 import '/components/online_scaffold.dart';
@@ -24,7 +25,7 @@ class SettingsPage extends OnlinePage {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 70),
+            SizedBox(height: Navbar.height(context) + 40),
             const Text(
               'Innstillinger',
               style: OnlineTheme.eventHeader,
@@ -75,11 +76,11 @@ class __SettingsContentState extends State<_SettingsContent> {
     return Theme(
       data: Theme.of(context).copyWith(
         checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          side: const BorderSide(color: Colors.white),
-        ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              side: const BorderSide(color: Colors.white),
+            ),
       ),
       child: Column(
         children: [
