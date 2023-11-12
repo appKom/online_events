@@ -46,53 +46,5 @@ class EventsPage extends ScrollablePage {
     );
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return OnlineScaffold(
-  //     header: const ProfileButton(),
-  //     content: SingleChildScrollView(
-  //       // Wrap the Column with SingleChildScrollView
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.stretch,
-  //         children: [
-  //           const SizedBox(height: 10),
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                   builder: (context) => const MyEventsPage(),
-  //                 ),
-  //               );
-  //             },
-  //             style: TextButton.styleFrom(
-  //               backgroundColor: OnlineTheme.gray14,
-  //               padding: const EdgeInsets.symmetric(vertical: 40.0),
-  //               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-  //             ),
-  //             child: const Text(
-  //               'Gå til mine kommende arrangementer',
-  //               style: OnlineTheme.goToButton,
-  //             ),
-  //           ),
-  //           const SizedBox(
-  //             height: 20,
-  //           ),
-  //           Container(
-  //             margin: const EdgeInsets.symmetric(vertical: 10),
-  //             height: 111 * 6,
-  //             child: ListView.builder(
-  //               itemCount: 6,
-  //               padding: EdgeInsets.zero,
-  //               physics: const NeverScrollableScrollPhysics(),
-  //               itemBuilder: (c, i) => EventCard(
-  //                 model: testModels[0],
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  
 }

@@ -3,7 +3,6 @@ import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/pages/event/event_page.dart';
 
 import '/services/page_navigator.dart';
-import '../event/event_page2.dart';
 import '/pages/home/event_card.dart';
 import '/theme/themed_icon.dart';
 
