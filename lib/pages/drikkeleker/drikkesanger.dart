@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
+import 'package:online_events/pages/drikkeleker/fader_abraham.dart';
 import 'package:online_events/pages/drikkeleker/lambo.dart';
 import 'package:online_events/pages/drikkeleker/nu_klinger.dart';
 
@@ -67,7 +68,11 @@ class SangCard extends StatelessWidget {
       onPressed: () {
         if (model.name == 'Nu Klinger') {
           PageNavigator.navigateTo(const NuKlingerPage()); 
-        } else if (model.name == 'Lambo') {
+        } 
+        if (model.name == 'Fader Abraham') {
+          PageNavigator.navigateTo(const FaderAbrahamPage()); 
+        }
+        else if (model.name == 'Lambo') {
           PageNavigator.navigateTo(const LamboPage());
         }
       },
@@ -117,6 +122,13 @@ final sangModels = [
   CardEventModel(
       imageSource: 'assets/images/nu_klinger.jpg',
       name: 'Nu Klinger',
+      date: DateTime(2023, 11, 26),
+      registered: 40,
+      capacity: 40,
+      category: EventCategory.kurs),
+  CardEventModel(
+      imageSource: 'assets/images/faderabraham.png',
+      name: 'Fader Abraham',
       date: DateTime(2023, 11, 26),
       registered: 40,
       capacity: 40,

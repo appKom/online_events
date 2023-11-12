@@ -26,7 +26,7 @@ class DrikkelekerHome extends ScrollablePage {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: OnlineHeader.height(context) + 40),
+            SizedBox(height: OnlineHeader.height(context) + 5),
             DrikkeSanger(
               models: sangModels,
             ),
