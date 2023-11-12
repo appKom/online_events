@@ -43,7 +43,12 @@ class OnlineHeader extends StatelessWidget {
           children: [
             AnimatedButton(
               onPressed: () {
-                AppNavigator.navigateToRoute(QRCode(), additive: true);
+                AppNavigator.navigateToRoute(
+                  QRCode(
+                    name: 'Fredrik Hansteen',
+                  ),
+                  additive: true,
+                );
                 // PageNavigator.navigateTo(const HomePage());
               },
               scale: 0.9,
