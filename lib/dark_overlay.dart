@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-abstract class Menu extends ModalRoute<void> {
+import 'package:online_events/services/app_navigator.dart';
+
+abstract class DarkOverlay extends ModalRoute<void> {
   Widget content(BuildContext context, Animation<double> animation);
 
   @override
@@ -12,6 +14,14 @@ abstract class Menu extends ModalRoute<void> {
 
   @override
   String? get barrierLabel => null;
+
+  void show(BuildContext context) {
+    AppNavigator.navigateToRoute(this, additive: false);
+  }
+
+  void hide() {
+    AppNavigator.pop();
+  }
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {

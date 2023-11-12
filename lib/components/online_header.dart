@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/theme/theme.dart';
 
 import '/pages/home/home_page.dart';
@@ -14,7 +15,7 @@ class OnlineHeader extends StatelessWidget {
   static double height(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
 
-    return padding.top + 40 + 25;
+    return padding.top + 40 + 25 + 10;
   }
 
   @override
@@ -25,7 +26,7 @@ class OnlineHeader extends StatelessWidget {
       padding: EdgeInsets.only(
         left: padding.left + 25,
         right: padding.right + 25,
-        top: padding.top,
+        top: padding.top + 10,
         bottom: 25,
       ),
       decoration: BoxDecoration(
@@ -38,12 +39,12 @@ class OnlineHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: () => PageNavigator.navigateTo(const HomePage()),
+            AnimatedButton(
+              onPressed: () => PageNavigator.navigateTo(const HomePage()),
+              scale: 0.9,
               child: SvgPicture.asset(
-                'assets/online_logo.svg',
+                'assets/svg/online_logo.svg',
                 height: 36,
-                // fit: BoxFit.contain,
               ),
             ),
             Row(

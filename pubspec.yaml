@@ -20,11 +20,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/online_logo.svg
     - assets/icons/
     - assets/images/
     - assets/images/dice/
     - assets/models/
+    - assets/svg/
 
   fonts:
       - family: SourceSans

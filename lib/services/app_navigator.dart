@@ -53,7 +53,7 @@ abstract class AppNavigator {
   //   );
   // }
 
-  static void pop(BuildContext context) {
+  static void pop() {
     navigator.currentState!.pop();
   }
 }

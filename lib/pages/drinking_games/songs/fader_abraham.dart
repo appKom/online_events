@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/pages/home/profile_button.dart';
 
-import 'package:online_events/theme/theme.dart';
-import '../../components/online_scaffold.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/pages/home/profile_button.dart';
+import '/theme/theme.dart';
 
 class FaderAbrahamPage extends ScrollablePage {
   const FaderAbrahamPage({super.key});
@@ -21,8 +21,7 @@ class FaderAbrahamPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
