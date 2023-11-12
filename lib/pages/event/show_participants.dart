@@ -30,6 +30,13 @@ class ShowParticipants extends DarkOverlay {
               Padding(
                 padding: horizontalPadding,
                 child: Text(
+                  '1. ',
+                  style: OnlineTheme.textStyle(),
+                ),
+              ),
+              Padding(
+                padding: horizontalPadding,
+                child: Text(
                   'Fredrik Hansteen',
                   style: OnlineTheme.textStyle(),
                 ),
@@ -47,6 +54,13 @@ class ShowParticipants extends DarkOverlay {
           const Separator(margin: 5),
           Row(
             children: [
+              Padding(
+                padding: horizontalPadding,
+                child: Text(
+                  '2. ',
+                  style: OnlineTheme.textStyle(),
+                ),
+              ),
               Padding(
                 padding: horizontalPadding,
                 child: Text(
