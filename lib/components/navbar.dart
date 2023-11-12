@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/drikkeleker/drikkeleker_home.dart';
+import 'package:online_events/pages/drinking_games/drinking_games_page.dart';
 import 'package:online_events/pages/events/my_events_page.dart';
 import 'package:online_events/pages/settings/settings.dart';
 
@@ -36,7 +36,7 @@ class NavbarState extends State<Navbar> {
     NavbarButton(
       icon: IconType.beer,
       activeIcon: IconType.beerFilled,
-      onPressed: () => PageNavigator.navigateTo(const DrikkelekerHome()),
+      onPressed: () => PageNavigator.navigateTo(const DrinkingGamesPage()),
     ),
     NavbarButton(
       icon: IconType.settings,

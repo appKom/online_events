@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/pages/home/profile_button.dart';
 
-import 'package:online_events/theme/theme.dart';
-import '../../components/online_scaffold.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/pages/home/profile_button.dart';
+import '/theme/theme.dart';
 
 class LamboPage extends ScrollablePage {
   const LamboPage({super.key});
