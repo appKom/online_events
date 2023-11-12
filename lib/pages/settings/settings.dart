@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 
 import '/components/online_scaffold.dart';
@@ -23,8 +24,7 @@ class SettingsPage extends OnlinePage {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 17),
-            const SizedBox(height: 40),
+            SizedBox(height: Navbar.height(context) + 40),
             const Text(
               'Innstillinger',
               style: OnlineTheme.eventHeader,
@@ -75,11 +75,11 @@ class __SettingsContentState extends State<_SettingsContent> {
     return Theme(
       data: Theme.of(context).copyWith(
         checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          side: const BorderSide(color: Colors.white),
-        ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              side: const BorderSide(color: Colors.white),
+            ),
       ),
       child: Column(
         children: [
@@ -110,7 +110,7 @@ class __SettingsContentState extends State<_SettingsContent> {
               // Add your save logic here
             },
             style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white, 
+              foregroundColor: Colors.white,
               backgroundColor: Colors.green, // Text color
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               textStyle: const TextStyle(fontSize: 20), // Increase font size for larger text
