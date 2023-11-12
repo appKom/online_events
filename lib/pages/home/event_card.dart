@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/separator.dart';
 import 'package:online_events/pages/event/event_page.dart';
-import '../event/event_page2.dart';
 import '../../services/page_navigator.dart';
 import '/models/list_event.dart';
 import '../../theme/theme.dart';
@@ -53,6 +52,7 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return SizedBox(
       height: 111,
       child: GestureDetector(

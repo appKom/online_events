@@ -5,8 +5,6 @@ import 'package:online_events/pages/event/qr_code.dart';
 import 'package:online_events/services/app_navigator.dart';
 import 'package:online_events/theme/theme.dart';
 
-import '/pages/home/home_page.dart';
-import '../services/page_navigator.dart';
 
 class OnlineHeader extends StatelessWidget {
   final List<Widget> buttons;

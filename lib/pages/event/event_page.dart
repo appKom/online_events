@@ -3,10 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/home/profile_button.dart';
-import 'package:online_events/pages/widgets/event/EventCardCountdown.dart';
-import 'package:online_events/pages/widgets/event/eventCardButtons.dart';
-import 'package:online_events/pages/widgets/event/event_participants.dart';
+import 'package:online_events/pages/event/widgets/EventCardCountdown.dart';
+import 'package:online_events/pages/event/widgets/eventCardButtons.dart';
+import 'package:online_events/pages/event/widgets/event_participants.dart';
 
 import 'package:online_events/theme/theme.dart';
 
@@ -25,6 +24,7 @@ class EventPage extends ScrollablePage {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
           height: 267,
           child: Image.asset(
@@ -63,29 +63,6 @@ class EventPage extends ScrollablePage {
   }
 }
 
-// enum EventState {
-//   /// Du kan ikke melde deg på arrangementet enda
-//   eventWillOpen,
-//   /// Arangementet er åpent for påmelding
-//   eventOpen,
-
-//   // Arrangementet er
-//   eventClosed,
-// }
-
-// enum RegistrationState {
-//   /// Du er påmeldt arrangementet
-//   registered,
-
-//   /// Du er påmeldt og avmeldingsfristen har utløpt
-//   registeredLocked,
-
-//   /// Du er på venteliste
-//   waitlist,
-
-//   /// Du er ikke påmeldt
-//   unregistered,
-// }
 
 /// Påmelding
 class RegistrationCard extends StatelessWidget {
@@ -96,6 +73,7 @@ class RegistrationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: OnlineTheme.background.lighten(20),
@@ -104,6 +82,7 @@ class RegistrationCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        
         children: [
           header(),
           const SizedBox(height: 16),
