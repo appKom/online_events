@@ -44,11 +44,9 @@ class EventParticipants extends StatelessWidget {
                   overflow: TextOverflow.visible,
                 ),
                 Center(
-                  child: Expanded(
-                    child: Text(
-                      '10/10',
-                      style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
-                    ),
+                  child: Text(
+                    '10/10',
+                    style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
                   ),
                 ),
               ],
@@ -71,11 +69,9 @@ class EventParticipants extends StatelessWidget {
                   overflow: TextOverflow.visible,
                 ),
                 Center(
-                  child: Expanded(
-                    child: Text(
-                      '10/10',
-                      style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
-                    ),
+                  child: Text(
+                    '10/10',
+                    style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
                   ),
                 ),
               ],
@@ -97,14 +93,11 @@ class EventParticipants extends StatelessWidget {
                   style: OnlineTheme.textStyle(size: 12, height: 1.5, color: OnlineTheme.gray11, weight: 4),
                   overflow: TextOverflow.visible,
                 ),
-
                 // Center text
                 Center(
-                  child: Expanded(
-                    child: Text(
-                      '10/10',
-                      style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 4),
-                    ),
+                  child: Text(
+                    '10/10',
+                    style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 4),
                   ),
                 ),
               ],
@@ -122,7 +115,6 @@ class EventParticipants extends StatelessWidget {
                     color: OnlineTheme.white,
                   ),
                 ),
-                Expanded(child: Text('')),
               ],
             ),
           ),
