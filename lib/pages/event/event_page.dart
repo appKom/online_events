@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
@@ -63,17 +64,14 @@ class EventPage extends ScrollablePage {
   }
 }
 
-
 /// Påmelding
 class RegistrationCard extends StatelessWidget {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
   const RegistrationCard({Key? key});
-  
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: OnlineTheme.background.lighten(20),
@@ -82,18 +80,14 @@ class RegistrationCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        
         children: [
           header(),
           const SizedBox(height: 16),
-          EventParticipants(),
+          const EventParticipants(),
           const SizedBox(height: 16),
-          EventCardCountdown(), // Add the countdown widget here
+          const EventCardCountdown(), // Add the countdown widget here
           const SizedBox(height: 20),
-          Padding(
-          padding: horizontalPadding,
-          child: EventCardButtons(),
-        ),
+          const EventCardButtons(), // Removed Padding widget
         ],
       ),
     );
@@ -152,31 +146,17 @@ class AttendanceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          header(),
-          const SizedBox(height: 16),
           content(),
         ],
       ),
     );
   }
 
-  /// Card header
-  Widget header() {
-    return SizedBox(
-      height: 32,
-      child: Text(
-        'Oppmøte',
-        style: OnlineTheme.eventHeader
-            .copyWith(height: 1, fontWeight: FontWeight.w600),
-      ),
-    );
-  }
 
   /// Card Content
   Widget content() {
     return Column(
       children: [
-        const SizedBox(height: 8),
         SizedBox(
           height: 21,
           child: Row(
@@ -223,10 +203,13 @@ class AttendanceCard extends StatelessWidget {
                   color: OnlineTheme.blue1,
                 ),
                 child: Row(children: [
-                  Image.asset(
-                    'assets/images/maze_map.png',
-                    width: 18,
-                    height: 17.368,
+                  AnimatedButton(
+                    //
+                    child: Image.asset(
+                      'assets/images/maze_map.png',
+                      width: 18,
+                      height: 17.368,
+                    ),
                   ),
                   const SizedBox(width: 5),
                   const Text(
