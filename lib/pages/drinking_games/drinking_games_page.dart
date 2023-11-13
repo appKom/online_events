@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/drinking_games/bytes/bytes_home_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -56,7 +57,7 @@ class DrinkingGamesPage extends ScrollablePage {
               name: 'Bytes',
               imageSource: 'assets/images/bytes.png',
               onTap: () {
-                PageNavigator.navigateTo(const NuKlingerPage());
+                PageNavigator.navigateTo(const BytesHomePage());
               },
             ),
             SizedBox(height: Navbar.height(context) + 24),

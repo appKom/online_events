@@ -6,8 +6,8 @@ import 'package:online_events/pages/drinking_games/bits/sub_pages/bits_page_one.
 import 'package:online_events/services/page_navigator.dart';
 import 'package:online_events/theme/theme.dart';
 
-class BitsHomePage extends ScrollablePage {
-  const BitsHomePage({super.key});
+class BytesHomePage extends ScrollablePage {
+  const BytesHomePage({super.key});
 
   @override
   Widget? header(BuildContext context) {
@@ -19,7 +19,7 @@ class BitsHomePage extends ScrollablePage {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Container(
-      color: OnlineTheme.pink1,
+      color: OnlineTheme.green4,
       child: Padding(
         padding: EdgeInsets.only(left: padding.left, right: padding.right),
         child: SingleChildScrollView(
@@ -28,12 +28,12 @@ class BitsHomePage extends ScrollablePage {
             children: [
               SizedBox(height: OnlineHeader.height(context) + 40),
               const Text(
-                'Velkommen til Bits <3',
+                'Velkommen til Bytes <3',
                 style: OnlineTheme.eventHeader,
               ),
               const SizedBox(height: 20),
               const Text(
-                'Bits er en kombinasjon av de beste aspektene av ulike drikkeleker. Det er bare å hente deg en ny enhet, for den du holder nå kommer til å bli tømt ganske snabt. ',
+                'Get ready to rumble',
                 style: OnlineTheme.eventListHeader,
               ),
               const ClipRRect(child: SizedBox(height: 120)),
@@ -45,13 +45,13 @@ class BitsHomePage extends ScrollablePage {
                   Expanded(
                     child: AnimatedButton(
                       onPressed: () {
-                        PageNavigator.navigateTo(const BitsPageOne());
+                        //
                       },
                       scale: 0.9,
                       child: Container(
                         height: 40,
                         decoration: BoxDecoration(
-                          color: OnlineTheme.green4,
+                          color: OnlineTheme.red1,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(
