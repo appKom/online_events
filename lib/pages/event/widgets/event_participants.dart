@@ -7,7 +7,7 @@ class EventParticipants extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 41,
+      height: 60,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(15),
@@ -17,8 +17,7 @@ class EventParticipants extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         child: Row(children: [
           Padding(
-            padding: const EdgeInsets.only(
-                right: 10), // Add space between icon and text
+            padding: const EdgeInsets.only(right: 10), // Add space between icon and text
             child: Container(
               width: 40,
               height: 40,
@@ -42,11 +41,7 @@ class EventParticipants extends StatelessWidget {
               children: [
                 Text(
                   'Venteliste',
-                  style: OnlineTheme.textStyle(
-                      size: 12,
-                      height: 1.5,
-                      color: OnlineTheme.gray11,
-                      weight: 4),
+                  style: OnlineTheme.textStyle(size: 12, height: 1.5, color: OnlineTheme.gray11, weight: 4),
                   overflow: TextOverflow.visible,
                 ),
                 Center(
@@ -71,11 +66,7 @@ class EventParticipants extends StatelessWidget {
               children: [
                 Text(
                   '1-3. Klasse',
-                  style: OnlineTheme.textStyle(
-                      size: 12,
-                      height: 1.5,
-                      color: OnlineTheme.gray11,
-                      weight: 4),
+                  style: OnlineTheme.textStyle(size: 12, height: 1.5, color: OnlineTheme.gray11, weight: 4),
                   overflow: TextOverflow.visible,
                 ),
                 Center(
@@ -100,11 +91,7 @@ class EventParticipants extends StatelessWidget {
               children: [
                 Text(
                   '3-5. Klasse',
-                  style: OnlineTheme.textStyle(
-                      size: 12,
-                      height: 1.5,
-                      color: OnlineTheme.gray11,
-                      weight: 4),
+                  style: OnlineTheme.textStyle(size: 12, height: 1.5, color: OnlineTheme.gray11, weight: 4),
                   overflow: TextOverflow.visible,
                 ),
                 // Center text
