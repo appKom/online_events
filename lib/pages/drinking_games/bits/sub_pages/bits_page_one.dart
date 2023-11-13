@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/drinking_games/bits/bits_home_page.dart';
-import 'package:online_events/pages/drinking_games/bits/sub_pages/bits_page_two.dart';
-import 'package:online_events/services/page_navigator.dart';
-import 'package:online_events/theme/theme.dart';
-// Import other pages if necessary
+
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/pages/drinking_games/bits/bits_home_page.dart';
+import '/pages/drinking_games/bits/sub_pages/bits_page_two.dart';
+import '/services/page_navigator.dart';
+import '/theme/theme.dart';
 
 class BitsPageOne extends ScrollablePage {
   const BitsPageOne({super.key});
@@ -17,8 +17,7 @@ class BitsPageOne extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Container(
       color: OnlineTheme.pink1,
@@ -40,26 +39,26 @@ class BitsPageOne extends ScrollablePage {
             flex: 8,
             child: Padding(
               padding: EdgeInsets.only(left: padding.left, right: padding.right),
-              child:Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: OnlineHeader.height(context) + 40),
-                    const Text(
-                      'Pekelek',
-                      style: OnlineTheme.eventHeader,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: OnlineHeader.height(context) + 40),
+                  const Text(
+                    'Pekelek',
+                    style: OnlineTheme.eventHeader,
+                  ),
+                  const SizedBox(height: 20),
+                  const ClipRRect(child: SizedBox(height: 80)),
+                  const Positioned(
+                    child: Text(
+                      'Pek på den i rommet som har brukt en sjekkereplikk relatert til informatikk',
+                      style: OnlineTheme.eventListHeader,
                     ),
-                    const SizedBox(height: 20),
-                    const ClipRRect(child: SizedBox(height: 80)),
-                    const Positioned(
-                      child: Text(
-                        'Pek på den i rommet som har brukt en sjekkereplikk relatert til informatikk',
-                        style: OnlineTheme.eventListHeader,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
 
           // Right GestureDetector
           Expanded(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class EventCardCountdown extends StatelessWidget {
-  const EventCardCountdown({Key? key});
+  const EventCardCountdown({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 53,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),

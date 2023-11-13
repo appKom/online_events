@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/drinking_games/bits/sub_pages/bits_page_one.dart';
-import 'package:online_events/pages/drinking_games/bits/sub_pages/bits_page_three.dart';
-import 'package:online_events/services/page_navigator.dart';
-import 'package:online_events/theme/theme.dart';
-// Import other pages if necessary
+
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import 'bits_page_one.dart';
+import 'bits_page_three.dart';
+import '/services/page_navigator.dart';
+import '/theme/theme.dart';
 
 class BitsPageTwo extends ScrollablePage {
   const BitsPageTwo({super.key});
@@ -17,8 +17,7 @@ class BitsPageTwo extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Container(
       color: OnlineTheme.pink1,
@@ -41,25 +40,25 @@ class BitsPageTwo extends ScrollablePage {
             child: Padding(
               padding: EdgeInsets.only(left: padding.left, right: padding.right),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: OnlineHeader.height(context) + 40),
-                    const Text(
-                      'Chug eller Sannhet',
-                      style: OnlineTheme.eventHeader,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: OnlineHeader.height(context) + 40),
+                  const Text(
+                    'Chug eller Sannhet',
+                    style: OnlineTheme.eventHeader,
+                  ),
+                  const SizedBox(height: 20),
+                  const ClipRRect(child: SizedBox(height: 80)),
+                  const Positioned(
+                    child: Text(
+                      'Hva er det rareste stedet du har barbert deg?',
+                      style: OnlineTheme.eventListHeader,
                     ),
-                    const SizedBox(height: 20),
-                    const ClipRRect(child: SizedBox(height: 80)),
-                    const Positioned(
-                      child: Text(
-                        'Hva er det rareste stedet du har barbert deg?',
-                        style: OnlineTheme.eventListHeader,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
 
           // Right GestureDetector
           Expanded(

@@ -1,21 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/event/widgets/EventCardCountdown.dart';
-import 'package:online_events/pages/event/widgets/eventCardButtons.dart';
-import 'package:online_events/pages/event/widgets/event_participants.dart';
 
-import 'package:online_events/theme/theme.dart';
+import '/components/animated_button.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/main.dart';
+import '/pages/event/qr_code.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
+import 'widgets/event_card_countdown.dart';
+import 'widgets/eventCardButtons.dart';
+import 'widgets/event_participants.dart';
 
 class EventPage extends ScrollablePage {
   const EventPage({super.key});
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader();
+    return OnlineHeader(
+      buttons: [
+        if (loggedIn)
+          SizedBox.square(
+            dimension: 40,
+            child: Center(
+              child: AnimatedButton(
+                onPressed: () {
+                  AppNavigator.navigateToRoute(
+                    QRCode(name: 'Fredrik Hansteen'),
+                    additive: true,
+                  );
+                },
+                child: const ThemedIcon(
+                  icon: IconType.qr,
+                  size: 24,
+                  color: OnlineTheme.white,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 
   @override
@@ -67,7 +93,7 @@ class EventPage extends ScrollablePage {
 /// Påmelding
 class RegistrationCard extends StatelessWidget {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-  const RegistrationCard({Key? key});
+  const RegistrationCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +131,7 @@ Widget header() {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.eventHeader
-              .copyWith(height: 1, fontWeight: FontWeight.w600),
+          style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
         ),
         Container(
           height: 20,
@@ -151,7 +176,6 @@ class AttendanceCard extends StatelessWidget {
       ),
     );
   }
-
 
   /// Card Content
   Widget content() {
@@ -261,8 +285,7 @@ class DescriptionCard extends StatelessWidget {
       height: 32,
       child: Text(
         'Beskrivelse',
-        style: OnlineTheme.textStyle(
-            size: 20, color: OnlineTheme.orange10, weight: 6),
+        style: OnlineTheme.textStyle(size: 20, color: OnlineTheme.orange10, weight: 6),
       ),
     );
   }
@@ -277,16 +300,14 @@ class DescriptionCard extends StatelessWidget {
           padding: horizontalPadding,
           child: Text(
             'Har du noen gang latt deg inspere av Appkoms sjuke sjekkereplikker. Ta turen til A4!...',
-            style: OnlineTheme.textStyle(
-                weight: 4, size: 15, color: OnlineTheme.white),
+            style: OnlineTheme.textStyle(weight: 4, size: 15, color: OnlineTheme.white),
           ),
         ),
         Padding(
           padding: horizontalPadding,
           child: Text(
             'Les mer',
-            style: OnlineTheme.textStyle(
-                weight: 4, size: 15, color: OnlineTheme.yellow),
+            style: OnlineTheme.textStyle(weight: 4, size: 15, color: OnlineTheme.yellow),
           ),
         ),
         Row(

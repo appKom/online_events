@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/pages/event/qr_code.dart';
-import 'package:online_events/pages/home/home_page.dart';
-import 'package:online_events/services/app_navigator.dart';
-import 'package:online_events/theme/theme.dart';
 
+import '/components/animated_button.dart';
+import '/pages/home/home_page.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 
 class OnlineHeader extends StatelessWidget {
   final List<Widget> buttons;
@@ -50,9 +49,7 @@ class OnlineHeader extends StatelessWidget {
                 height: 36,
               ),
             ),
-            Row(
-              children: buttons,
-            ),
+            Row(children: buttons),
           ],
         ),
       ),

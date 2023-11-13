@@ -16,6 +16,7 @@ enum IconType {
   homeFilled,
   beer,
   beerFilled,
+  qr,
 }
 
 class ThemedIcon extends StatelessWidget {

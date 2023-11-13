@@ -17,8 +17,7 @@ class BitsPageThree extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Container(
       color: OnlineTheme.pink1,
@@ -41,25 +40,25 @@ class BitsPageThree extends ScrollablePage {
             child: Padding(
               padding: EdgeInsets.only(left: padding.left, right: padding.right),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: OnlineHeader.height(context) + 40),
-                    const Text(
-                      'Pekelek',
-                      style: OnlineTheme.eventHeader,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: OnlineHeader.height(context) + 40),
+                  const Text(
+                    'Pekelek',
+                    style: OnlineTheme.eventHeader,
+                  ),
+                  const SizedBox(height: 20),
+                  const ClipRRect(child: SizedBox(height: 80)),
+                  const Positioned(
+                    child: Text(
+                      'Hvem har hatt seg på A4?',
+                      style: OnlineTheme.eventListHeader,
                     ),
-                    const SizedBox(height: 20),
-                    const ClipRRect(child: SizedBox(height: 80)),
-                    const Positioned(
-                      child: Text(
-                        'Hvem har hatt seg på A4?',
-                        style: OnlineTheme.eventListHeader,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
 
           // Right GestureDetector
           Expanded(
