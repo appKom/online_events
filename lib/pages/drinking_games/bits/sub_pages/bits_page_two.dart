@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/drinking_games/bits/bits_home_page.dart';
 import 'package:online_events/pages/drinking_games/bits/sub_pages/bits_page_one.dart';
 import 'package:online_events/pages/drinking_games/bits/sub_pages/bits_page_three.dart';
 import 'package:online_events/services/page_navigator.dart';
