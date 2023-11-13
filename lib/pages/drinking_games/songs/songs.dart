@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../games/fader_abraham.dart';
+import 'fader_abraham.dart';
 import '/components/animated_button.dart';
 import '/services/page_navigator.dart';
 import '/theme/theme.dart';
