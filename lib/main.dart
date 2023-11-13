@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/services/app_navigator.dart';
+import '/components/online_scaffold.dart';
+import '/services/app_navigator.dart';
 import 'models/list_event.dart';
 import 'theme/theme.dart';
 

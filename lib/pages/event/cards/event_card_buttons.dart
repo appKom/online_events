@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/main.dart';
-import 'package:online_events/pages/event/qr_code.dart';
-import 'package:online_events/pages/event/show_participants.dart';
-import 'package:online_events/services/app_navigator.dart';
-import 'package:online_events/theme/theme.dart';
+
+import '/components/animated_button.dart';
+import '/components/separator.dart';
+import '/main.dart';
+import '/pages/event/qr_code.dart';
+import '/pages/event/show_participants.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 
 class EventCardButtons extends StatefulWidget {
   const EventCardButtons({super.key});

@@ -10,9 +10,9 @@ import '/pages/event/qr_code.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
-import 'widgets/event_card_countdown.dart';
-import 'widgets/eventCardButtons.dart';
-import 'widgets/event_participants.dart';
+import 'cards/event_card_buttons.dart';
+import 'cards/event_card_countdown.dart';
+import 'cards/event_participants.dart';
 
 class EventPage extends ScrollablePage {
   const EventPage({super.key});
@@ -21,6 +21,21 @@ class EventPage extends ScrollablePage {
   Widget? header(BuildContext context) {
     return OnlineHeader(
       buttons: [
+        SizedBox.square(
+          dimension: 40,
+          child: Center(
+            child: AnimatedButton(
+              onPressed: () {
+                print('📸');
+              },
+              child: const ThemedIcon(
+                icon: IconType.camScan,
+                size: 24,
+                color: OnlineTheme.white,
+              ),
+            ),
+          ),
+        ),
         if (loggedIn)
           SizedBox.square(
             dimension: 40,

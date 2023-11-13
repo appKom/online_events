@@ -7,6 +7,7 @@ enum IconType {
   dateTime,
   location,
   people,
+  camScan,
   copy,
   calendarClock,
   calendarClockFilled,
