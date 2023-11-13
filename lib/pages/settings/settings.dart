@@ -14,6 +14,8 @@ class SettingsPage extends OnlinePage {
     return OnlineHeader();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
@@ -72,6 +74,7 @@ class __SettingsContentState extends State<_SettingsContent> {
 
   @override
   Widget build(BuildContext context) {
+    
     // Override the checkbox theme for this column only
     return Theme(
       data: Theme.of(context).copyWith(
