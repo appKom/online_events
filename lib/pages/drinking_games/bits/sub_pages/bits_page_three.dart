@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/drinking_games/bits/bits_home_page.dart';
-import 'package:online_events/pages/drinking_games/bits/sub_pages/bits_page_two.dart';
-import 'package:online_events/services/page_navigator.dart';
-import 'package:online_events/theme/theme.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/pages/drinking_games/bits/bits_home_page.dart';
+import '/pages/drinking_games/bits/sub_pages/bits_page_two.dart';
+import '/services/page_navigator.dart';
+import '/theme/theme.dart';
 // Import other pages if necessary
 
 class BitsPageThree extends ScrollablePage {
