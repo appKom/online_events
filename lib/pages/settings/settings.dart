@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 
@@ -14,11 +13,10 @@ class SettingsPage extends OnlinePage {
     return OnlineHeader();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
       color: OnlineTheme.background,
@@ -65,6 +63,7 @@ class _SettingsContent extends StatefulWidget {
 }
 
 class __SettingsContentState extends State<_SettingsContent> {
+  bool isPressed = false; // Track if the button is pressed
   Map<String, bool> categories = {
     'Bedriftspresentasjoner': false,
     'Kurs': false,
@@ -74,7 +73,6 @@ class __SettingsContentState extends State<_SettingsContent> {
 
   @override
   Widget build(BuildContext context) {
-    
     // Override the checkbox theme for this column only
     return Theme(
       data: Theme.of(context).copyWith(
@@ -108,28 +106,42 @@ class __SettingsContentState extends State<_SettingsContent> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 20), // Space between checkboxes and buttone between checkboxes and button
+          const SizedBox(height: 20),
           Row(
             mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                child: AnimatedButton(
-                  onPressed: () {
-                    //Save logic
+                child: GestureDetector(
+                  onTapDown: (_) => setState(() => isPressed = true),
+                  onTapUp: (_) => setState(() => isPressed = false),
+                  onTapCancel: () => setState(() => isPressed = false),
+                  onTap: () {
+                    // Save logic
                   },
-                  scale: 0.9,
-                  child: Container(
-                    height: 40,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    height: 50, // Slightly larger button
                     decoration: BoxDecoration(
-                      color: OnlineTheme.green3,
+                      gradient: isPressed
+                          ? LinearGradient(
+                              colors: [Colors.green[600]!, Colors.green[800]!])
+                          : const LinearGradient(
+                              colors: [OnlineTheme.green3, Colors.green]),
                       borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Center(
                       child: Text(
                         'Lagre',
-                        style: OnlineTheme.textStyle(),
+                        style: OnlineTheme.textStyle()
+                            .copyWith(color: Colors.white),
                       ),
                     ),
                   ),
