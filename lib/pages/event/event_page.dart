@@ -78,7 +78,7 @@ class EventPage extends ScrollablePage {
         const Padding(
           padding: horizontalPadding,
           child: Text(
-            'Flørtekurs på A4',
+            'Flørtekurs med Appkom',
             style: OnlineTheme.eventHeader,
           ),
         ),
