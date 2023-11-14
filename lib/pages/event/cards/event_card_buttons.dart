@@ -8,6 +8,7 @@ import '/pages/event/show_participants.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
+/// This appears to be the sus buttons on the bottom
 class EventCardButtons extends StatefulWidget {
   const EventCardButtons({super.key});
 
@@ -74,10 +75,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
                         additive: true,
                       );
                     },
-                    // style: buttonStyle.copyWith(
-                    //   backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    // ),
-
                     child: Container(
                       alignment: Alignment.center,
                       height: buttonHeight,
@@ -89,12 +86,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
               : const SizedBox(
                   width: 10,
                 ),
-          // onPressed: () {
-          //     setState(() {
-          //       isRegistered = !isRegistered; // Toggle isRegistered state
-          //     });
-          //   },
-
           const SizedBox(
             width: 10,
           ),
@@ -119,7 +110,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           const SizedBox(
             width: 10,
           ),
-
           Flexible(
             child: AnimatedButton(
               onPressed: () {

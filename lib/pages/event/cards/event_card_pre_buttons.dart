@@ -57,22 +57,21 @@ class _EventCardButtonsState extends State<EventCardPreButtons> {
 
     // Button style
     if (loggedIn) {
-      return Row(
-        children: [
-          Flexible(
-            child: AnimatedButton(
-              onPressed: () {
-                //TO DO Varslings Logikk
-              },
-              child: Container(
-                alignment: Alignment.center,
-                height: 50,
-                decoration: boxDecoration(false, true, false), // Use false for blue gradient
-                child: Text('Varsle meg', style: OnlineTheme.textStyle()),
-              ),
+      return AnimatedButton(
+        onPressed: () {
+          //TO DO Varslings Logikk
+        },
+        child: Container(
+          alignment: Alignment.center,
+          height: 40,
+          decoration: boxDecoration(false, true, false), // Use false for blue gradient
+          child: IgnorePointer(
+            child: Text(
+              'Varsle meg',
+              style: OnlineTheme.textStyle(),
             ),
           ),
-        ],
+        ),
       );
     } else {
       return Column(

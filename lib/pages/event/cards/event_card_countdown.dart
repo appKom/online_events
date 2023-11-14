@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../theme/theme.dart';
+
 class EventCardCountdown extends StatelessWidget {
   const EventCardCountdown({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 53,
+      height: 45,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         child: Row(
@@ -24,28 +26,24 @@ class EventCardCountdown extends StatelessWidget {
 
   Widget buildNumberColumn(String number, String label) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          child: Center(
-            child: Text(
-              number,
-              style: const TextStyle(
-                fontSize: 20, // Adjust the size of the text as needed
-                color: Colors.white, // Text color
-              ),
-            ),
+        Text(
+          number,
+          style: OnlineTheme.textStyle(
+            height: 1,
+            weight: 7,
+            size: 20,
           ),
         ),
-        Center(
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14, // Adjust the size of the label as needed
-              color: Colors.white, // Text color
-            ),
+        Text(
+          label,
+          style: OnlineTheme.textStyle(
+            height: 1,
+            size: 14,
           ),
         ),
-        const SizedBox(height: 4), // Add a small amount of space between the number and label
       ],
     );
   }
