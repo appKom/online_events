@@ -142,23 +142,24 @@ Widget header() {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.eventHeader
-              .copyWith(height: 1, fontWeight: FontWeight.w600),
+          style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
         ),
         Container(
-          height: 20,
+          height: 24,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
             color: OnlineTheme.purple1,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: OnlineTheme.white,
+              color: OnlineTheme.purple1.lighten(100),
             ),
           ),
-          child: const Text(
-            'Ikke Åpen',
-            style: TextStyle(
-              color: OnlineTheme.white,
+          child: const Center(
+            child: Text(
+              'Ikke Åpen',
+              style: TextStyle(
+                color: OnlineTheme.white,
+              ),
             ),
           ),
         ),
@@ -305,8 +306,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
       height: 32,
       child: Text(
         'Beskrivelse',
-        style: OnlineTheme.textStyle(
-            size: 20, color: OnlineTheme.orange10, weight: 6),
+        style: OnlineTheme.textStyle(size: 20, color: OnlineTheme.orange10, weight: 6),
       ),
     );
   }
@@ -321,11 +321,10 @@ class _DescriptionCardState extends State<DescriptionCard> {
           padding: horizontalPadding,
           child: Text(
             _isExpanded
-            // Full beskrivelse
-                ? 'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering! Vi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! Bedriftspresentasjonen vil bestå av et lavterskel krasjkurs på 45 minutter i Sanity CMS og Next.js, etterfulgt av pizza, drikke og spill i kantinen deres. Vi gleder oss til å se deg der! Inngangen er på sjøsiden. English: The event will be held in Norwegian.' 
+                // Full beskrivelse
+                ? 'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering! Vi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! Bedriftspresentasjonen vil bestå av et lavterskel krasjkurs på 45 minutter i Sanity CMS og Next.js, etterfulgt av pizza, drikke og spill i kantinen deres. Vi gleder oss til å se deg der! Inngangen er på sjøsiden. English: The event will be held in Norwegian.'
                 : 'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digit...',
-            style: OnlineTheme.textStyle(
-                weight: 4, size: 15, color: OnlineTheme.white),
+            style: OnlineTheme.textStyle(weight: 4, size: 15, color: OnlineTheme.white),
           ),
         ),
         GestureDetector(
@@ -336,8 +335,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
           },
           child: Text(
             _isExpanded ? 'Vis mindre' : 'Les mer',
-            style: OnlineTheme.textStyle(
-                weight: 4, size: 15, color: OnlineTheme.yellow),
+            style: OnlineTheme.textStyle(weight: 4, size: 15, color: OnlineTheme.yellow),
           ),
         ),
         Row(
