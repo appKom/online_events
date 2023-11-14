@@ -40,14 +40,15 @@ class OnlineHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AnimatedButton(
-              onPressed: () {
+              onTap: () {
                 PageNavigator.navigateTo(const HomePage());
               },
-              scale: 0.9,
-              child: SvgPicture.asset(
-                'assets/svg/online_logo.svg',
-                height: 36,
-              ),
+              childBuilder: (context, hover, pointerDown) {
+                return SvgPicture.asset(
+                  'assets/svg/online_logo.svg',
+                  height: 36,
+                );
+              },
             ),
             Row(children: buttons),
           ],

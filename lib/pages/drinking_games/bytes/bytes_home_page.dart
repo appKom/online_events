@@ -42,23 +42,24 @@ class BytesHomePage extends ScrollablePage {
                 children: [
                   Expanded(
                     child: AnimatedButton(
-                      onPressed: () {
-                        //
+                      onTap: () {
+                        // TODO:
                       },
-                      scale: 0.9,
-                      child: Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: OnlineTheme.red1,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Start spillet!',
-                            style: OnlineTheme.textStyle(),
+                      childBuilder: (context, hover, pointerDown) {
+                        return Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: OnlineTheme.red1,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                      ),
+                          child: Center(
+                            child: Text(
+                              'Start spillet!',
+                              style: OnlineTheme.textStyle(),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

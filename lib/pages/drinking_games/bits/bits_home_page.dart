@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/drinking_games/bits/sub_pages/bits_page_one.dart';
-import 'package:online_events/services/page_navigator.dart';
-import 'package:online_events/theme/theme.dart';
+
+import '/components/animated_button.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/pages/drinking_games/bits/sub_pages/bits_page_one.dart';
+import '/services/page_navigator.dart';
+import '/theme/theme.dart';
 
 class BitsHomePage extends ScrollablePage {
   const BitsHomePage({super.key});
@@ -44,23 +45,24 @@ class BitsHomePage extends ScrollablePage {
                 children: [
                   Expanded(
                     child: AnimatedButton(
-                      onPressed: () {
+                      onTap: () {
                         PageNavigator.navigateTo(const BitsPageOne());
                       },
-                      scale: 0.9,
-                      child: Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: OnlineTheme.green4,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Start spillet!',
-                            style: OnlineTheme.textStyle(),
+                      childBuilder: (context, hover, pointerDown) {
+                        return Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: OnlineTheme.green4,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                      ),
+                          child: Center(
+                            child: Text(
+                              'Start spillet!',
+                              style: OnlineTheme.textStyle(),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

@@ -66,7 +66,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           isRegistered
               ? Flexible(
                   child: AnimatedButton(
-                    onPressed: () {
+                    onTap: () {
                       // Implement the "Vis billett" action here
                       AppNavigator.navigateToRoute(
                         QRCode(
@@ -75,12 +75,14 @@ class _EventCardButtonsState extends State<EventCardButtons> {
                         additive: true,
                       );
                     },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: buttonHeight,
-                      decoration: boxDecoration(false, true, isRegistered),
-                      child: Text('Vis billett', style: OnlineTheme.textStyle()),
-                    ),
+                    childBuilder: (context, hover, pointerDown) {
+                      return Container(
+                        alignment: Alignment.center,
+                        height: buttonHeight,
+                        decoration: boxDecoration(false, true, isRegistered),
+                        child: Text('Vis billett', style: OnlineTheme.textStyle()),
+                      );
+                    },
                   ),
                 )
               : const SizedBox(
@@ -91,20 +93,22 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           ),
           Flexible(
             child: AnimatedButton(
-              onPressed: () {
+              onTap: () {
                 setState(() {
                   isRegistered = !isRegistered; // Toggle isRegistered state
                 });
               },
-              child: Container(
-                alignment: Alignment.center,
-                height: buttonHeight,
-                decoration: boxDecoration(false, false, isRegistered),
-                child: Text(
-                  isRegistered ? 'Meld av' : 'Meld meg på',
-                  style: OnlineTheme.textStyle(),
-                ),
-              ),
+              childBuilder: (context, hover, pointerDown) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: buttonHeight,
+                  decoration: boxDecoration(false, false, isRegistered),
+                  child: Text(
+                    isRegistered ? 'Meld av' : 'Meld meg på',
+                    style: OnlineTheme.textStyle(),
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(
@@ -112,19 +116,21 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           ),
           Flexible(
             child: AnimatedButton(
-              onPressed: () {
+              onTap: () {
                 // Navigate to ShowParticipants regardless of isRegistered state
                 AppNavigator.navigateToRoute(
                   ShowParticipants(),
                   additive: true,
                 );
               },
-              child: Container(
-                alignment: Alignment.center,
-                height: 50,
-                decoration: boxDecoration(true, false, false), // Use false for blue gradient
-                child: Text('Se Påmeldte', style: OnlineTheme.textStyle()),
-              ),
+              childBuilder: (context, hover, pointerDown) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  decoration: boxDecoration(true, false, false), // Use false for blue gradient
+                  child: Text('Se Påmeldte', style: OnlineTheme.textStyle()),
+                );
+              },
             ),
           ),
         ],

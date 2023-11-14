@@ -159,24 +159,25 @@ class ProfilePage extends ScrollablePage {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
             child: AnimatedButton(
-              onPressed: () {
+              onTap: () {
                 loggedIn = false;
                 PageNavigator.navigateTo(const HomePage());
               },
-              scale: 0.9,
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  color: OnlineTheme.red1,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Center(
-                  child: Text(
-                    'Logg Ut',
-                    style: OnlineTheme.textStyle(weight: 5),
+              childBuilder: (context, hover, pointerDown) {
+                return Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: OnlineTheme.red1,
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                ),
-              ),
+                  child: Center(
+                    child: Text(
+                      'Logg Ut',
+                      style: OnlineTheme.textStyle(weight: 5),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           SizedBox(height: Navbar.height(context)),

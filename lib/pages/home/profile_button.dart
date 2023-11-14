@@ -13,8 +13,10 @@ class ProfileButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
-      onPressed: onPressed,
-      child: loggedIn ? loggedInContent() : loggedOutContent(),
+      onTap: onPressed,
+      childBuilder: (context, hover, pointerDown) {
+        return loggedIn ? loggedInContent() : loggedOutContent();
+      },
     );
   }
 

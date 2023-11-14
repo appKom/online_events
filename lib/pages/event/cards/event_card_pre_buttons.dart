@@ -18,8 +18,6 @@ class _EventCardButtonsState extends State<EventCardPreButtons> {
 
   @override
   Widget build(BuildContext context) {
-    double buttonHeight = 50;
-
     BoxDecoration boxDecoration(bool isForSePameldte, bool isForVisBillett, bool isRegistered) {
       return BoxDecoration(
         gradient: isForSePameldte
@@ -58,20 +56,22 @@ class _EventCardButtonsState extends State<EventCardPreButtons> {
     // Button style
     if (loggedIn) {
       return AnimatedButton(
-        onPressed: () {
-          //TO DO Varslings Logikk
+        onTap: () {
+          // TODO: Varslings Logikk
         },
-        child: Container(
-          alignment: Alignment.center,
-          height: 40,
-          decoration: boxDecoration(false, true, false), // Use false for blue gradient
-          child: IgnorePointer(
-            child: Text(
-              'Varsle meg',
-              style: OnlineTheme.textStyle(),
+        childBuilder: (context, hover, pointerDown) {
+          return Container(
+            alignment: Alignment.center,
+            height: 40,
+            decoration: boxDecoration(false, true, false), // Use false for blue gradient
+            child: IgnorePointer(
+              child: Text(
+                'Varsle meg',
+                style: OnlineTheme.textStyle(),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       );
     } else {
       return Column(

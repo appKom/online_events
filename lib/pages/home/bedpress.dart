@@ -64,97 +64,98 @@ class BedpressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
-      onPressed: () => PageNavigator.navigateTo(const EventPagePre()),
-      scale: 0.9,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          width: 222,
-          color: OnlineTheme.gray13,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                bottom: 111,
-                child: Image.asset(
-                  model.imageSource,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Positioned(
-                right: 15,
-                top: 222 + 10,
-                child: Text(
-                  monthToString(),
-                  style: OnlineTheme.textStyle(
-                    size: 16,
-                    weight: 7,
-                    color: OnlineTheme.blue2,
+      onTap: () => PageNavigator.navigateTo(const EventPagePre()),
+      childBuilder: (context, hover, pointerDown) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            width: 222,
+            color: OnlineTheme.gray13,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  bottom: 111,
+                  child: Image.asset(
+                    model.imageSource,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-              Positioned(
-                right: 15,
-                top: 222 + 25,
-                child: Text(
-                  model.date.day.toString().padLeft(2, '0'),
-                  style: OnlineTheme.textStyle(
-                    size: 22,
-                    weight: 7,
-                  ),
-                ),
-              ),
-              Positioned(
-                right: 80,
-                top: 222 + 10,
-                left: 15,
-                child: Text(
-                  model.name,
-                  style: OnlineTheme.textStyle(
-                    color: OnlineTheme.gray11,
-                    weight: 7,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 15,
-                bottom: 15,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: OnlineTheme.green2,
-                    borderRadius: BorderRadius.circular(3),
-                  ),
+                Positioned(
+                  right: 15,
+                  top: 222 + 10,
                   child: Text(
-                    categoryToString(),
-                    style: OnlineTheme.textStyle(weight: 5, size: 14),
+                    monthToString(),
+                    style: OnlineTheme.textStyle(
+                      size: 16,
+                      weight: 7,
+                      color: OnlineTheme.blue2,
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 15,
-                right: 12,
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 2),
-                      child: ThemedIcon(
-                        icon: IconType.people,
-                        size: 16,
-                        color: OnlineTheme.green1,
-                      ),
+                Positioned(
+                  right: 15,
+                  top: 222 + 25,
+                  child: Text(
+                    model.date.day.toString().padLeft(2, '0'),
+                    style: OnlineTheme.textStyle(
+                      size: 22,
+                      weight: 7,
                     ),
-                    const SizedBox(width: 6),
-                    Text(
-                      '${model.registered}/${model.capacity}',
-                      style: OnlineTheme.textStyle(size: 14),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                Positioned(
+                  right: 80,
+                  top: 222 + 10,
+                  left: 15,
+                  child: Text(
+                    model.name,
+                    style: OnlineTheme.textStyle(
+                      color: OnlineTheme.gray11,
+                      weight: 7,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 15,
+                  bottom: 15,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: OnlineTheme.green2,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Text(
+                      categoryToString(),
+                      style: OnlineTheme.textStyle(weight: 5, size: 14),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 15,
+                  right: 12,
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: ThemedIcon(
+                          icon: IconType.people,
+                          size: 16,
+                          color: OnlineTheme.green1,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        '${model.registered}/${model.capacity}',
+                        style: OnlineTheme.textStyle(size: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

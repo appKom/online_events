@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme/theme.dart';
+import '/theme/theme.dart';
 
+/// Nedtelling til påmeldings-start.
 class EventCardCountdown extends StatelessWidget {
   const EventCardCountdown({super.key});
 
@@ -9,22 +10,19 @@ class EventCardCountdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 45,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            buildNumberColumn("12", "Dager"),
-            buildNumberColumn("4", "Timer"),
-            buildNumberColumn("8", "Minutter"),
-            buildNumberColumn("6", "Sekunder"),
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          numberColumn("12", "Dager"),
+          numberColumn("4", "Timer"),
+          numberColumn("8", "Minutter"),
+          numberColumn("6", "Sekunder"),
+        ],
       ),
     );
   }
 
-  Widget buildNumberColumn(String number, String label) {
+  Widget numberColumn(String number, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

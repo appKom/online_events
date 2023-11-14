@@ -71,12 +71,14 @@ class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderSt
           builder: (context, child) {
             return Center(
               child: AnimatedButton(
-                onPressed: rollDice,
-                child: Image.asset(
-                  'assets/images/dice/dice$diceRoll.png',
-                  width: 300,
-                  height: 300,
-                ),
+                onTap: rollDice,
+                childBuilder: (context, hover, pointerDown) {
+                  return Image.asset(
+                    'assets/images/dice/dice$diceRoll.png',
+                    width: 300,
+                    height: 300,
+                  );
+                },
               ),
             );
           },

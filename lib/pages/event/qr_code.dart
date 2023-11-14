@@ -30,9 +30,11 @@ class QRCode extends DarkOverlay {
           SizedBox.square(
             dimension: maxSize - padding.horizontal - 50,
             child: AnimatedButton(
-              child: SvgPicture.asset(
-                'assets/svg/qr_code.svg',
-              ),
+              childBuilder: (context, hover, pointerDown) {
+                return SvgPicture.asset(
+                  'assets/svg/qr_code.svg',
+                );
+              },
             ),
           ),
         ],
