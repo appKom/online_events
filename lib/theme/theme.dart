@@ -20,7 +20,6 @@ sealed class OnlineTheme {
   static const pink1 = Color(0xFF5E0231);
 
   static const yellow = Color(0xFFFAB759);
-  static const orange10 = Color(0xFFFFEDB3); // More like yellow10
 
   static const purple1 = Color(0xFFAB18C8);
 
@@ -37,6 +36,7 @@ sealed class OnlineTheme {
   // Fonts
   static const font = 'Poppins';
 
+  @Deprecated('Use OnlineTheme.textStyle() instead.')
   static const eventListHeader = TextStyle(
     fontFamily: font,
     color: gray11,
@@ -47,61 +47,12 @@ sealed class OnlineTheme {
     decoration: TextDecoration.none,
   );
 
-  // static const eventBedpressHeader = TextStyle(
-  //   fontFamily: font,
-  //   color: gray11,
-  //   fontWeight: FontWeight.w400,
-  //   fontSize: 16,
-  //   height: 1.5,
-  //   fontStyle: FontStyle.normal,
-  //   decoration: TextDecoration.none,
-  // );
-
+  @Deprecated('Use OnlineTheme.textStyle() instead.')
   static const eventHeader = TextStyle(
     fontFamily: font,
     color: white,
     fontWeight: FontWeight.w700,
     fontSize: 24,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const loginPageEmail = TextStyle(
-    fontFamily: font,
-    color: white,
-    fontWeight: FontWeight.w400,
-    fontSize: 14,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const logInnPageInput = TextStyle(
-    fontFamily: font,
-    color: gray15,
-    fontWeight: FontWeight.w400,
-    fontSize: 13,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const logInnPageButton = TextStyle(
-    fontFamily: font,
-    color: white,
-    fontWeight: FontWeight.w700,
-    fontSize: 18,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  static const goToButton = TextStyle(
-    fontFamily: font,
-    color: white,
-    fontWeight: FontWeight.w700,
-    fontSize: 18,
     height: 1.5,
     fontStyle: FontStyle.normal,
     decoration: TextDecoration.none,

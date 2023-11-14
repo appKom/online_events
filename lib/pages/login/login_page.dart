@@ -56,7 +56,7 @@ class LoginPage extends StaticPage {
                 child: TextField(
                   obscureText: false,
                   autocorrect: false,
-                  style: OnlineTheme.loginPageEmail,
+                  style: OnlineTheme.textStyle(size: 14),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: OnlineTheme.gray14,
@@ -89,7 +89,7 @@ class LoginPage extends StaticPage {
                 child: TextField(
                   obscureText: true,
                   autocorrect: false,
-                  style: OnlineTheme.loginPageEmail,
+                  style: OnlineTheme.textStyle(size: 14),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: OnlineTheme.gray14,
@@ -114,24 +114,25 @@ class LoginPage extends StaticPage {
             children: [
               Expanded(
                 child: AnimatedButton(
-                  onPressed: () {
+                  onTap: () {
                     loggedIn = true;
                     PageNavigator.navigateTo(const ProfilePage());
                   },
-                  scale: 0.9,
-                  child: Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: OnlineTheme.green3,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Logg Inn',
-                        style: OnlineTheme.textStyle(),
+                  childBuilder: (context, hover, pointerDown) {
+                    return Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: OnlineTheme.green3,
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    ),
-                  ),
+                      child: Center(
+                        child: Text(
+                          'Logg Inn',
+                          style: OnlineTheme.textStyle(),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

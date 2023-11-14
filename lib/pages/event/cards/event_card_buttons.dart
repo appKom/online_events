@@ -8,6 +8,7 @@ import '/pages/event/show_participants.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
+/// This appears to be the sus buttons on the bottom
 class EventCardButtons extends StatefulWidget {
   const EventCardButtons({super.key});
 
@@ -65,7 +66,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           isRegistered
               ? Flexible(
                   child: AnimatedButton(
-                    onPressed: () {
+                    onTap: () {
                       // Implement the "Vis billett" action here
                       AppNavigator.navigateToRoute(
                         QRCode(
@@ -74,67 +75,62 @@ class _EventCardButtonsState extends State<EventCardButtons> {
                         additive: true,
                       );
                     },
-                    // style: buttonStyle.copyWith(
-                    //   backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    // ),
-
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: buttonHeight,
-                      decoration: boxDecoration(false, true, isRegistered),
-                      child: Text('Vis billett', style: OnlineTheme.textStyle()),
-                    ),
+                    childBuilder: (context, hover, pointerDown) {
+                      return Container(
+                        alignment: Alignment.center,
+                        height: buttonHeight,
+                        decoration: boxDecoration(false, true, isRegistered),
+                        child: Text('Vis billett', style: OnlineTheme.textStyle()),
+                      );
+                    },
                   ),
                 )
               : const SizedBox(
                   width: 10,
                 ),
-          // onPressed: () {
-          //     setState(() {
-          //       isRegistered = !isRegistered; // Toggle isRegistered state
-          //     });
-          //   },
-
           const SizedBox(
             width: 10,
           ),
           Flexible(
             child: AnimatedButton(
-              onPressed: () {
+              onTap: () {
                 setState(() {
                   isRegistered = !isRegistered; // Toggle isRegistered state
                 });
               },
-              child: Container(
-                alignment: Alignment.center,
-                height: buttonHeight,
-                decoration: boxDecoration(false, false, isRegistered),
-                child: Text(
-                  isRegistered ? 'Meld av' : 'Meld meg på',
-                  style: OnlineTheme.textStyle(),
-                ),
-              ),
+              childBuilder: (context, hover, pointerDown) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: buttonHeight,
+                  decoration: boxDecoration(false, false, isRegistered),
+                  child: Text(
+                    isRegistered ? 'Meld av' : 'Meld meg på',
+                    style: OnlineTheme.textStyle(),
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(
             width: 10,
           ),
-
           Flexible(
             child: AnimatedButton(
-              onPressed: () {
+              onTap: () {
                 // Navigate to ShowParticipants regardless of isRegistered state
                 AppNavigator.navigateToRoute(
                   ShowParticipants(),
                   additive: true,
                 );
               },
-              child: Container(
-                alignment: Alignment.center,
-                height: 50,
-                decoration: boxDecoration(true, false, false), // Use false for blue gradient
-                child: Text('Se Påmeldte', style: OnlineTheme.textStyle()),
-              ),
+              childBuilder: (context, hover, pointerDown) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  decoration: boxDecoration(true, false, false), // Use false for blue gradient
+                  child: Text('Se Påmeldte', style: OnlineTheme.textStyle()),
+                );
+              },
             ),
           ),
         ],

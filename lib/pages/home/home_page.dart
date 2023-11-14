@@ -59,27 +59,29 @@ class HomePage extends ScrollablePage {
             ),
           ),
           AnimatedButton(
-            onPressed: () => PageNavigator.navigateTo(const EventsPage()),
+            onTap: () => PageNavigator.navigateTo(const EventsPage()),
             behavior: HitTestBehavior.opaque,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'MER',
-                  style: OnlineTheme.textStyle(weight: 4),
-                ),
-                const SizedBox(width: 2),
-                const Padding(
-                  padding: EdgeInsets.only(top: 4),
-                  child: Icon(
-                    Icons.navigate_next,
-                    color: OnlineTheme.gray9,
-                    size: 15,
+            childBuilder: (context, hover, pointerDown) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'MER',
+                    style: OnlineTheme.textStyle(weight: 4),
                   ),
-                ),
-              ],
-            ),
+                  const SizedBox(width: 2),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 4),
+                    child: Icon(
+                      Icons.navigate_next,
+                      color: OnlineTheme.gray9,
+                      size: 15,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 10),
           Bedpress(

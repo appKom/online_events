@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/drinking_games/drinking_games_page.dart';
-import 'package:online_events/pages/events/my_events_page.dart';
-import 'package:online_events/pages/settings/settings.dart';
 
-import '../services/page_navigator.dart';
+import '/pages/drinking_games/drinking_games_page.dart';
+import '/pages/events/my_events_page.dart';
 import '/pages/home/home_page.dart';
-import '/theme/themed_icon.dart';
-import 'animated_button.dart';
+import '/pages/settings/settings.dart';
 import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
+import '../services/page_navigator.dart';
+import 'animated_button.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -73,18 +73,18 @@ class NavbarState extends State<Navbar> {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.only(bottom: padding),
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: AnimatedButton(
-            behavior: HitTestBehavior.opaque,
-            onPressed: () {
-              buttons[i].onPressed?.call();
+        child: AnimatedButton(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            buttons[i].onPressed?.call();
 
-              setState(() {
-                selected = i;
-              });
-            },
-            child: Padding(
+            setState(() {
+              selected = i;
+            });
+          },
+          scale: 0.8,
+          childBuilder: (context, hover, pointerDown) {
+            return Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: ThemedIcon(
                 key: UniqueKey(),
@@ -92,8 +92,8 @@ class NavbarState extends State<Navbar> {
                 size: 24,
                 color: active ? OnlineTheme.yellow : OnlineTheme.white,
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

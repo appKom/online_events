@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/theme/theme.dart';
 
+/// This appears to be the row with the width problems
 class EventRegestrationCard extends StatelessWidget {
   const EventRegestrationCard({super.key});
 
