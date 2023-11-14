@@ -271,8 +271,18 @@ class AttendanceCard extends StatelessWidget {
   }
 }
 
-class DescriptionCard extends StatelessWidget {
-  const DescriptionCard({super.key});
+
+
+class DescriptionCard extends StatefulWidget {
+  const DescriptionCard({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _DescriptionCardState createState() => _DescriptionCardState();
+}
+
+class _DescriptionCardState extends State<DescriptionCard> {
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +310,8 @@ class DescriptionCard extends StatelessWidget {
       height: 32,
       child: Text(
         'Beskrivelse',
-        style: OnlineTheme.textStyle(size: 20, color: OnlineTheme.orange10, weight: 6),
+        style: OnlineTheme.textStyle(
+            size: 20, color: OnlineTheme.orange10, weight: 6),
       ),
     );
   }
@@ -314,22 +325,31 @@ class DescriptionCard extends StatelessWidget {
         Padding(
           padding: horizontalPadding,
           child: Text(
-            'Har du noen gang latt deg inspere av Appkoms sjuke sjekkereplikker. Ta turen til A4!...',
-            style: OnlineTheme.textStyle(weight: 4, size: 15, color: OnlineTheme.white),
+            _isExpanded
+            // Full beskrivelse
+                ? 'Har du noen gang latt deg inspere av Appkoms sjuke sjekkereplikker. Ta turen til A4, og la deg insperere. This course will be held in Norwegian.' 
+                : 'Har du noen gang latt deg inspere av Appkoms sjuke sjekkereplikker. Ta turen til A4!...',
+            style: OnlineTheme.textStyle(
+                weight: 4, size: 15, color: OnlineTheme.white),
           ),
         ),
-        Padding(
-          padding: horizontalPadding,
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _isExpanded = !_isExpanded;
+            });
+          },
           child: Text(
-            'Les mer',
-            style: OnlineTheme.textStyle(weight: 4, size: 15, color: OnlineTheme.yellow),
+            _isExpanded ? 'Vis mindre' : 'Les mer',
+            style: OnlineTheme.textStyle(
+                weight: 4, size: 15, color: OnlineTheme.yellow),
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              'Av Appkom <3',
+              'Av Bedkom',
               style: OnlineTheme.textStyle(),
             )
           ],

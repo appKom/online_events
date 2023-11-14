@@ -15,8 +15,8 @@ To run this project firstly you need to have these components installed:
 
 ### Flutter.sdk
 1. Download the FLutter SDK:
-* Go to the Dart SDK download page https://docs.flutter.dev/get-started/install
-* Download the Dart SDK as a zip file for Windows.
+* Go to the Flutter SDK download page https://docs.flutter.dev/get-started/install
+* Download the Flutter SDK as a zip file for Windows.
 
 2. Extract the Flutter SDK:
 * Extract the contents of the zip file to a location on your machine (e.g., C:\flutter).

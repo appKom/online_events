@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import '/components/animated_button.dart';
 import '/components/separator.dart';
 import '/main.dart';
-import '/pages/event/qr_code.dart';
-import '/pages/event/show_participants.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class EventCardPreButtons extends StatefulWidget {
