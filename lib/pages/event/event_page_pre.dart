@@ -104,13 +104,21 @@ Widget header() {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
+          style: OnlineTheme.eventHeader
+              .copyWith(height: 1, fontWeight: FontWeight.w600),
         ),
         CardBadge(
           border: OnlineTheme.purple1.lighten(100),
-          fill: OnlineTheme.purple1,
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.purple, // Start color
+              Colors.deepPurple, // End color
+            ],
+          ),
           text: 'Ikke Åpen',
-        ),
+        )
       ],
     ),
   );

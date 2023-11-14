@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 
@@ -108,45 +109,36 @@ class __SettingsContentState extends State<_SettingsContent> {
           ),
           const SizedBox(height: 20),
           Row(
+            
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                child: GestureDetector(
-                  onTapDown: (_) => setState(() => isPressed = true),
-                  onTapUp: (_) => setState(() => isPressed = false),
-                  onTapCancel: () => setState(() => isPressed = false),
-                  onTap: () {
-                    // Save logic
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    height: 50, // Slightly larger button
-                    decoration: BoxDecoration(
-                      gradient: isPressed
-                          ? LinearGradient(
-                              colors: [Colors.green[600]!, Colors.green[800]!])
-                          : const LinearGradient(
-                              colors: [OnlineTheme.green3, Colors.green]),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
+                child: AnimatedButton(
+                  childBuilder: (context, hover, pointerDown) {
+                    return Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            OnlineTheme.green2, // Start color
+                            OnlineTheme.green1, // End color
+                          ],
                         ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Lagre',
-                        style: OnlineTheme.textStyle()
-                            .copyWith(color: Colors.white),
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                    ),
-                  ),
+                      child: Center(
+                        child: Text(
+                          'Lagre',
+                          style: OnlineTheme.textStyle(),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              ),
+              )
             ],
           ),
         ],
