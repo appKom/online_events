@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/pages/event/cards/event_card_pre_buttons.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -14,8 +15,8 @@ import 'cards/event_card_buttons.dart';
 import 'cards/event_card_countdown.dart';
 import 'cards/event_participants.dart';
 
-class EventPage extends ScrollablePage {
-  const EventPage({super.key});
+class EventPagePre extends ScrollablePage {
+  const EventPagePre({super.key});
 
   @override
   Widget? header(BuildContext context) {
@@ -77,7 +78,7 @@ class EventPage extends ScrollablePage {
         const SizedBox(height: 24),
         const Padding(
           padding: horizontalPadding,
-          child:  Text(
+          child: Text(
             'Flørtekurs med Appkom',
             style: OnlineTheme.eventHeader,
           ),
@@ -128,7 +129,7 @@ class RegistrationCard extends StatelessWidget {
           const SizedBox(height: 16),
           const EventCardCountdown(), // Add the countdown widget here
           const SizedBox(height: 20),
-          const EventCardButtons(), // Removed Padding widget
+          const EventCardPreButtons(),
         ],
       ),
     );
@@ -146,20 +147,21 @@ Widget header() {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
+          style: OnlineTheme.eventHeader
+              .copyWith(height: 1, fontWeight: FontWeight.w600),
         ),
         Container(
           height: 20,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
-            color: OnlineTheme.green5,
+            color: OnlineTheme.blue1,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: OnlineTheme.green3,
+              color: OnlineTheme.white,
             ),
           ),
           child: const Text(
-            'Åpen',
+            'Ikke Åpen',
             style: TextStyle(
               color: OnlineTheme.white,
             ),
@@ -300,7 +302,8 @@ class DescriptionCard extends StatelessWidget {
       height: 32,
       child: Text(
         'Beskrivelse',
-        style: OnlineTheme.textStyle(size: 20, color: OnlineTheme.orange10, weight: 6),
+        style: OnlineTheme.textStyle(
+            size: 20, color: OnlineTheme.orange10, weight: 6),
       ),
     );
   }
@@ -315,14 +318,16 @@ class DescriptionCard extends StatelessWidget {
           padding: horizontalPadding,
           child: Text(
             'Har du noen gang latt deg inspere av Appkoms sjuke sjekkereplikker. Ta turen til A4!...',
-            style: OnlineTheme.textStyle(weight: 4, size: 15, color: OnlineTheme.white),
+            style: OnlineTheme.textStyle(
+                weight: 4, size: 15, color: OnlineTheme.white),
           ),
         ),
         Padding(
           padding: horizontalPadding,
           child: Text(
             'Les mer',
-            style: OnlineTheme.textStyle(weight: 4, size: 15, color: OnlineTheme.yellow),
+            style: OnlineTheme.textStyle(
+                weight: 4, size: 15, color: OnlineTheme.yellow),
           ),
         ),
         Row(
