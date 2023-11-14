@@ -6,12 +6,7 @@ import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/main.dart';
-import '/pages/event/qr_code.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
-import '/theme/themed_icon.dart';
-import 'cards/event_card_buttons.dart';
 import 'cards/event_card_countdown.dart';
 import 'cards/event_participants.dart';
 
@@ -21,43 +16,43 @@ class EventPagePre extends ScrollablePage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: [
-        SizedBox.square(
-          dimension: 40,
-          child: Center(
-            child: AnimatedButton(
-              onPressed: () {
-                print('📸');
-              },
-              child: const ThemedIcon(
-                icon: IconType.camScan,
-                size: 24,
-                color: OnlineTheme.white,
-              ),
-            ),
-          ),
-        ),
-        if (loggedIn)
-          SizedBox.square(
-            dimension: 40,
-            child: Center(
-              child: AnimatedButton(
-                onPressed: () {
-                  AppNavigator.navigateToRoute(
-                    QRCode(name: 'Fredrik Hansteen'),
-                    additive: true,
-                  );
-                },
-                child: const ThemedIcon(
-                  icon: IconType.qr,
-                  size: 24,
-                  color: OnlineTheme.white,
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
+        // buttons: [
+        // SizedBox.square(
+        //   dimension: 40,
+        //   child: Center(
+        //     child: AnimatedButton(
+        //       onPressed: () {
+        //         print('📸');
+        //       },
+        //       child: const ThemedIcon(
+        //         icon: IconType.camScan,
+        //         size: 24,
+        //         color: OnlineTheme.white,
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        // if (loggedIn)
+        //   SizedBox.square(
+        //     dimension: 40,
+        //     child: Center(
+        //       child: AnimatedButton(
+        //         onPressed: () {
+        //           AppNavigator.navigateToRoute(
+        //             QRCode(name: 'Fredrik Hansteen'),
+        //             additive: true,
+        //           );
+        //         },
+        //         child: const ThemedIcon(
+        //           icon: IconType.qr,
+        //           size: 24,
+        //           color: OnlineTheme.white,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ],
+        );
   }
 
   @override
@@ -273,8 +268,16 @@ class AttendanceCard extends StatelessWidget {
   }
 }
 
-class DescriptionCard extends StatelessWidget {
-  const DescriptionCard({super.key});
+class DescriptionCard extends StatefulWidget {
+  const DescriptionCard({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _DescriptionCardState createState() => _DescriptionCardState();
+}
+
+class _DescriptionCardState extends State<DescriptionCard> {
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -317,15 +320,22 @@ class DescriptionCard extends StatelessWidget {
         Padding(
           padding: horizontalPadding,
           child: Text(
-            'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering! Vi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! ',
+            _isExpanded
+            // Full beskrivelse
+                ? 'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering! Vi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! Bedriftspresentasjonen vil bestå av et lavterskel krasjkurs på 45 minutter i Sanity CMS og Next.js, etterfulgt av pizza, drikke og spill i kantinen deres. Vi gleder oss til å se deg der! Inngangen er på sjøsiden. English: The event will be held in Norwegian.' 
+                : 'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering! Vi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! ',
             style: OnlineTheme.textStyle(
                 weight: 4, size: 15, color: OnlineTheme.white),
           ),
         ),
-        Padding(
-          padding: horizontalPadding,
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _isExpanded = !_isExpanded;
+            });
+          },
           child: Text(
-            'Les mer',
+            _isExpanded ? 'Vis mindre' : 'Les mer',
             style: OnlineTheme.textStyle(
                 weight: 4, size: 15, color: OnlineTheme.yellow),
           ),
