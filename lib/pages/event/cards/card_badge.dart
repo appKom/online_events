@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme/theme.dart';
+import '/theme/theme.dart';
 
 class CardBadge extends StatelessWidget {
   final Color border;
@@ -17,6 +17,7 @@ class CardBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const height = 24.0;
+
     return Container(
       height: height,
       padding: const EdgeInsets.symmetric(horizontal: height / 2),

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:online_events/pages/event/cards/card_badge.dart';
-import 'package:online_events/pages/event/cards/event_attendance_card.dart';
-import 'package:online_events/pages/event/cards/event_card_pre_buttons.dart';
-import 'package:online_events/pages/event/cards/event_description_card.dart';
 
-import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
+import 'cards/card_badge.dart';
+import 'cards/attendance_card.dart';
 import 'cards/event_card_countdown.dart';
+import 'cards/event_card_pre_buttons.dart';
+import 'cards/event_description_card.dart';
 import 'cards/event_participants.dart';
 
 class EventPagePre extends ScrollablePage {
@@ -18,44 +16,7 @@ class EventPagePre extends ScrollablePage {
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader(
-        // buttons: [
-        // SizedBox.square(
-        //   dimension: 40,
-        //   child: Center(
-        //     child: AnimatedButton(
-        //       onPressed: () {
-        //         print('📸');
-        //       },
-        //       child: const ThemedIcon(
-        //         icon: IconType.camScan,
-        //         size: 24,
-        //         color: OnlineTheme.white,
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        // if (loggedIn)
-        //   SizedBox.square(
-        //     dimension: 40,
-        //     child: Center(
-        //       child: AnimatedButton(
-        //         onPressed: () {
-        //           AppNavigator.navigateToRoute(
-        //             QRCode(name: 'Fredrik Hansteen'),
-        //             additive: true,
-        //           );
-        //         },
-        //         child: const ThemedIcon(
-        //           icon: IconType.qr,
-        //           size: 24,
-        //           color: OnlineTheme.white,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ],
-        );
+    return OnlineHeader();
   }
 
   @override
@@ -82,7 +43,7 @@ class EventPagePre extends ScrollablePage {
                 style: OnlineTheme.eventHeader,
               ),
               SizedBox(height: 24),
-              EventAttendanceCard(),
+              AttendanceCard(),
               SizedBox(height: 24),
               EventDescriptionCard(
                 description:

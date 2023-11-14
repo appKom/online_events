@@ -56,7 +56,7 @@ class LoginPage extends StaticPage {
                 child: TextField(
                   obscureText: false,
                   autocorrect: false,
-                  style: OnlineTheme.loginPageEmail,
+                  style: OnlineTheme.textStyle(size: 14),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: OnlineTheme.gray14,
@@ -89,7 +89,7 @@ class LoginPage extends StaticPage {
                 child: TextField(
                   obscureText: true,
                   autocorrect: false,
-                  style: OnlineTheme.loginPageEmail,
+                  style: OnlineTheme.textStyle(size: 14),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: OnlineTheme.gray14,

@@ -10,7 +10,7 @@ import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'cards/card_badge.dart';
-import 'cards/event_attendance_card.dart';
+import 'cards/attendance_card.dart';
 import 'cards/event_card_buttons.dart';
 import 'cards/event_description_card.dart';
 import 'cards/event_participants.dart';
@@ -91,7 +91,7 @@ class EventPage extends ScrollablePage {
                 style: OnlineTheme.eventHeader,
               ),
               SizedBox(height: 24),
-              EventAttendanceCard(),
+              AttendanceCard(),
               SizedBox(height: 24),
               EventDescriptionCard(
                 description:

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/event/cards/event_card.dart';
-import 'package:online_events/theme/themed_icon.dart';
 
 import '/components/animated_button.dart';
 import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
+import 'event_card.dart';
 
-class EventAttendanceCard extends StatelessWidget {
-  const EventAttendanceCard({super.key});
+class AttendanceCard extends StatelessWidget {
+  const AttendanceCard({super.key});
 
   @override
   Widget build(BuildContext context) {
