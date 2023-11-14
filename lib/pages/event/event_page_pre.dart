@@ -71,7 +71,7 @@ class EventPagePre extends ScrollablePage {
         SizedBox(
           height: 267,
           child: Image.asset(
-            'assets/images/heart.png',
+            'assets/images/SopraSteria.jpg',
             fit: BoxFit.cover,
           ),
         ),
@@ -79,7 +79,7 @@ class EventPagePre extends ScrollablePage {
         const Padding(
           padding: horizontalPadding,
           child: Text(
-            'Flørtekurs med Appkom',
+            'Bedriftspresentasjon med Sopra Steria',
             style: OnlineTheme.eventHeader,
           ),
         ),
@@ -154,7 +154,7 @@ Widget header() {
           height: 20,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
-            color: OnlineTheme.blue1,
+            color: OnlineTheme.purple1,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: OnlineTheme.white,
@@ -317,7 +317,7 @@ class DescriptionCard extends StatelessWidget {
         Padding(
           padding: horizontalPadding,
           child: Text(
-            'Har du noen gang latt deg inspere av Appkoms sjuke sjekkereplikker. Ta turen til A4!...',
+            'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering! Vi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! ',
             style: OnlineTheme.textStyle(
                 weight: 4, size: 15, color: OnlineTheme.white),
           ),
@@ -334,7 +334,7 @@ class DescriptionCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              'Av Appkom <3',
+              'Av Bedkom',
               style: OnlineTheme.textStyle(),
             )
           ],
