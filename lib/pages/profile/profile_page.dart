@@ -51,14 +51,17 @@ class ProfilePage extends ScrollablePage {
             padding: const EdgeInsets.symmetric(vertical: 30),
             child: Center(
               child: SizedBox(
-                width: 100,
-                height: 100,
+                width: 125,
+                height: 125,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: Image.asset(
+                  child: 
+                  AnimatedButton(
+                    childBuilder: (context, hover, pointerDown)=> Image.asset(
                     'assets/images/better_profile_picture.jpg',
                     fit: BoxFit.cover,
                   ),
+                ),
                 ),
               ),
             ),

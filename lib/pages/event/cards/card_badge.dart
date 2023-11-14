@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-
 import '/theme/theme.dart';
 
 class CardBadge extends StatelessWidget {
   final Color border;
-  final Color fill;
+  final Gradient gradient; // Changed from Color to Gradient
   final String text;
 
   const CardBadge({
     super.key,
     required this.border,
-    required this.fill,
+    required this.gradient, // Changed parameter
     required this.text,
   });
 
@@ -22,7 +21,7 @@ class CardBadge extends StatelessWidget {
       height: height,
       padding: const EdgeInsets.symmetric(horizontal: height / 2),
       decoration: BoxDecoration(
-        color: fill,
+        gradient: gradient, // Use gradient here
         border: Border.all(color: border),
         borderRadius: BorderRadius.circular(height / 2),
       ),
