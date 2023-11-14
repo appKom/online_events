@@ -48,6 +48,7 @@ class ShowParticipants extends DarkOverlay {
                 ),
               ],
             ),
+
           ],
         );
       }).toList();
@@ -61,6 +62,37 @@ class ShowParticipants extends DarkOverlay {
           ),
           const SizedBox(height: 40),
           ...participantWidgets, 
+          const SizedBox(height: 10,),
+          const Separator(margin: 5,),
+          Text('Venteliste', style: OnlineTheme.textStyle(size: 25, weight: 7),),
+          const Separator(margin: 5,),
+          Row(
+              children: [
+                Padding(
+                  padding: horizontalPadding,
+                  child: Text(
+                    '1.',
+                    style: OnlineTheme.textStyle(),
+                  ),
+                ),
+                Padding(
+                  padding: horizontalPadding,
+                  child: Text(
+                    'Fredda G',
+                    style: OnlineTheme.textStyle(),
+                  ),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 50),
+                  child: Text(
+                    '3. klasse',
+                    style: OnlineTheme.textStyle(),
+                  ),
+                ),
+              ],
+            ),
+
         ],
       );
     });
@@ -97,6 +129,21 @@ final participantModels = [
   CardParticipantModel(
       name: 'Jørgen Galdal',
       registered: 6,
+      year: 2,
+  ),
+  CardParticipantModel(
+      name: 'Jo Tjernshaugen',
+      registered: 7,
+      year: 0,
+  ),
+  CardParticipantModel(
+      name: 'Brage Baugerød',
+      registered: 8,
+      year: 1,
+  ),
+  CardParticipantModel(
+      name: 'Andrew Tate',
+      registered: 9,
       year: 2,
   ),
 ];
