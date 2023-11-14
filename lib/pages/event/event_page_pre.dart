@@ -323,7 +323,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
             _isExpanded
             // Full beskrivelse
                 ? 'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering! Vi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! Bedriftspresentasjonen vil bestå av et lavterskel krasjkurs på 45 minutter i Sanity CMS og Next.js, etterfulgt av pizza, drikke og spill i kantinen deres. Vi gleder oss til å se deg der! Inngangen er på sjøsiden. English: The event will be held in Norwegian.' 
-                : 'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering! Vi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! ',
+                : 'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digit...',
             style: OnlineTheme.textStyle(
                 weight: 4, size: 15, color: OnlineTheme.white),
           ),

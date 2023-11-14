@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/pages/event/cards/event_regestration_card.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -126,7 +127,7 @@ class RegistrationCard extends StatelessWidget {
           const SizedBox(height: 16),
           const EventParticipants(),
           const SizedBox(height: 16),
-          const EventCardCountdown(), // Add the countdown widget here
+          const EventRegestrationCard(), // Add the countdown widget here
           const SizedBox(height: 20),
           const EventCardButtons(), // Removed Padding widget
         ],
@@ -349,7 +350,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              'Av Bedkom',
+              'Av Appkom <3',
               style: OnlineTheme.textStyle(),
             )
           ],
