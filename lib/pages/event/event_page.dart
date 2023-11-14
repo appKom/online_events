@@ -165,7 +165,7 @@ Widget header() {
               OnlineTheme.green1, // End color
             ],
           ),
-          text: 'Ikke Åpen',
+          text: 'Åpen',
         )
       ],
     ),
