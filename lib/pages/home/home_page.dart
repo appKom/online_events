@@ -46,6 +46,7 @@ class HomePage extends ScrollablePage {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
+          
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 111 * 2,
@@ -53,9 +54,9 @@ class HomePage extends ScrollablePage {
               itemCount: 2,
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (c, i) => EventCard(
+              itemBuilder: (c, i) => AnimatedButton(childBuilder: (context, hover, pointerDown){ return EventCard(
                 model: testModels[i],
-              ),
+              );},),
             ),
           ),
           AnimatedButton(

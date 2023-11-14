@@ -30,7 +30,8 @@ class ProfilePage extends ScrollablePage {
       weight: 7,
     );
 
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -55,13 +56,12 @@ class ProfilePage extends ScrollablePage {
                 height: 125,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: 
-                  AnimatedButton(
-                    childBuilder: (context, hover, pointerDown)=> Image.asset(
-                    'assets/images/better_profile_picture.jpg',
-                    fit: BoxFit.cover,
+                  child: AnimatedButton(
+                    childBuilder: (context, hover, pointerDown) => Image.asset(
+                      'assets/images/better_profile_picture.jpg',
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
                 ),
               ),
             ),
@@ -170,8 +170,15 @@ class ProfilePage extends ScrollablePage {
                 return Container(
                   height: 40,
                   decoration: BoxDecoration(
-                    color: OnlineTheme.red1,
-                    borderRadius: BorderRadius.circular(5),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        OnlineTheme.red1, // Start color
+                        Color.fromARGB(255, 255, 132, 95), // End color
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
                     child: Text(
@@ -321,7 +328,8 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
+        paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -329,7 +337,8 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0),
+        Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);
