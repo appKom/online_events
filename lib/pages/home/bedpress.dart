@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/pages/event/event_page.dart';
+import 'package:online_events/pages/event/event_page_pre.dart';
 
 import '/services/page_navigator.dart';
 import '/pages/home/event_card.dart';
@@ -64,7 +64,7 @@ class BedpressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
-      onPressed: () => PageNavigator.navigateTo(const EventPage()),
+      onPressed: () => PageNavigator.navigateTo(const EventPagePre()),
       scale: 0.9,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
