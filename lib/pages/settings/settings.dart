@@ -25,20 +25,8 @@ class SettingsPage extends OnlinePage {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: Navbar.height(context) + 40),
-            const Text(
-              'Innstillinger',
-              style: OnlineTheme.eventHeader,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Huk av de kategoriene du ønsker varslinger for',
-              style: OnlineTheme.textStyle(
-                color: OnlineTheme.gray9,
-              ),
-            ),
-            const SizedBox(height: 20),
+            
+            
             Expanded(
               child: SingleChildScrollView(
                 child: content(context),
@@ -64,11 +52,15 @@ class _SettingsContent extends StatefulWidget {
 
 class __SettingsContentState extends State<_SettingsContent> {
   bool isPressed = false; // Track if the button is pressed
-  Map<String, bool> categories = {
+  Map<String, bool> eventCategories = {
     'Bedriftspresentasjoner': false,
     'Kurs': false,
     'Sosialt': false,
     'Annet': false,
+  };
+  Map<String, bool> confirmations = {
+    'Bekreftelse for påmelding': false,
+    'Bekreftelse for avmedling': true,
   };
 
   @override
@@ -85,8 +77,34 @@ class __SettingsContentState extends State<_SettingsContent> {
       ),
       child: Column(
         children: [
+          SizedBox(height: Navbar.height(context) + 40),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Innstillinger',
+              style: OnlineTheme.eventHeader,
+            ),
+          ),
+          const SizedBox(height: 30),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Varslinger',
+              style: OnlineTheme.eventHeader.copyWith(
+                fontSize: 20,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Huk av de kategoriene du ønsker varslinger for',
+            style: OnlineTheme.textStyle(
+              color: OnlineTheme.gray9,
+            ),
+          ),
+          const SizedBox(height: 15),
           Column(
-            children: categories.keys.map((String key) {
+            children: eventCategories.keys.map((String key) {
               return Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -94,12 +112,45 @@ class __SettingsContentState extends State<_SettingsContent> {
                 color: OnlineTheme.gray14,
                 child: CheckboxListTile(
                   title: Text(key, style: OnlineTheme.eventListHeader),
-                  value: categories[key],
+                  value: eventCategories[key],
                   activeColor: Colors.green,
                   checkColor: Colors.white,
                   onChanged: (bool? value) {
                     setState(() {
-                      categories[key] = value!;
+                      eventCategories[key] = value!;
+                    });
+                  },
+                ),
+              );
+            }).toList(),
+          ),
+          
+          const SizedBox(height: 30),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Bekreftelser',
+              style: OnlineTheme.eventHeader.copyWith(
+                fontSize: 20,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Column(
+            children: confirmations.keys.map((String key) {
+              return Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: OnlineTheme.gray14,
+                child: CheckboxListTile(
+                  title: Text(key, style: OnlineTheme.eventListHeader),
+                  value: confirmations[key],
+                  activeColor: Colors.green,
+                  checkColor: Colors.white,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      confirmations[key] = value!;
                     });
                   },
                 ),
@@ -132,6 +183,7 @@ class __SettingsContentState extends State<_SettingsContent> {
               )
             ],
           ),
+          SizedBox(height: Navbar.height(context) + 20),
         ],
       ),
     );
