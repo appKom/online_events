@@ -84,7 +84,8 @@ class RegistrationCard extends StatelessWidget {
           const SizedBox(height: 16),
           const EventParticipants(),
           const SizedBox(height: 16),
-          const EventCardCountdown(), // Add the countdown widget here
+          EventCardCountdown(
+          eventTime: DateTime(2023, 11, 20, 18, 0),), // Add the countdown widget here
           const SizedBox(height: 20),
           const EventCardPreButtons(),
         ],
