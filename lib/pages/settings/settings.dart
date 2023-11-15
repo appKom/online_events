@@ -60,7 +60,7 @@ class __SettingsContentState extends State<_SettingsContent> {
   };
   Map<String, bool> confirmations = {
     'Bekreftelse for påmelding': false,
-    'Bekreftelse for avmedling': true,
+    'Bekreftelse for avmelding': true,
   };
 
   @override
