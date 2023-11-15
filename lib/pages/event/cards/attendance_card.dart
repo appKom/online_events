@@ -1,12 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/core/models/event_model.dart';
 
 import '/components/animated_button.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'event_card.dart';
 
+final days = [
+  'Mandag',
+  'Tirsdag',
+  'Onsdag',
+  'Torsdag',
+  'Fredag',
+  'Lørdag',
+  'Søndag',
+];
+
 class AttendanceCard extends StatelessWidget {
-  const AttendanceCard({super.key});
+  const AttendanceCard({super.key, required this.model});
+
+  final EventModel model;
+
+  String dateText() {
+    final startDate = DateTime.parse(model.startDate);
+    final endDate = DateTime.parse(model.endDate);
+
+    final day = startDate.day;
+    final dayString = day.toString().padLeft(2, '0');
+
+    final dayName = days[startDate.day];
+
+    return '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,48 +67,44 @@ class AttendanceCard extends StatelessWidget {
               children: [
                 const ThemedIcon(icon: IconType.location, size: 20),
                 const SizedBox(width: 8),
-                const Text(
-                  'R1, Realfagbygget',
-                  style: TextStyle(
-                    color: OnlineTheme.white,
-                    fontSize: 14,
-                    fontFamily: OnlineTheme.font,
-                  ),
+                Text(
+                  model.location,
+                  style: OnlineTheme.textStyle(height: 1, size: 14),
                 ),
                 const SizedBox(width: 16),
-                AnimatedButton(
-                  onTap: () {
-                    // TODO: MazeMap link
-                  },
-                  childBuilder: (context, hover, pointerDown) {
-                    return Container(
-                      height: 20,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(2),
-                        color: OnlineTheme.blue1,
-                      ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/maze_map.png',
-                            width: 18,
-                            height: 17.368,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            'MazeMap',
-                            style: OnlineTheme.textStyle(
-                              color: OnlineTheme.white,
-                              size: 12,
-                              weight: 6,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                // AnimatedButton(
+                //   onTap: () {
+                //     // TODO: MazeMap link
+                //   },
+                //   childBuilder: (context, hover, pointerDown) {
+                //     return Container(
+                //       height: 20,
+                //       padding: const EdgeInsets.symmetric(horizontal: 8),
+                //       decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(2),
+                //         color: OnlineTheme.blue1,
+                //       ),
+                //       child: Row(
+                //         children: [
+                //           Image.asset(
+                //             'assets/images/maze_map.png',
+                //             width: 18,
+                //             height: 17.368,
+                //           ),
+                //           const SizedBox(width: 5),
+                //           Text(
+                //             'MazeMap',
+                //             style: OnlineTheme.textStyle(
+                //               color: OnlineTheme.white,
+                //               size: 12,
+                //               weight: 6,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     );
+                //   },
+                // ),
               ],
             ),
           ),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/separator.dart';
+import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/event/event_page.dart';
 import '../../services/page_navigator.dart';
-import '/models/list_event.dart';
 import '../../theme/theme.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({super.key, required this.model});
 
-  final ListEventModel model;
+  final EventModel model;
 
   static const months = [
     'Januar',
@@ -27,7 +27,7 @@ class EventCard extends StatelessWidget {
   ];
 
   String dateToString() {
-    final date = model.date;
+    final date = DateTime.parse(model.startDate);
 
     final day = date.day;
     final dayString = day.toString().padLeft(2, '0');
@@ -35,20 +35,29 @@ class EventCard extends StatelessWidget {
     final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
     final monthString = months[month];
 
+    // TODO: If an event spans multiple days, show 01.-05. January
+    // TODO: If start and end month is different, shorten to 28. Jan - 03. Feb
+
     return '$dayString. $monthString';
   }
 
   String shortenName() {
-    final name = model.name;
+    final name = model.title;
     return name.replaceAll('Bedriftspresentasjon', 'Bedpress');
   }
 
   String registeredToString() {
-    return '${model.registered}/${model.capacity}';
+    return '${model.numberOfSeatsTaken}/${model.maxCapacity}';
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(const EventPage());
+    PageNavigator.navigateTo(EventPage(model: model));
+  }
+
+  String peopleToString() {
+    if (model.maxCapacity == null) return 'Ubegrenset';
+
+    return '${model.numberOfSeatsTaken}/${model.maxCapacity}';
   }
 
   @override
@@ -71,8 +80,8 @@ class EventCard extends StatelessWidget {
                     height: 84,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: Image.asset(
-                        model.imageSource,
+                      child: Image.network(
+                        model.images.first.md,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -104,7 +113,7 @@ class EventCard extends StatelessWidget {
                         ),
                         subHeader(
                           Icons.people_outline,
-                          '${model.registered}/${model.capacity}',
+                          peopleToString(),
                         ),
                       ],
                     ),
@@ -144,7 +153,6 @@ class EventCard extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            height: 1,
             child: Separator(),
           ),
         ],
@@ -154,7 +162,7 @@ class EventCard extends StatelessWidget {
 
   Widget subHeader(IconData icon, String text) {
     return SizedBox(
-      height: 18,
+      height: 20,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

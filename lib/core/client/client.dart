@@ -12,19 +12,20 @@ abstract class Client {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
+      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final jsonResponse = jsonDecode(responseBody);
 
-      final events = jsonResponse['results'].map((eventJson) {
-        // print(eventJson);
-        return EventModel.fromJson(eventJson);
-      }).toList();
+      final events = jsonResponse['results']
+          .map((eventJson) {
+            return EventModel.fromJson(eventJson);
+          })
+          .cast<EventModel>()
+          .toList();
 
-      print(events[0]);
-      // print(response.body);
+      return events;
     } else {
       print('Fail');
+      return [];
     }
-
-    return [];
   }
 }

@@ -54,7 +54,7 @@ class HomePage extends ScrollablePage {
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (c, i) => EventCard(
-                model: testModels[i],
+                model: eventModels[i],
               ),
             ),
           ),

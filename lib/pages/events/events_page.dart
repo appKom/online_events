@@ -31,13 +31,13 @@ class EventsPage extends ScrollablePage {
         const SizedBox(height: 24),
         Container(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
-          height: 111 * 12,
+          height: 111.0 * eventModels.length,
           child: ListView.builder(
-            itemCount: 12,
+            itemCount: eventModels.length,
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (c, i) => EventCard(
-              model: testModels[i % 6],
+              model: eventModels[i],
             ),
           ),
         ),
@@ -45,6 +45,4 @@ class EventsPage extends ScrollablePage {
       ],
     );
   }
-
-  
 }
