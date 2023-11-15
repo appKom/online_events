@@ -10,10 +10,10 @@ class EventCardCountdown extends StatefulWidget {
   const EventCardCountdown({super.key, required this.eventTime});
 
   @override
-  EventCardCountdownState createState() => EventCardCountdownState();
+  _EventCardCountdownState createState() => _EventCardCountdownState();
 }
 
-class EventCardCountdownState extends State<EventCardCountdown> {
+class _EventCardCountdownState extends State<EventCardCountdown> {
   late Timer _timer;
   Duration timeLeft = Duration.zero;
 
@@ -21,7 +21,7 @@ class EventCardCountdownState extends State<EventCardCountdown> {
   void initState() {
     super.initState();
     timeLeft = widget.eventTime.difference(DateTime.now());
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
       setState(() {
         timeLeft = widget.eventTime.difference(DateTime.now());
       });
