@@ -109,14 +109,7 @@ Widget header() {
         ),
         CardBadge(
           border: OnlineTheme.purple1.lighten(100),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.purple, // Start color
-              Colors.deepPurple, // End color
-            ],
-          ),
+          gradient: OnlineTheme.purpleGradient,
           text: 'Ikke Åpen',
         )
       ],
