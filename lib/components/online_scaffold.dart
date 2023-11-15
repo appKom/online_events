@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/loading/loading_page.dart';
 
-import '/pages/home/home_page.dart';
 import '../theme/theme.dart';
 import 'navbar.dart';
 
@@ -44,8 +44,6 @@ abstract class StaticPage extends OnlinePage {
   Widget build(BuildContext context) {
     return content(context);
   }
-
-  
 }
 
 abstract class OnlinePage extends StatelessWidget {
@@ -59,7 +57,7 @@ abstract class OnlinePage extends StatelessWidget {
 class OnlineScaffold extends StatelessWidget {
   const OnlineScaffold({super.key});
 
-  static ValueNotifier<OnlinePage> page = ValueNotifier(const HomePage());
+  static ValueNotifier<OnlinePage> page = ValueNotifier(const LoadingPage());
 
   @override
   Widget build(BuildContext context) {

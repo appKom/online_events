@@ -6,9 +6,14 @@ import '/theme/theme.dart';
 
 /// TODO: Standardize. This code is duplicated
 class EventDescriptionCard extends StatefulWidget {
-  const EventDescriptionCard({super.key, required this.description});
+  const EventDescriptionCard({
+    super.key,
+    required this.description,
+    required this.organizer,
+  });
 
   final String description;
+  final String organizer;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -81,7 +86,7 @@ class _DescriptionCardState extends State<EventDescriptionCard> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              'Av Appkom <3',
+              widget.organizer,
               style: OnlineTheme.textStyle(),
             )
           ],

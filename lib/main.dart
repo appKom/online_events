@@ -3,6 +3,7 @@ import 'package:online_events/pages/home/home_page.dart';
 import '/components/online_scaffold.dart';
 import '/services/app_navigator.dart';
 import 'core/client/client.dart';
+import 'core/models/event_model.dart';
 import 'models/list_event.dart';
 import 'theme/theme.dart';
 
@@ -57,9 +58,17 @@ void main() {
   runApp(const MainApp());
 
   Client.getEvents().then((events) {
+    if (events != null) {
+      eventModels.addAll(events);
+    }
+
+    print(events?.length);
+
     PageNavigator.navigateTo(const HomePage());
   });
 }
+
+final List<EventModel> eventModels = [];
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

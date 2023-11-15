@@ -33,25 +33,26 @@ class EventPagePre extends ScrollablePage {
             fit: BoxFit.cover,
           ),
         ),
-        const Padding(
+        Padding(
           padding: horizontalPadding,
           child: Column(
             children: [
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               Text(
                 'Bedriftspresentasjon med Sopra Steria',
-                style: OnlineTheme.eventHeader,
+                style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
-              SizedBox(height: 24),
-              AttendanceCard(),
-              SizedBox(height: 24),
-              EventDescriptionCard(
+              const SizedBox(height: 24),
+              // AttendanceCard(model: ,), // TODO
+              const SizedBox(height: 24),
+              const EventDescriptionCard(
                 description:
                     'Bli med på en gøyal kveld med Sopra Steria, Norges ledende konsulentselskap innen digitalisering!\n\nVi har gleden av å invitere deg til en hyggelig kveld på Sopra Steria sitt kontor! Bedriftspresentasjonen vil bestå av et lavterskel krasjkurs på 45 minutter i Sanity CMS og Next.js, etterfulgt av pizza, drikke og spill i kantinen deres. Vi gleder oss til å se deg der! Inngangen er på sjøsiden.\n\nEnglish: The event will be held in Norwegian.',
+                organizer: 'Appkom',
               ),
-              SizedBox(height: 24),
-              RegistrationCard(),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
+              const RegistrationCard(),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -85,7 +86,8 @@ class RegistrationCard extends StatelessWidget {
           const EventParticipants(),
           const SizedBox(height: 16),
           EventCardCountdown(
-          eventTime: DateTime(2023, 11, 19, 12, 0),), // Add the countdown widget here
+            eventTime: DateTime(2023, 11, 19, 12, 0),
+          ), // Add the countdown widget here
           const SizedBox(height: 20),
           const EventCardPreButtons(),
         ],
@@ -105,7 +107,8 @@ Widget header() {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.textStyle(height: 1, weight: 7, size: 20),),
+          style: OnlineTheme.textStyle(height: 1, weight: 7, size: 20),
+        ),
         CardBadge(
           border: OnlineTheme.purple1.lighten(100),
           gradient: OnlineTheme.purpleGradient,

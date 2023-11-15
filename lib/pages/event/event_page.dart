@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/core/models/event_organizers.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -17,29 +19,32 @@ import 'cards/event_participants.dart';
 import 'cards/event_registration_card.dart';
 
 class EventPage extends ScrollablePage {
-  const EventPage({super.key});
+  const EventPage({super.key, required this.model});
+
+  final EventModel model;
 
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
       buttons: [
-        if (loggedIn)SizedBox.square(
-          dimension: 40,
-          child: Center(
-            child: AnimatedButton(
-              onTap: () {
-                print('📸');
-              },
-              childBuilder: (context, hover, pointerDown) {
-                return const ThemedIcon(
-                  icon: IconType.camScan,
-                  size: 24,
-                  color: OnlineTheme.white,
-                );
-              },
+        if (loggedIn)
+          SizedBox.square(
+            dimension: 40,
+            child: Center(
+              child: AnimatedButton(
+                onTap: () {
+                  print('📸');
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return const ThemedIcon(
+                    icon: IconType.camScan,
+                    size: 24,
+                    color: OnlineTheme.white,
+                  );
+                },
+              ),
             ),
           ),
-        ),
         if (loggedIn)
           SizedBox.square(
             dimension: 40,
@@ -75,31 +80,33 @@ class EventPage extends ScrollablePage {
         SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
           height: 267,
-          child: Image.asset(
-            'assets/images/heart.png',
+          child: Image.network(
+            model.images.first.original,
             fit: BoxFit.cover,
           ),
         ),
-        const Padding(
+        Padding(
           padding: horizontalPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               Text(
-                'Flørtekurs med Appkom',
-                style: OnlineTheme.eventHeader,
+                model.title,
+                style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
-              SizedBox(height: 24),
-              AttendanceCard(),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
+              AttendanceCard(
+                model: model,
+              ),
+              const SizedBox(height: 24),
               EventDescriptionCard(
-                description:
-                    'Har du noen gang latt deg inspere av Appkoms sjuke sjekkereplikker? Ta turen til A4, og la deg inspirere.\n\nThis course will be held in Norwegian.',
+                description: model.description,
+                organizer: eventOrganizers[model.organizer] ?? '',
               ),
-              SizedBox(height: 24),
-              RegistrationCard(),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
+              const RegistrationCard(),
+              const SizedBox(height: 24),
             ],
           ),
         ),

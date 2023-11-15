@@ -41,7 +41,7 @@ class MyEventsPage extends ScrollablePage {
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (c, i) => EventCard(
-                model: testModels[i % 6],
+                model: eventModels[i % 6],
               ),
             ),
           ),
@@ -60,7 +60,7 @@ class MyEventsPage extends ScrollablePage {
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (c, i) => EventCard(
-                model: testModels[i % 6],
+                model: eventModels[i % 6],
               ),
             ),
           ),
