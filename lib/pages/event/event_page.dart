@@ -23,7 +23,7 @@ class EventPage extends ScrollablePage {
   Widget? header(BuildContext context) {
     return OnlineHeader(
       buttons: [
-        SizedBox.square(
+        if (loggedIn)SizedBox.square(
           dimension: 40,
           child: Center(
             child: AnimatedButton(
