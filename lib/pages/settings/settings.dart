@@ -16,8 +16,7 @@ class SettingsPage extends OnlinePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Material(
       color: OnlineTheme.background,
@@ -79,7 +78,7 @@ class __SettingsContentState extends State<_SettingsContent> {
       data: Theme.of(context).copyWith(
         checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
+                borderRadius: BorderRadius.circular(5),
               ),
               side: const BorderSide(color: Colors.white),
             ),
@@ -109,7 +108,6 @@ class __SettingsContentState extends State<_SettingsContent> {
           ),
           const SizedBox(height: 20),
           Row(
-            
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -119,20 +117,13 @@ class __SettingsContentState extends State<_SettingsContent> {
                     return Container(
                       height: 40,
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            OnlineTheme.green2, // Start color
-                            OnlineTheme.green1, // End color
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(15),
+                        gradient: OnlineTheme.greenGradient,
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       child: Center(
                         child: Text(
                           'Lagre',
-                          style: OnlineTheme.textStyle(),
+                          style: OnlineTheme.textStyle(weight: 5),
                         ),
                       ),
                     );

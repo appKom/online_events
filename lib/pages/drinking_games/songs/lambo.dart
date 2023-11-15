@@ -4,7 +4,6 @@ import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
-import '/pages/home/profile_button.dart';
 import '/theme/theme.dart';
 
 class LamboPage extends ScrollablePage {
@@ -12,11 +11,7 @@ class LamboPage extends ScrollablePage {
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+    return OnlineHeader();
   }
 
   @override

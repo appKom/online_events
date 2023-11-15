@@ -33,6 +33,15 @@ sealed class OnlineTheme {
   static const gray14 = Color(0xFF22272F);
   static const gray15 = Color(0xFF4C566A);
 
+  static const greenGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      green1,
+      green5,
+    ],
+  );
+
   // Fonts
   static const font = 'Poppins';
 

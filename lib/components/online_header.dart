@@ -15,7 +15,7 @@ class OnlineHeader extends StatelessWidget {
   static double height(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
 
-    return padding.top + 40 + 25 + 10;
+    return padding.top + 40 + 25 + 25;
   }
 
   @override
@@ -26,7 +26,7 @@ class OnlineHeader extends StatelessWidget {
       padding: EdgeInsets.only(
         left: padding.left + 25,
         right: padding.right + 25,
-        top: padding.top + 10,
+        top: padding.top + 25,
         bottom: 25,
       ),
       decoration: BoxDecoration(
