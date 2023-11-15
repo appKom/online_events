@@ -33,6 +33,15 @@ sealed class OnlineTheme {
   static const gray14 = Color(0xFF22272F);
   static const gray15 = Color(0xFF4C566A);
 
+  static const purpleGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Colors.purple, // Start color
+      Colors.deepPurple, // End color
+    ],
+  );
+
   static final greenGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -53,6 +62,8 @@ sealed class OnlineTheme {
 
   // Fonts
   static const font = 'Poppins';
+
+  static const buttonHeight = 40.0;
 
   @Deprecated('Use OnlineTheme.textStyle() instead.')
   static const eventListHeader = TextStyle(
