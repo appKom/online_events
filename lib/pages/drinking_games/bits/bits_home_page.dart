@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/drinking_games/bits/bits_model.dart';
+import 'package:online_events/pages/drinking_games/bits/bits_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
@@ -19,8 +21,19 @@ class BitsHomePage extends ScrollablePage {
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
+    const background = Color.fromARGB(255, 225, 10, 189);
+
     return Container(
-      color: OnlineTheme.pink1,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            OnlineTheme.background,
+            background,
+          ],
+        ),
+      ),
       child: Padding(
         padding: EdgeInsets.only(left: padding.left, right: padding.right),
         child: SingleChildScrollView(
@@ -28,44 +41,35 @@ class BitsHomePage extends ScrollablePage {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: OnlineHeader.height(context) + 40),
-              const Text(
+              Text(
                 'Velkommen til Bits <3',
-                style: OnlineTheme.eventHeader,
+                style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'Bits er en kombinasjon av de beste aspektene av ulike drikkeleker. Det er bare å hente deg en ny enhet, for den du holder nå kommer til å bli tømt ganske snabt. ',
-                style: OnlineTheme.eventListHeader,
+                style: OnlineTheme.textStyle(),
               ),
-              const ClipRRect(child: SizedBox(height: 120)),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: AnimatedButton(
-                      onTap: () {
-                        PageNavigator.navigateTo(const BitsPageOne());
-                      },
-                      childBuilder: (context, hover, pointerDown) {
-                        return Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: OnlineTheme.green4,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Start spillet!',
-                              style: OnlineTheme.textStyle(),
-                            ),
-                          ),
-                        );
-                      },
+              const SizedBox(height: 120),
+              AnimatedButton(
+                onTap: () {
+                  PageNavigator.navigateTo(const BitsGame());
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return Container(
+                    height: OnlineTheme.buttonHeight,
+                    decoration: const BoxDecoration(
+                      gradient: OnlineTheme.purpleGradient,
+                      borderRadius: OnlineTheme.buttonRadius,
                     ),
-                  ),
-                ],
+                    child: Center(
+                      child: Text(
+                        'Start spillet!',
+                        style: OnlineTheme.textStyle(),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
