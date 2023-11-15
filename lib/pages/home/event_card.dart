@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/separator.dart';
 import 'package:online_events/pages/event/event_page.dart';
 import '../../services/page_navigator.dart';
@@ -52,96 +53,101 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return SizedBox(
       height: 111,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: showInfo,
-        child: Stack(
-          children: [
-            // Event Icon
-            Positioned(
-              left: 0,
-              top: 10,
-              width: 84,
-              height: 84,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Image.asset(
-                  model.imageSource,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            // Headers
-            Positioned(
-              left: 100,
-              top: 10,
-              right: 0,
-              height: 70,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
+        children: [
+          AnimatedButton(
+            behavior: HitTestBehavior.opaque,
+            onTap: showInfo,
+            childBuilder: (context, hover, pointerDown) {
+              return Stack(
                 children: [
-                  // Event Name
-                  SizedBox(
-                    height: 24,
-                    child: Text(
-                      shortenName(),
-                      style: OnlineTheme.textStyle(
-                        color: OnlineTheme.gray11,
-                        weight: 7,
+                  // Event Icon
+                  Positioned(
+                    left: 0,
+                    top: 10,
+                    width: 84,
+                    height: 84,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.asset(
+                        model.imageSource,
+                        fit: BoxFit.cover,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  subHeader(
-                    Icons.calendar_month_outlined,
-                    dateToString(),
+                  // Headers
+                  Positioned(
+                    left: 100,
+                    top: 10,
+                    right: 0,
+                    height: 70,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Event Name
+                        SizedBox(
+                          height: 24,
+                          child: Text(
+                            shortenName(),
+                            style: OnlineTheme.textStyle(
+                              color: OnlineTheme.gray11,
+                              weight: 7,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        subHeader(
+                          Icons.calendar_month_outlined,
+                          dateToString(),
+                        ),
+                        subHeader(
+                          Icons.people_outline,
+                          '${model.registered}/${model.capacity}',
+                        ),
+                      ],
+                    ),
                   ),
-                  subHeader(
-                    Icons.people_outline,
-                    '${model.registered}/${model.capacity}',
+                  Positioned(
+                    right: 0,
+                    bottom: 15,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'INFO',
+                          style: OnlineTheme.textStyle(
+                            color: OnlineTheme.gray9,
+                            weight: 5,
+                            size: 14,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 4),
+                          child: Icon(
+                            Icons.navigate_next,
+                            color: OnlineTheme.gray9,
+                            size: 15,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 15,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'INFO',
-                    style: OnlineTheme.textStyle(
-                      color: OnlineTheme.gray9,
-                      weight: 5,
-                      size: 14,
-                    ),
-                  ),
-                  const SizedBox(width: 2),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 4),
-                    child: Icon(
-                      Icons.navigate_next,
-                      color: OnlineTheme.gray9,
-                      size: 15,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Bottom Separator
-            const Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: 1,
-              child: Separator(),
-            ),
-          ],
-        ),
+              );
+            },
+          ),
+          // Bottom Separator
+          const Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 1,
+            child: Separator(),
+          ),
+        ],
       ),
     );
   }

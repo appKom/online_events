@@ -167,9 +167,9 @@ class ProfilePage extends ScrollablePage {
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
+                  height: OnlineTheme.buttonHeight,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
@@ -177,7 +177,7 @@ class ProfilePage extends ScrollablePage {
                         Color.fromARGB(255, 255, 132, 95), // End color
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: OnlineTheme.buttonRadius,
                   ),
                   child: Center(
                     child: Text(

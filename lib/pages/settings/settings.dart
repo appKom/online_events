@@ -88,8 +88,8 @@ class __SettingsContentState extends State<_SettingsContent> {
           Column(
             children: categories.keys.map((String key) {
               return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: OnlineTheme.buttonRadius,
                 ),
                 color: OnlineTheme.gray14,
                 child: CheckboxListTile(

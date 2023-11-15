@@ -64,6 +64,7 @@ sealed class OnlineTheme {
   static const font = 'Poppins';
 
   static const buttonHeight = 40.0;
+  static const buttonRadius = BorderRadius.all(Radius.circular(5));
 
   @Deprecated('Use OnlineTheme.textStyle() instead.')
   static const eventListHeader = TextStyle(

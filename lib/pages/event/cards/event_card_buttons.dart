@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '/components/animated_button.dart';
 import '/components/separator.dart';
 import '/main.dart';
-import '/pages/event/qr_code.dart';
 import '/pages/event/show_participants.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
@@ -58,7 +57,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
             offset: const Offset(0, 5),
           ),
         ],
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: OnlineTheme.buttonRadius,
       );
     }
 

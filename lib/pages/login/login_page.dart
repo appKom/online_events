@@ -107,37 +107,27 @@ class LoginPage extends StaticPage {
             ],
           ),
           const SizedBox(height: 24),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: AnimatedButton(
-                  onTap: () {
-                    loggedIn = true;
-                    PageNavigator.navigateTo(const ProfilePage());
-                  },
-                  childBuilder: (context, hover, pointerDown) {
-                    return Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: OnlineTheme.green3,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Logg Inn',
-                          style: OnlineTheme.textStyle(),
-                        ),
-                      ),
-                    );
-                  },
+          AnimatedButton(
+            onTap: () {
+              loggedIn = true;
+              PageNavigator.navigateTo(const ProfilePage());
+            },
+            childBuilder: (context, hover, pointerDown) {
+              return Container(
+                height: OnlineTheme.buttonHeight,
+                decoration: BoxDecoration(
+                  gradient: OnlineTheme.greenGradient,
+                  borderRadius: OnlineTheme.buttonRadius,
                 ),
-              ),
-            ],
-          ),
-          // const SizedBox(height: 100),
+                child: Center(
+                  child: Text(
+                    'Logg Inn',
+                    style: OnlineTheme.textStyle(),
+                  ),
+                ),
+              );
+            },
+          )
         ],
       ),
     );
