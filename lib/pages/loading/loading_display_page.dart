@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/drinking_games/spin_line.dart';
 import 'package:online_events/pages/loading/loading_page.dart';
 
 class LoadingPageDisplay extends StaticPage {
