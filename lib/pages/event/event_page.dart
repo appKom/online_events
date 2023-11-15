@@ -14,7 +14,7 @@ import 'cards/attendance_card.dart';
 import 'cards/event_card_buttons.dart';
 import 'cards/event_description_card.dart';
 import 'cards/event_participants.dart';
-import 'cards/event_regestration_card.dart';
+import 'cards/event_registration_card.dart';
 
 class EventPage extends ScrollablePage {
   const EventPage({super.key});
@@ -132,7 +132,7 @@ class RegistrationCard extends StatelessWidget {
           const SizedBox(height: 16),
           const EventParticipants(),
           const SizedBox(height: 16),
-          const EventRegestrationCard(), // Add the countdown widget here
+          const EventRegistrationCard(), // Add the countdown widget here
           const SizedBox(height: 20),
           const EventCardButtons(), // Removed Padding widget
         ],
@@ -152,8 +152,7 @@ Widget header() {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.eventHeader
-              .copyWith(height: 1, fontWeight: FontWeight.w600),
+          style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
         ),
         CardBadge(
           border: OnlineTheme.green5.lighten(100),

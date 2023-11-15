@@ -33,13 +33,22 @@ sealed class OnlineTheme {
   static const gray14 = Color(0xFF22272F);
   static const gray15 = Color(0xFF4C566A);
 
-  static const greenGradient = LinearGradient(
+  static final greenGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      green1,
-      green5,
+      Colors.green[300]!,
+      Colors.green[800]!,
     ],
+  );
+
+  static final blueGradient = LinearGradient(
+    colors: [
+      Colors.blue[300]!,
+      Colors.blue[800]!,
+    ], // Blue gradient for "Se Påmeldte"
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
   );
 
   // Fonts

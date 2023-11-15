@@ -28,7 +28,10 @@ class _EventCardButtonsState extends State<EventCardButtons> {
       return BoxDecoration(
         gradient: isForSePameldte
             ? LinearGradient(
-                colors: [Colors.blue[300]!, Colors.blue[800]!], // Blue gradient for "Se Påmeldte"
+                colors: [
+                  Colors.blue[300]!,
+                  Colors.blue[800]!,
+                ], // Blue gradient for "Se Påmeldte"
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               )
@@ -63,34 +66,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     if (loggedIn) {
       return Row(
         children: [
-          isRegistered
-              ? Flexible(
-                  child: AnimatedButton(
-                    onTap: () {
-                      // Implement the "Vis billett" action here
-                      AppNavigator.navigateToRoute(
-                        QRCode(
-                          name: 'Fredrik Hansteen',
-                        ),
-                        additive: true,
-                      );
-                    },
-                    childBuilder: (context, hover, pointerDown) {
-                      return Container(
-                        alignment: Alignment.center,
-                        height: buttonHeight,
-                        decoration: boxDecoration(false, true, isRegistered),
-                        child: Text('Vis billett', style: OnlineTheme.textStyle()),
-                      );
-                    },
-                  ),
-                )
-              : const SizedBox(
-                  width: 10,
-                ),
-          const SizedBox(
-            width: 10,
-          ),
           Flexible(
             child: AnimatedButton(
               onTap: () {
