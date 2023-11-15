@@ -127,12 +127,14 @@ class DicePainter extends CustomPainter {
         canvas.drawCircle(Offset(inset2, inset1), radius, paint);
         canvas.drawCircle(Offset(inset1, inset2), radius, paint);
         canvas.drawCircle(Offset(inset2, inset2), radius, paint);
+        break;
       case 5:
         canvas.drawCircle(Offset(center, center), radius, paint);
         canvas.drawCircle(Offset(inset1, inset1), radius, paint);
         canvas.drawCircle(Offset(inset2, inset1), radius, paint);
         canvas.drawCircle(Offset(inset1, inset2), radius, paint);
         canvas.drawCircle(Offset(inset2, inset2), radius, paint);
+        break;
       default:
         canvas.drawCircle(Offset(inset1, inset1), radius, paint);
         canvas.drawCircle(Offset(inset1, center), radius, paint);
@@ -140,6 +142,7 @@ class DicePainter extends CustomPainter {
         canvas.drawCircle(Offset(inset2, inset1), radius, paint);
         canvas.drawCircle(Offset(inset2, center), radius, paint);
         canvas.drawCircle(Offset(inset2, inset2), radius, paint);
+        break;
     }
   }
 
