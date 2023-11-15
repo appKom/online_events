@@ -27,14 +27,7 @@ class _EventCardButtonsState extends State<EventCardPreButtons> {
                 end: Alignment.centerRight,
               )
             : isForVisBillett
-                ? const LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 130, 13, 173),
-                      Color.fromARGB(255, 251, 45, 251)
-                    ], // Yellow gradient for "Vis Billett"
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  )
+                ? OnlineTheme.purpleGradient
                 : LinearGradient(
                     colors: isRegistered
                         ? [Colors.orange[300]!, Colors.red[800]!] // Red gradient for "Meld av"

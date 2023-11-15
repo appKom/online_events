@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/home/home_page.dart';
 import '/components/online_scaffold.dart';
 import '/services/app_navigator.dart';
+import 'core/client/client.dart';
 import 'models/list_event.dart';
 import 'theme/theme.dart';
 
@@ -53,6 +55,10 @@ bool loggedIn = false;
 
 void main() {
   runApp(const MainApp());
+
+  Client.getEvents().then((events) {
+    PageNavigator.navigateTo(const HomePage());
+  });
 }
 
 class MainApp extends StatelessWidget {

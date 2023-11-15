@@ -84,7 +84,8 @@ class RegistrationCard extends StatelessWidget {
           const SizedBox(height: 16),
           const EventParticipants(),
           const SizedBox(height: 16),
-          const EventCardCountdown(), // Add the countdown widget here
+          EventCardCountdown(
+          eventTime: DateTime(2023, 11, 19, 12, 0),), // Add the countdown widget here
           const SizedBox(height: 20),
           const EventCardPreButtons(),
         ],
@@ -104,19 +105,10 @@ Widget header() {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.eventHeader
-              .copyWith(height: 1, fontWeight: FontWeight.w600),
-        ),
+          style: OnlineTheme.textStyle(height: 1, weight: 7, size: 20),),
         CardBadge(
           border: OnlineTheme.purple1.lighten(100),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.purple, // Start color
-              Colors.deepPurple, // End color
-            ],
-          ),
+          gradient: OnlineTheme.purpleGradient,
           text: 'Ikke Åpen',
         )
       ],
