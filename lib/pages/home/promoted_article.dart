@@ -25,12 +25,15 @@ class PromotedArticle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
+                  flex: 1,
                   child: Image.asset(
-                    'assets/images/fadderuka2.png',
+                    'assets/images/fadderuka.png',
                     fit: BoxFit.cover,
+                    alignment: Alignment.bottomCenter,
                   ),
                 ),
                 Expanded(
+                  flex: 1,
                   child: Stack(
                     children: [
                       Positioned.fill(child: Container(color: OnlineTheme.gray13)),
