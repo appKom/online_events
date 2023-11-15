@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/pages/drinking_games/bytes/bytes_home_page.dart';
+import 'package:online_events/pages/drinking_games/spin_line.dart';
+import 'package:online_events/pages/drinking_games/spin_line_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -21,7 +23,8 @@ class DrinkingGamesPage extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -44,6 +47,15 @@ class DrinkingGamesPage extends ScrollablePage {
                   PageNavigator.navigateTo(const DicePage());
                 }),
             const SizedBox(height: 24),
+            GameCard(
+                name: 'SpinLine',
+                imageSource: 'assets/images/SpinLine.png',
+                onTap: () {
+                  PageNavigator.navigateTo(SpinLinePage());
+                }),
+            const SizedBox(
+              height: 24,
+            ),
             GameCard(
               name: 'Bits',
               imageSource: 'assets/images/bits.png',
@@ -109,8 +121,10 @@ class GameCard extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Container(
-                    padding: const EdgeInsets.all(12), // Add some padding around the text
-                    color: Colors.black.withOpacity(0.5), // Semi-transparent background for the text
+                    padding: const EdgeInsets.all(
+                        12), // Add some padding around the text
+                    color: Colors.black.withOpacity(
+                        0.5), // Semi-transparent background for the text
                     child: Text(
                       name,
                       style: OnlineTheme.textStyle(weight: 7, size: 20),
