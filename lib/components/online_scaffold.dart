@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/loading/loading_display_page.dart';
 import 'package:online_events/pages/loading/loading_page.dart';
 
 import '../theme/theme.dart';
@@ -57,7 +58,7 @@ abstract class OnlinePage extends StatelessWidget {
 class OnlineScaffold extends StatelessWidget {
   const OnlineScaffold({super.key});
 
-  static ValueNotifier<OnlinePage> page = ValueNotifier(const LoadingPage());
+  static ValueNotifier<OnlinePage> page = ValueNotifier(LoadingPageDisplay());
 
   @override
   Widget build(BuildContext context) {
