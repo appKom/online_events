@@ -92,9 +92,7 @@ class HomePage extends ScrollablePage {
             },
           ),
           const SizedBox(height: 10),
-          Bedpress(
-            models: bedpressModels,
-          ),
+          Bedpress(models: eventModels),
           SizedBox(height: Navbar.height(context) + 24),
         ],
       ),
