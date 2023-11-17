@@ -22,8 +22,7 @@ class DrinkingGamesPage extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -50,7 +49,7 @@ class DrinkingGamesPage extends ScrollablePage {
                 name: 'SpinLine',
                 imageSource: 'assets/images/SpinLine.png',
                 onTap: () {
-                  PageNavigator.navigateTo(SpinLinePage());
+                  PageNavigator.navigateTo(const SpinLinePage());
                 }),
             const SizedBox(
               height: 24,
@@ -120,10 +119,8 @@ class GameCard extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Container(
-                    padding: const EdgeInsets.all(
-                        12), // Add some padding around the text
-                    color: Colors.black.withOpacity(
-                        0.5), // Semi-transparent background for the text
+                    padding: const EdgeInsets.all(12), // Add some padding around the text
+                    color: Colors.black.withOpacity(0.5), // Semi-transparent background for the text
                     child: Text(
                       name,
                       style: OnlineTheme.textStyle(weight: 7, size: 20),

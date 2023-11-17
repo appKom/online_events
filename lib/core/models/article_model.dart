@@ -1,24 +1,3 @@
-class ApiResponse {
-  final int count;
-  final String? next;
-  final String? previous;
-  final List<ArticleModel> results;
-
-  ApiResponse({required this.count, this.next, this.previous, required this.results});
-
-  factory ApiResponse.fromJson(Map<String, dynamic> json) {
-    var list = json['results'] as List;
-    List<ArticleModel> articlesList = list.map((i) => ArticleModel.fromJson(i)).toList();
-
-    return ApiResponse(
-      count: json['count'],
-      next: json['next'],
-      previous: json['previous'],
-      results: articlesList,
-    );
-  }
-}
-
 class ArticleModel {
   final String absoluteUrl;
   final String authors;

@@ -1,8 +1,9 @@
 import 'package:online_events/core/models/attendee_info_model.dart';
+import 'package:online_events/core/models/json_model.dart';
 
 import 'image_model.dart';
 
-class EventModel {
+class EventModel extends JsonModel {
   final int id;
   final String title;
   final String slug;
@@ -47,6 +48,7 @@ class EventModel {
     this.attendeeInfo,
   });
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
