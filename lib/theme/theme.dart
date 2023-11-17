@@ -18,6 +18,7 @@ sealed class OnlineTheme {
   static const red1 = Color(0xFFF43145);
 
   static const pink1 = Color(0xFF5E0231);
+  static const pink2 = Color(0xFFEB536E);
 
   static const yellow = Color(0xFFFAB759);
 
