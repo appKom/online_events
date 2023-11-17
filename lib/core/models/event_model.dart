@@ -1,9 +1,8 @@
-import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/core/models/json_model.dart';
-
+import 'attendee_info_model.dart';
 import 'image_model.dart';
+import 'json_model.dart';
 
-class EventModel extends JsonModel {
+class EventModel implements JsonModel {
   final int id;
   final String title;
   final String slug;

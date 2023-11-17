@@ -1,4 +1,7 @@
-class ArticleModel {
+import 'image_model.dart';
+import 'json_model.dart';
+
+class ArticleModel implements JsonModel {
   final String absoluteUrl;
   final String authors;
   final Author createdBy;
@@ -13,7 +16,7 @@ class ArticleModel {
   final String slug;
   final List<String> tags;
   final String? video;
-  final ImageData? image;
+  final ImageModel? image;
 
   ArticleModel({
     required this.absoluteUrl,
@@ -49,12 +52,33 @@ class ArticleModel {
       slug: json['slug'],
       tags: List<String>.from(json['tags']),
       video: json['video'],
-      image: json['image'] != null ? ImageData.fromJson(json['image']) : null,
+      image: json['image'] != null ? ImageModel.fromJson(json['image']) : null,
     );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'absolute_url': absoluteUrl,
+      'authors': authors,
+      'created_by': createdBy.toJson(), // Assuming Author has toJson() method
+      'changed_date': changedDate,
+      'content': content,
+      'created_date': createdDate,
+      'featured': featured,
+      'heading': heading,
+      'ingress': ingress,
+      'ingress_short': ingressShort,
+      'published_date': publishedDate.toIso8601String(),
+      'slug': slug,
+      'tags': tags,
+      'video': video,
+      'image': image != null ? image!.toJson() : null,
+    };
   }
 }
 
-class Author {
+class Author implements JsonModel {
   final int id;
   final String firstName;
   final String lastName;
@@ -70,60 +94,14 @@ class Author {
       username: json['username'],
     );
   }
-}
 
-class ImageData {
-  final int id;
-  final String name;
-  final String timestamp;
-  final String description;
-  final String thumb;
-  final String original;
-  final String wide;
-  final String lg;
-  final String md;
-  final String sm;
-  final String xs;
-  final List<String> tags;
-  final String photographer;
-  final String preset;
-  final String presetDisplay;
-
-  ImageData({
-    required this.id,
-    required this.name,
-    required this.timestamp,
-    required this.description,
-    required this.thumb,
-    required this.original,
-    required this.wide,
-    required this.lg,
-    required this.md,
-    required this.sm,
-    required this.xs,
-    required this.tags,
-    required this.photographer,
-    required this.preset,
-    required this.presetDisplay,
-  });
-
-  factory ImageData.fromJson(Map<String, dynamic> json) {
-    return ImageData(
-      id: json['id'],
-      name: json['name'],
-      timestamp: json['timestamp'],
-      description: json['description'],
-      thumb: json['thumb'],
-      original: json['original'],
-      wide: json['wide'],
-      lg: json['lg'],
-      md: json['md'],
-      sm: json['sm'],
-      xs: json['xs'],
-      tags: List<String>.from(json['tags']),
-      photographer: json['photographer'],
-      preset: json['preset'],
-      presetDisplay: json['preset_display'],
-    );
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'first_name': firstName,
+      'last_name': lastName,
+      'username': username,
+    };
   }
 }
