@@ -1,4 +1,6 @@
-class ImageModel {
+import 'package:online_events/core/models/json_model.dart';
+
+class ImageModel implements JsonModel {
   final int id;
   final String name;
   final String timestamp;
@@ -33,6 +35,7 @@ class ImageModel {
     required this.presetDisplay,
   });
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,

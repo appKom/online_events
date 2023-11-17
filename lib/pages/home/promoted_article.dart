@@ -5,10 +5,9 @@ import '/pages/article/article_page.dart';
 import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
-
 class PromotedArticle extends StatelessWidget {
-  final ArticleModel article; 
-  const PromotedArticle({super.key, required this.article}); 
+  final ArticleModel article;
+  const PromotedArticle({super.key, required this.article});
 
   static const months = [
     'Januar',
@@ -42,8 +41,6 @@ class PromotedArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeToRead = '5 min'; // Assuming this is a static value
-
     return AnimatedButton(
       onTap: () => PageNavigator.navigateTo(ArticlePage(article: article)),
       scale: 0.95,

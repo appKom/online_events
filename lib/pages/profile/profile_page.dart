@@ -67,12 +67,9 @@ class ProfilePage extends ScrollablePage {
             ),
           ),
           const SizedBox(height: 24),
-          GestureDetector(
-            onTap: () => PageNavigator.navigateTo(LoadingPageDisplay()),
-          child: Text(
+          Text(
             'Kontakt',
             style: headerStyle,
-          ),
           ),
           const SizedBox(height: 8),
           Padding(

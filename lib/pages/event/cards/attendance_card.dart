@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/core/models/event_model.dart';
 
-import '/components/animated_button.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'event_card.dart';

@@ -16,7 +16,7 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 1), // Decrease duration to speed up rotation
+      duration: const Duration(milliseconds: 750), // Decrease duration to speed up rotation
       vsync: this,
     )..repeat(); // This will cause the animation to repeat indefinitely
   }
@@ -38,16 +38,17 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: 
-      AnimatedButton(childBuilder: (context, hover, pointerDown){
-      return GestureDetector( // Wrap with GestureDetector to handle taps
-        onTap: stopAnimationAfterDelay, // Call the method to stop the animation after delay
-        child: RotationTransition(
-          turns: Tween(begin: 0.0, end: 1.0).animate(_controller), // Defines the rotation
-          child: SvgPicture.asset('assets/svg/online_hvit_o.svg', height: 300),
-        ),
-      );
-      },
+      child: AnimatedButton(
+        childBuilder: (context, hover, pointerDown) {
+          return GestureDetector(
+            // Wrap with GestureDetector to handle taps
+            onTap: stopAnimationAfterDelay, // Call the method to stop the animation after delay
+            child: RotationTransition(
+              turns: Tween(begin: 0.0, end: 1.0).animate(_controller), // Defines the rotation
+              child: SvgPicture.asset('assets/svg/online_hvit_o.svg', height: 300),
+            ),
+          );
+        },
       ),
     );
   }

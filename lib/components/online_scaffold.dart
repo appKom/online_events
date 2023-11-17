@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/loading/loading_display_page.dart';
-import 'package:online_events/pages/loading/loading_page.dart';
+import '/pages/loading/loading_display_page.dart';
 
 import '../theme/theme.dart';
 import 'navbar.dart';
