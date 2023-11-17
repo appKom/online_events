@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/separator.dart';
 import 'package:online_events/core/models/event_model.dart';
@@ -32,7 +33,8 @@ class EventCard extends StatelessWidget {
     final day = date.day;
     final dayString = day.toString().padLeft(2, '0');
 
-    final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
+    final month =
+        date.month - 1; // Months go from 1-12 but we need an index of 0-11
     final monthString = months[month];
 
     // TODO: If an event spans multiple days, show 01.-05. January
@@ -80,10 +82,15 @@ class EventCard extends StatelessWidget {
                     height: 84,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: Image.network(
-                        model.images.first.md,
-                        fit: BoxFit.cover,
-                      ),
+                      child: model.images.isNotEmpty
+                          ? Image.network(
+                              model.images.first.md,
+                              fit: BoxFit.cover,
+                            )
+                          : SvgPicture.asset(
+                              'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   // Headers
