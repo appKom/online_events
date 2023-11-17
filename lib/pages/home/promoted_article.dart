@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/main.dart';
 import '/components/animated_button.dart';
 import '/pages/article/article_page.dart';
 import '/services/page_navigator.dart';

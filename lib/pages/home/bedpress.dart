@@ -1,34 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
+import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/pages/event/event_page.dart';
 import 'package:online_events/pages/event/event_page_pre.dart';
 
 import '/services/page_navigator.dart';
 import '/pages/home/event_card.dart';
 import '/theme/themed_icon.dart';
 
-import '/models/card_event.dart';
 import '../../theme/theme.dart';
 
 class Bedpress extends StatelessWidget {
-  final List<CardEventModel> models;
+  final List<EventModel> models; // Change to use EventModel
   const Bedpress({super.key, required this.models});
+
+  
 
   @override
   Widget build(BuildContext context) {
+    // Filter models where eventType is 2 and 3
+    final filteredModels = models
+        .where((model) => model.eventType == 2 || model.eventType == 3)
+        .toList();
+
+    print("Filtered models count: ${filteredModels.length}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 24),
         Text(
-          'Bedriftpresentasjoner',
+          'Bedriftpresentasjoner og Kurs',
           style: OnlineTheme.textStyle(size: 20, weight: 7),
         ),
         const SizedBox(height: 24),
         SizedBox(
           height: 333,
           child: ListView.builder(
-            itemCount: bedpressModels.length,
-            itemBuilder: buildItem,
+            itemCount: filteredModels.length, // Use count of filtered models
+            itemBuilder: (context, index) =>
+                buildItem(context, index, filteredModels),
             scrollDirection: Axis.horizontal,
           ),
         ),
@@ -36,35 +47,42 @@ class Bedpress extends StatelessWidget {
     );
   }
 
-  Widget? buildItem(BuildContext context, int index) {
+  Widget? buildItem(
+      BuildContext context, int index, List<EventModel> filteredModels) {
     return Container(
       margin: const EdgeInsets.only(right: 24),
       child: BedpressCard(
-        model: models[index],
+        model: filteredModels[index], // Use the model from the filtered list
       ),
     );
   }
 }
 
 class BedpressCard extends StatelessWidget {
-  final CardEventModel model;
+  final EventModel model;
 
   const BedpressCard({super.key, required this.model});
 
-  String categoryToString() {
-    final cat = model.category;
-    final lowercase = cat.toString().split('.').last;
-    return lowercase[0].toUpperCase() + lowercase.substring(1);
+  // Example of a method to format the date
+  String formatDate() {
+    final date = DateTime.parse(model.startDate);
+    final month = date.month;
+    final day = date.day.toString().padLeft(2, '0');
+    return "$day. ${EventCard.months[month - 1].substring(0, 3)}";
   }
 
-  String monthToString() {
-    return EventCard.months[model.date.month - 1].substring(0, 3);
+  String truncateWithEllipsis(String text, int maxLength) {
+    return (text.length <= maxLength) ? text : '${text.substring(0, maxLength)}...';
+  }
+
+    void showInfo() {
+    PageNavigator.navigateTo(EventPage(model: model));
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
-      onTap: () => PageNavigator.navigateTo(const EventPagePre()),
+      onTap: showInfo,
       childBuilder: (context, hover, pointerDown) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(12),
@@ -73,42 +91,42 @@ class BedpressCard extends StatelessWidget {
             color: OnlineTheme.gray13,
             child: Stack(
               children: [
+                // Use first image from images list, with a fallback
                 Positioned.fill(
+                  //model.images.first.md
                   bottom: 111,
-                  child: Image.asset(
-                    model.imageSource,
-                    fit: BoxFit.cover,
-                  ),
+                  child: model.images.isNotEmpty
+                      ? Image.network(
+                          model.images.first.md,
+                          fit: BoxFit.cover,
+                        )
+                      : SvgPicture.asset(
+                          'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
+                          fit: BoxFit.cover,
+                        ),
+                  // child: Image.network(
+                  //   model.images.isNotEmpty ? model.images.first.md : 'assets/svg/online_hvit_o.svg',
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
+                // ... other widget components, use properties from EventModel
                 Positioned(
                   right: 15,
-                  top: 222 + 10,
+                  bottom: 40,
                   child: Text(
-                    monthToString(),
+                    formatDate(), // Use formatted date
                     style: OnlineTheme.textStyle(
-                      size: 16,
-                      weight: 7,
-                      color: OnlineTheme.blue2,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 15,
-                  top: 222 + 25,
-                  child: Text(
-                    model.date.day.toString().padLeft(2, '0'),
-                    style: OnlineTheme.textStyle(
-                      size: 22,
+                      size: 15,
                       weight: 7,
                     ),
                   ),
                 ),
                 Positioned(
-                  right: 80,
+                  right: 10,
                   top: 222 + 10,
                   left: 15,
                   child: Text(
-                    model.name,
+                    truncateWithEllipsis(model.title, 35), // Use title from EventModel
                     style: OnlineTheme.textStyle(
                       color: OnlineTheme.gray11,
                       weight: 7,
@@ -119,13 +137,14 @@ class BedpressCard extends StatelessWidget {
                   left: 15,
                   bottom: 15,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
                     decoration: BoxDecoration(
                       color: OnlineTheme.green2,
                       borderRadius: BorderRadius.circular(3),
                     ),
                     child: Text(
-                      categoryToString(),
+                      model.eventTypeDisplay,
                       style: OnlineTheme.textStyle(weight: 5, size: 14),
                     ),
                   ),
@@ -145,7 +164,9 @@ class BedpressCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        '${model.registered}/${model.capacity}',
+                        model.numberOfSeatsTaken == null && model.maxCapacity == null 
+                          ? '∞' 
+                          : '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}',
                         style: OnlineTheme.textStyle(size: 14),
                       ),
                     ],
@@ -159,50 +180,3 @@ class BedpressCard extends StatelessWidget {
     );
   }
 }
-
-final bedpressModels = [
-  CardEventModel(
-      imageSource: 'assets/images/buldring.png',
-      name: 'Bedpress i klatreparken',
-      date: DateTime(2023, 12, 5),
-      registered: 20,
-      capacity: 20,
-      category: EventCategory.sosialt),
-  CardEventModel(
-      imageSource: 'assets/images/cake.png',
-      name: 'Bedpress og brownies',
-      date: DateTime(2023, 11, 26),
-      registered: 40,
-      capacity: 40,
-      category: EventCategory.kurs),
-  CardEventModel(
-    imageSource: 'assets/images/heart.png',
-    name: 'Bedpress med Tinder',
-    date: DateTime(2023, 9, 27),
-    registered: 5,
-    capacity: 5,
-    category: EventCategory.kurs,
-  ),
-  CardEventModel(
-      imageSource: 'assets/images/buldring.png',
-      name: 'Bedpress i klatreparken',
-      date: DateTime(2023, 12, 5),
-      registered: 20,
-      capacity: 20,
-      category: EventCategory.sosialt),
-  CardEventModel(
-      imageSource: 'assets/images/cake.png',
-      name: 'Bedpress og brownies',
-      date: DateTime(2023, 11, 26),
-      registered: 40,
-      capacity: 40,
-      category: EventCategory.kurs),
-  CardEventModel(
-    imageSource: 'assets/images/heart.png',
-    name: 'Bedpress med Tinder',
-    date: DateTime(2023, 9, 27),
-    registered: 5,
-    capacity: 5,
-    category: EventCategory.kurs,
-  ),
-];
