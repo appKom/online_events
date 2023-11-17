@@ -1,17 +1,49 @@
 import 'package:flutter/cupertino.dart';
-
+import 'package:online_events/core/models/article_model.dart';
+import 'package:online_events/main.dart';
 import '/components/animated_button.dart';
 import '/pages/article/article_page.dart';
 import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
+
 class PromotedArticle extends StatelessWidget {
-  const PromotedArticle({super.key});
+  final ArticleModel article; 
+  const PromotedArticle({super.key, required this.article}); 
+
+  static const months = [
+    'Januar',
+    'Februar',
+    'Mars',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
+  ];
+
+  String dateToString() {
+    final date = DateTime.parse(article.changedDate);
+
+    final day = date.day;
+    final dayString = day.toString().padLeft(2, '0');
+
+    final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
+    final monthString = months[month];
+
+    // TODO: If an event spans multiple days, show 01.-05. January
+    // TODO: If start and end month is different, shorten to 28. Jan - 03. Feb
+
+    return '$dayString. $monthString';
+  }
 
   @override
   Widget build(BuildContext context) {
-    const date = '26.6.2023';
-    const timeToRead = '5 min';
+    final timeToRead = '5 min'; // Assuming this is a static value
 
     return AnimatedButton(
       onTap: () => PageNavigator.navigateTo(const ArticlePage()),
@@ -26,8 +58,8 @@ class PromotedArticle extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Image.asset(
-                    'assets/images/fadderuka.png',
+                  child: Image.network(
+                    article.image?.original ?? 'default_placeholder_image_url', // Modify this line
                     fit: BoxFit.cover,
                     alignment: Alignment.bottomCenter,
                   ),
@@ -41,27 +73,16 @@ class PromotedArticle extends StatelessWidget {
                         left: 20,
                         bottom: 60,
                         child: Text(
-                          'Fadderuka 2023',
+                          article.heading, // Modify this line
                           style: OnlineTheme.textStyle(weight: 5),
                         ),
                       ),
-                      Positioned(
-                        bottom: 42,
-                        left: 20,
-                        child: Text(
-                          'Isabelle Nordin, Linn Grotnes',
-                          style: OnlineTheme.textStyle(
-                            size: 14,
-                            weight: 5,
-                            color: OnlineTheme.gray9,
-                          ),
-                        ),
-                      ),
+                      // ... (other Positioned widgets)
                       Positioned(
                         bottom: 12,
                         left: 20,
                         child: Text(
-                          '$date • $timeToRead å lese',
+                          dateToString(),
                           style: OnlineTheme.textStyle(
                             size: 14,
                             weight: 5,

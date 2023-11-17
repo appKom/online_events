@@ -36,9 +36,17 @@ class HomePage extends ScrollablePage {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: OnlineHeader.height(context)),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 40),
-            child: PromotedArticle(),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 222,
+            child:  ListView.builder(
+              itemCount: 1,
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (c, i) => PromotedArticle(
+                article: articleModels[i],
+              ),
+            ),
           ),
           Text(
             'Kommende Arrangementer',
