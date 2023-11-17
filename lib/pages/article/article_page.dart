@@ -31,7 +31,7 @@ class ArticlePage extends ScrollablePage {
       children: [
         SizedBox(height: OnlineHeader.height(context)),
         Image.network(
-          article.image?.original ?? 'default_placeholder_image_url', // Use the article image
+          article.image?.original ?? 'assets/images/fadderuka.png', // Use the article image
           fit: BoxFit.cover,
           height: 267,
         ),
@@ -45,12 +45,17 @@ class ArticlePage extends ScrollablePage {
                 article.heading, // Use the article heading
                 style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height:14),
               Text(
                 'Skrevet av: ${article.authors}', // Use the article authors
                 style: OnlineTheme.textStyle(),
               ),
               const Separator(margin: 20),
+              Text(
+                article.ingress,
+                style: OnlineTheme.textStyle(weight: 6),
+              ),
+              const Separator(margin: 15,),
               Text(
                 article.content, // Use the article content
                 style: OnlineTheme.textStyle(),
