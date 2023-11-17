@@ -25,7 +25,7 @@ class ArticleModel {
   final Author createdBy;
   final String changedDate;
   final String content;
-  final DateTime createdDate;
+  final String createdDate;
   final bool featured;
   final String heading;
   final String ingress;
@@ -61,7 +61,7 @@ class ArticleModel {
       createdBy: Author.fromJson(json['created_by']),
       changedDate: json['changed_date'],
       content: json['content'],
-      createdDate: DateTime.parse(json['created_date']),
+      createdDate: json['created_date'],
       featured: json['featured'],
       heading: json['heading'],
       ingress: json['ingress'],

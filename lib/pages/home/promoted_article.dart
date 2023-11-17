@@ -27,7 +27,7 @@ class PromotedArticle extends StatelessWidget {
   ];
 
   String dateToString() {
-    final date = DateTime.parse(article.changedDate);
+    final date = DateTime.parse(article.createdDate);
 
     final day = date.day;
     final dayString = day.toString().padLeft(2, '0');
@@ -46,7 +46,7 @@ class PromotedArticle extends StatelessWidget {
     final timeToRead = '5 min'; // Assuming this is a static value
 
     return AnimatedButton(
-      onTap: () => PageNavigator.navigateTo(const ArticlePage()),
+      onTap: () => PageNavigator.navigateTo(ArticlePage(article: article)),
       scale: 0.95,
       childBuilder: (context, hover, pointerDown) {
         return SizedBox(
@@ -75,6 +75,14 @@ class PromotedArticle extends StatelessWidget {
                         child: Text(
                           article.heading, // Modify this line
                           style: OnlineTheme.textStyle(weight: 5),
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        bottom: 42,
+                        child: Text(
+                          article.authors, // Modify this line
+                          style: OnlineTheme.textStyle(weight: 4, size: 12),
                         ),
                       ),
                       // ... (other Positioned widgets)
