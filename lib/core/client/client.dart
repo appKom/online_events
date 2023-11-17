@@ -14,7 +14,8 @@ abstract class Client {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
 
       final events = jsonResponse['results']
@@ -30,13 +31,15 @@ abstract class Client {
       return [];
     }
   }
+
   static Future<List<ArticleModel>?> getArticles() async {
     const url = '$endpoint/api/v1/articles/';
 
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
 
       final articles = jsonResponse['results']
@@ -53,4 +56,3 @@ abstract class Client {
     }
   }
 }
-

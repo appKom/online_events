@@ -20,7 +20,7 @@ import 'cards/event_registration_card.dart';
 
 class EventPage extends ScrollablePage {
   const EventPage({super.key, required this.model});
-
+//
   final EventModel model;
 
   @override
