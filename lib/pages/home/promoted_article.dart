@@ -59,7 +59,7 @@ class PromotedArticle extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: Image.network(
-                    article.image?.original ?? 'default_placeholder_image_url', // Modify this line
+                    article.image?.original ?? 'assets/svg/online_hvit_o.svg', // Modify this line
                     fit: BoxFit.cover,
                     alignment: Alignment.bottomCenter,
                   ),

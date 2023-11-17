@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/event_organizers.dart';
 
@@ -80,10 +81,16 @@ class EventPage extends ScrollablePage {
         SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
           height: 267,
-          child: Image.network(
-            model.images.first.original,
-            fit: BoxFit.cover,
-          ),
+
+          child: model.images.isNotEmpty
+              ? Image.network(
+                  model.images.first.original,
+                  fit: BoxFit.cover,
+                )
+              : SvgPicture.asset(
+                  'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
+                  fit: BoxFit.cover,
+                ),
         ),
         Padding(
           padding: horizontalPadding,
@@ -159,7 +166,8 @@ Widget header() {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
+          style: OnlineTheme.eventHeader
+              .copyWith(height: 1, fontWeight: FontWeight.w600),
         ),
         CardBadge(
           border: OnlineTheme.green5.lighten(100),
