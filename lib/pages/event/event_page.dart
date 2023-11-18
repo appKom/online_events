@@ -81,7 +81,6 @@ class EventPage extends ScrollablePage {
         SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
           height: 267,
-
           child: model.images.isNotEmpty
               ? Image.network(
                   model.images.first.original,
@@ -112,7 +111,9 @@ class EventPage extends ScrollablePage {
                 organizer: eventOrganizers[model.organizer] ?? '',
               ),
               const SizedBox(height: 24),
-              const RegistrationCard(),
+              RegistrationCard(
+                model: model, // Pass the model here
+              ),
               const SizedBox(height: 24),
             ],
           ),
@@ -128,7 +129,9 @@ class EventPage extends ScrollablePage {
 /// Påmelding
 class RegistrationCard extends StatelessWidget {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-  const RegistrationCard({super.key});
+  
+  const RegistrationCard({super.key, required this.model});
+final EventModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +147,9 @@ class RegistrationCard extends StatelessWidget {
         children: [
           header(),
           const SizedBox(height: 16),
-          const EventParticipants(),
+          EventParticipants(
+            model: model,
+          ),
           const SizedBox(height: 16),
           const EventRegistrationCard(), // Add the countdown widget here
           const SizedBox(height: 20),

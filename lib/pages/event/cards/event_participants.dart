@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/theme/theme.dart';
 
 class EventParticipants extends StatelessWidget {
-  const EventParticipants({super.key});
+  const EventParticipants({super.key, required this.model});
+
+  final EventModel model;
+
+  String peopleToString() {
+    if (model.maxCapacity == null) return 'Ubegrenset';
+
+    return '${model.numberOfSeatsTaken}/${model.maxCapacity}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,40 +75,14 @@ class EventParticipants extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '1-3. Klasse',
+                    'Påmeldte',
                     style: OnlineTheme.textStyle(size: 12, height: 1.5, color: OnlineTheme.gray11, weight: 4),
                     overflow: TextOverflow.visible,
                   ),
                   Center(
                     child: Text(
-                      '9/10',
+                      peopleToString(),
                       style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: 1,
-              height: 20,
-              color: OnlineTheme.gray8,
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-            ),
-            SizedBox(
-              width: 60,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '3-5. Klasse',
-                    style: OnlineTheme.textStyle(size: 12, height: 1.5, color: OnlineTheme.gray11, weight: 4),
-                    overflow: TextOverflow.visible,
-                  ),
-                  // Center text
-                  Center(
-                    child: Text(
-                      '10/10',
-                      style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 4),
                     ),
                   ),
                 ],
