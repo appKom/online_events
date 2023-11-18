@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/event/cards/confirm_registration.dart';
+import 'package:online_events/pages/event/cards/confirm_unattend.dart';
 
 import '/components/animated_button.dart';
 import '/components/separator.dart';
@@ -6,6 +8,8 @@ import '/main.dart';
 import '/pages/event/show_participants.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
+
+bool isRegistered = false;
 
 /// This appears to be the sus buttons on the bottom
 class EventCardButtons extends StatefulWidget {
@@ -17,7 +21,6 @@ class EventCardButtons extends StatefulWidget {
 }
 
 class _EventCardButtonsState extends State<EventCardButtons> {
-  bool isRegistered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +71,26 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           Flexible(
             child: AnimatedButton(
               onTap: () {
-                setState(() {
-                  isRegistered = !isRegistered; // Toggle isRegistered state
+                setState(() { // Toggle isRegistered state
+                  isRegistered? AppNavigator.navigateToRoute(
+                  ConfirmUnattend(
+                    onConfirm: (){
+                      setState(() {
+                        isRegistered = false;
+                      });
+                    }
+                  ),
+                  additive: true,
+                ) : AppNavigator.navigateToRoute(
+                  ConfirmRegistration(
+                    onConfirm: (){
+                      setState(() {
+                        isRegistered = true;
+                      });
+                    }
+                  ),
+                  additive: true,
+                );
                 });
               },
               childBuilder: (context, hover, pointerDown) {
