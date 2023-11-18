@@ -24,6 +24,17 @@ class PromotedArticle extends StatelessWidget {
     'Desember',
   ];
 
+  int calculateReadingTime(String heading, String ingress) {
+    int wordCount = countWords(heading) + countWords(ingress);
+    return (wordCount / 238).ceil(); // Dividing by 238 and rounding up
+  }
+
+  int countWords(String text) {
+    // Counts the number of words in a given string
+    return text.split(' ').where((word) => word.isNotEmpty).length;
+  }
+
+
   String dateToString() {
     final date = DateTime.parse(article.createdDate);
 
@@ -39,8 +50,12 @@ class PromotedArticle extends StatelessWidget {
     return '$dayString. $monthString';
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
+    final timeToRead = calculateReadingTime(article.content, article.ingress);
+    final readingTimeText = "$timeToRead min å lese";
     return AnimatedButton(
       onTap: () => PageNavigator.navigateTo(ArticlePage(article: article)),
       scale: 0.95,
@@ -86,7 +101,7 @@ class PromotedArticle extends StatelessWidget {
                         bottom: 12,
                         left: 20,
                         child: Text(
-                          dateToString(),
+                          '${dateToString()} • $readingTimeText',
                           style: OnlineTheme.textStyle(
                             size: 14,
                             weight: 5,
