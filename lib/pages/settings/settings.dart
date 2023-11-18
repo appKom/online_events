@@ -50,6 +50,11 @@ class _SettingsContent extends StatefulWidget {
   __SettingsContentState createState() => __SettingsContentState();
 }
 
+Map<String, bool> confirmations = {
+    'Bekreftelse for påmelding': false,
+    'Bekreftelse for avmelding': true,
+  };
+
 class __SettingsContentState extends State<_SettingsContent> {
   bool isPressed = false; // Track if the button is pressed
   Map<String, bool> eventCategories = {
@@ -57,10 +62,6 @@ class __SettingsContentState extends State<_SettingsContent> {
     'Kurs': false,
     'Sosialt': false,
     'Annet': false,
-  };
-  Map<String, bool> confirmations = {
-    'Bekreftelse for påmelding': false,
-    'Bekreftelse for avmelding': true,
   };
 
   @override

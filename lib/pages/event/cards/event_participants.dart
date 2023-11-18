@@ -69,6 +69,7 @@ class EventParticipants extends StatelessWidget {
               color: OnlineTheme.gray8,
               margin: const EdgeInsets.symmetric(horizontal: 14),
             ),
+            const SizedBox(width: 50,),
             SizedBox(
               width: 60,
               child: Column(

@@ -61,6 +61,15 @@ sealed class OnlineTheme {
     end: Alignment.centerRight,
   );
 
+  static final redGradient = LinearGradient(
+    colors: [
+      Colors.orange[300]!,
+      Colors.red[800]!,
+      ],
+      begin: Alignment.centerLeft,
+      end: Alignment.centerRight,
+  );
+
   // Fonts
   static const font = 'Poppins';
 
