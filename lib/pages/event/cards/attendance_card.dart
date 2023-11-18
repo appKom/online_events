@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/pages/home/event_card.dart';
+import 'package:intl/intl.dart';
 
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
@@ -20,16 +22,33 @@ class AttendanceCard extends StatelessWidget {
 
   final EventModel model;
 
-  String dateText() {
-    final startDate = DateTime.parse(model.startDate);
-    final endDate = DateTime.parse(model.endDate);
+  String formatEventDates(String startDate, String endDate) {
+    DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
+    DateFormat outputDateFormat = DateFormat("d. MMMM");
+    DateFormat outputTimeFormat = DateFormat("HH:mm");
+    DateFormat outputDayFormat = DateFormat("EEEE");
 
-    final day = startDate.day;
-    final dayString = day.toString().padLeft(2, '0');
+    DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
+    DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
 
-    final dayName = days[startDate.day];
+    if (startDateTime.year == endDateTime.year &&
+        startDateTime.month == endDateTime.month &&
+        startDateTime.day == endDateTime.day) {
+      // Same day
+      String formattedDate = outputDayFormat.format(startDateTime);
+      String formattedStartTime = outputTimeFormat.format(startDateTime);
+      String formattedEndTime = outputTimeFormat.format(endDateTime);
 
-    return '';
+      return "$formattedDate ${outputDateFormat.format(startDateTime)}, $formattedStartTime-$formattedEndTime";
+    } else {
+      // Different days
+      String formattedStartDate = outputDateFormat.format(startDateTime);
+      String formattedEndDate = outputDateFormat.format(endDateTime);
+      String formattedStartTime = outputTimeFormat.format(startDateTime);
+      String formattedEndTime = outputTimeFormat.format(endDateTime);
+
+      return "$formattedStartDate $formattedStartTime - $formattedEndDate $formattedEndTime";
+    }
   }
 
   @override
@@ -37,18 +56,18 @@ class AttendanceCard extends StatelessWidget {
     return OnlineCard(
       child: Column(
         children: [
-          const SizedBox(
+          SizedBox(
             height: 20,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ThemedIcon(icon: IconType.dateTime, size: 20),
+                const ThemedIcon(icon: IconType.dateTime, size: 20),
                 SizedBox(width: 8),
                 Padding(
                   padding: EdgeInsets.only(top: 3),
                   child: Text(
-                    'Tirsdag 31. okt., 16:15 - 20:00',
-                    style: TextStyle(
+                    formatEventDates(model.startDate, model.endDate),
+                    style: const TextStyle(
                       color: OnlineTheme.white,
                       fontSize: 14,
                       fontFamily: OnlineTheme.font,
