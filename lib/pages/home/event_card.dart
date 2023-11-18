@@ -6,6 +6,7 @@ import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/event/event_page.dart';
 import '../../services/page_navigator.dart';
 import '../../theme/theme.dart';
+import 'package:intl/intl.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({super.key, required this.model});
@@ -27,21 +28,25 @@ class EventCard extends StatelessWidget {
     'Desember',
   ];
 
-  String dateToString() {
-    final date = DateTime.parse(model.startDate);
+  String formatDateSpan(String startDate, String endDate) {
+  DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
+  DateFormat outputDayMonthFormat = DateFormat("dd. MMMM");
 
-    final day = date.day;
-    final dayString = day.toString().padLeft(2, '0');
+  DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
+  DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
 
-    final month =
-        date.month - 1; // Months go from 1-12 but we need an index of 0-11
-    final monthString = months[month];
-
-    // TODO: If an event spans multiple days, show 01.-05. January
-    // TODO: If start and end month is different, shorten to 28. Jan - 03. Feb
-
-    return '$dayString. $monthString';
+  if (startDateTime.year == endDateTime.year &&
+      startDateTime.month == endDateTime.month &&
+      startDateTime.day == endDateTime.day) {
+    // Same day
+    return outputDayMonthFormat.format(startDateTime);
+  } else {
+    // Different days
+    String formattedStartDate = outputDayMonthFormat.format(startDateTime);
+    String formattedEndDate = outputDayMonthFormat.format(endDateTime);
+    return "$formattedStartDate - $formattedEndDate";
   }
+}
 
   String shortenName() {
     final name = model.title;
@@ -116,7 +121,7 @@ class EventCard extends StatelessWidget {
                         ),
                         subHeader(
                           Icons.calendar_month_outlined,
-                          dateToString(),
+                          formatDateSpan(model.startDate, model.endDate)
                         ),
                         subHeader(
                           Icons.people_outline,
