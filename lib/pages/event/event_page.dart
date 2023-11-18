@@ -129,9 +129,9 @@ class EventPage extends ScrollablePage {
 /// Påmelding
 class RegistrationCard extends StatelessWidget {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-
+  
   const RegistrationCard({super.key, required this.model});
-  final EventModel model;
+final EventModel model;
 
   @override
   Widget build(BuildContext context) {
