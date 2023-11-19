@@ -18,38 +18,39 @@ final days = [
 
 class AttendanceCard extends StatelessWidget {
   const AttendanceCard({super.key, required this.model});
+  
 
   final EventModel model;
+  
 
   String formatEventDates(String startDate, String endDate) {
-    DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
-    DateFormat outputDateFormat = DateFormat("d. MMMM");
-    DateFormat outputTimeFormat = DateFormat("HH:mm");
-    DateFormat outputDayFormat = DateFormat("EEEE");
+  DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
+  DateFormat outputDateFormat = DateFormat("d. MMMM");
+  DateFormat outputTimeFormat = DateFormat("HH:mm"); // Corrected format string
+  DateFormat outputDayFormat = DateFormat("EEEE");
 
-    DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
-    DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
+  DateTime startDateTime = inputFormat.parse(startDate, true); // Removed .toLocal()
+  DateTime endDateTime = inputFormat.parse(endDate, true); // Removed .toLocal()
 
-    if (startDateTime.year == endDateTime.year &&
-        startDateTime.month == endDateTime.month &&
-        startDateTime.day == endDateTime.day) {
-      // Same day
-      String formattedDate = outputDayFormat.format(startDateTime);
-      String formattedStartTime = outputTimeFormat.format(startDateTime);
-      String formattedEndTime = outputTimeFormat.format(endDateTime);
+  if (startDateTime.year == endDateTime.year &&
+      startDateTime.month == endDateTime.month &&
+      startDateTime.day == endDateTime.day) {
+    // Same day
+    String formattedDate = outputDayFormat.format(startDateTime);
+    String formattedStartTime = outputTimeFormat.format(startDateTime);
+    String formattedEndTime = outputTimeFormat.format(endDateTime);
 
-      return "$formattedDate ${outputDateFormat.format(startDateTime)}, $formattedStartTime-$formattedEndTime";
-    } else {
-      // Different days
-      String formattedStartDate = outputDateFormat.format(startDateTime);
-      String formattedEndDate = outputDateFormat.format(endDateTime);
-      String formattedStartTime = outputTimeFormat.format(startDateTime);
-      String formattedEndTime = outputTimeFormat.format(endDateTime);
+    return "$formattedDate ${outputDateFormat.format(startDateTime)}, $formattedStartTime-$formattedEndTime";
+  } else {
+    // Different days
+    String formattedStartDate = outputDateFormat.format(startDateTime);
+    String formattedEndDate = outputDateFormat.format(endDateTime);
+    String formattedStartTime = outputTimeFormat.format(startDateTime);
+    String formattedEndTime = outputTimeFormat.format(endDateTime);
 
-      return "$formattedStartDate $formattedStartTime - $formattedEndDate $formattedEndTime";
-    }
+    return "$formattedStartDate $formattedStartTime - $formattedEndDate $formattedEndTime";
   }
-
+}
   @override
   Widget build(BuildContext context) {
     return OnlineCard(

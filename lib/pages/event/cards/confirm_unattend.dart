@@ -1,10 +1,6 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online_events/pages/event/cards/event_card_buttons.dart';
-import 'package:online_events/pages/event/event_page.dart';
-import 'package:online_events/services/app_navigator.dart';
 
 import '/components/animated_button.dart';
 import '/dark_overlay.dart';
@@ -17,10 +13,8 @@ class ConfirmUnattend extends DarkOverlay {
 
   @override
   Widget content(BuildContext context, Animation<double> animation) {
-    final padding = MediaQuery.of(context).padding;
 
     return LayoutBuilder(builder: (context, constraints) {
-      final maxSize = min(constraints.maxWidth, constraints.maxHeight);
 
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,

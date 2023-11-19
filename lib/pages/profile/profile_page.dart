@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/pages/home/home_page.dart';
-import 'package:online_events/pages/loading/loading_display_page.dart';
 
 import '/components/online_scaffold.dart';
 import '/components/online_header.dart';

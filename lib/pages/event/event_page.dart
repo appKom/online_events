@@ -23,6 +23,7 @@ class EventPage extends ScrollablePage {
   const EventPage({super.key, required this.model});
 //
   final EventModel model;
+  
 
   @override
   Widget? header(BuildContext context) {
@@ -30,6 +31,7 @@ class EventPage extends ScrollablePage {
       buttons: [
         if (loggedIn)
           SizedBox.square(
+            
             dimension: 40,
             child: Center(
               child: AnimatedButton(
