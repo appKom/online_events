@@ -5,11 +5,9 @@ import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
 import 'cards/card_badge.dart';
-import 'cards/attendance_card.dart';
 import 'cards/event_card_countdown.dart';
 import 'cards/event_card_pre_buttons.dart';
 import 'cards/event_description_card.dart';
-import 'cards/event_participants.dart';
 
 class EventPagePre extends ScrollablePage {
   const EventPagePre({super.key});

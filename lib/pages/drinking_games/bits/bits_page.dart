@@ -122,14 +122,46 @@ class BitsState extends State<Bits> {
 const bitsPages = [
   BitsModel(
     header: 'Pekelek',
-    body: 'Pek på den i rommet som har brukt en sjekkereplikk relatert til informatikk.',
-  ),
-  BitsModel(
-    header: 'Chug eller Sannhet',
-    body: 'Hva er det rareste stedet du har barbert deg?',
+    body: 'Kunne brukt en sjekkereplikk relatert til informatikk.',
   ),
   BitsModel(
     header: 'Pekelek',
-    body: 'Hvem her har hatt seg på A4?',
+    body: 'Blir påspandert mest på byen',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Bruker lengst tid på do',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Smasher mest',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Startet å drikke i yngst alder',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Fikk A i exphil',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Fått flest prikker',
+  ),
+  BitsModel(
+    header: 'SKÅL!',
+    body: '',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Passer best inn i Dotkom',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Avslutter festen først',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Strøk i ITGK',
   ),
 ];

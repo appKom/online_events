@@ -26,7 +26,7 @@ class PromotedArticle extends StatelessWidget {
 
   int calculateReadingTime(String heading, String ingress) {
     int wordCount = countWords(heading) + countWords(ingress);
-    return (wordCount / 238).ceil(); // Dividing by 238 and rounding up
+    return ((wordCount / 238)+1).ceil(); // Dividing by 238 and rounding up
   }
 
   int countWords(String text) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/login/auth_service.dart';
 
 import 'package:online_events/theme/theme.dart';
 import '/components/online_scaffold.dart';
@@ -8,8 +9,25 @@ import '/components/online_header.dart';
 import '/services/page_navigator.dart';
 import '/main.dart';
 
-class LoginPage extends StaticPage {
-  const LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the widget is removed from the widget tree
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose(); // Always call super.dispose() at the end
+  }
 
   @override
   Widget? header(BuildContext context) {
@@ -18,7 +36,8 @@ class LoginPage extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     final hintStyle = OnlineTheme.textStyle(
       color: const Color(0xFF4C566A),
@@ -54,6 +73,7 @@ class LoginPage extends StaticPage {
               SizedBox(
                 height: 40,
                 child: TextField(
+                  controller: emailController,
                   obscureText: false,
                   autocorrect: false,
                   style: OnlineTheme.textStyle(size: 14),
@@ -87,6 +107,7 @@ class LoginPage extends StaticPage {
               SizedBox(
                 height: 40,
                 child: TextField(
+                  controller: passwordController,
                   obscureText: true,
                   autocorrect: false,
                   style: OnlineTheme.textStyle(size: 14),
@@ -108,9 +129,14 @@ class LoginPage extends StaticPage {
           ),
           const SizedBox(height: 24),
           AnimatedButton(
-            onTap: () {
-              loggedIn = true;
-              PageNavigator.navigateTo(const ProfilePage());
+            onTap: () async {
+              bool loggedIn = await AuthService()
+                  .login(emailController.text, passwordController.text);
+              if (loggedIn) {
+                PageNavigator.navigateTo(const ProfilePage());
+              } else {
+                // Show error message
+              }
             },
             childBuilder: (context, hover, pointerDown) {
               return Container(
@@ -132,4 +158,12 @@ class LoginPage extends StaticPage {
       ),
     );
   }
+  
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
 }
+
+
