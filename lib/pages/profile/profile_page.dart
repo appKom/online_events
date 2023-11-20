@@ -14,6 +14,7 @@ import '/theme/theme.dart';
 import '/main.dart';
 
 class ProfilePage extends ScrollablePage {
+
   const ProfilePage({super.key});
 
   @override

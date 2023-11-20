@@ -3,7 +3,6 @@ import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/login/display_login_page.dart';
 import 'package:online_events/pages/login/login_page.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/page_navigator.dart';
@@ -30,7 +29,7 @@ class MyEventsPage extends ScrollablePage {
     if (loggedIn) {
       PageNavigator.navigateTo(const ProfilePage());
     } else {
-      PageNavigator.navigateTo(const LoginPageDisplay());
+      PageNavigator.navigateTo(LoginPage());
     }
   }
 

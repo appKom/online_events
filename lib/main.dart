@@ -7,11 +7,14 @@ import '/services/app_navigator.dart';
 import 'core/client/client.dart';
 import 'core/models/event_model.dart';
 import 'theme/theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 bool loggedIn = false;
 
-void main() {
+Future<void> main() async{
   runApp(const MainApp());
+  await dotenv.load(fileName: ".env");
+
 
   Future.wait([
     Client.getEvents(),
