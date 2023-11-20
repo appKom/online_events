@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthService {
   
   final String _baseUrl = 'https://old.online.ntnu.no/openid/authorize?';
   final String clientId = '598863';
-  final String clientSecret = Platform.environment['CLIENT_SECRET'] ?? 'default_secret'; //Burde endres
+  final String clientSecret = dotenv.env['CLIENT_SECRET'] ?? 'default_secret';
   final FlutterSecureStorage _storage = FlutterSecureStorage(); 
 
   String get authUrl {
