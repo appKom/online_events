@@ -8,7 +8,7 @@ class AuthService {
   
   final String _baseUrl = 'https://old.online.ntnu.no/openid/authorize?';
   final String clientId = '598863';
-  final String clientSecret = dotenv.env['CLIENT_SECRET'] ?? 'default_secret';
+  final String clientSecret = dotenv.env['CLIENT_SECRET'] ?? 'fallback_secret';
   final FlutterSecureStorage _storage = FlutterSecureStorage(); 
 
   String get authUrl {
