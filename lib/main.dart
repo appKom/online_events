@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:online_events/core/models/article_model.dart';
 import 'package:online_events/core/models/attendance_model.dart';
 import 'package:online_events/pages/home/home_page.dart';
+import 'package:online_events/services/env.dart';
+import 'package:online_events/services/secure_storage.dart';
 import '/components/online_scaffold.dart';
 import '/services/app_navigator.dart';
 import 'core/client/client.dart';
@@ -10,15 +12,13 @@ import 'theme/theme.dart';
 
 bool loggedIn = false;
 
-void main() {
+Future main() async {
   runApp(const MainApp());
 
+  await Env.initialize();
+  SecureStorage.initialize();
 
-  Future.wait([
-    Client.getEvents(),
-    Client.getArticles(),
-    Client.getAttendance()
-  ]).then((responses) {
+  Future.wait([Client.getEvents(), Client.getArticles(), Client.getAttendance()]).then((responses) {
     final events = responses[0] as List<EventModel>?;
     final articles = responses[1] as List<ArticleModel>?;
     final attendances = responses[2] as List<AttendanceModel>?;
@@ -31,7 +31,7 @@ void main() {
       articleModels.addAll(articles);
     }
 
-    if (attendances != null){
+    if (attendances != null) {
       attendanceModels.addAll(attendances);
     }
 
@@ -39,11 +39,9 @@ void main() {
   });
 }
 
-
 final List<EventModel> eventModels = [];
 final List<ArticleModel> articleModels = [];
 final List<AttendanceModel> attendanceModels = [];
-
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

@@ -1,14 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
+
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; 
+
+import '/services/secure_storage.dart';
+import '../../services/env.dart';
 
 class AuthService {
-  
-  final String _baseUrl = 'https://old.online.ntnu.no/openid/authorize?';
+  // final String _baseUrl = 'https://old.online.ntnu.no/openid/authorize?';
   final String clientId = '598863';
-  final String clientSecret = 'hemmelig';
-  final FlutterSecureStorage _storage = FlutterSecureStorage(); 
 
   String get authUrl {
     return 'https://old.online.ntnu.no/openid/authorize?'
@@ -30,7 +29,7 @@ class AuthService {
           'code': authorizationCode,
           'redirect_uri': redirectUri,
           'client_id': clientId,
-          'client_secret': clientSecret, 
+          'client_secret': Env.get('CLIENT_SECRET'),
         },
       );
 
@@ -39,8 +38,10 @@ class AuthService {
         final accessToken = responseBody['access_token'];
         final refreshToken = responseBody['refresh_token'];
 
-        await _storage.write(key: 'accessToken', value: accessToken);
-        await _storage.write(key: 'refreshToken', value: refreshToken);
+        await Future.wait([
+          SecureStorage.write('accessToken', accessToken),
+          SecureStorage.write('refreshToken', refreshToken),
+        ]);
 
         return true;
       } else {
@@ -54,8 +55,7 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    await _storage.delete(key: 'accessToken');
-    await _storage.delete(key: 'refreshToken');
+    SecureStorage.erase('accessToken');
+    SecureStorage.erase('refreshToken');
   }
-
 }

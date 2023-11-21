@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:online_events/pages/login/auth_service.dart'; // Import AuthService
+
+import '/pages/login/auth_service.dart'; // Import AuthService
 
 class AuthWebViewPage extends StatefulWidget {
   final String authUrl;
   final AuthService authService; // Add AuthService
 
-  AuthWebViewPage({Key? key, required this.authUrl, required this.authService}) : super(key: key);
+  const AuthWebViewPage({Key? key, required this.authUrl, required this.authService}) : super(key: key);
 
   @override
-  _AuthWebViewPageState createState() => _AuthWebViewPageState();
+  AuthWebViewPageState createState() => AuthWebViewPageState();
 }
 
-class _AuthWebViewPageState extends State<AuthWebViewPage> {
+class AuthWebViewPageState extends State<AuthWebViewPage> {
   final GlobalKey webViewKey = GlobalKey();
   late InAppWebViewController webViewController;
   late CookieManager cookieManager;
@@ -57,7 +58,7 @@ class _AuthWebViewPageState extends State<AuthWebViewPage> {
 
         if (success) {
           _retrieveCookies();
-          print('sucsess');
+          print('success');
           // Navigate to the profile page or handle the login success
         } else {
           Navigator.pop(context);
