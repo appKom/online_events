@@ -1,84 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'auth_service.dart';
 
-import '/pages/login/auth_service.dart'; // Import AuthService
+class LoginWebView extends StatefulWidget {
+  final AuthService authService; // Add this line
 
-class AuthWebViewPage extends StatefulWidget {
-  final String authUrl;
-  final AuthService authService; // Add AuthService
-
-  const AuthWebViewPage({Key? key, required this.authUrl, required this.authService}) : super(key: key);
+  LoginWebView({Key? key, required this.authService}) : super(key: key); // Modify the constructor
 
   @override
-  AuthWebViewPageState createState() => AuthWebViewPageState();
+  LoginWebViewState createState() => LoginWebViewState();
 }
 
-class AuthWebViewPageState extends State<AuthWebViewPage> {
-  final GlobalKey webViewKey = GlobalKey();
+class LoginWebViewState extends State<LoginWebView> {
   late InAppWebViewController webViewController;
-  late CookieManager cookieManager;
-
-  @override
-  void initState() {
-    super.initState();
-    cookieManager = CookieManager.instance();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(title: Text('Login')),
       body: InAppWebView(
-        key: webViewKey,
-        initialUrlRequest: URLRequest(url: Uri.parse(widget.authUrl)),
-        initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            javaScriptEnabled: true,
-            javaScriptCanOpenWindowsAutomatically: true,
-          ),
-        ),
+        initialUrlRequest: URLRequest(url: Uri.parse(widget.authService.authorizationUrl)), // Use authService from the widget
         onWebViewCreated: (controller) {
           webViewController = controller;
         },
-        onLoadStart: (controller, url) {
-          if (url.toString().startsWith(widget.authService.redirectUri)) {
-            _handleRedirect(url);
+        onLoadStart: (controller, url) async {
+          if (url.toString().startsWith(widget.authService.redirectUri)) { // Use authService from the widget
+            final code = Uri.parse(url.toString()).queryParameters['code'];
+            if (code != null) {
+              final tokenData = await widget.authService.exchangeCodeForToken(code); // Use authService from the widget
+              if (tokenData != null) {
+                // Handle successful login, e.g., navigate to a new screen with the token data
+              }
+            }
           }
         },
       ),
     );
-  }
-
-  void _handleRedirect(Uri? url) async {
-    if (url != null) {
-      String? authorizationCode = url.queryParameters['code'];
-
-      if (authorizationCode != null) {
-        bool success = await widget.authService.exchangeCodeForToken(authorizationCode);
-
-        if (success) {
-          _retrieveCookies();
-          print('success');
-          // Navigate to the profile page or handle the login success
-        } else {
-          Navigator.pop(context);
-          _showSnackBar('Authentication failed');
-        }
-      } else {
-        Navigator.pop(context);
-        _showSnackBar('Authentication error');
-      }
-    }
-  }
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  void _retrieveCookies() async {
-    List<Cookie> cookies = await cookieManager.getCookies(url: Uri.parse(widget.authService.redirectUri));
-    for (var cookie in cookies) {
-      // Handle the retrieved cookies as needed
-    }
   }
 }
