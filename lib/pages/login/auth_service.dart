@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class AuthService {
-  final String clientId = '598863';
-  final String redirectUri = 'http://localhost:3000/callback';
+abstract class AuthService {
+  static const clientId = '598863';
+  static const redirectUri = 'http://localhost:3000/callback';
 
-  String get authorizationUrl => 'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=${Uri.encodeComponent(redirectUri)}&response_type=code&scope=openid+profile+onlineweb4';
+  static String get authorizationUrl =>
+      'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=${Uri.encodeComponent(redirectUri)}&response_type=code&scope=openid+profile+onlineweb4';
 
-  Future<Map<String, dynamic>?> exchangeCodeForToken(String code) async {
+  static Future<Map<String, dynamic>?> exchangeCodeForToken(String code) async {
     final response = await http.post(
       Uri.parse('https://old.online.ntnu.no/openid/token'),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},

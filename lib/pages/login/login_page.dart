@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/login/auth_service.dart';
-import 'package:online_events/pages/login/auth_web_view_page.dart';
+import '/pages/login/auth_web_view_page.dart';
 
 import 'package:online_events/theme/theme.dart';
 import '/components/online_scaffold.dart';
@@ -8,9 +7,7 @@ import '/components/animated_button.dart';
 import '/components/online_header.dart';
 
 class LoginPage extends StaticPage {
-  final AuthService _authService = AuthService();
-
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   Widget? header(BuildContext context) {
@@ -19,8 +16,7 @@ class LoginPage extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     final headerStyle = OnlineTheme.textStyle(
       size: 20,
@@ -40,7 +36,7 @@ class LoginPage extends StaticPage {
             AnimatedButton(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => LoginWebView(authService: _authService),
+                  builder: (context) => const LoginWebView(),
                 ));
               },
               childBuilder: (context, hover, pointerDown) {
