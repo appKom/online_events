@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
+import 'dart:math' as math;
+
+import 'package:sensors_plus/sensors_plus.dart';
 
 class SpinLine extends StatefulWidget {
   const SpinLine({super.key});
@@ -9,30 +14,24 @@ class SpinLine extends StatefulWidget {
   SpinLineState createState() => SpinLineState();
 }
 
-class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class SpinLineState extends State<SpinLine> {
+  late double _rotation = 0.0;
+  StreamSubscription? _gyroscopeSubscription;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 750), // Decrease duration to speed up rotation
-      vsync: this,
-    )..repeat(); // This will cause the animation to repeat indefinitely
+    _gyroscopeSubscription = gyroscopeEvents.listen((GyroscopeEvent event) {
+      setState(() {
+        _rotation += event.y; // Adjust this calculation based on your needs
+      });
+    });
   }
 
   @override
   void dispose() {
-    _controller.dispose(); // Don't forget to dispose of the controller
+    _gyroscopeSubscription?.cancel();
     super.dispose();
-  }
-
-  void stopAnimationAfterDelay() {
-    Future.delayed(const Duration(seconds: 5), () {
-      if (mounted) {
-        _controller.stop();
-      }
-    });
   }
 
   @override
@@ -41,10 +40,11 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
       child: AnimatedButton(
         childBuilder: (context, hover, pointerDown) {
           return GestureDetector(
-            // Wrap with GestureDetector to handle taps
-            onTap: stopAnimationAfterDelay, // Call the method to stop the animation after delay
-            child: RotationTransition(
-              turns: Tween(begin: 0.0, end: 1.0).animate(_controller), // Defines the rotation
+            onTap: () {
+              // Implement tap functionality if needed
+            },
+            child: Transform.rotate(
+              angle: _rotation,
               child: SvgPicture.asset('assets/svg/online_hvit_o.svg', height: 300),
             ),
           );
