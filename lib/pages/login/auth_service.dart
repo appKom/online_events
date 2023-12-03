@@ -3,19 +3,7 @@ import 'package:http/http.dart' as http;
 
 abstract class AuthService {
   static const clientId = '972717';
-  static String redirectUri = 'hansteinapp://callback'; // Default value
-
-  static String _storedState = '';
-
-  static String generateState() {
-    _storedState = 'hansteinbepoppin'; // Or use a more secure random generation method
-    return _storedState;
-  }
-
-  // Public method to validate the state
-  static bool isValidState(String state) {
-    return state == _storedState;
-  }
+  static const redirectUri = 'http://10.0.2.2:3000/callback';
 
   static String get authorizationUrl =>
       'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=${Uri.encodeComponent(redirectUri)}&response_type=code&scope=openid+profile+onlineweb4';
