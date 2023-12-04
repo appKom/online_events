@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:online_events/main.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/app_navigator.dart';
 import 'auth_service.dart';
 
 class LoginWebView extends StatefulWidget {
-  const LoginWebView({super.key}); // Modify the constructor
+  const LoginWebView({super.key});
 
   @override
   LoginWebViewState createState() => LoginWebViewState();
@@ -27,16 +28,19 @@ class LoginWebViewState extends State<LoginWebView> {
           if (url.toString().startsWith(AuthService.redirectUri)) {
             final code = Uri.parse(url.toString()).queryParameters['code'];
             if (code != null) {
-              print('code: $code');
               final tokenData = await AuthService.exchangeCodeForToken(code);
               if (tokenData != null) {
-                // Handle successful login, e.g., navigate to a new screen with the token data
+                // Navigate to the ProfilePage with the token data
                 PageNavigator.navigateTo(ProfilePage(tokenData: tokenData));
-                print('sucsess?');
-                // You might also want to close the WebView here
+                
+                setState(() {
+                  loggedIn = true;
+                });
+                // Close the WebView by popping the current route
+                Navigator.pop(context);
               } else {
                 // Handle error
-                print('fuck');
+                // Optionally, show an error message or take other appropriate actions
               }
             }
           }
