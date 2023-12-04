@@ -27,7 +27,7 @@ class MyEventsPage extends ScrollablePage {
     final style = OnlineTheme.textStyle(size: 20, weight: 7);
     void onPressed() {
     if (loggedIn) {
-      PageNavigator.navigateTo(const ProfilePage());
+      PageNavigator.navigateTo(const ProfilePage(tokenData: {},));
     } else {
       PageNavigator.navigateTo(LoginPage());
     }

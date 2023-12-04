@@ -15,7 +15,7 @@ import '/main.dart';
 
 class ProfilePage extends ScrollablePage {
 
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required Map<String, dynamic> tokenData});
 
   @override
   Widget? header(BuildContext context) {

@@ -21,7 +21,7 @@ class ProfileButton extends StatelessWidget {
 
   void onPressed() {
     if (loggedIn) {
-      PageNavigator.navigateTo(const ProfilePage());
+      PageNavigator.navigateTo(const ProfilePage(tokenData: {},));
     } else {
       PageNavigator.navigateTo(LoginPage());
     }

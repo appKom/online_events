@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 abstract class AuthService {
-  static const clientId = '598863';
-  static const redirectUri = 'http://localhost:3000/callback';
+  static const clientId = '972717';
+  static const redirectUri = 'http://10.0.2.2:3000/callback';
 
   static String get authorizationUrl =>
       'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=${Uri.encodeComponent(redirectUri)}&response_type=code&scope=openid+profile+onlineweb4';
