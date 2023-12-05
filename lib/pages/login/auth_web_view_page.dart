@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:online_events/main.dart';
+import 'package:online_events/pages/profile/display_profile_page.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/app_navigator.dart';
+import '../../core/client/client.dart';
 import 'auth_service.dart';
 
 class LoginWebView extends StatefulWidget {
@@ -20,7 +22,8 @@ class LoginWebViewState extends State<LoginWebView> {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
       body: InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(AuthService.authorizationUrl)),
+        initialUrlRequest:
+            URLRequest(url: Uri.parse(AuthService.authorizationUrl)),
         onWebViewCreated: (controller) {
           webViewController = controller;
         },
@@ -31,11 +34,13 @@ class LoginWebViewState extends State<LoginWebView> {
               final tokenData = await AuthService.exchangeCodeForToken(code);
               if (tokenData != null) {
                 // Navigate to the ProfilePage with the token data
-                PageNavigator.navigateTo(ProfilePage(tokenData: tokenData));
-                
+                PageNavigator.navigateTo(const ProfilePageDisplay());
+                print('tokendata: $tokenData');
+                Client.setAccessToken(tokenData['access_token']);
                 setState(() {
                   loggedIn = true;
                 });
+
                 // Close the WebView by popping the current route
                 Navigator.pop(context);
               } else {
