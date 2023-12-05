@@ -3,19 +3,19 @@ import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/separator.dart';
 import 'package:online_events/core/models/article_model.dart';
+import 'package:online_events/main.dart';
 import 'package:online_events/pages/article/view_more_articles.dart';
 import 'package:online_events/pages/home/profile_button.dart';
 
 import 'package:online_events/theme/theme.dart';
 import '../../components/online_scaffold.dart';
 
-class ArticlePage extends ScrollablePage {
+class SecondArticlePage extends ScrollablePage {
   final ArticleModel article; // Add this line
-  final List<ArticleModel> articleModels;
-  const ArticlePage(
-      {super.key,
-      required this.article,
-      required this.articleModels}); // Modify this line
+  
+
+  const SecondArticlePage(
+      {super.key, required this.article}); // Modify this line
 
   List<dynamic> extractAndSplitContent(String content) {
     RegExp exp = RegExp(r'(https?://\S+\.(jpg|jpeg|png|gif))');
