@@ -57,7 +57,7 @@ class EventParticipants extends StatelessWidget {
                   ),
                   Center(
                     child: Text(
-                      '0/10',
+                      'Placeholder',
                       style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
                     ),
                   ),

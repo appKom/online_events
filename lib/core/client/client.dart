@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/core/models/attendance_model.dart';
+import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/user_model.dart';
 
 import '../models/event_model.dart';
@@ -58,6 +58,25 @@ abstract class Client {
     }
   }
 
+  static Future<AttendeeInfoModel?> getAttendeeInfoModel() async {
+    const url = '$endpoint/api/v1/attendance-events/?ordering=-registration_start/';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      return AttendeeInfoModel.fromJson(jsonResponse);
+    } else {
+      print('Failed to fetch attendees info');
+      return null;
+    }
+  }
+
   static Future<List<ArticleModel>?> getArticles() async {
     const url = '$endpoint/api/v1/articles/';
 
@@ -82,27 +101,4 @@ abstract class Client {
     }
   }
 
-  static Future<List<AttendanceModel>?> getAttendance() async {
-    const url = '$endpoint/api/v1/attendance-events//';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final responseBody =
-          utf8.decode(response.bodyBytes, allowMalformed: true);
-      final jsonResponse = jsonDecode(responseBody);
-
-      final attendances = jsonResponse['results']
-          .map((attendanceJson) {
-            return AttendanceModel.fromJson(attendanceJson);
-          })
-          .cast<AttendanceModel>()
-          .toList();
-
-      return attendances;
-    } else {
-      print('Failed to fetch attendances');
-      return null;
-    }
-  }
 }

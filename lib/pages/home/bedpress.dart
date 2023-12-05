@@ -71,6 +71,11 @@ class BedpressCard extends StatelessWidget {
     PageNavigator.navigateTo(EventPage(model: model));
   }
 
+  String getEventTypeDisplay() {
+    // Check if the eventTypeDisplay is 'Bedriftspresentasjon'
+    return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpress' : model.eventTypeDisplay;
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
@@ -137,7 +142,7 @@ class BedpressCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(3),
                     ),
                     child: Text(
-                      model.eventTypeDisplay,
+                      getEventTypeDisplay(),
                       style: OnlineTheme.textStyle(weight: 5, size: 14),
                     ),
                   ),

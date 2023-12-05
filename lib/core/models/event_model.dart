@@ -74,6 +74,15 @@ class EventModel implements JsonModel {
   }
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
+    AttendeeInfoModel? attendeeInfo;
+    if (json['attendee_info'] != null) {
+      AttendeeInfoModel tempAttendeeInfo = AttendeeInfoModel.fromJson(json['attendee_info']);
+      if (tempAttendeeInfo.id == json['id']) {
+        attendeeInfo = tempAttendeeInfo;
+      }
+    }
+
+
     return EventModel(
       id: json['id'],
       title: json['title'],
@@ -94,7 +103,7 @@ class EventModel implements JsonModel {
       maxCapacity: json['max_capacity'],
       waitlist: json['waitlist'],
       numberOfSeatsTaken: json['number_of_seats_taken'],
-      attendeeInfo: json['attendee_info'] != null ? AttendeeInfoModel.fromJson(json['attendee_info']) : null,
+      attendeeInfo: attendeeInfo,
     );
   }
 

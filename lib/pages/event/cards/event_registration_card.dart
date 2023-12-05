@@ -19,7 +19,7 @@ class EventRegistrationCard extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 85,
+              width: 90,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

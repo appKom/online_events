@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/core/models/attendance_model.dart';
 import 'package:online_events/pages/home/home_page.dart';
 import 'package:online_events/services/env.dart';
 import 'package:online_events/services/secure_storage.dart';
@@ -18,10 +17,9 @@ Future main() async {
   await Env.initialize();
   SecureStorage.initialize();
 
-  Future.wait([Client.getEvents(), Client.getArticles(), Client.getAttendance()]).then((responses) {
+  Future.wait([Client.getEvents(), Client.getArticles()]).then((responses) {
     final events = responses[0] as List<EventModel>?;
     final articles = responses[1] as List<ArticleModel>?;
-    final attendances = responses[2] as List<AttendanceModel>?;
 
     if (events != null) {
       eventModels.addAll(events);
@@ -31,9 +29,6 @@ Future main() async {
       articleModels.addAll(articles);
     }
 
-    if (attendances != null) {
-      attendanceModels.addAll(attendances);
-    }
 
     PageNavigator.navigateTo(const HomePage());
   });
@@ -41,7 +36,6 @@ Future main() async {
 
 final List<EventModel> eventModels = [];
 final List<ArticleModel> articleModels = [];
-final List<AttendanceModel> attendanceModels = [];
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
