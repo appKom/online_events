@@ -44,7 +44,7 @@ class HomePage extends ScrollablePage {
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (c, i) => PromotedArticle(
-                article: articleModels[i],
+                article: articleModels[i], articleModels: articleModels,
               ),
             ),
           ),

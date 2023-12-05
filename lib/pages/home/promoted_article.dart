@@ -7,7 +7,8 @@ import '/theme/theme.dart';
 
 class PromotedArticle extends StatelessWidget {
   final ArticleModel article;
-  const PromotedArticle({super.key, required this.article});
+  final List<ArticleModel> articleModels;
+  const PromotedArticle({super.key, required this.article, required this.articleModels});
 
   static const months = [
     'Januar',
@@ -57,7 +58,7 @@ class PromotedArticle extends StatelessWidget {
     final timeToRead = calculateReadingTime(article.content, article.ingress);
     final readingTimeText = "$timeToRead min å lese";
     return AnimatedButton(
-      onTap: () => PageNavigator.navigateTo(ArticlePage(article: article)),
+      onTap: () => PageNavigator.navigateTo(ArticlePage(article: article, articleModels: articleModels)),
       scale: 0.95,
       childBuilder: (context, hover, pointerDown) {
         return SizedBox(
