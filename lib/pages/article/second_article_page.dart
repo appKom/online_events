@@ -12,9 +12,9 @@ import '../../components/online_scaffold.dart';
 
 class SecondArticlePage extends ScrollablePage {
   final ArticleModel article; // Add this line
-  
+  final ScrollController scrollController = ScrollController();
 
-  const SecondArticlePage(
+  SecondArticlePage(
       {super.key, required this.article}); // Modify this line
 
   List<dynamic> extractAndSplitContent(String content) {
@@ -112,7 +112,7 @@ class SecondArticlePage extends ScrollablePage {
               const SizedBox(
                 height: 20,
               ),
-              ViewMoreArticles(articleModels: articleModels),
+              ViewMoreArticles(articleModels: articleModels, scrollController: scrollController,),
               // ... other content based on the article data ...
               SizedBox(height: Navbar.height(context) + 40),
             ],

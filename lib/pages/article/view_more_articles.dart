@@ -14,7 +14,12 @@ import '../../theme/theme.dart';
 
 class ViewMoreArticles extends StatelessWidget {
   final List<ArticleModel> articleModels; // Change to use EventModel
-  const ViewMoreArticles({super.key, required this.articleModels});
+  final ScrollController scrollController;
+  const ViewMoreArticles({
+    super.key,
+    required this.articleModels,
+    required this.scrollController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +35,36 @@ class ViewMoreArticles extends StatelessWidget {
           style: OnlineTheme.textStyle(size: 20, weight: 7),
         ),
         const SizedBox(height: 24),
-        SizedBox(
-          height: 266,
-          child: ListView.builder(
-            itemCount: 5, // Use count of filtered models
-            itemBuilder: (context, index) => buildItem(context, index, modelsToShow),
-            scrollDirection: Axis.horizontal,
+        GestureDetector(
+          onTap: () {
+        // Scroll to the top when tapped
+        scrollController.animateTo(
+          0, // Scroll to the top
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      },
+          child: SizedBox(
+            height: 266,
+            child: ListView.builder(
+              itemCount: 5, // Use count of filtered models
+              itemBuilder: (context, index) =>
+                  buildItem(context, index, modelsToShow),
+              scrollDirection: Axis.horizontal,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget? buildItem(BuildContext context, int index, List<ArticleModel> modelsToShow) {
+  Widget? buildItem(
+      BuildContext context, int index, List<ArticleModel> modelsToShow) {
     return Container(
       margin: const EdgeInsets.only(right: 24),
       child: MoreArticleCard(
-        articleModel: modelsToShow[index], // Use the model from the filtered list
+        articleModel:
+            modelsToShow[index], // Use the model from the filtered list
       ),
     );
   }
@@ -74,7 +92,7 @@ class MoreArticleCard extends StatelessWidget {
 
   int calculateReadingTime(String heading, String ingress) {
     int wordCount = countWords(heading) + countWords(ingress);
-    return ((wordCount / 238)+1).ceil(); // Dividing by 238 and rounding up
+    return ((wordCount / 238) + 1).ceil(); // Dividing by 238 and rounding up
   }
 
   int countWords(String text) {
@@ -82,14 +100,14 @@ class MoreArticleCard extends StatelessWidget {
     return text.split(' ').where((word) => word.isNotEmpty).length;
   }
 
-
   String dateToString() {
     final date = DateTime.parse(articleModel.createdDate);
 
     final day = date.day;
     final dayString = day.toString().padLeft(2, '0');
 
-    final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
+    final month =
+        date.month - 1; // Months go from 1-12 but we need an index of 0-11
     final monthString = months[month];
 
     // TODO: If an event spans multiple days, show 01.-05. January
@@ -101,9 +119,11 @@ class MoreArticleCard extends StatelessWidget {
   void showInfo() {
     PageNavigator.navigateTo(SecondArticlePage(article: articleModel));
   }
+
   @override
   Widget build(BuildContext context) {
-    final timeToRead = calculateReadingTime(articleModel.content, articleModel.ingress);
+    final timeToRead =
+        calculateReadingTime(articleModel.content, articleModel.ingress);
     final readingTimeText = "$timeToRead min å lese";
     return AnimatedButton(
       onTap: showInfo,
@@ -119,7 +139,8 @@ class MoreArticleCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Image.network(
-                    articleModel.image?.original ?? 'assets/svg/online_hvit_o.svg', // Modify this line
+                    articleModel.image?.original ??
+                        'assets/svg/online_hvit_o.svg', // Modify this line
                     fit: BoxFit.cover,
                     alignment: Alignment.bottomCenter,
                   ),
@@ -128,14 +149,16 @@ class MoreArticleCard extends StatelessWidget {
                   flex: 1,
                   child: Stack(
                     children: [
-                      Positioned.fill(child: Container(color: OnlineTheme.gray13)),
+                      Positioned.fill(
+                          child: Container(color: OnlineTheme.gray13)),
                       Positioned(
                         left: 20,
                         bottom: 60,
                         child: Text(
                           articleModel.heading, // This line will now wrap text
                           style: OnlineTheme.textStyle(weight: 5),
-                          overflow: TextOverflow.visible, // Ensures text wraps instead of being truncated
+                          overflow: TextOverflow
+                              .visible, // Ensures text wraps instead of being truncated
                         ),
                       ),
                       Positioned(

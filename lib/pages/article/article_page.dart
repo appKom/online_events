@@ -12,7 +12,8 @@ import '../../components/online_scaffold.dart';
 class ArticlePage extends ScrollablePage {
   final ArticleModel article; // Add this line
   final List<ArticleModel> articleModels;
-  const ArticlePage(
+  final ScrollController scrollController = ScrollController();
+  ArticlePage(
       {super.key,
       required this.article,
       required this.articleModels}); // Modify this line
@@ -112,7 +113,7 @@ class ArticlePage extends ScrollablePage {
               const SizedBox(
                 height: 20,
               ),
-              ViewMoreArticles(articleModels: articleModels),
+              ViewMoreArticles(articleModels: articleModels, scrollController: scrollController, ),
               // ... other content based on the article data ...
               SizedBox(height: Navbar.height(context) + 40),
             ],
