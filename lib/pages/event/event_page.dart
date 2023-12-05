@@ -82,7 +82,7 @@ class EventPage extends ScrollablePage {
       children: [
         SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
-          height: 267,
+          height: 230,
           child: model.images.isNotEmpty
               ? Image.network(
                   model.images.first.original,

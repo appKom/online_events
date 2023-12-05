@@ -2,11 +2,15 @@ class AttendeeInfoModel {
   final bool isAttendee;
   final bool isOnWaitlist;
   final IsEligibleForSignup isEligibleForSignup;
+  final int whatPlaceIsUserOnWaitList;
+  final int id;
 
   AttendeeInfoModel({
     required this.isAttendee,
     required this.isOnWaitlist,
     required this.isEligibleForSignup,
+    required this.whatPlaceIsUserOnWaitList,
+    required this.id,
   });
 
   Map<String, dynamic> toJson() {
@@ -14,6 +18,8 @@ class AttendeeInfoModel {
       'is_attendee': isAttendee,
       'is_on_waitlist': isOnWaitlist,
       'is_eligible_for_signup': isEligibleForSignup.toJson(),
+      'whatPlaceIsUserOnWaitList': whatPlaceIsUserOnWaitList,
+      'id': id,
     };
   }
 
@@ -22,6 +28,8 @@ class AttendeeInfoModel {
       isAttendee: json['is_attendee'],
       isOnWaitlist: json['is_on_waitlist'],
       isEligibleForSignup: IsEligibleForSignup.fromJson(json['is_eligible_for_signup']),
+      whatPlaceIsUserOnWaitList: json['whatPlaceIsUserOnWaitList'],
+      id: json['id'],
     );
   }
 }

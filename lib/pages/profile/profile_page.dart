@@ -42,6 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
 
+
 @override
 Widget build(BuildContext context) {
   const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
@@ -233,7 +234,7 @@ Widget build(BuildContext context) {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.only(left: 12),
+              padding: const EdgeInsets.only(left: 10),
               decoration: BoxDecoration(
                 color: OnlineTheme.gray14,
                 borderRadius: BorderRadius.circular(3),
