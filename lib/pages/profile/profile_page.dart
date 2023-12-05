@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/pages/home/home_page.dart';
+import 'package:online_events/pages/loading/loading_display_page.dart';
 
+import '../../core/client/client.dart';
+import '../../core/models/user_model.dart';
 import '/components/online_scaffold.dart';
 import '/components/online_header.dart';
 import '/theme/themed_icon_button.dart';
@@ -13,35 +16,50 @@ import '/theme/themed_icon.dart';
 import '/theme/theme.dart';
 import '/main.dart';
 
-class ProfilePage extends ScrollablePage {
-  const ProfilePage({super.key, required Map<String, dynamic> tokenData});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  UserModel? userProfile;
+  
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserProfile();
   }
 
-  @override
-  Widget content(BuildContext context) {
-    const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
+  Future<void> _fetchUserProfile() async {
+    UserModel? profile = await Client.getUserProfile();
+    if (profile != null) {
+      setState(() {
+        userProfile = profile;
+      });
+    }
+  }
 
-    final headerStyle = OnlineTheme.textStyle(
-      size: 20,
-      weight: 7,
-    );
 
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+@override
+Widget build(BuildContext context) {
+  const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
+  final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
+  final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
-    return Padding(
-      padding: EdgeInsets.only(left: padding.left, right: padding.right),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: OnlineHeader.height(context) + 40),
+  if (userProfile != null) {
+  return Scaffold(
+    backgroundColor: Colors.black,
+    body: SingleChildScrollView( // Wrap the main content in a SingleChildScrollView
+      child: Padding(
+        padding: EdgeInsets.only(left: padding.left, right: padding.right),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: OnlineHeader.height(context) + 40),
           Center(
-            child: Text(
-              'Fredrik Hansteen',
+            child: Text('${userProfile!.firstName} ${userProfile!.lastName}',
               style: OnlineTheme.textStyle(
                 size: 20,
                 weight: 7,
@@ -74,17 +92,17 @@ class ProfilePage extends ScrollablePage {
           const SizedBox(height: 8),
           Padding(
             padding: aboveBelowPadding,
-            child: constValueTextInput('NTNU-brukernavn', 'fredrikbobo'),
+            child: constValueTextInput('NTNU-brukernavn', userProfile!.username),
           ),
           // const Separator(),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Telefon', '+47 123 45 678'),
+            child: constValueTextInput('Telefon', userProfile!.phoneNumber),
           ),
           // const Separator(),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('E-post', 'fredrik@stud.ntnu.no'),
+            child: constValueTextInput('E-post', userProfile!.email),
           ),
           const Separator(margin: 40),
           Text(
@@ -94,11 +112,11 @@ class ProfilePage extends ScrollablePage {
           const SizedBox(height: 5),
           Padding(
             padding: aboveBelowPadding,
-            child: constValueTextInput('Klassetrinn', '5. klasse'),
+            child: constValueTextInput('Klassetrinn', userProfile!.year.toString()),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: constValueTextInput('Startår', '2022'),
+            child: constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
           ),
           const SizedBox(height: 16),
           SizedBox(
@@ -139,7 +157,7 @@ class ProfilePage extends ScrollablePage {
           SizedBox(
             height: 40,
             child: CustomPaint(
-              painter: StudyCoursePainter(year: 5.5),
+              painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
             ),
           ),
           const Separator(margin: 40),
@@ -149,15 +167,15 @@ class ProfilePage extends ScrollablePage {
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Github', 'Github'),
+            child: constValueTextInput('Github', userProfile!.github.toString()),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Linkedin', 'Linkedin'),
+            child: constValueTextInput('Linkedin', userProfile!.linkedin.toString()),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Hjemmeside', 'online.ntnu.no'),
+            child: constValueTextInput('Hjemmeside', userProfile!.website.toString()),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
@@ -193,7 +211,13 @@ class ProfilePage extends ScrollablePage {
           SizedBox(height: Navbar.height(context)),
         ],
       ),
+      ),
+    ),
     );
+  }
+  else{
+    return const LoadingPageDisplay();
+  }
   }
 
   Widget constValueTextInput(String label, String value) {

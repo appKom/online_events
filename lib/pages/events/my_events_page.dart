@@ -4,6 +4,7 @@ import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
 import 'package:online_events/pages/login/login_page.dart';
+import 'package:online_events/pages/profile/display_profile_page.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/page_navigator.dart';
 
@@ -27,7 +28,7 @@ class MyEventsPage extends ScrollablePage {
     final style = OnlineTheme.textStyle(size: 20, weight: 7);
     void onPressed() {
     if (loggedIn) {
-      PageNavigator.navigateTo(const ProfilePage(tokenData: {},));
+      PageNavigator.navigateTo(const ProfilePageDisplay());
     } else {
       PageNavigator.navigateTo(LoginPage());
     }
