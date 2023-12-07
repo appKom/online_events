@@ -69,12 +69,13 @@ class EventModel implements JsonModel {
       'max_capacity': maxCapacity,
       'waitlist': waitlist,
       'number_of_seats_taken': numberOfSeatsTaken,
-      'attendee_info': attendeeInfo?.toJson(),
     };
   }
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
     AttendeeInfoModel? attendeeInfo;
+
+
     if (json['attendee_info'] != null) {
       AttendeeInfoModel tempAttendeeInfo = AttendeeInfoModel.fromJson(json['attendee_info']);
       if (tempAttendeeInfo.id == json['id']) {
@@ -109,6 +110,6 @@ class EventModel implements JsonModel {
 
   @override
   String toString() {
-    return 'EventModel: { id: $id, title: $title, startDate: $startDate, endDate: $endDate, location: $location }';
+    return 'EventModel: { id: $id, title: $title, startDate: $startDate, endDate: $endDate, location: $location, attendeeInfo: ${attendeeInfo?.toString()} }';
   }
 }
