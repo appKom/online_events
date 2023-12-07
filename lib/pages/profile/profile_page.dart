@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:online_events/components/animated_button.dart';
+import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/pages/home/home_page.dart';
 import 'package:online_events/pages/loading/loading_display_page.dart';
 
@@ -25,11 +26,13 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserModel? userProfile;
+  AttendeeInfoModel? attendeeInfoModel;
   
   @override
   void initState() {
     super.initState();
     _fetchUserProfile();
+    _fetchAttendeeInfo();
   }
 
   Future<void> _fetchUserProfile() async {
@@ -37,6 +40,15 @@ class _ProfilePageState extends State<ProfilePage> {
     if (profile != null) {
       setState(() {
         userProfile = profile;
+      });
+    }
+  }
+
+  Future<void> _fetchAttendeeInfo() async {
+    AttendeeInfoModel? attendee = await Client.getAttendeeInfoModel();
+    if (attendeeInfoModel != null) {
+      setState(() {
+        attendeeInfoModel = attendee;
       });
     }
   }
@@ -168,15 +180,15 @@ Widget build(BuildContext context) {
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: constValueTextInput('Github', userProfile!.github.toString()),
+            child: constValueTextInput('Github', userProfile!.github ?? ''),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: constValueTextInput('Linkedin', userProfile!.linkedin.toString()),
+            child: constValueTextInput('Linkedin', userProfile!.linkedin ?? ''),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: constValueTextInput('Hjemmeside', userProfile!.website.toString()),
+            child: constValueTextInput('Hjemmeside', userProfile!.website ?? '')
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
