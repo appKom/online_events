@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/core/models/event_model.dart';
-import 'package:online_events/pages/article/second_article_page.dart';
-import 'package:online_events/pages/event/event_page.dart';
+import 'package:online_events/main.dart';
+import 'package:online_events/pages/article/article_page.dart';
 
 import '/services/page_navigator.dart';
-import '/pages/home/event_card.dart';
-import '/theme/themed_icon.dart';
 
 import '../../theme/theme.dart';
 
@@ -37,13 +33,13 @@ class ViewMoreArticles extends StatelessWidget {
         const SizedBox(height: 24),
         GestureDetector(
           onTap: () {
-        // Scroll to the top when tapped
-        scrollController.animateTo(
-          0, // Scroll to the top
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      },
+            // Scroll to the top when tapped
+            scrollController.animateTo(
+              0, // Scroll to the top
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          },
           child: SizedBox(
             height: 266,
             child: ListView.builder(
@@ -117,7 +113,10 @@ class MoreArticleCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(SecondArticlePage(article: articleModel));
+    PageNavigator.navigateTo(ArticlePage(
+      article: articleModel,
+      articleModels: articleModels,
+    ));
   }
 
   @override

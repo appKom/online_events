@@ -47,6 +47,33 @@ class ArticlePage extends ScrollablePage {
     return segments;
   }
 
+  static const months = [
+    'Januar',
+    'Februar',
+    'Mars',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
+  ];
+
+  String dateToString() {
+    final date = DateTime.parse(article.createdDate);
+
+    final day = date.day;
+    final dayString = day.toString().padLeft(2, '0');
+
+    final month = date.month - 1;
+    final monthString = months[month];
+
+    return '$dayString. $monthString';
+  }
+
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
@@ -69,21 +96,21 @@ class ArticlePage extends ScrollablePage {
           article.image?.original ??
               'assets/images/fadderuka.png', // Use the article image
           fit: BoxFit.cover,
-          height: 267,
+          height: 240,
         ),
         Padding(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
               Text(
                 article.heading, // Use the article heading
                 style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
               const SizedBox(height: 14),
               Text(
-                'Skrevet av: ${article.authors}', // Use the article authors
+                'Skrevet av: ${article.authors},   ${dateToString()}', // Use the article authors
                 style: OnlineTheme.textStyle(),
               ),
               const Separator(margin: 20),
@@ -113,7 +140,10 @@ class ArticlePage extends ScrollablePage {
               const SizedBox(
                 height: 20,
               ),
-              ViewMoreArticles(articleModels: articleModels, scrollController: scrollController, ),
+              ViewMoreArticles(
+                articleModels: articleModels,
+                scrollController: scrollController,
+              ),
               // ... other content based on the article data ...
               SizedBox(height: Navbar.height(context) + 40),
             ],

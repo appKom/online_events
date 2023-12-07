@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/pages/profile/display_profile_page.dart';
 import '../../main.dart';
-import '/pages/profile/profile_page.dart';
 import '/pages/login/login_page.dart';
 import '../../services/page_navigator.dart';
 import '/theme/theme.dart';

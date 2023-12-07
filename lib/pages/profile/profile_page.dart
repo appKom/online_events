@@ -7,7 +7,6 @@ import 'package:online_events/pages/loading/loading_display_page.dart';
 
 import '../../core/client/client.dart';
 import '../../core/models/user_model.dart';
-import '/components/online_scaffold.dart';
 import '/components/online_header.dart';
 import '/theme/themed_icon_button.dart';
 import '../../services/page_navigator.dart';
