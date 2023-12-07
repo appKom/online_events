@@ -23,7 +23,6 @@ class EventPage extends ScrollablePage {
   const EventPage({super.key, required this.model});
 //
   final EventModel model;
-  
 
   @override
   Widget? header(BuildContext context) {
@@ -31,7 +30,6 @@ class EventPage extends ScrollablePage {
       buttons: [
         if (loggedIn)
           SizedBox.square(
-            
             dimension: 40,
             child: Center(
               child: AnimatedButton(
@@ -131,9 +129,9 @@ class EventPage extends ScrollablePage {
 /// Påmelding
 class RegistrationCard extends StatelessWidget {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-  
+
   const RegistrationCard({super.key, required this.model});
-final EventModel model;
+  final EventModel model;
 
   @override
   Widget build(BuildContext context) {

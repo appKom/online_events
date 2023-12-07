@@ -27,7 +27,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   UserModel? userProfile;
   AttendeeInfoModel? attendeeInfoModel;
-  
+
   @override
   void initState() {
     super.initState();
@@ -46,191 +46,200 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _fetchAttendeeInfo() async {
     AttendeeInfoModel? attendee = await Client.getAttendeeInfoModel();
-    if (attendeeInfoModel != null) {
+    if (attendee != null) {
+      // This line should check 'attendee', not 'attendeeInfoModel'
       setState(() {
         attendeeInfoModel = attendee;
       });
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
+    final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
-
-@override
-Widget build(BuildContext context) {
-  const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
-  final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
-  final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
-
-  if (userProfile != null) {
-  return Scaffold(
-    backgroundColor: Colors.black,
-    body: SingleChildScrollView( // Wrap the main content in a SingleChildScrollView
-      child: Padding(
-        padding: EdgeInsets.only(left: padding.left, right: padding.right),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: OnlineHeader.height(context) + 40),
-          Center(
-            child: Text('${userProfile!.firstName} ${userProfile!.lastName}',
-              style: OnlineTheme.textStyle(
-                size: 20,
-                weight: 7,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Center(
-              child: SizedBox(
-                width: 125,
-                height: 125,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: AnimatedButton(
-                    childBuilder: (context, hover, pointerDown) => Image.asset(
-                      'assets/images/better_profile_picture.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            'Kontakt',
-            style: headerStyle,
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: aboveBelowPadding,
-            child: constValueTextInput('NTNU-brukernavn', userProfile!.username),
-          ),
-          // const Separator(),
-          Padding(
-            padding: aboveBelowPadding,
-            child: constValueTextInput('Telefon', userProfile!.phoneNumber),
-          ),
-          // const Separator(),
-          Padding(
-            padding: aboveBelowPadding,
-            child: constValueTextInput('E-post', userProfile!.email),
-          ),
-          const Separator(margin: 40),
-          Text(
-            'Studie',
-            style: headerStyle,
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: aboveBelowPadding,
-            child: constValueTextInput('Klassetrinn', userProfile!.year.toString()),
-          ),
-          Padding(
-            padding: aboveBelowPadding,
-            child: constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            height: 40,
-            child: Row(
+    if (userProfile != null) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: SingleChildScrollView(
+          // Wrap the main content in a SingleChildScrollView
+          child: Padding(
+            padding: EdgeInsets.only(left: padding.left, right: padding.right),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  flex: 3,
-                  child: Center(
-                    child: Text(
-                      'Bachelor',
-                      style: OnlineTheme.textStyle(),
+                SizedBox(height: OnlineHeader.height(context) + 40),
+                Center(
+                  child: Text(
+                    '${userProfile!.firstName} ${userProfile!.lastName}',
+                    style: OnlineTheme.textStyle(
+                      size: 20,
+                      weight: 7,
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 2,
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Center(
-                    child: Text(
-                      'Master',
-                      style: OnlineTheme.textStyle(),
+                    child: SizedBox(
+                      width: 125,
+                      height: 125,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: AnimatedButton(
+                          childBuilder: (context, hover, pointerDown) =>
+                              Image.asset(
+                            'assets/images/better_profile_picture.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: Text(
-                      'PhD',
-                      style: OnlineTheme.textStyle(),
-                    ),
+                const SizedBox(height: 24),
+                Text(
+                  'Kontakt',
+                  style: headerStyle,
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: aboveBelowPadding,
+                  child: constValueTextInput(
+                      'NTNU-brukernavn', userProfile!.username),
+                ),
+                // const Separator(),
+                Padding(
+                  padding: aboveBelowPadding,
+                  child:
+                      constValueTextInput('Telefon', userProfile!.phoneNumber),
+                ),
+                // const Separator(),
+                Padding(
+                  padding: aboveBelowPadding,
+                  child: constValueTextInput('E-post', userProfile!.email),
+                ),
+                const Separator(margin: 40),
+                Text(
+                  'Studie',
+                  style: headerStyle,
+                ),
+                const SizedBox(height: 5),
+                Padding(
+                  padding: aboveBelowPadding,
+                  child: constValueTextInput(
+                      'Klassetrinn', userProfile!.year.toString()),
+                ),
+                Padding(
+                  padding: aboveBelowPadding,
+                  child: constValueTextInput(
+                      'Startår', userProfile!.startedDate.year.toString()),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Center(
+                          child: Text(
+                            'Bachelor',
+                            style: OnlineTheme.textStyle(),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Center(
+                          child: Text(
+                            'Master',
+                            style: OnlineTheme.textStyle(),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Center(
+                          child: Text(
+                            'PhD',
+                            style: OnlineTheme.textStyle(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 40,
+                  child: CustomPaint(
+                    painter:
+                        StudyCoursePainter(year: userProfile!.year.toDouble()),
+                  ),
+                ),
+                const Separator(margin: 40),
+                Text(
+                  'Eksterne sider',
+                  style: headerStyle,
+                ),
+                Padding(
+                  padding: aboveBelowPadding,
+                  child:
+                      constValueTextInput('Github', userProfile!.github ?? ''),
+                ),
+                Padding(
+                  padding: aboveBelowPadding,
+                  child: constValueTextInput(
+                      'Linkedin', userProfile!.linkedin ?? ''),
+                ),
+                Padding(
+                    padding: aboveBelowPadding,
+                    child: constValueTextInput(
+                        'Hjemmeside', userProfile!.website ?? '')),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 40),
+                  child: AnimatedButton(
+                    onTap: () {
+                      loggedIn = false;
+                      PageNavigator.navigateTo(const HomePage());
+                    },
+                    childBuilder: (context, hover, pointerDown) {
+                      return Container(
+                        height: OnlineTheme.buttonHeight,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              OnlineTheme.red1, // Start color
+                              Color.fromARGB(255, 255, 132, 95), // End color
+                            ],
+                          ),
+                          borderRadius: OnlineTheme.buttonRadius,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Logg Ut',
+                            style: OnlineTheme.textStyle(weight: 5),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: Navbar.height(context)),
               ],
             ),
           ),
-          const SizedBox(height: 16),
-          SizedBox(
-            height: 40,
-            child: CustomPaint(
-              painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
-            ),
-          ),
-          const Separator(margin: 40),
-          Text(
-            'Eksterne sider',
-            style: headerStyle,
-          ),
-          Padding(
-            padding: aboveBelowPadding,
-            child: constValueTextInput('Github', userProfile!.github ?? ''),
-          ),
-          Padding(
-            padding: aboveBelowPadding,
-            child: constValueTextInput('Linkedin', userProfile!.linkedin ?? ''),
-          ),
-          Padding(
-            padding: aboveBelowPadding,
-            child: constValueTextInput('Hjemmeside', userProfile!.website ?? '')
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
-            child: AnimatedButton(
-              onTap: () {
-                loggedIn = false;
-                PageNavigator.navigateTo(const HomePage());
-              },
-              childBuilder: (context, hover, pointerDown) {
-                return Container(
-                  height: OnlineTheme.buttonHeight,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        OnlineTheme.red1, // Start color
-                        Color.fromARGB(255, 255, 132, 95), // End color
-                      ],
-                    ),
-                    borderRadius: OnlineTheme.buttonRadius,
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Logg Ut',
-                      style: OnlineTheme.textStyle(weight: 5),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(height: Navbar.height(context)),
-        ],
-      ),
-      ),
-    ),
-    );
-  }
-  else{
-    return const LoadingPageDisplay();
-  }
+        ),
+      );
+    } else {
+      return const LoadingPageDisplay();
+    }
   }
 
   Widget constValueTextInput(String label, String value) {
