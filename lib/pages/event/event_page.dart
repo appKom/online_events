@@ -1,78 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/theme.dart';
+import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/core/models/event_organizers.dart';
 
-class EventPage extends StatelessWidget {
-  const EventPage({super.key});
+import '/components/animated_button.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/main.dart';
+import '/pages/event/qr_code.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
+import 'cards/card_badge.dart';
+import 'cards/attendance_card.dart';
+import 'cards/event_card_buttons.dart';
+import 'cards/event_description_card.dart';
+import 'cards/event_participants.dart';
+import 'cards/event_registration_card.dart';
+
+class EventPage extends ScrollablePage {
+  const EventPage({super.key, required this.model});
+//
+  final EventModel model;
+  
 
   @override
-  Widget build(BuildContext context) {
-    const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-
-    return Material(
-      color: OnlineTheme.background,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              color: OnlineTheme.white,
-              height: 267,
-            ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: horizontalPadding,
-              child: Text(
-                'Halloweenfest på A4',
-                style: OnlineTheme.eventHeader,
+  Widget? header(BuildContext context) {
+    return OnlineHeader(
+      buttons: [
+        if (loggedIn)
+          SizedBox.square(
+            
+            dimension: 40,
+            child: Center(
+              child: AnimatedButton(
+                onTap: () {
+                  print('📸');
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return const ThemedIcon(
+                    icon: IconType.camScan,
+                    size: 24,
+                    color: OnlineTheme.white,
+                  );
+                },
               ),
             ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: horizontalPadding,
-              child: RegistrationCard(),
+          ),
+        if (loggedIn)
+          SizedBox.square(
+            dimension: 40,
+            child: Center(
+              child: AnimatedButton(
+                onTap: () {
+                  AppNavigator.navigateToRoute(
+                    QRCode(name: 'Fredrik Hansteen'),
+                    additive: true,
+                  );
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return const ThemedIcon(
+                    icon: IconType.qr,
+                    size: 24,
+                    color: OnlineTheme.white,
+                  );
+                },
+              ),
             ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: horizontalPadding,
-              child: AttendanceCard(),
-            ),
-          ],
+          ),
+      ],
+    );
+  }
+
+  @override
+  Widget content(BuildContext context) {
+    const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(height: OnlineHeader.height(context)),
+        SizedBox(
+          height: 230,
+          child: model.images.isNotEmpty
+              ? Image.network(
+                  model.images.first.original,
+                  fit: BoxFit.cover,
+                )
+              : SvgPicture.asset(
+                  'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
+                  fit: BoxFit.cover,
+                ),
         ),
-      ),
+        Padding(
+          padding: horizontalPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 24),
+              Text(
+                model.title,
+                style: OnlineTheme.textStyle(size: 20, weight: 7),
+              ),
+              const SizedBox(height: 24),
+              AttendanceCard(
+                model: model,
+              ),
+              const SizedBox(height: 24),
+              EventDescriptionCard(
+                description: model.description,
+                organizer: eventOrganizers[model.organizer] ?? '',
+              ),
+              const SizedBox(height: 24),
+              RegistrationCard(
+                model: model, // Pass the model here
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: Navbar.height(context) + 24,
+        ),
+      ],
     );
   }
 }
 
-// enum EventState {
-//   /// Du kan ikke melde deg på arrangementet enda
-//   eventWillOpen,
-//   /// Arangementet er åpent for påmelding
-//   eventOpen,
-
-//   // Arrangementet er
-//   eventClosed,
-// }
-
-// enum RegistrationState {
-//   /// Du er påmeldt arrangementet
-//   registered,
-
-//   /// Du er påmeldt og avmeldingsfristen har utløpt
-//   registeredLocked,
-
-//   /// Du er på venteliste
-//   waitlist,
-
-//   /// Du er ikke påmeldt
-//   unregistered,
-// }
-
 /// Påmelding
 class RegistrationCard extends StatelessWidget {
-  // final EventState eventState;
-
-  const RegistrationCard({super.key});
+  static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
+  
+  const RegistrationCard({super.key, required this.model});
+final EventModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -85,220 +146,49 @@ class RegistrationCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [header()],
-      ),
-    );
-  }
-
-  /// Card header
-  Widget header() {
-    return SizedBox(
-      height: 32,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(
-            'Påmelding',
-            style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
-          ),
-          Container(
-            height: 20,
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(99, 133, 26, 2),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: const Color.fromARGB(255, 195, 3, 3),
-              ),
-            ),
-            child: const Text(
-              'Stengt',
-              style: TextStyle(
-                color: Color.fromARGB(255, 195, 3, 3),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Oppmøte
-class AttendanceCard extends StatelessWidget {
-  const AttendanceCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: OnlineTheme.background.lighten(20),
-        border: Border.all(color: OnlineTheme.gray10.darken(80), width: 1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           header(),
           const SizedBox(height: 16),
-          content(),
+          EventParticipants(
+            model: model,
+          ),
+          const SizedBox(height: 16),
+          const EventRegistrationCard(), // Add the countdown widget here
+          const SizedBox(height: 20),
+          const EventCardButtons(), // Removed Padding widget
         ],
       ),
     );
   }
-
-  /// Card header
-  Widget header() {
-    return SizedBox(
-      height: 32,
-      child: Text(
-        'Oppmøte',
-        style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
-      ),
-    );
-  }
-
-  /// Card Content
-  Widget content() {
-    return Column(
-      children: [
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 21,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/icons/date_time.svg', height: 21),
-              const SizedBox(width: 16),
-              const Padding(
-                padding: EdgeInsets.only(top: 3),
-                child: Text(
-                  'tirsdag 31. okt., 16:15 - 20:00',
-                  style: TextStyle(
-                    color: OnlineTheme.white,
-                    fontSize: 14,
-                    fontFamily: OnlineTheme.font,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        SizedBox(
-          height: 21,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/icons/location.svg', height: 21),
-              const SizedBox(width: 16),
-              const Text(
-                'R1, Realfagbygget',
-                style: TextStyle(
-                  color: OnlineTheme.white,
-                  fontSize: 14,
-                  fontFamily: OnlineTheme.font,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Container(
-                height: 21,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  color: OnlineTheme.blue1,
-                ),
-                child: Row(children: [
-                  Image.asset(
-                    'assets/images/maze_map.png',
-                    width: 18,
-                    height: 17.368,
-                  ),
-                  const SizedBox(width: 5),
-                  const Text(
-                    'MazeMap',
-                    style: TextStyle(
-                      color: OnlineTheme.white,
-                      fontSize: 14,
-                      fontFamily: OnlineTheme.font,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ]),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-      ],
-    );
-  }
 }
 
-// class EventPage extends StatelessWidget {
-//   const EventPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Material(
-//       color: OnlineTheme.background,
-//       child: Stack(
-//         children: [
-//           ListView(
-//             children: [
-//               Container(
-//                 color: OnlineTheme.white,
-//                 height: 267,
-//               ),
-//               const Padding(
-//                 padding: EdgeInsets.only(top: 24, left: 40, right: 40),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.stretch,
-//                   children: [
-//                     Text(
-//                       'Surfetur til Portugal 2023',
-//                       style: OnlineTheme.eventHeader,
-//                     ),
-//                     Text(
-//                       'Av X-Sport',
-//                       style: OnlineTheme.eventListSubHeader,
-//                     ),
-//                     EventDateCard(),
-//                     EventParticipants(),
-//                     EventLocation(),
-//                     Text(
-//                       'Description',
-//                       style: OnlineTheme.eventCardDate,
-//                     ),
-//                     Text(
-//                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
-//                       style: OnlineTheme.eventCardDescription,
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               const SizedBox(height: 16), // Add some space
-//             ],
-//           ),
-//           const Align(
-//             alignment: Alignment.bottomCenter,
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 EventCardButtons(),
-//                 SizedBox(height: 8), // Add space between buttons and text
-//                 Text(
-//                   'Påmeldnings: 12:00 25. Oktober  ',
-//                   style: OnlineTheme.eventCardBottomText,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+/// Card header
+Widget header() {
+  return SizedBox(
+    height: 32,
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Text(
+          'Påmelding',
+          style: OnlineTheme.eventHeader
+              .copyWith(height: 1, fontWeight: FontWeight.w600),
+        ),
+        CardBadge(
+          border: OnlineTheme.green5.lighten(100),
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              OnlineTheme.green5, // Start color
+              OnlineTheme.green1, // End color
+            ],
+          ),
+          text: 'Åpen',
+        )
+      ],
+    ),
+  );
+}

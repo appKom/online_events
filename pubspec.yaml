@@ -10,6 +10,15 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.7
+  http: ^1.1.0
+  carousel_slider: ^4.0.0
+  intl: ^0.17.0
+  flutter_secure_storage: ^9.0.0
+  flutter_dotenv: ^5.0.2
+  flutter_inappwebview: ^5.8.0
+  sensors_plus: ^4.0.1
+  network_info_plus: ^4.1.0
+  uni_links: ^0.5.0
 
 dev_dependencies:
   flutter_test:
@@ -20,9 +29,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/header.svg
     - assets/icons/
     - assets/images/
+    - assets/models/
+    - assets/svg/
+    - lib/.env
 
   fonts:
       - family: SourceSans

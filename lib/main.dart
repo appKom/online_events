@@ -1,11 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/services/app_navigator.dart';
-import 'pages/upcoming_events/upcoming_events_page.dart';
-import '/theme.dart';
+import 'package:online_events/core/models/article_model.dart';
+import 'package:online_events/pages/home/home_page.dart';
+import 'package:online_events/services/env.dart';
+import 'package:online_events/services/secure_storage.dart';
+import '/components/online_scaffold.dart';
+import '/services/app_navigator.dart';
+import 'core/client/client.dart';
+import 'core/models/event_model.dart';
+import 'theme/theme.dart';
 
-void main() {
+bool loggedIn = false;
+
+Future main() async {
   runApp(const MainApp());
+
+  await Env.initialize();
+  SecureStorage.initialize();
+
+  Future.wait([Client.getEvents(), Client.getArticles()]).then((responses) {
+    final events = responses[0] as List<EventModel>?;
+    final articles = responses[1] as List<ArticleModel>?;
+
+    if (events != null) {
+      eventModels.addAll(events);
+    }
+
+    if (articles != null) {
+      articleModels.addAll(articles);
+    }
+
+
+    PageNavigator.navigateTo(const HomePage());
+  });
 }
+
+final List<EventModel> eventModels = [];
+final List<ArticleModel> articleModels = [];
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -17,8 +47,7 @@ class MainApp extends StatelessWidget {
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
       color: OnlineTheme.background,
-      home: const UpcomingEventsPage(),
-      // home: EventPage(),
+      home: const OnlineScaffold(),
     );
   }
 }

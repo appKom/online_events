@@ -1,244 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:online_events/components/animated_button.dart';
+import 'package:online_events/pages/home/home_page.dart';
+import 'package:online_events/pages/loading/loading_display_page.dart';
 
-import '/pages/upcoming_events/profile_button.dart';
-import '/pages/upcoming_events/upcoming_events_page.dart';
-import '/theme.dart';
+import '../../core/client/client.dart';
+import '../../core/models/user_model.dart';
+import '/components/online_scaffold.dart';
+import '/components/online_header.dart';
+import '/theme/themed_icon_button.dart';
+import '../../services/page_navigator.dart';
+import '/components/separator.dart';
+import '/components/navbar.dart';
+import '/theme/themed_icon.dart';
+import '/theme/theme.dart';
+import '/main.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
+  State<ProfilePage> createState() => _ProfilePageState();
+}
 
-    return OnlineScaffold(
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: 30),
-          const Center(
-            child: Text(
-              'Fredrik Hansteen',
-              style: TextStyle(
-                fontFamily: OnlineTheme.font,
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
+class _ProfilePageState extends State<ProfilePage> {
+  UserModel? userProfile;
+  
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserProfile();
+  }
+
+  Future<void> _fetchUserProfile() async {
+    UserModel? profile = await Client.getUserProfile();
+    if (profile != null) {
+      setState(() {
+        userProfile = profile;
+      });
+    }
+  }
+
+
+
+@override
+Widget build(BuildContext context) {
+  const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
+  final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
+  final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+  if (userProfile != null) {
+  return Scaffold(
+    backgroundColor: Colors.black,
+    body: SingleChildScrollView( // Wrap the main content in a SingleChildScrollView
+      child: Padding(
+        padding: EdgeInsets.only(left: padding.left, right: padding.right),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: OnlineHeader.height(context) + 40),
           Center(
-            child: SizedBox(
-              width: 100,
-              height: 100,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.asset(
-                  'assets/images/better_profile_picture.jpg',
-                  fit: BoxFit.cover,
-                ),
+            child: Text('${userProfile!.firstName} ${userProfile!.lastName}',
+              style: OnlineTheme.textStyle(
+                size: 20,
+                weight: 7,
               ),
             ),
           ),
-          const SizedBox(height: 15),
-          const Center(
-            child: Text(
-              'Oppdater profilbilde og info',
-              style: TextStyle(
-                fontFamily: OnlineTheme.font,
-                fontSize: 12,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: OnlineTheme.white,
-                  foregroundColor: OnlineTheme.blue1,
-                ),
-                child: const Text('Avbryt'),
-              ),
-              const SizedBox(width: 16),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: OnlineTheme.blue1,
-                  foregroundColor: OnlineTheme.white,
-                ),
-                child: const Text('Lagre'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 25),
-          const Text(
-            'Kontakt',
-            style: TextStyle(
-              fontFamily: OnlineTheme.font,
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Separator(),
           Padding(
-            padding: aboveBelowPadding,
-            child: Row(
-              children: [
-                const Text(
-                  'NTNU-brukernavn:',
-                  style: TextStyle(
-              fontFamily: OnlineTheme.font,
-              fontSize: 15,
-              color: Colors.white,
-              fontWeight: FontWeight.w400,
-            ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: 120, // Set the same fixed width
-                      decoration: BoxDecoration(
-                        color: OnlineTheme.gray14,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text(
-                            'fredrikbobo',
-                            style: OnlineTheme.eventListHeader
-                                .copyWith(color: OnlineTheme.white, height: 1),
-                          ),
-                        ),
-                      ),
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Center(
+              child: SizedBox(
+                width: 125,
+                height: 125,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: AnimatedButton(
+                    childBuilder: (context, hover, pointerDown) => Image.asset(
+                      'assets/images/better_profile_picture.jpg',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-          // const Separator(),
-          Padding(
-            padding: aboveBelowPadding,
-            child: textInput('Telefon', '+47 123 45 678'),
-          ),
-          // const Separator(),
-          Padding(
-            padding: aboveBelowPadding,
-            child: textInput('E-post', 'fredrik@stud.ntnu.no'),
           ),
           const SizedBox(height: 24),
-          const Separator(),
-          const SizedBox(height: 40),
-          const Text(
+          Text(
+            'Kontakt',
+            style: headerStyle,
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: aboveBelowPadding,
+            child: constValueTextInput('NTNU-brukernavn', userProfile!.username),
+          ),
+          // const Separator(),
+          Padding(
+            padding: aboveBelowPadding,
+            child: constValueTextInput('Telefon', userProfile!.phoneNumber),
+          ),
+          // const Separator(),
+          Padding(
+            padding: aboveBelowPadding,
+            child: constValueTextInput('E-post', userProfile!.email),
+          ),
+          const Separator(margin: 40),
+          Text(
             'Studie',
-            style: TextStyle(
-              fontFamily: OnlineTheme.font,
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+            style: headerStyle,
           ),
           const SizedBox(height: 5),
-          const Separator(),
           Padding(
             padding: aboveBelowPadding,
-            child: Row(
-              children: [
-                Text(
-                  'Klassetrinn',
-                  style: OnlineTheme.eventListHeader
-                      .copyWith(color: OnlineTheme.white, height: 1),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: 100, // Set a fixed width
-                      decoration: BoxDecoration(
-                        color: OnlineTheme.gray14,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text(
-                            '2. klasse',
-                            style: OnlineTheme.eventListHeader
-                                .copyWith(color: OnlineTheme.white, height: 1),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: constValueTextInput('Klassetrinn', userProfile!.year.toString()),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: Row(
-              children: [
-                Text(
-                  'Startår',
-                  style: OnlineTheme.eventListHeader
-                      .copyWith(color: OnlineTheme.white, height: 1),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: 100, // Set the same fixed width
-                      decoration: BoxDecoration(
-                        color: OnlineTheme.gray14,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text(
-                            '2022',
-                            style: OnlineTheme.eventListHeader
-                                .copyWith(color: OnlineTheme.white, height: 1),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
           ),
           const SizedBox(height: 16),
-          Container(
-            width: 300,
-            height: 50,
-            padding: const EdgeInsets.only(bottom: 20),
-            margin: const EdgeInsets.only(right: 20),
-            child: const Row(
+          SizedBox(
+            height: 40,
+            child: Row(
               children: [
                 Expanded(
                   flex: 3,
                   child: Center(
                     child: Text(
                       'Bachelor',
-                      style: OnlineTheme.eventListHeader,
+                      style: OnlineTheme.textStyle(),
                     ),
                   ),
                 ),
@@ -247,7 +138,7 @@ class ProfilePage extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Master',
-                      style: OnlineTheme.eventListHeader,
+                      style: OnlineTheme.textStyle(),
                     ),
                   ),
                 ),
@@ -256,143 +147,174 @@ class ProfilePage extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'PhD',
-                      style: OnlineTheme.eventListHeader,
+                      style: OnlineTheme.textStyle(),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-
           const SizedBox(height: 16),
           SizedBox(
             height: 40,
             child: CustomPaint(
-              painter: StudyCoursePainter(year: 5.5),
+              painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
             ),
           ),
-          const SizedBox(height: 40),
-          const Separator(),
-          const SizedBox(height: 40),
-          const Text(
+          const Separator(margin: 40),
+          Text(
             'Eksterne sider',
-            style: TextStyle(
-              fontFamily: OnlineTheme.font,
-              fontSize: 20,
-              color: OnlineTheme.gray11,
-              fontWeight: FontWeight.bold,
-            ),
+            style: headerStyle,
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Github', 'Github'),
+            child: constValueTextInput('Github', userProfile!.github.toString()),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Linkedin', 'Linkedin'),
+            child: constValueTextInput('Linkedin', userProfile!.linkedin.toString()),
           ),
           Padding(
             padding: aboveBelowPadding,
-            child: textInput('Hjemmeside', 'online.ntnu.no'),
+            child: constValueTextInput('Hjemmeside', userProfile!.website.toString()),
           ),
-          const Separator(),
-          const SizedBox(height: 40), // Space from the previous content
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: AnimatedButton(
+              onTap: () {
                 loggedIn = false;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const UpcomingEventsPage()), // Replace with your page class
+                PageNavigator.navigateTo(const HomePage());
+              },
+              childBuilder: (context, hover, pointerDown) {
+                return Container(
+                  height: OnlineTheme.buttonHeight,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        OnlineTheme.red1, // Start color
+                        Color.fromARGB(255, 255, 132, 95), // End color
+                      ],
+                    ),
+                    borderRadius: OnlineTheme.buttonRadius,
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Logg Ut',
+                      style: OnlineTheme.textStyle(weight: 5),
+                    ),
+                  ),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: OnlineTheme.white,
-                backgroundColor:
-                    OnlineTheme.red1, // Set the text color to white
-                minimumSize: const Size(double.infinity,
-                    50), // Set the button to take the full width
-              ),
-              child: const Text(
-                'Logg Ut',
-                style: TextStyle(
-                  fontFamily: OnlineTheme.font,
-                  fontSize: 16,
-                ),
-              ),
             ),
           ),
-          const SizedBox(height: 40), // Space at the bottom
+          SizedBox(height: Navbar.height(context)),
+        ],
+      ),
+      ),
+    ),
+    );
+  }
+  else{
+    return const LoadingPageDisplay();
+  }
+  }
+
+  Widget constValueTextInput(String label, String value) {
+    return SizedBox(
+      height: 40,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: OnlineTheme.textStyle(),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                color: OnlineTheme.gray14,
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Stack(children: [
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      value,
+                      style: OnlineTheme.textStyle(
+                        height: 1,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 40,
+                  child: ThemedIconButton(
+                    onPressed: () {
+                      HapticFeedback.mediumImpact();
+                      Clipboard.setData(ClipboardData(text: value));
+                    },
+                    size: 16,
+                    icon: IconType.copy,
+                    color: const Color(0xFF4C566A),
+                    hoverColor: OnlineTheme.white,
+                  ),
+                ),
+              ]),
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget textInput(String label, String placeholder) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontFamily: OnlineTheme.font,
-            fontSize: 16,
-            color: OnlineTheme.gray11,
-          ),
-        ),
-        SizedBox(
-          width: 200,
-          height: 40,
-          child: TextField(
-            cursorColor: OnlineTheme.gray8,
-            decoration: InputDecoration(
-              hintText: placeholder,
-              hintStyle: const TextStyle(
-                fontFamily: OnlineTheme.font,
-                fontSize: 16,
-                color: Color(0xFF4C566A),
-              ),
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(3)),
-                borderSide: BorderSide(color: Color(0xFF4C566A)),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(3)),
-                borderSide: BorderSide(color: OnlineTheme.white),
-              ),
-              filled: true,
-              fillColor: OnlineTheme.gray0,
-            ),
-            style: const TextStyle(
-              fontFamily: OnlineTheme.font,
-              fontSize: 16.0,
-              color: OnlineTheme.gray8,
+    return SizedBox(
+      height: 40,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: OnlineTheme.textStyle(color: OnlineTheme.gray11),
             ),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class Separator extends StatelessWidget {
-  const Separator({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 1,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF000212),
-            Color(0xFF2E3440),
-            Color(0xFF000212),
-          ],
-        ),
+          Expanded(
+            child: TextField(
+              cursorColor: OnlineTheme.gray8,
+              decoration: InputDecoration(
+                hintText: placeholder,
+                hintStyle: OnlineTheme.textStyle(
+                  color: const Color(0xFF4C566A),
+                  height: 1,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(3),
+                  borderSide: const BorderSide(color: Color(0xFF4C566A)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(3),
+                  borderSide: const BorderSide(color: OnlineTheme.white),
+                ),
+                filled: true,
+                fillColor: OnlineTheme.gray0,
+              ),
+              style: OnlineTheme.textStyle(
+                color: OnlineTheme.white,
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -405,20 +327,15 @@ class StudyCoursePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    const gray = Color(0xFF153E75);
-    const green = Color(0xFF36B37E);
-
     final paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3
-      ..color = gray;
+      ..strokeWidth = 3;
 
     final cy = size.height / 2; // Center Y
 
     final fraction = size.width / 6;
     final segment1 = fraction * 3 - 18;
     final segment2 = fraction * 2 + 9;
-    final segment3 = fraction - 9;
 
     final c1 = Offset(18, cy);
     final c2 = Offset(9 + (segment1 - 36) / 2, cy);
