@@ -34,6 +34,7 @@ flutter:
     - assets/models/
     - assets/svg/
     - lib/.env
+    - assets/bits/
 
   fonts:
       - family: SourceSans

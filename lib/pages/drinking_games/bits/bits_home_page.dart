@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/separator.dart';
 import '/pages/drinking_games/bits/bits_page.dart';
 
 import '/components/animated_button.dart';
@@ -48,6 +49,8 @@ class BitsHomePage extends ScrollablePage {
                 'Bits er en kombinasjon av de beste aspektene av ulike drikkeleker. Det er bare å hente deg en ny enhet, for den du holder nå kommer til å bli tømt ganske snabt. ',
                 style: OnlineTheme.textStyle(),
               ),
+              const SizedBox(height: 15,),
+              Text('Trykk på sidene av skjermen for å komme deg videre', style: OnlineTheme.textStyle(),),
               const SizedBox(height: 120),
               AnimatedButton(
                 onTap: () {

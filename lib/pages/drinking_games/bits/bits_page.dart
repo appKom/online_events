@@ -75,14 +75,18 @@ class BitsState extends State<Bits> {
                   const SizedBox(height: 40),
                   Text(
                     bitsPages[index].header,
-                    style: OnlineTheme.textStyle(size: 20, weight: 7),
+                    style: OnlineTheme.textStyle(size: 40, weight: 7),
                   ),
                   const SizedBox(height: 20),
                   const ClipRRect(child: SizedBox(height: 80)),
                   Text(
                     bitsPages[index].body,
-                    style: OnlineTheme.textStyle(),
-                  )
+                    style: OnlineTheme.textStyle(size: 20),
+                  ),
+                  Image.asset(
+                    bitsPages[index].imageSource,
+                    fit: BoxFit.cover,
+                  ),
                 ],
               ),
             ),
@@ -123,45 +127,197 @@ const bitsPages = [
   BitsModel(
     header: 'Pekelek',
     body: 'Kunne brukt en sjekkereplikk relatert til informatikk.',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Fadderuke',
+    body: 'Velg to "fadderbarn" som må drikke hver gang du drikker',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Blir påspandert mest på byen',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
-    header: 'Pekelek',
-    body: 'Bruker lengst tid på do',
+    header: 'Togafest',
+    body: 'Bruk et håndkle som toga resten av spillet',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Smasher mest',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Immball',
+    body: '"Av med buksene" Ta av et valgfrittplagg',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Startet å drikke i yngst alder',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Kontoret',
+    body: 'Du brukte ikke lokk i mikroen, ta tre straffeslurker',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Fikk A i exphil',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Appslipp',
+    body: 'Alle skåler for å feire utgivelsen av Online-appen',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Fått flest prikker',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Jobbintervju',
+    body: 'Du må forberede deg til jobbintervju, ta en shot!',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'SKÅL!',
     body: '',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'Pekelek',
-    body: 'Passer best inn i Dotkom',
+    body: 'Passer best inn i Appkom',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Blåtur',
+    body: 'Blåturen tar deg til et ukjent sted, drikk av noen andres drikke',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Avslutter festen først',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Surfetur med X-sport',
+    body: 'Du blir tatt av en bølge, hvis hvordan du surfer',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Strøk i ITGK',
+    imageSource: 'assets/bits/bitsimage1.png'
   ),
+  BitsModel(
+    header: 'Bedpres',
+    body: 'Du kan gi ut fem bonger (1 bong = 1 slurk)',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Chug eller sannhet',
+    body: 'Er det noen i Online du har et øye for',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Den som har vært på flest bedpres',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Julebord',
+    body: 'Hold en tale i to minutter, hvor du forteller hvorfor du har fortjent å være årets nisse',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Årets Nisse',
+    body: 'Som årets nisse kan du dele ut 4 slurker',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Lever fremdeles i russetiden',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Oktoberfest',
+    body: 'Fullfør drikken din',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Avslutter festen først',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'OW er nede',
+    body: 'Drikk fem slurker for å få OW opp igjen',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Havner oftest på legevakten',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Swap',
+    body: 'Bytt et klesplagg med personen til venstre for deg',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Knuser flest hjerter',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Vinter OL',
+    body: 'Du ble forkjølet etter vinter OL, ta en shot for å lindre halsbetennelsen',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Stjeler fra kiosken',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Gammel og Ung',
+    body: 'Eldste og yngste i rommet kan dele ut halvparten av alderen sin i slurker',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Slipper aldri inn på Samf',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Kok',
+    body: 'Du blir tatt for kok, drikk 5 straffeslurker',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Burde bli leder for Online',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Eksamensfest',
+    body: 'Alle må drikke tre slurker for å feire at dere er ferdig med eksamen',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Har mest rizz',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+  BitsModel(
+    header: 'MÅL',
+    body: 'Du er nå ferdig med studiene! Nyt livet som bedrep og ta en lambo!',
+    imageSource: 'assets/bits/bitsimage1.png'
+  ),
+
 ];
