@@ -83,6 +83,7 @@ class BitsState extends State<Bits> {
                     bitsPages[index].body,
                     style: OnlineTheme.textStyle(size: 20),
                   ),
+                  const SizedBox(height: 30,),
                   Image.asset(
                     bitsPages[index].imageSource,
                     fit: BoxFit.cover,
@@ -132,52 +133,52 @@ const bitsPages = [
   BitsModel(
     header: 'Fadderuke',
     body: 'Velg to "fadderbarn" som må drikke hver gang du drikker',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage2.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Blir påspandert mest på byen',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage3.png'
   ),
   BitsModel(
     header: 'Togafest',
     body: 'Bruk et håndkle som toga resten av spillet',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage4.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Smasher mest',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage5.png'
   ),
   BitsModel(
     header: 'Immball',
     body: '"Av med buksene" Ta av et valgfrittplagg',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage6.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Startet å drikke i yngst alder',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage7.png'
   ),
   BitsModel(
     header: 'Kontoret',
     body: 'Du brukte ikke lokk i mikroen, ta tre straffeslurker',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage8.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Fikk A i exphil',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage9.png'
   ),
   BitsModel(
     header: 'Appslipp',
     body: 'Alle skåler for å feire utgivelsen av Online-appen',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage10.png'
   ),
   BitsModel(
     header: 'Pekelek',
     body: 'Fått flest prikker',
-    imageSource: 'assets/bits/bitsimage1.png'
+    imageSource: 'assets/bits/bitsimage11.png'
   ),
   BitsModel(
     header: 'Jobbintervju',
