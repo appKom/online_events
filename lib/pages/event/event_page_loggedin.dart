@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/event_organizers.dart';
+import 'package:online_events/pages/event/cards/event_card_countdown.dart';
 import 'package:online_events/pages/event/cards/event_participants_loggedin.dart';
 import 'package:online_events/pages/event/cards/event_registration_card_loggedin.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
@@ -28,6 +29,7 @@ class EventPageLoggedIn extends ScrollablePage {
 //
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
+
 
   @override
   Widget? header(BuildContext context) {
@@ -103,7 +105,7 @@ class EventPageLoggedIn extends ScrollablePage {
             children: [
               const SizedBox(height: 24),
               Text(
-                attendeeInfoModel.id.toString(),
+                model.title,
                 style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
               const SizedBox(height: 24),
@@ -141,6 +143,7 @@ class RegistrationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventDateTime = DateTime.parse(model.startDate);
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -158,11 +161,20 @@ class RegistrationCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           EventRegistrationCardLoggedIn(attendeeInfoModel: attendeeInfoModel), 
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           attendeeInfoModel.isEligibleForSignup.status 
-              ? const EventCardButtons() 
-              : Text(attendeeInfoModel.isEligibleForSignup.message, 
-                  style: OnlineTheme.textStyle()),
+              ? const EventCardButtons()
+              : Text(
+                  attendeeInfoModel.isEligibleForSignup.message, 
+                  style: OnlineTheme.textStyle(),
+                ),
+
+          const SizedBox(height: 10,),
+          attendeeInfoModel.id == -1
+              ? EventCardCountdown(eventTime: eventDateTime) // Include countdown if attendeeInfoModel.id is -1
+              : const SizedBox.shrink(), // Otherwise, include an empty widget
+          
+          
         ],
       ),
     );

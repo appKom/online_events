@@ -130,7 +130,7 @@ class Eligibility {
   factory Eligibility.withDefaults() {
     return Eligibility(
       status: false,
-      message: 'Not applicable',
+      message: 'Dette er ikke et påmeldingsarrangement',
       statusCode: 0,
       offset: null, // Assuming null is a valid default
     );

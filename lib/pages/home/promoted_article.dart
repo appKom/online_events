@@ -91,7 +91,7 @@ class PromotedArticle extends StatelessWidget {
                       ),
                       Positioned(
                         left: 20,
-                        bottom: 42,
+                        bottom: 38,
                         child: Text(
                           article.authors, // Modify this line
                           style: OnlineTheme.textStyle(weight: 4, size: 12),

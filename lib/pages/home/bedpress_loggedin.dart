@@ -106,7 +106,7 @@ class BedpressCardLoggedIn extends StatelessWidget {
   String getEventTypeDisplay() {
     // Check if the eventTypeDisplay is 'Bedriftspresentasjon'
     return model.eventTypeDisplay == 'Bedriftspresentasjon'
-        ? 'BedpressLoggedIn'
+        ? 'Bedpress'
         : model.eventTypeDisplay;
   }
 
