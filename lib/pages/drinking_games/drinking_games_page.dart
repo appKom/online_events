@@ -46,19 +46,20 @@ class DrinkingGamesPage extends ScrollablePage {
                 }),
             const SizedBox(height: 24),
             GameCard(
-                name: 'SpinLine',
-                imageSource: 'assets/images/SpinLine.png',
-                onTap: () {
-                  PageNavigator.navigateTo(const SpinLinePage());
-                }),
-            const SizedBox(
-              height: 24,
-            ),
-            GameCard(
               name: 'Bits',
               imageSource: 'assets/images/bits.png',
               onTap: () {
                 PageNavigator.navigateTo(const BitsHomePage());
+              },
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            GameCard(
+              name: 'SpineLine',
+              imageSource: 'assets/images/SpinLine.png',
+              onTap: () {
+                PageNavigator.navigateTo(const SpinLinePage());
               },
             ),
             const SizedBox(height: 24),
