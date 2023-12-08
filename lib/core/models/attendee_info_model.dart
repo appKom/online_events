@@ -131,7 +131,7 @@ class Eligibility {
     return Eligibility(
       status: false,
       message: 'Dette er ikke et påmeldingsarrangement',
-      statusCode: 0,
+      statusCode: 6969,
       offset: null, // Assuming null is a valid default
     );
   }
