@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:online_events/main.dart';
-import 'package:online_events/pages/profile/display_profile_page.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/app_navigator.dart';
 import '../../core/client/client.dart';
 import 'auth_service.dart';

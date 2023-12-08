@@ -53,30 +53,39 @@ class AttendeeInfoModel {
 
   factory AttendeeInfoModel.fromJson(Map<String, dynamic> json) {
     return AttendeeInfoModel(
-      id: json['id'],
-      maxCapacity: json['max_capacity'],
-      waitlist: json['waitlist'],
-      guestAttendance: json['guest_attendance'],
-      registrationStart: DateTime.parse(json['registration_start']),
-      registrationEnd: DateTime.parse(json['registration_end']),
-      unattendDeadline: DateTime.parse(json['unattend_deadline']),
-      automaticallySetMarks: json['automatically_set_marks'],
-      ruleBundles: List<int>.from(json['rule_bundles']),
-      numberOnWaitlist: json['number_on_waitlist'],
-      numberOfSeatsTaken: json['number_of_seats_taken'],
-      hasFeedback: json['has_feedback'],
-      hasExtras: json['has_extras'],
-      hasReservation: json['has_reservation'],
-      extras: json['extras'], // May need further parsing based on actual type
+      id: json['id'] ?? 0,
+      maxCapacity: json['max_capacity'] ?? 0,
+      waitlist: json['waitlist'] ?? false,
+      guestAttendance: json['guest_attendance'] ?? false,
+      registrationStart: json['registration_start'] != null
+          ? DateTime.parse(json['registration_start'])
+          : DateTime.now(),
+      registrationEnd: json['registration_end'] != null
+          ? DateTime.parse(json['registration_end'])
+          : DateTime.now(),
+      unattendDeadline: json['unattend_deadline'] != null
+          ? DateTime.parse(json['unattend_deadline'])
+          : DateTime.now(),
+      automaticallySetMarks: json['automatically_set_marks'] ?? false,
+      ruleBundles: json['rule_bundles'] != null
+          ? List<int>.from(json['rule_bundles'])
+          : [],
+      numberOnWaitlist: json['number_on_waitlist'] ?? 0,
+      numberOfSeatsTaken: json['number_of_seats_taken'] ?? 0,
+      hasFeedback: json['has_feedback'] ?? false,
+      hasExtras: json['has_extras'] ?? false,
+      hasReservation: json['has_reservation'] ?? false,
+      extras: json['extras'] ?? [],
       payment: json['payment'],
       feedback: json['feedback'],
-      hasPostponedRegistration: json['has_postponed_registration'],
-      isMarked: json['is_marked'],
-      isSuspended: json['is_suspended'],
-      isEligibleForSignup: Eligibility.fromJson(json['is_eligible_for_signup']),
-      isAttendee: json['is_attendee'],
-      isOnWaitlist: json['is_on_waitlist'],
-      whatPlaceIsUserOnWaitList: json['what_place_is_user_on_wait_list'],
+      hasPostponedRegistration: json['has_postponed_registration'] ?? false,
+      isMarked: json['is_marked'] ?? false,
+      isSuspended: json['is_suspended'] ?? false,
+      isEligibleForSignup:
+          Eligibility.fromJson(json['is_eligible_for_signup'] ?? {}),
+      isAttendee: json['is_attendee'] ?? false,
+      isOnWaitlist: json['is_on_waitlist'] ?? false,
+      whatPlaceIsUserOnWaitList: json['what_place_is_user_on_wait_list'] ?? 0,
     );
   }
 }
@@ -96,9 +105,9 @@ class Eligibility {
 
   factory Eligibility.fromJson(Map<String, dynamic> json) {
     return Eligibility(
-      status: json['status'],
-      message: json['message'],
-      statusCode: json['status_code'],
+      status: json['status'] ?? false,
+      message: json['message'] ?? '',
+      statusCode: json['status_code'] ?? 0,
       offset: json['offset'],
     );
   }

@@ -4,6 +4,10 @@ import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/pages/home/home_page.dart';
 import 'package:online_events/pages/loading/loading_display_page.dart';
+import 'package:flutter/material.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
+import 'package:online_events/components/online_header.dart';
+import '/components/online_scaffold.dart';
 
 import '../../core/client/client.dart';
 import '../../core/models/user_model.dart';
@@ -25,16 +29,16 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserModel? userProfile;
-  AttendeeInfoModel? attendeeInfoModel;
+  List<AttendeeInfoModel> attendeeInfoModels = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchUserProfile();
-    _fetchAttendeeInfo();
+    fetchAttendeeInfo();
+    fetchUserProfile();
   }
 
-  Future<void> _fetchUserProfile() async {
+  Future<void> fetchUserProfile() async {
     UserModel? profile = await Client.getUserProfile();
     if (profile != null) {
       setState(() {
@@ -43,12 +47,11 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<void> _fetchAttendeeInfo() async {
-    AttendeeInfoModel? attendee = await Client.getAttendeeInfoModel();
-    if (attendee != null) {
-      // This line should check 'attendee', not 'attendeeInfoModel'
+  Future<void> fetchAttendeeInfo() async {
+    List<AttendeeInfoModel> attendees = await Client.getAttendeeInfoModels();
+    if (attendees.isNotEmpty) {
       setState(() {
-        attendeeInfoModel = attendee;
+        attendeeInfoModels = attendees;
       });
     }
   }
@@ -59,6 +62,10 @@ class _ProfilePageState extends State<ProfilePage> {
     final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);
+
+    List<Widget> attendeeWidgets = attendeeInfoModels.map((attendee) {
+      return Text('Attendee ID: ${attendee.isAttendee}');
+    }).toList();
 
     if (userProfile != null) {
       return Scaffold(
@@ -73,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: OnlineHeader.height(context) + 40),
                 Center(
                   child: Text(
-                    '${userProfile!.firstName} ${userProfile!.lastName}',
+                    '${userProfile!.firstName} ${userProfile!.lastName} isAttende:$attendeeWidgets',
                     style: OnlineTheme.textStyle(
                       size: 20,
                       weight: 7,
@@ -417,4 +424,17 @@ class StudyCoursePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class ProfilePageDisplay extends StaticPage {
+  const ProfilePageDisplay({super.key});
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
+    return const ProfilePage();
+  }
 }

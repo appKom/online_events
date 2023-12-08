@@ -22,7 +22,6 @@ class EventModel implements JsonModel {
   final int? maxCapacity;
   final bool? waitlist;
   final int? numberOfSeatsTaken;
-  final AttendeeInfoModel? attendeeInfo;
 
   EventModel({
     required this.id,
@@ -44,7 +43,6 @@ class EventModel implements JsonModel {
     this.waitlist,
     this.numberOfSeatsTaken,
     this.author,
-    this.attendeeInfo,
   });
 
   @override
@@ -104,12 +102,11 @@ class EventModel implements JsonModel {
       maxCapacity: json['max_capacity'],
       waitlist: json['waitlist'],
       numberOfSeatsTaken: json['number_of_seats_taken'],
-      attendeeInfo: attendeeInfo,
     );
   }
 
   @override
   String toString() {
-    return 'EventModel: { id: $id, title: $title, startDate: $startDate, endDate: $endDate, location: $location, attendeeInfo: ${attendeeInfo?.toString()} }';
+    return 'EventModel: { id: $id, title: $title, startDate: $startDate, endDate: $endDate, location: $location,}';
   }
 }

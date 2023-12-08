@@ -12,7 +12,7 @@ abstract class Client {
   static String? accessToken;
 
   static void setAccessToken(String token) {
-    accessToken = token; 
+    accessToken = token;
   }
 
   static Future<List<EventModel>?> getEvents() async {
@@ -58,8 +58,8 @@ abstract class Client {
     }
   }
 
-  static Future<AttendeeInfoModel?> getAttendeeInfoModel() async {
-    const url = '$endpoint/api/v1/attendance-events/?ordering=-registration_start/';
+  static Future<List<AttendeeInfoModel>> getAttendeeInfoModels() async {
+    const url = '$endpoint/api/v1/event/attendance-events/?ordering=-registration_start';
 
     final response = await http.get(
       Uri.parse(url),
@@ -69,11 +69,21 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      return AttendeeInfoModel.fromJson(jsonResponse);
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
+      final jsonResponse = jsonDecode(responseBody);
+
+      final attendees = jsonResponse['results']
+          .map((attendeeJson) {
+            return AttendeeInfoModel.fromJson(attendeeJson);
+          })
+          .cast<AttendeeInfoModel>()
+          .toList();
+
+      return attendees;
     } else {
       print('Failed to fetch attendees info');
-      return null;
+      return [];
     }
   }
 
@@ -100,5 +110,4 @@ abstract class Client {
       return null;
     }
   }
-
 }

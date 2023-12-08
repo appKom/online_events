@@ -63,7 +63,7 @@ class EventParticipants extends StatelessWidget {
                   ),
                   Center(
                     child: Text(
-                      model.attendeeInfo?.numberOfSeatsTaken.toString() ?? 'N/A',
+                      'N/A',
                       style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
                     ),
                   ),
