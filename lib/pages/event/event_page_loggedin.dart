@@ -213,7 +213,7 @@ Widget header(int statusCode) {
       break;
 
     case 404:
-      badgeText = 'Closed';
+      badgeText = 'Stengt';
       gradient = const LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
