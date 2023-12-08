@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
+import 'package:online_events/pages/home/event_card_loggedin.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
 
 import '../home/event_card.dart';
 import '../../components/online_scaffold.dart';
 import '../../theme/theme.dart';
 import '/main.dart';
 
-class EventsPage extends ScrollablePage {
-  const EventsPage({super.key});
+class EventsPageLoggedIn extends ScrollablePage {
+  const EventsPageLoggedIn({super.key});
 
   @override
   Widget? header(BuildContext context) {
@@ -44,8 +46,11 @@ class EventsPage extends ScrollablePage {
             itemCount: futureEvents.length,
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (c, i) => EventCard(
+            itemBuilder: (c, i) => EventCardLoggedIn(
               model: futureEvents[i],
+              attendeeInfoModel: attendeeInfoModels[
+                  i], // Make sure this list is aligned with futureEvents
+              attendeeInfoModels: attendeeInfoModels,
             ),
           ),
         ),

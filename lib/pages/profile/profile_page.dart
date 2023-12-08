@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
+import 'package:online_events/core/models/combined_event_model.dart';
 import 'package:online_events/pages/home/home_page.dart';
 import 'package:online_events/pages/loading/loading_display_page.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,10 @@ import '/theme/themed_icon.dart';
 import '/theme/theme.dart';
 import '/main.dart';
 
+
+List<AttendeeInfoModel> attendeeInfoModels = [];
+
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -29,7 +34,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserModel? userProfile;
-  List<AttendeeInfoModel> attendeeInfoModels = [];
 
   @override
   void initState() {
@@ -56,6 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
@@ -64,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
         const EdgeInsets.symmetric(horizontal: 25);
 
     List<Widget> attendeeWidgets = attendeeInfoModels.map((attendee) {
-      return Text('Attendee ID: ${attendee.isAttendee}');
+      return Text('Attendee ID: ${attendee.id}');
     }).toList();
 
     if (userProfile != null) {
@@ -80,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: OnlineHeader.height(context) + 40),
                 Center(
                   child: Text(
-                    '${userProfile!.firstName} ${userProfile!.lastName} isAttende:$attendeeWidgets',
+                    '${userProfile!.firstName} ${userProfile!.lastName}',
                     style: OnlineTheme.textStyle(
                       size: 20,
                       weight: 7,

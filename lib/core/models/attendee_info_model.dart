@@ -1,3 +1,5 @@
+final DEFAULT_ATTENDEE_MODEL = AttendeeInfoModel.withDefaults();
+
 class AttendeeInfoModel {
   final int id;
   final int maxCapacity;
@@ -23,6 +25,35 @@ class AttendeeInfoModel {
   final bool isAttendee;
   final bool isOnWaitlist;
   final int whatPlaceIsUserOnWaitList;
+
+  factory AttendeeInfoModel.withDefaults() {
+    return AttendeeInfoModel(
+      id: -1, // Indicates an invalid or default ID
+      maxCapacity: 0,
+      waitlist: false,
+      guestAttendance: false,
+      registrationStart: DateTime.now(),
+      registrationEnd: DateTime.now().add(Duration(days: 30)), // Default end date 30 days from now
+      unattendDeadline: DateTime.now().add(Duration(days: 10)), // Default deadline 10 days from now
+      automaticallySetMarks: false,
+      ruleBundles: [],
+      numberOnWaitlist: 0,
+      numberOfSeatsTaken: 0,
+      hasFeedback: false,
+      hasExtras: false,
+      hasReservation: false,
+      extras: [],
+      payment: null, // Assuming null is a valid default
+      feedback: null, // Assuming null is a valid default
+      hasPostponedRegistration: false,
+      isMarked: false,
+      isSuspended: false,
+      isEligibleForSignup: Eligibility.withDefaults(),
+      isAttendee: false,
+      isOnWaitlist: false,
+      whatPlaceIsUserOnWaitList: 0,
+    );
+  }
 
   AttendeeInfoModel({
     required this.id,
@@ -95,6 +126,15 @@ class Eligibility {
   final String message;
   final int statusCode;
   final dynamic offset; // Replace dynamic with specific type if needed
+
+  factory Eligibility.withDefaults() {
+    return Eligibility(
+      status: false,
+      message: 'Not applicable',
+      statusCode: 0,
+      offset: null, // Assuming null is a valid default
+    );
+  }
 
   Eligibility({
     required this.status,

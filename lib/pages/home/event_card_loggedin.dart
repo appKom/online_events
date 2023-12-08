@@ -2,16 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/separator.dart';
+import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/pages/drinking_games/drinking_games_page.dart';
 import 'package:online_events/pages/event/event_page.dart';
+import 'package:online_events/pages/event/event_page_loggedin.dart';
 import '../../services/page_navigator.dart';
 import '../../theme/theme.dart';
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 
-class EventCard extends StatelessWidget {
-  const EventCard({super.key, required this.model});
+class EventCardLoggedIn extends StatelessWidget {
+  const EventCardLoggedIn(
+      {super.key,
+      required this.model,
+      required this.attendeeInfoModel,
+      required this.attendeeInfoModels});
 
   final EventModel model;
+  final AttendeeInfoModel attendeeInfoModel;
+  final List<AttendeeInfoModel> attendeeInfoModels;
 
   static const months = [
     'Januar',
@@ -29,24 +39,24 @@ class EventCard extends StatelessWidget {
   ];
 
   String formatDateSpan(String startDate, String endDate) {
-  DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
-  DateFormat outputDayMonthFormat = DateFormat("dd. MMMM");
+    DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
+    DateFormat outputDayMonthFormat = DateFormat("dd. MMMM");
 
-  DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
-  DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
+    DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
+    DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
 
-  if (startDateTime.year == endDateTime.year &&
-      startDateTime.month == endDateTime.month &&
-      startDateTime.day == endDateTime.day) {
-    // Same day
-    return outputDayMonthFormat.format(startDateTime);
-  } else {
-    // Different days
-    String formattedStartDate = outputDayMonthFormat.format(startDateTime);
-    String formattedEndDate = outputDayMonthFormat.format(endDateTime);
-    return "$formattedStartDate - $formattedEndDate";
+    if (startDateTime.year == endDateTime.year &&
+        startDateTime.month == endDateTime.month &&
+        startDateTime.day == endDateTime.day) {
+      // Same day
+      return outputDayMonthFormat.format(startDateTime);
+    } else {
+      // Different days
+      String formattedStartDate = outputDayMonthFormat.format(startDateTime);
+      String formattedEndDate = outputDayMonthFormat.format(endDateTime);
+      return "$formattedStartDate - $formattedEndDate";
+    }
   }
-}
 
   String shortenName() {
     final name = model.title;
@@ -58,7 +68,18 @@ class EventCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(EventPage(model: model));
+    AttendeeInfoModel? matchingAttendeeInfo =
+        attendeeInfoModels.firstWhereOrNull(
+      (attendeeInfo) => attendeeInfo.id == model.id,
+    );
+
+    if (matchingAttendeeInfo != null) {
+      PageNavigator.navigateTo(EventPageLoggedIn(
+          model: model, attendeeInfoModel: matchingAttendeeInfo));
+    } else {
+      // Handle the case where no matching ID is found
+      PageNavigator.navigateTo(EventPageLoggedIn(model: model, attendeeInfoModel: DEFAULT_ATTENDEE_MODEL));
+    }
   }
 
   String peopleToString() {
@@ -66,8 +87,6 @@ class EventCard extends StatelessWidget {
 
     return '${model.numberOfSeatsTaken}/${model.maxCapacity}';
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -121,10 +140,8 @@ class EventCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        subHeader(
-                          Icons.calendar_month_outlined,
-                          formatDateSpan(model.startDate, model.endDate)
-                        ),
+                        subHeader(Icons.calendar_month_outlined,
+                            formatDateSpan(model.startDate, model.endDate)),
                         subHeader(
                           Icons.people_outline,
                           peopleToString(),
