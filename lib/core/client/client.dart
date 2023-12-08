@@ -12,31 +12,39 @@ abstract class Client {
   static String? accessToken;
 
   static void setAccessToken(String token) {
-    accessToken = token; 
+    accessToken = token;
   }
 
   static Future<List<EventModel>?> getEvents() async {
-    const url = '$endpoint/api/v1/event/events/';
+    List<EventModel> allEvents = [];
 
-    final response = await http.get(Uri.parse(url));
+    // URLs for each page
+    List<String> urls = [
+      '$endpoint/api/v1/event/events/',
+      '$endpoint/api/v1/event/events/?page=2',
+      '$endpoint/api/v1/event/events/?page=3',
+      '$endpoint/api/v1/event/events/?page=4',
+    ];
 
-    if (response.statusCode == 200) {
-      final responseBody =
-          utf8.decode(response.bodyBytes, allowMalformed: true);
-      final jsonResponse = jsonDecode(responseBody);
+    for (var url in urls) {
+      final response = await http.get(Uri.parse(url));
 
-      final events = jsonResponse['results']
-          .map((eventJson) {
-            return EventModel.fromJson(eventJson);
-          })
-          .cast<EventModel>()
-          .toList();
+      if (response.statusCode == 200) {
+        final responseBody =
+            utf8.decode(response.bodyBytes, allowMalformed: true);
+        final jsonResponse = jsonDecode(responseBody);
 
-      return events;
-    } else {
-      print('Fail');
-      return [];
+        final events = jsonResponse['results']
+            .map<EventModel>((eventJson) => EventModel.fromJson(eventJson))
+            .toList();
+
+        allEvents.addAll(events);
+      } else {
+        print('Failed to fetch events from $url');
+      }
     }
+
+    return allEvents;
   }
 
   static Future<UserModel?> getUserProfile() async {
@@ -58,23 +66,41 @@ abstract class Client {
     }
   }
 
-  static Future<AttendeeInfoModel?> getAttendeeInfoModel() async {
-    const url = '$endpoint/api/v1/attendance-events/?ordering=-registration_start/';
+  static Future<List<AttendeeInfoModel>> getAttendeeInfoModels() async {
+    List<AttendeeInfoModel> allAttendees = [];
 
-    final response = await http.get(
-      Uri.parse(url),
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
+    // URLs for each page
+    List<String> urls = [
+      '$endpoint/api/v1/event/attendance-events/?ordering=-registration_start',
+      '$endpoint/api/v1/event/attendance-events/?ordering=-registration_start&page=2',
+      '$endpoint/api/v1/event/attendance-events/?ordering=-registration_start&page=3',
+    ];
 
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      return AttendeeInfoModel.fromJson(jsonResponse);
-    } else {
-      print('Failed to fetch attendees info');
-      return null;
+    for (var url in urls) {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody =
+            utf8.decode(response.bodyBytes, allowMalformed: true);
+        final jsonResponse = jsonDecode(responseBody);
+
+        final attendees = jsonResponse['results']
+            .map<AttendeeInfoModel>(
+                (attendeeJson) => AttendeeInfoModel.fromJson(attendeeJson))
+            .toList();
+
+        allAttendees.addAll(attendees);
+      } else {
+        print('Failed to fetch attendees info from $url');
+      }
     }
+
+    return allAttendees;
   }
 
   static Future<List<ArticleModel>?> getArticles() async {
@@ -100,5 +126,4 @@ abstract class Client {
       return null;
     }
   }
-
 }

@@ -71,26 +71,8 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           Flexible(
             child: AnimatedButton(
               onTap: () {
-                setState(() { // Toggle isRegistered state
-                  isRegistered? AppNavigator.navigateToRoute(
-                  ConfirmUnattend(
-                    onConfirm: (){
-                      setState(() {
-                        isRegistered = false;
-                      });
-                    }
-                  ),
-                  additive: true,
-                ) : AppNavigator.navigateToRoute(
-                  ConfirmRegistration(
-                    onConfirm: (){
-                      setState(() {
-                        isRegistered = true;
-                      });
-                    }
-                  ),
-                  additive: true,
-                );
+                setState(() {
+                  isRegistered = !isRegistered; // Toggle isRegistered state
                 });
               },
               childBuilder: (context, hover, pointerDown) {

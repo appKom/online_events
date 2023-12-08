@@ -4,7 +4,7 @@ import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
 import 'package:online_events/pages/login/login_page.dart';
-import 'package:online_events/pages/profile/display_profile_page.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/page_navigator.dart';
 
 import '../home/event_card.dart';
