@@ -150,8 +150,6 @@ class RegistrationCard extends StatelessWidget {
           EventParticipants(
             model: model,
           ),
-          const SizedBox(height: 16),
-          const EventRegistrationCard(), // Add the countdown widget here
           const SizedBox(height: 20),
           const EventCardButtons(), // Removed Padding widget
         ],

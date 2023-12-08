@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/event_organizers.dart';
+import 'package:online_events/pages/event/cards/event_attendees.dart';
 import 'package:online_events/pages/event/cards/event_card_countdown.dart';
 import 'package:online_events/pages/event/cards/event_participants_loggedin.dart';
 import 'package:online_events/pages/event/cards/event_registration_card_loggedin.dart';
@@ -25,11 +26,11 @@ import 'cards/event_participants.dart';
 import 'cards/event_registration_card.dart';
 
 class EventPageLoggedIn extends ScrollablePage {
-  const EventPageLoggedIn({super.key, required this.model, required this.attendeeInfoModel});
+  const EventPageLoggedIn(
+      {super.key, required this.model, required this.attendeeInfoModel});
 //
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
-
 
   @override
   Widget? header(BuildContext context) {
@@ -119,7 +120,8 @@ class EventPageLoggedIn extends ScrollablePage {
               ),
               const SizedBox(height: 24),
               RegistrationCard(
-                model: model, attendeeInfoModel: attendeeInfoModel, 
+                model: model,
+                attendeeInfoModel: attendeeInfoModel,
               ),
               const SizedBox(height: 24),
             ],
@@ -137,7 +139,8 @@ class EventPageLoggedIn extends ScrollablePage {
 class RegistrationCard extends StatelessWidget {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
 
-  const RegistrationCard({super.key, required this.model, required this.attendeeInfoModel});
+  const RegistrationCard(
+      {super.key, required this.model, required this.attendeeInfoModel});
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
 
@@ -154,35 +157,97 @@ class RegistrationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          header(),
+          header(attendeeInfoModel.isEligibleForSignup.statusCode),
           const SizedBox(height: 16),
-          EventParticipantsLoggedIn(
-            model: model, attendeeInfoModel: attendeeInfoModel,
-          ),
+          if (attendeeInfoModel.isEligibleForSignup.statusCode != 502 &&
+              attendeeInfoModel.isEligibleForSignup.statusCode != 411 &&
+              attendeeInfoModel.isEligibleForSignup.statusCode != 6969 &&
+              attendeeInfoModel.isEligibleForSignup.statusCode != 404)
+            EventParticipantsLoggedIn(
+              model: model,
+              attendeeInfoModel: attendeeInfoModel,
+            ),
           const SizedBox(height: 16),
-          EventRegistrationCardLoggedIn(attendeeInfoModel: attendeeInfoModel), 
+          if (attendeeInfoModel.isEligibleForSignup.statusCode != 502 &&
+              attendeeInfoModel.isEligibleForSignup.statusCode != 411 &&
+              attendeeInfoModel.isEligibleForSignup.statusCode != 404 &&
+              attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+            EventRegistrationCardLoggedIn(attendeeInfoModel: attendeeInfoModel),
           const SizedBox(height: 10),
-          attendeeInfoModel.isEligibleForSignup.status 
+          attendeeInfoModel.isEligibleForSignup.status
               ? const EventCardButtons()
               : Text(
-                  attendeeInfoModel.isEligibleForSignup.message, 
+                  attendeeInfoModel.isEligibleForSignup.message,
                   style: OnlineTheme.textStyle(),
                 ),
+            const SizedBox(height: 10,),
+            if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+            const EventAttendees(),
 
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           attendeeInfoModel.id == -1
-              ? EventCardCountdown(eventTime: eventDateTime) // Include countdown if attendeeInfoModel.id is -1
+              ? EventCardCountdown(
+                  eventTime:
+                      eventDateTime) // Include countdown if attendeeInfoModel.id is -1
               : const SizedBox.shrink(), // Otherwise, include an empty widget
-          
-          
         ],
       ),
     );
   }
 }
 
-/// Card header
-Widget header() {
+Widget header(int statusCode) {
+  String badgeText;
+  LinearGradient gradient;
+
+  switch (statusCode) {
+    case 502:
+      badgeText = 'Closed';
+      gradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Colors.redAccent, Colors.red], // Red gradient
+      );
+      break;
+
+    case 404:
+      badgeText = 'Stengt';
+      gradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Colors.redAccent, Colors.red], // Red gradient
+      );
+      break;
+    case 6969:
+      badgeText = 'Ikke åpen';
+      gradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Colors.purpleAccent, Colors.purple], // Purple gradient
+      );
+      break;
+    case 411:
+      badgeText = 'Umulig';
+      gradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Colors.blueAccent, Colors.blue], // Blue gradient
+      );
+      break;
+    default:
+      badgeText = 'Åpen';
+      gradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          OnlineTheme.green5, // Start color
+          OnlineTheme.green1, // End color
+        ],
+      );
+  }
+
   return SizedBox(
     height: 32,
     child: Row(
@@ -196,17 +261,10 @@ Widget header() {
               .copyWith(height: 1, fontWeight: FontWeight.w600),
         ),
         CardBadge(
-          border: OnlineTheme.green5.lighten(100),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              OnlineTheme.green5, // Start color
-              OnlineTheme.green1, // End color
-            ],
-          ),
-          text: 'Åpen',
-        )
+          border: gradient.colors.last.lighten(100),
+          gradient: gradient,
+          text: badgeText,
+        ),
       ],
     ),
   );

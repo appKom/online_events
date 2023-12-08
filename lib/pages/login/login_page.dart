@@ -48,7 +48,7 @@ class LoginPage extends StaticPage {
                   ),
                   child: Center(
                     child: Text(
-                      'Logg Inn med NTNU',
+                      'Logg Inn med Online',
                       style: OnlineTheme.textStyle(),
                     ),
                   ),
