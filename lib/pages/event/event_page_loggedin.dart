@@ -83,6 +83,7 @@ class EventPageLoggedIn extends ScrollablePage {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        
         SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
           height: 230,
@@ -169,7 +170,7 @@ class RegistrationCard extends StatelessWidget {
             EventRegistrationCardLoggedIn(attendeeInfoModel: attendeeInfoModel),
           const SizedBox(height: 10),
           attendeeInfoModel.isEligibleForSignup.status
-              ? const EventCardButtons()
+              ? EventCardButtons(model: model,)
               : Text(
                   attendeeInfoModel.isEligibleForSignup.message,
                   style: OnlineTheme.textStyle(),
@@ -178,7 +179,7 @@ class RegistrationCard extends StatelessWidget {
             height: 10,
           ),
           if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            const EventAttendees(),
+          EventAttendees(model: model),
 
           const SizedBox(
             height: 10,

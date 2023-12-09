@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
+import 'package:online_events/components/separator.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/home/event_card_loggedin.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
@@ -78,11 +79,10 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: OnlineHeader.height(context) + 40),
+            SizedBox(height: OnlineHeader.height(context) + 20),
             Center(
               child: Text('Mine Arrangementer', style: style),
             ),
-            _buildEventList(upcomingEvents),
             TableCalendar(
               focusedDay: _focusedDay,
               firstDay: DateTime(2000),
@@ -147,7 +147,7 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
                   color: OnlineTheme.green5,
                 ),
               ),
-              headerStyle: const HeaderStyle(
+              headerStyle: const HeaderStyle( 
                 formatButtonVisible: false,
                 titleCentered: true,
                 leftChevronIcon:
@@ -161,7 +161,10 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
                 weekdayStyle: TextStyle(color: Colors.white),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 10,),
+            const Separator(margin: 5,),
+            _buildEventList(upcomingEvents),
+            const SizedBox(height: 15),
             Center(
               child: Text('Tidligere Arrangementer', style: style),
             ),

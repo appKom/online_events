@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/components/separator.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/event_organizers.dart';
 
@@ -149,7 +150,17 @@ class RegistrationCard extends StatelessWidget {
             model: model,
           ),
           const SizedBox(height: 20),
-          const EventCardButtons(), // Removed Padding widget
+          Column(
+            children: [
+              const Separator(margin: 1),
+              Center(
+                child: Text(
+                  'Du må være logget inn for å se din status.',
+                  style: OnlineTheme.textStyle(),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

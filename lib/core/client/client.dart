@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:online_events/core/models/article_model.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
+import 'package:online_events/core/models/attendees-list.dart';
 import 'package:online_events/core/models/user_model.dart';
+import 'package:online_events/core/models/waitlist.dart';
 
 import '../models/event_model.dart';
 import 'package:http/http.dart' as http;
@@ -102,6 +104,49 @@ abstract class Client {
 
     return allAttendees;
   }
+
+  static Future<List<AttendeesList>> getEventAttendees(int eventId) async {
+    final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final jsonResponse = jsonDecode(responseBody) as List;
+
+      return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
+    } else {
+      print('Failed to fetch event attendees from $url');
+      return [];
+    }
+  }
+
+  static Future<List<Waitlist>> getEventWaitlists(int eventId) async {
+    final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-on-waitlist/';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final jsonResponse = jsonDecode(responseBody) as List;
+
+      return jsonResponse.map<Waitlist>((json) => Waitlist.fromJson(json)).toList();
+    } else {
+      print('Failed to fetch event waitlist from $url');
+      return [];
+    }
+  }
+
 
   static Future<List<ArticleModel>?> getArticles() async {
     const url = '$endpoint/api/v1/articles/';
