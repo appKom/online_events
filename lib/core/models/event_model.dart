@@ -1,4 +1,3 @@
-import 'attendee_info_model.dart';
 import 'image_model.dart';
 import 'json_model.dart';
 
@@ -71,16 +70,6 @@ class EventModel implements JsonModel {
   }
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
-    AttendeeInfoModel? attendeeInfo;
-
-
-    if (json['attendee_info'] != null) {
-      AttendeeInfoModel tempAttendeeInfo = AttendeeInfoModel.fromJson(json['attendee_info']);
-      if (tempAttendeeInfo.id == json['id']) {
-        attendeeInfo = tempAttendeeInfo;
-      }
-    }
-
 
     return EventModel(
       id: json['id'],

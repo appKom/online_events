@@ -8,6 +8,7 @@ sealed class OnlineTheme {
   static const blue1 = Color(0xFF0D2546);
   static const blue2 = Color.fromARGB(255, 119, 178, 255);
   static const blue3 = Color(0xFF0D2546);
+  static const blue4 = Color(0xFF0047AB);
 
   static const green1 = Color.fromARGB(255, 37, 208, 171);
   static const green2 = Color.fromARGB(255, 4, 49, 44);
@@ -52,10 +53,10 @@ sealed class OnlineTheme {
     ],
   );
 
-  static final blueGradient = LinearGradient(
+  static const blueGradient = LinearGradient(
     colors: [
-      Colors.blue[300]!,
-      Colors.blue[800]!,
+      OnlineTheme.blue2,
+      OnlineTheme.blue4,
     ], // Blue gradient for "Se Påmeldte"
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,

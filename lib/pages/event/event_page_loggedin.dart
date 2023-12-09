@@ -7,7 +7,6 @@ import 'package:online_events/pages/event/cards/event_attendees.dart';
 import 'package:online_events/pages/event/cards/event_card_countdown.dart';
 import 'package:online_events/pages/event/cards/event_participants_loggedin.dart';
 import 'package:online_events/pages/event/cards/event_registration_card_loggedin.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -22,8 +21,6 @@ import 'cards/card_badge.dart';
 import 'cards/attendance_card.dart';
 import 'cards/event_card_buttons.dart';
 import 'cards/event_description_card.dart';
-import 'cards/event_participants.dart';
-import 'cards/event_registration_card.dart';
 
 class EventPageLoggedIn extends ScrollablePage {
   const EventPageLoggedIn(
@@ -82,7 +79,7 @@ class EventPageLoggedIn extends ScrollablePage {
   @override
   Widget content(BuildContext context) {
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -214,38 +211,19 @@ Widget header(int statusCode) {
 
     case 404:
       badgeText = 'Stengt';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.redAccent, Colors.red], // Red gradient
-      );
+      gradient = OnlineTheme.redGradient;
       break;
     case 6969:
       badgeText = 'Ikke åpen';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.purpleAccent, Colors.purple], // Purple gradient
-      );
+      gradient = OnlineTheme.purpleGradient;
       break;
     case 411:
       badgeText = 'Umulig';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.blueAccent, Colors.blue], // Blue gradient
-      );
+      gradient = OnlineTheme.blueGradient;
       break;
     default:
       badgeText = 'Åpen';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          OnlineTheme.green5, // Start color
-          OnlineTheme.green1, // End color
-        ],
-      );
+      gradient = OnlineTheme.greenGradient;
   }
 
   return SizedBox(

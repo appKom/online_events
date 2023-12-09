@@ -9,9 +9,6 @@ import 'package:online_events/pages/profile/profile_page.dart';
 
 import '/pages/home/promoted_article.dart';
 import '../../services/page_navigator.dart';
-import '/pages/home/event_card.dart';
-import '../events/events_page.dart';
-import '/pages/home/bedpress.dart';
 import '../../components/online_scaffold.dart';
 import '../../theme/theme.dart';
 import '/main.dart';

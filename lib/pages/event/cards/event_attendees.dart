@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/event/cards/confirm_registration.dart';
-import 'package:online_events/pages/event/cards/confirm_unattend.dart';
 
 import '/components/animated_button.dart';
-import '/components/separator.dart';
-import '/main.dart';
 import '/pages/event/show_participants.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
@@ -21,7 +17,6 @@ class EventAttendees extends StatefulWidget {
 class EventAttendeesButtonState extends State<EventAttendees> {
   @override
   Widget build(BuildContext context) {
-    double buttonHeight = 50;
     return Row(
       children: [
         Flexible(

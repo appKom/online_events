@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
@@ -20,13 +22,13 @@ class EventRegistrationCardLoggedIn extends StatelessWidget {
     if (attendeeInfoModel.id != -1) {
       // Format the dates only if id is not -1
       formattedRegistrationStart = attendeeInfoModel.registrationStart != null
-          ? dateFormat.format(attendeeInfoModel.registrationStart!)
+          ? dateFormat.format(attendeeInfoModel.registrationStart)
           : 'N/A';
       formattedRegistrationEnd = attendeeInfoModel.registrationEnd != null
-          ? dateFormat.format(attendeeInfoModel.registrationEnd!)
+          ? dateFormat.format(attendeeInfoModel.registrationEnd)
           : '';
       formattedUnattend = attendeeInfoModel.unattendDeadline != null
-          ? dateFormat.format(attendeeInfoModel.unattendDeadline!)
+          ? dateFormat.format(attendeeInfoModel.unattendDeadline)
           : '';
     }
     return Container(

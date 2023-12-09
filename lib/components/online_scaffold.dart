@@ -57,7 +57,7 @@ abstract class OnlinePage extends StatelessWidget {
 class OnlineScaffold extends StatelessWidget {
   const OnlineScaffold({super.key});
 
-  static ValueNotifier<OnlinePage> page = ValueNotifier(LoadingPageDisplay());
+  static ValueNotifier<OnlinePage> page = ValueNotifier(const LoadingPageDisplay());
 
   @override
   Widget build(BuildContext context) {

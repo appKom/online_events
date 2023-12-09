@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/event/cards/confirm_registration.dart';
-import 'package:online_events/pages/event/cards/confirm_unattend.dart';
 
 import '/components/animated_button.dart';
 import '/components/separator.dart';
