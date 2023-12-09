@@ -63,9 +63,12 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
       return upcomingEvents.where((event) {
         final startDate = DateTime.parse(event.startDate);
         final endDate = DateTime.parse(event.endDate);
-        return day.isAtSameMomentAs(startDate) ||
-            day.isAtSameMomentAs(endDate) ||
-            (day.isAfter(startDate) && day.isBefore(endDate));
+        final resetStartDate =
+            DateTime(startDate.year, startDate.month, startDate.day);
+        final resetEndDate = DateTime(endDate.year, endDate.month, endDate.day);
+        return (day.isAtSameMomentAs(resetStartDate) ||
+                day.isAfter(resetStartDate)) &&
+            (day.isAtSameMomentAs(resetEndDate) || day.isBefore(resetEndDate));
       }).toList();
     }
 
@@ -100,7 +103,7 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
                       margin: const EdgeInsets.all(4.0),
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
-                        color: Colors.green, 
+                        color: OnlineTheme.green5,
                         shape: BoxShape.rectangle,
                       ),
                       child: Text(
@@ -125,24 +128,23 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
               calendarStyle: CalendarStyle(
                 defaultDecoration: const BoxDecoration(
                   shape: BoxShape.rectangle,
-                  color:
-                      OnlineTheme.gray16,
+                  color: OnlineTheme.gray16,
                 ),
                 weekendDecoration: const BoxDecoration(
                   shape: BoxShape.rectangle,
-                  color: OnlineTheme.gray16, 
+                  color: OnlineTheme.gray16,
                 ),
                 selectedDecoration: const BoxDecoration(
                   shape: BoxShape.rectangle,
-                  color: OnlineTheme.gray10, 
+                  color: OnlineTheme.gray10,
                 ),
                 todayDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  color: Colors.grey.shade700, 
+                  color: Colors.grey.shade700,
                 ),
                 markerDecoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
+                  color: OnlineTheme.green5,
                 ),
               ),
               headerStyle: const HeaderStyle(
@@ -152,14 +154,11 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
                     Icon(Icons.arrow_back_ios, color: Colors.white),
                 rightChevronIcon:
                     Icon(Icons.arrow_forward_ios, color: Colors.white),
-                titleTextStyle:
-                    TextStyle(color: Colors.white), 
+                titleTextStyle: TextStyle(color: Colors.white),
               ),
               daysOfWeekStyle: const DaysOfWeekStyle(
-                weekendStyle: TextStyle(
-                    color: OnlineTheme.white), 
-                weekdayStyle:
-                    TextStyle(color: Colors.white),
+                weekendStyle: TextStyle(color: OnlineTheme.white),
+                weekdayStyle: TextStyle(color: Colors.white),
               ),
             ),
             const SizedBox(height: 24),
