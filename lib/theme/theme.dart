@@ -64,7 +64,7 @@ sealed class OnlineTheme {
 
   static final redGradient = LinearGradient(
     colors: [
-      Colors.orange[300]!,
+      const Color.fromARGB(255, 245, 98, 98),
       Colors.red[800]!,
       ],
       begin: Alignment.centerLeft,

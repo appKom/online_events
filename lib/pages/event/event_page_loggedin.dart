@@ -79,7 +79,7 @@ class EventPageLoggedIn extends ScrollablePage {
   @override
   Widget content(BuildContext context) {
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -156,14 +156,11 @@ class RegistrationCard extends StatelessWidget {
         children: [
           header(attendeeInfoModel.isEligibleForSignup.statusCode),
           const SizedBox(height: 16),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 502 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 411 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 6969 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 404)
-            EventParticipantsLoggedIn(
-              model: model,
-              attendeeInfoModel: attendeeInfoModel,
-            ),
+
+          EventParticipantsLoggedIn(
+            model: model,
+            attendeeInfoModel: attendeeInfoModel,
+          ),
           const SizedBox(height: 16),
           if (attendeeInfoModel.isEligibleForSignup.statusCode != 502 &&
               attendeeInfoModel.isEligibleForSignup.statusCode != 411 &&
@@ -177,8 +174,10 @@ class RegistrationCard extends StatelessWidget {
                   attendeeInfoModel.isEligibleForSignup.message,
                   style: OnlineTheme.textStyle(),
                 ),
-            const SizedBox(height: 10,),
-            if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+          const SizedBox(
+            height: 10,
+          ),
+          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
             const EventAttendees(),
 
           const SizedBox(

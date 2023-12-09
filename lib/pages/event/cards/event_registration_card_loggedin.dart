@@ -31,114 +31,153 @@ class EventRegistrationCardLoggedIn extends StatelessWidget {
           ? dateFormat.format(attendeeInfoModel.unattendDeadline)
           : '';
     }
-    return Container(
-      height: 60,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(15),
+    if (attendeeInfoModel.isEligibleForSignup.statusCode != 502 &&
+        attendeeInfoModel.isEligibleForSignup.statusCode != 411 &&
+        attendeeInfoModel.isEligibleForSignup.statusCode != 6969 &&
+        attendeeInfoModel.isEligibleForSignup.statusCode != 404) {
+      return Container(
+        height: 60,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
         ),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            SizedBox(
-              width: 90,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Påmeldingsstart',
-                    style: OnlineTheme.textStyle(
-                        size: 12,
-                        height: 1.5,
-                        color: OnlineTheme.gray11,
-                        weight: 4),
-                    overflow: TextOverflow.visible,
-                  ),
-                  Center(
-                    child: Text(
-                      formattedRegistrationStart,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 90,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Påmeldingsstart',
                       style: OnlineTheme.textStyle(
-                          size: 14,
+                          size: 12,
                           height: 1.5,
                           color: OnlineTheme.gray11,
                           weight: 4),
+                      overflow: TextOverflow.visible,
                     ),
-                  ),
-                ],
+                    Center(
+                      child: Text(
+                        formattedRegistrationStart,
+                        style: OnlineTheme.textStyle(
+                            size: 14,
+                            height: 1.5,
+                            color: OnlineTheme.gray11,
+                            weight: 4),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              width: 1,
-              height: 20,
-              color: OnlineTheme.gray8,
-              margin: const EdgeInsets.symmetric(horizontal: 5),
-            ),
-            SizedBox(
-              width: 90,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Påmeldingsslutt',
-                    style: OnlineTheme.textStyle(
-                        size: 12,
-                        height: 1.5,
-                        color: OnlineTheme.gray11,
-                        weight: 4),
-                    overflow: TextOverflow.visible,
-                  ),
-                  Center(
-                    child: Text(
-                      formattedRegistrationEnd,
+              Container(
+                width: 1,
+                height: 20,
+                color: OnlineTheme.gray8,
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+              ),
+              SizedBox(
+                width: 90,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Påmeldingsslutt',
                       style: OnlineTheme.textStyle(
-                          size: 14,
+                          size: 12,
                           height: 1.5,
                           color: OnlineTheme.gray11,
                           weight: 4),
+                      overflow: TextOverflow.visible,
                     ),
-                  ),
-                ],
+                    Center(
+                      child: Text(
+                        formattedRegistrationEnd,
+                        style: OnlineTheme.textStyle(
+                            size: 14,
+                            height: 1.5,
+                            color: OnlineTheme.gray11,
+                            weight: 4),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              width: 1,
-              height: 20,
-              color: OnlineTheme.gray8,
-              margin: const EdgeInsets.symmetric(horizontal: 5),
-            ),
-            SizedBox(
-              width: 90,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Avmeldingsfrist',
-                    style: OnlineTheme.textStyle(
-                        size: 12,
-                        height: 1.5,
-                        color: OnlineTheme.gray11,
-                        weight: 4),
-                    overflow: TextOverflow.visible,
-                  ),
-                  // Center text
-                  Center(
-                    child: Text(
-                      formattedUnattend,
+              Container(
+                width: 1,
+                height: 20,
+                color: OnlineTheme.gray8,
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+              ),
+              SizedBox(
+                width: 90,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Avmeldingsfrist',
                       style: OnlineTheme.textStyle(
-                          size: 14,
+                          size: 12,
                           height: 1.5,
                           color: OnlineTheme.gray11,
                           weight: 4),
+                      overflow: TextOverflow.visible,
                     ),
-                  ),
-                ],
+                    // Center text
+                    Center(
+                      child: Text(
+                        formattedUnattend,
+                        style: OnlineTheme.textStyle(
+                            size: 14,
+                            height: 1.5,
+                            color: OnlineTheme.gray11,
+                            weight: 4),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Container(
+        height: 60,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 90,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        formattedUnattend,
+                        style: OnlineTheme.textStyle(
+                            size: 14,
+                            height: 1.5,
+                            color: OnlineTheme.gray11,
+                            weight: 4),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
