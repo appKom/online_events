@@ -4,6 +4,7 @@ import 'package:online_events/components/online_header.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/home/event_card_loggedin.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../theme/theme.dart';
 import '/main.dart';
@@ -18,11 +19,13 @@ class MyEventsPageLoggedIn extends StatefulWidget {
 }
 
 class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+
   @override
   void initState() {
     super.initState();
     _populateRegisteredEvents();
-    print(registeredEvents);
   }
 
   void _populateRegisteredEvents() {
@@ -44,17 +47,27 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
     final upcomingEvents = eventModels
         .where((model) => registeredEvents.contains(model.id))
         .where((model) {
-          final eventDate = DateTime.parse(model.startDate);
-          return eventDate.isAfter(now);
-        }).toList();
+      final eventDate = DateTime.parse(model.startDate);
+      return eventDate.isAfter(now);
+    }).toList();
 
     // Filter for past registered events
     final pastEvents = eventModels
         .where((model) => registeredEvents.contains(model.id))
         .where((model) {
-          final eventDate = DateTime.parse(model.startDate);
-          return eventDate.isBefore(now);
-        }).toList();
+      final eventDate = DateTime.parse(model.startDate);
+      return eventDate.isBefore(now);
+    }).toList();
+
+    List<EventModel> getEventsForDay(DateTime day) {
+      return upcomingEvents.where((event) {
+        final startDate = DateTime.parse(event.startDate);
+        final endDate = DateTime.parse(event.endDate);
+        return day.isAtSameMomentAs(startDate) ||
+            day.isAtSameMomentAs(endDate) ||
+            (day.isAfter(startDate) && day.isBefore(endDate));
+      }).toList();
+    }
 
     return SingleChildScrollView(
       child: Padding(
@@ -67,6 +80,88 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
               child: Text('Mine Arrangementer', style: style),
             ),
             _buildEventList(upcomingEvents),
+            TableCalendar(
+              focusedDay: _focusedDay,
+              firstDay: DateTime(2000),
+              lastDay: DateTime(2100),
+              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                });
+              },
+              eventLoader: (day) => getEventsForDay(day),
+              calendarBuilders: CalendarBuilders(
+                defaultBuilder: (context, date, _) {
+                  var events = getEventsForDay(date);
+                  if (events.isNotEmpty) {
+                    return Container(
+                      margin: const EdgeInsets.all(4.0),
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Colors.green, 
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Text(
+                        date.day.toString(),
+                        style: OnlineTheme.textStyle(),
+                      ),
+                    );
+                  } else {
+                    return Container(
+                      margin: const EdgeInsets.all(4.0),
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                          color: OnlineTheme.gray16, shape: BoxShape.rectangle),
+                      child: Text(
+                        date.day.toString(),
+                        style: OnlineTheme.textStyle(),
+                      ),
+                    );
+                  }
+                },
+              ),
+              calendarStyle: CalendarStyle(
+                defaultDecoration: const BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color:
+                      OnlineTheme.gray16,
+                ),
+                weekendDecoration: const BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: OnlineTheme.gray16, 
+                ),
+                selectedDecoration: const BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: OnlineTheme.gray10, 
+                ),
+                todayDecoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Colors.grey.shade700, 
+                ),
+                markerDecoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+              ),
+              headerStyle: const HeaderStyle(
+                formatButtonVisible: false,
+                titleCentered: true,
+                leftChevronIcon:
+                    Icon(Icons.arrow_back_ios, color: Colors.white),
+                rightChevronIcon:
+                    Icon(Icons.arrow_forward_ios, color: Colors.white),
+                titleTextStyle:
+                    TextStyle(color: Colors.white), 
+              ),
+              daysOfWeekStyle: const DaysOfWeekStyle(
+                weekendStyle: TextStyle(
+                    color: OnlineTheme.white), 
+                weekdayStyle:
+                    TextStyle(color: Colors.white),
+              ),
+            ),
             const SizedBox(height: 24),
             Center(
               child: Text('Tidligere Arrangementer', style: style),
@@ -89,7 +184,8 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => EventCardLoggedIn(
           model: events[index],
-          attendeeInfoModel: attendeeInfoModels[index], // Ensure this list aligns with events
+          attendeeInfoModel:
+              attendeeInfoModels[index], // Ensure this list aligns with events
           attendeeInfoModels: attendeeInfoModels,
         ),
       ),

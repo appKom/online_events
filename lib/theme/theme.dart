@@ -34,6 +34,7 @@ sealed class OnlineTheme {
   static const gray13 = Color(0xFF131315);
   static const gray14 = Color(0xFF22272F);
   static const gray15 = Color(0xFF4C566A);
+  static const gray16 = Color(0xFF797979);
 
   static const purpleGradient = LinearGradient(
     begin: Alignment.topLeft,
