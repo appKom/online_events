@@ -7,7 +7,6 @@ import 'package:online_events/pages/event/cards/event_attendees.dart';
 import 'package:online_events/pages/event/cards/event_card_countdown.dart';
 import 'package:online_events/pages/event/cards/event_participants_loggedin.dart';
 import 'package:online_events/pages/event/cards/event_registration_card_loggedin.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -22,8 +21,6 @@ import 'cards/card_badge.dart';
 import 'cards/attendance_card.dart';
 import 'cards/event_card_buttons.dart';
 import 'cards/event_description_card.dart';
-import 'cards/event_participants.dart';
-import 'cards/event_registration_card.dart';
 
 class EventPageLoggedIn extends ScrollablePage {
   const EventPageLoggedIn(
@@ -86,6 +83,7 @@ class EventPageLoggedIn extends ScrollablePage {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        
         SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
           height: 230,
@@ -159,14 +157,11 @@ class RegistrationCard extends StatelessWidget {
         children: [
           header(attendeeInfoModel.isEligibleForSignup.statusCode),
           const SizedBox(height: 16),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 502 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 411 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 6969 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 404)
-            EventParticipantsLoggedIn(
-              model: model,
-              attendeeInfoModel: attendeeInfoModel,
-            ),
+
+          EventParticipantsLoggedIn(
+            model: model,
+            attendeeInfoModel: attendeeInfoModel,
+          ),
           const SizedBox(height: 16),
           if (attendeeInfoModel.isEligibleForSignup.statusCode != 502 &&
               attendeeInfoModel.isEligibleForSignup.statusCode != 411 &&
@@ -175,14 +170,16 @@ class RegistrationCard extends StatelessWidget {
             EventRegistrationCardLoggedIn(attendeeInfoModel: attendeeInfoModel),
           const SizedBox(height: 10),
           attendeeInfoModel.isEligibleForSignup.status
-              ? const EventCardButtons()
+              ? EventCardButtons(model: model,)
               : Text(
                   attendeeInfoModel.isEligibleForSignup.message,
                   style: OnlineTheme.textStyle(),
                 ),
-            const SizedBox(height: 10,),
-            if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            const EventAttendees(),
+          const SizedBox(
+            height: 10,
+          ),
+          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+          EventAttendees(model: model),
 
           const SizedBox(
             height: 10,
@@ -214,38 +211,19 @@ Widget header(int statusCode) {
 
     case 404:
       badgeText = 'Stengt';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.redAccent, Colors.red], // Red gradient
-      );
+      gradient = OnlineTheme.redGradient;
       break;
     case 6969:
       badgeText = 'Ikke åpen';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.purpleAccent, Colors.purple], // Purple gradient
-      );
+      gradient = OnlineTheme.purpleGradient;
       break;
     case 411:
       badgeText = 'Umulig';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.blueAccent, Colors.blue], // Blue gradient
-      );
+      gradient = OnlineTheme.blueGradient;
       break;
     default:
       badgeText = 'Åpen';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          OnlineTheme.green5, // Start color
-          OnlineTheme.green1, // End color
-        ],
-      );
+      gradient = OnlineTheme.greenGradient;
   }
 
   return SizedBox(

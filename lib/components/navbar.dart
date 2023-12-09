@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/main.dart';
+// ignore: unused_import
 import 'package:online_events/pages/events/my_events_page_loggedin.dart';
 import 'package:online_events/pages/events/my_events_page_loggedin_display.dart';
-import 'package:online_events/pages/home/home_page_loggedin.dart';
 import '/pages/drinking_games/drinking_games_page.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/home/home_page.dart';
@@ -33,7 +33,7 @@ class NavbarState extends State<Navbar> {
           icon: IconType.home,
           activeIcon: IconType.homeFilled,
           onPressed: () => PageNavigator.navigateTo(loggedIn
-              ? const HomePageLoggedIn()
+              ? const HomePage()
               : const HomePage()), // Use global loggedIn
         ),
         NavbarButton(

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
+import 'package:online_events/pages/events/events_page_loggedin.dart';
+import 'package:online_events/pages/home/bedpress_loggedin.dart';
+import 'package:online_events/pages/home/event_card_loggedin.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
 
 import '/pages/home/promoted_article.dart';
 import '../../services/page_navigator.dart';
@@ -54,7 +58,7 @@ class HomePage extends ScrollablePage {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
-          Container(
+          if (!loggedIn) Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 111 * 2,
             child: ListView.builder(
@@ -66,7 +70,20 @@ class HomePage extends ScrollablePage {
               ),
             ),
           ),
-          AnimatedButton(
+          if (loggedIn) Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 111 * 2,
+            child: ListView.builder(
+              itemCount: 2,
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (c, i) => EventCardLoggedIn(
+                model: eventModels[i], attendeeInfoModel: attendeeInfoModels[i], attendeeInfoModels: attendeeInfoModels,
+              ),
+            ),
+          ),
+
+          if (!loggedIn) AnimatedButton(
             onTap: () => PageNavigator.navigateTo(const EventsPage()),
             behavior: HitTestBehavior.opaque,
             childBuilder: (context, hover, pointerDown) {
@@ -91,8 +108,34 @@ class HomePage extends ScrollablePage {
               );
             },
           ),
+          if (loggedIn) AnimatedButton(
+            onTap: () => PageNavigator.navigateTo(const EventsPageLoggedIn()),
+            behavior: HitTestBehavior.opaque,
+            childBuilder: (context, hover, pointerDown) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'MER',
+                    style: OnlineTheme.textStyle(weight: 4),
+                  ),
+                  const SizedBox(width: 2),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 4),
+                    child: Icon(
+                      Icons.navigate_next,
+                      color: OnlineTheme.gray9,
+                      size: 15,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
           const SizedBox(height: 10),
-          Bedpress(models: eventModels),
+          if (!loggedIn) Bedpress(models: eventModels),
+          if (loggedIn) BedpressLoggedIn(models: eventModels),
           SizedBox(height: Navbar.height(context) + 24),
         ],
       ),

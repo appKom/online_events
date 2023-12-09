@@ -26,7 +26,7 @@ class EventsPage extends ScrollablePage {
       final eventDate = DateTime.parse(event.startDate);
       return eventDate.isAfter(now);
     }).toList();
-
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

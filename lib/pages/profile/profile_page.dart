@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/core/models/combined_event_model.dart';
 import 'package:online_events/pages/home/home_page.dart';
 import 'package:online_events/pages/loading/loading_display_page.dart';
-import 'package:flutter/material.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/components/online_header.dart';
 import '/components/online_scaffold.dart';
 
 import '../../core/client/client.dart';
 import '../../core/models/user_model.dart';
-import '/components/online_header.dart';
 import '/theme/themed_icon_button.dart';
 import '../../services/page_navigator.dart';
 import '/components/separator.dart';
@@ -68,9 +64,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);
 
-    List<Widget> attendeeWidgets = attendeeInfoModels.map((attendee) {
-      return Text('Attendee ID: ${attendee.id}');
-    }).toList();
 
     if (userProfile != null) {
       return Scaffold(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/components/separator.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/event_organizers.dart';
 
@@ -12,12 +13,10 @@ import '/pages/event/qr_code.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
-import 'cards/card_badge.dart';
 import 'cards/attendance_card.dart';
 import 'cards/event_card_buttons.dart';
 import 'cards/event_description_card.dart';
 import 'cards/event_participants.dart';
-import 'cards/event_registration_card.dart';
 
 class EventPage extends ScrollablePage {
   const EventPage({super.key, required this.model});
@@ -151,7 +150,17 @@ class RegistrationCard extends StatelessWidget {
             model: model,
           ),
           const SizedBox(height: 20),
-          const EventCardButtons(), // Removed Padding widget
+          Column(
+            children: [
+              const Separator(margin: 1),
+              Center(
+                child: Text(
+                  'Du må være logget inn for å se din status.',
+                  style: OnlineTheme.textStyle(),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -172,18 +181,6 @@ Widget header() {
           style: OnlineTheme.eventHeader
               .copyWith(height: 1, fontWeight: FontWeight.w600),
         ),
-        CardBadge(
-          border: OnlineTheme.green5.lighten(100),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              OnlineTheme.green5, // Start color
-              OnlineTheme.green1, // End color
-            ],
-          ),
-          text: 'Åpen',
-        )
       ],
     ),
   );

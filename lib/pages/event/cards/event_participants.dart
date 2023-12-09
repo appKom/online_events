@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/core/models/event_model.dart';
+// ignore: unused_import
 import 'package:online_events/main.dart';
 import 'package:online_events/theme/theme.dart';
 

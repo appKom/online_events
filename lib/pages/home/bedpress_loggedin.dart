@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
+// ignore: unused_import
 import 'package:online_events/pages/event/event_page.dart';
 import 'package:online_events/pages/event/event_page_loggedin.dart';
 import 'package:online_events/pages/profile/profile_page.dart';

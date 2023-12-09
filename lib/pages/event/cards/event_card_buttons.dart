@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/event/cards/confirm_registration.dart';
-import 'package:online_events/pages/event/cards/confirm_unattend.dart';
+import 'package:online_events/core/models/event_model.dart';
 
 import '/components/animated_button.dart';
 import '/components/separator.dart';
@@ -13,7 +12,10 @@ bool isRegistered = false;
 
 /// This appears to be the sus buttons on the bottom
 class EventCardButtons extends StatefulWidget {
-  const EventCardButtons({super.key});
+
+  const EventCardButtons({super.key, required this.model});
+
+  final EventModel model;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -21,6 +23,8 @@ class EventCardButtons extends StatefulWidget {
 }
 
 class _EventCardButtonsState extends State<EventCardButtons> {
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +99,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
             child: AnimatedButton(
               onTap: () {
                 // Navigate to ShowParticipants regardless of isRegistered state
-                AppNavigator.navigateToRoute(
-                  ShowParticipants(),
-                  additive: true,
-                );
+                PageNavigator.navigateTo(ShowParticipants(model: widget.model,),);
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(

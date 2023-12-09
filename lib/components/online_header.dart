@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/main.dart';
-import 'package:online_events/pages/home/home_page_loggedin.dart';
 
 import '/components/animated_button.dart';
 import '/pages/home/home_page.dart';
@@ -45,7 +44,7 @@ class OnlineHeader extends StatelessWidget {
             children: [
               AnimatedButton(
                 onTap: () {
-                  PageNavigator.navigateTo(const HomePageLoggedIn());
+                  PageNavigator.navigateTo(const HomePage());
                 },
                 childBuilder: (context, hover, pointerDown) {
                   return SvgPicture.asset(

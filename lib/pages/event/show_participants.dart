@@ -3,147 +3,179 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:online_events/components/navbar.dart';
+import 'package:online_events/components/online_header.dart';
+import 'package:online_events/components/online_scaffold.dart';
 import 'package:online_events/components/separator.dart';
-import 'package:online_events/models/card_participant.dart';
+import 'package:online_events/core/client/client.dart';
+import 'package:online_events/core/models/attendees-list.dart';
+import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/core/models/waitlist.dart';
+import 'package:online_events/pages/home/home_page.dart';
+import 'package:online_events/services/app_navigator.dart';
 
-import '/dark_overlay.dart';
 import '/theme/theme.dart';
 
-class ShowParticipants extends DarkOverlay {
+class ShowParticipants extends StaticPage {
+  const ShowParticipants({super.key, required this.model});
+
+  final EventModel model;
+
   @override
-  Widget content(BuildContext context, Animation<double> animation) {
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 25);
 
     return LayoutBuilder(builder: (context, constraints) {
       final maxSize = min(constraints.maxWidth, constraints.maxHeight);
-
-      // Dynamic creation of participant rows
-      List<Widget> participantWidgets = participantModels.map((participant) {
-        return Column(
+      final eventId = model.id;
+      return SingleChildScrollView(
+        child: Column(
           children: [
-            const Separator(margin: 5),
-            Row(
-              children: [
-                Padding(
-                  padding: horizontalPadding,
-                  child: Text(
-                    '${participant.registered}. ',
-                    style: OnlineTheme.textStyle(),
-                  ),
-                ),
-                Padding(
-                  padding: horizontalPadding,
-                  child: Text(
-                    participant.name,
-                    style: OnlineTheme.textStyle(),
-                  ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 50),
-                  child: Text(
-                    '${participant.year}. klasse',
-                    style: OnlineTheme.textStyle(),
-                  ),
-                ),
-              ],
+            SizedBox(height: Navbar.height(context) + 60),
+            Row(children: [
+            const SizedBox(width: 80,),
+            IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 40,),
+              onPressed: () => PageNavigator.navigateTo(const HomePage()),
+            ),
+            const SizedBox(width: 25,),
+            Text(
+              'Påmeldte',
+              style: OnlineTheme.textStyle(size: 25, weight: 7),
             ),
 
+            ],
+            ),
+            const SizedBox(height: 8),
+            const Separator(margin: 5,),
+            FutureBuilder<List<AttendeesList>>(
+              future: Client.getEventAttendees(eventId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}',
+                      style: OnlineTheme.textStyle());
+                } else if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final attendee = snapshot.data![index];
+                      final String indexStr =
+                          (index + 1).toString().padLeft(3, '0');
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: horizontalPadding,
+                            child: Text(
+                              '$indexStr. ',
+                              style: OnlineTheme.textStyle(size: 16),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              attendee.fullName,
+                              style: OnlineTheme.textStyle(size: 16),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 25),
+                            child: Text(
+                              '${attendee.yearOfStudy}. klasse',
+                              style: OnlineTheme.textStyle(size: 16),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  return Text('No attendees found',
+                      style: OnlineTheme.textStyle());
+                }
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Separator(
+              margin: 5,
+            ),
+            Row(children: [
+              SizedBox(width: 152,),
+            Text(
+              'Venteliste',
+              style: OnlineTheme.textStyle(size: 25, weight: 7),
+            ),
+            ],
+            ),
+            const Separator(
+              margin: 5,
+            ),
+            FutureBuilder<List<Waitlist>>(
+              future: Client.getEventWaitlists(eventId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}',
+                      style: OnlineTheme.textStyle());
+                } else if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final attendee = snapshot.data![index];
+                      final String indexStr =
+                          (index + 1).toString().padLeft(3, '0');
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: horizontalPadding,
+                            child: Text(
+                              '$indexStr. ',
+                              style: OnlineTheme.textStyle(size: 16),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              attendee.fullName,
+                              style: OnlineTheme.textStyle(size: 16),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 25),
+                            child: Text(
+                              '${attendee.yearOfStudy}. klasse',
+                              style: OnlineTheme.textStyle(size: 16),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  return Text('No attendees found',
+                      style: OnlineTheme.textStyle());
+                }
+              },
+            ),
+            SizedBox(height: Navbar.height(context) + 20),
           ],
-        );
-      }).toList();
-
-      return Column(
-        children: [
-          const SizedBox(height: 40),
-          Text(
-            'Påmeldte',
-            style: OnlineTheme.textStyle(size: 25, weight: 7),
-          ),
-          const SizedBox(height: 40),
-          ...participantWidgets, 
-          const SizedBox(height: 10,),
-          const Separator(margin: 5,),
-          Text('Venteliste', style: OnlineTheme.textStyle(size: 25, weight: 7),),
-          const Separator(margin: 5,),
-          Row(
-              children: [
-                Padding(
-                  padding: horizontalPadding,
-                  child: Text(
-                    '1.',
-                    style: OnlineTheme.textStyle(),
-                  ),
-                ),
-                Padding(
-                  padding: horizontalPadding,
-                  child: Text(
-                    'Fredda G',
-                    style: OnlineTheme.textStyle(),
-                  ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 50),
-                  child: Text(
-                    '3. klasse',
-                    style: OnlineTheme.textStyle(),
-                  ),
-                ),
-              ],
-            ),
-
-        ],
+        ),
       );
     });
   }
 }
-
-
-final participantModels = [
-  CardParticipantModel(
-      name: 'Fredrik Hansteen',
-      registered: 1,
-      year: 5,
-  ),
-  CardParticipantModel(
-      name: 'Erlend Strøm',
-      registered: 2,
-      year: 1,
-  ),
-  CardParticipantModel(
-      name: 'Johannes Hage',
-      registered: 3,
-      year: 1,
-  ),
-  CardParticipantModel(
-      name: 'Mats Nyfløt',
-      registered: 4,
-      year: 3,
-  ),
-  CardParticipantModel(
-      name: 'Mads Hermansen',
-      registered: 5,
-      year: 3,
-  ),
-  CardParticipantModel(
-      name: 'Jørgen Galdal',
-      registered: 6,
-      year: 2,
-  ),
-  CardParticipantModel(
-      name: 'Jo Tjernshaugen',
-      registered: 7,
-      year: 0,
-  ),
-  CardParticipantModel(
-      name: 'Brage Baugerød',
-      registered: 8,
-      year: 1,
-  ),
-  CardParticipantModel(
-      name: 'Andrew Tate',
-      registered: 9,
-      year: 2,
-  ),
-];

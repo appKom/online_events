@@ -151,8 +151,8 @@ class EventParticipantsLoggedIn extends StatelessWidget {
                   child: const Center(
                     child: Icon(
                       Icons.people_alt_outlined,
-                      size: 20, // Adjust the size of the icon as needed
-                      color: OnlineTheme.white, // White icon color
+                      size: 20, 
+                      color: OnlineTheme.white, 
                     ),
                   ),
                 ),
