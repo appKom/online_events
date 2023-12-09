@@ -11,6 +11,8 @@ import 'package:online_events/core/client/client.dart';
 import 'package:online_events/core/models/attendees-list.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/waitlist.dart';
+import 'package:online_events/pages/home/home_page.dart';
+import 'package:online_events/services/app_navigator.dart';
 
 import '/theme/theme.dart';
 
@@ -35,9 +37,19 @@ class ShowParticipants extends StaticPage {
         child: Column(
           children: [
             SizedBox(height: Navbar.height(context) + 60),
+            Row(children: [
+            const SizedBox(width: 80,),
+            IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 40,),
+              onPressed: () => PageNavigator.navigateTo(const HomePage()),
+            ),
+            const SizedBox(width: 25,),
             Text(
               'Påmeldte',
               style: OnlineTheme.textStyle(size: 25, weight: 7),
+            ),
+
+            ],
             ),
             const SizedBox(height: 8),
             const Separator(margin: 5,),
@@ -98,9 +110,13 @@ class ShowParticipants extends StaticPage {
             const Separator(
               margin: 5,
             ),
+            Row(children: [
+              SizedBox(width: 152,),
             Text(
               'Venteliste',
               style: OnlineTheme.textStyle(size: 25, weight: 7),
+            ),
+            ],
             ),
             const Separator(
               margin: 5,
