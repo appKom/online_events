@@ -5,6 +5,7 @@ import 'package:online_events/components/online_header.dart';
 import 'package:online_events/pages/events/events_page_loggedin.dart';
 import 'package:online_events/pages/home/bedpress_loggedin.dart';
 import 'package:online_events/pages/home/event_card_loggedin.dart';
+import 'package:online_events/pages/loading/loading_display_page.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 
 import '/pages/home/promoted_article.dart';
@@ -33,6 +34,7 @@ class HomePage extends ScrollablePage {
   Widget content(BuildContext context) {
     // final style = OnlineTheme.textStyle(weight: 5);
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),

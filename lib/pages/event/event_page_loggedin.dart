@@ -170,7 +170,7 @@ class RegistrationCard extends StatelessWidget {
             EventRegistrationCardLoggedIn(attendeeInfoModel: attendeeInfoModel),
           const SizedBox(height: 10),
           attendeeInfoModel.isEligibleForSignup.status
-              ? EventCardButtons(model: model,)
+              ? EventCardButtons(model: model, attendeeInfoModel: attendeeInfoModel,)
               : Text(
                   attendeeInfoModel.isEligibleForSignup.message,
                   style: OnlineTheme.textStyle(),
@@ -179,7 +179,7 @@ class RegistrationCard extends StatelessWidget {
             height: 10,
           ),
           if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-          EventAttendees(model: model),
+          EventAttendees(model: model, attendeeInfoModel: attendeeInfoModel,),
 
           const SizedBox(
             height: 10,
