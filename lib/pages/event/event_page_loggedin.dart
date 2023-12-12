@@ -234,22 +234,32 @@ Widget header(int statusCode) {
       );
       break;
 
-    case 404:
+    case 502:
       badgeText = 'Stengt';
       gradient = OnlineTheme.redGradient;
       break;
-    case 6969:
-      badgeText = 'Ikke åpen';
-      gradient = OnlineTheme.purpleGradient;
+    case 404:
+      badgeText = 'Påmeldt';
+      gradient = OnlineTheme.greenGradient;
       break;
-    case 411:
+    case 200 || 201 || 210 || 211 || 212 || 213:
+      badgeText = 'Åpen';
+      gradient = OnlineTheme.greenGradient;
+      break;
+    case 420 || 421 || 422 || 423 || 401 || 402:
+      badgeText = 'Utsatt';
+      gradient = OnlineTheme.blueGradient;
+      break;
+    case 411 || 410 || 412 || 413 || 400 || 400 || 403 || 405:
       badgeText = 'Umulig';
       gradient = OnlineTheme.blueGradient;
       break;
     default:
-      badgeText = 'Åpen';
-      gradient = OnlineTheme.greenGradient;
+      badgeText = 'Ikke åpen';
+      gradient = OnlineTheme.purpleGradient;
   }
+
+
 
   return SizedBox(
     height: 32,
