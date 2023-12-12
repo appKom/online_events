@@ -20,6 +20,7 @@ dependencies:
   network_info_plus: ^4.1.0
   collection: ^1.17.2
   table_calendar: ^3.0.9
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

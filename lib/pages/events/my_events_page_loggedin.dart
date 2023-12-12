@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
+import 'package:online_events/components/online_scaffold.dart';
 import 'package:online_events/components/separator.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/home/event_card_loggedin.dart';
@@ -192,5 +193,18 @@ class _MyEventsPageLoggedInState extends State<MyEventsPageLoggedIn> {
         ),
       ),
     );
+  }
+}
+
+class MyEventsPageLoggedInDisplay extends StaticPage {
+  const MyEventsPageLoggedInDisplay({super.key});
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
+    return const MyEventsPageLoggedIn();
   }
 }

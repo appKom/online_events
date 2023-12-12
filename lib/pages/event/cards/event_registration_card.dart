@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/theme/theme.dart';
 
 /// This appears to be the row with the width problems
 class EventRegistrationCard extends StatelessWidget {
-  const EventRegistrationCard({super.key});
+  const EventRegistrationCard({super.key, required this.attendeeInfoModel});
+  final AttendeeInfoModel attendeeInfoModel;
   
 
   @override
   Widget build(BuildContext context) {
+    final dateFormat = DateFormat('dd.MM, HH:mm');
+    String formattedRegistrationStart = 'N/A';
+    String formattedRegistrationEnd = '';
+    String formattedUnattend = '';
+
+    formattedRegistrationStart = dateFormat.format(attendeeInfoModel.registrationStart);
     return Container(
       height: 60,
       decoration: const BoxDecoration(

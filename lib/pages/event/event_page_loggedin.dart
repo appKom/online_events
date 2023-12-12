@@ -6,8 +6,8 @@ import 'package:online_events/core/models/event_organizers.dart';
 import 'package:online_events/pages/event/cards/event_attendees.dart';
 import 'package:online_events/pages/event/cards/event_card_countdown.dart';
 import 'package:online_events/pages/event/cards/event_participants_loggedin.dart';
+import 'package:online_events/pages/event/cards/event_registration_card.dart';
 import 'package:online_events/pages/event/cards/event_registration_card_loggedin.dart';
-
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
@@ -83,7 +83,6 @@ class EventPageLoggedIn extends ScrollablePage {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        
         SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
           height: 230,
@@ -156,39 +155,65 @@ class RegistrationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           header(attendeeInfoModel.isEligibleForSignup.statusCode),
+          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+            const SizedBox(height: 16),
+          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+            EventParticipantsLoggedIn(
+              model: model,
+              attendeeInfoModel: attendeeInfoModel,
+            ),
           const SizedBox(height: 16),
-
-          EventParticipantsLoggedIn(
-            model: model,
-            attendeeInfoModel: attendeeInfoModel,
-          ),
-          const SizedBox(height: 16),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 502 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 411 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 404 &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            EventRegistrationCardLoggedIn(attendeeInfoModel: attendeeInfoModel),
+          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+            EventRegistrationCardLoggedIn(
+              attendeeInfoModel: attendeeInfoModel,
+            ),
           const SizedBox(height: 10),
           attendeeInfoModel.isEligibleForSignup.status
-              ? EventCardButtons(model: model, attendeeInfoModel: attendeeInfoModel,)
-              : Text(
-                  attendeeInfoModel.isEligibleForSignup.message,
-                  style: OnlineTheme.textStyle(),
+              ? EventCardButtons(
+                  model: model,
+                  attendeeInfoModel: attendeeInfoModel,
+                )
+              : Center(
+                  child: Text(
+                    attendeeInfoModel.isEligibleForSignup.message,
+                    style: OnlineTheme.textStyle(),
+                  ),
                 ),
           const SizedBox(
             height: 10,
           ),
           if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-          EventAttendees(model: model, attendeeInfoModel: attendeeInfoModel,),
-
+            EventCardButtons(
+                model: model, attendeeInfoModel: attendeeInfoModel),
           const SizedBox(
-            height: 10,
+            height: 16,
           ),
-          attendeeInfoModel.id == -1
-              ? EventCardCountdown(
-                  eventTime:
-                      eventDateTime) // Include countdown if attendeeInfoModel.id is -1
-              : const SizedBox.shrink(), // Otherwise, include an empty widget
+          if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)
+            EventCardCountdown(eventTime: eventDateTime),
+          if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)
+            Center(
+                child: Text(
+              'Til til arrangementet starter',
+              style: OnlineTheme.textStyle(weight: 5),
+            )),
+
+
+
+          if (attendeeInfoModel.id == -1 &&
+              eventDateTime.isAfter(DateTime.now()))
+            EventCardCountdown(eventTime: eventDateTime),
+          if (attendeeInfoModel.id == -1 &&
+              eventDateTime.isAfter(DateTime.now()))
+            const SizedBox(
+              height: 10,
+            ),
+          if (attendeeInfoModel.id == -1 &&
+              eventDateTime.isAfter(DateTime.now()))
+            Center(
+                child: Text(
+              'Til til arrangementet starter',
+              style: OnlineTheme.textStyle(weight: 5),
+            )),
         ],
       ),
     );

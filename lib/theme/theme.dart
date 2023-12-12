@@ -45,6 +45,15 @@ sealed class OnlineTheme {
     ],
   );
 
+  static const yellowGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color.fromARGB(255, 255, 132, 0), // Start color
+      Color.fromARGB(255, 122, 118, 0), // End color
+    ],
+  );
+
   static final greenGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -77,6 +86,7 @@ sealed class OnlineTheme {
 
   static const buttonHeight = 40.0;
   static const buttonRadius = BorderRadius.all(Radius.circular(5));
+  static const eventButtonRadius = BorderRadius.all(Radius.circular(10));
 
   @Deprecated('Use OnlineTheme.textStyle() instead.')
   static const eventListHeader = TextStyle(

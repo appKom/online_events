@@ -17,9 +17,7 @@ import '/theme/themed_icon.dart';
 import '/theme/theme.dart';
 import '/main.dart';
 
-
 List<AttendeeInfoModel> attendeeInfoModels = [];
-
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -56,14 +54,12 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
     final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);
-
 
     if (userProfile != null) {
       return Scaffold(
@@ -88,19 +84,37 @@ class _ProfilePageState extends State<ProfilePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Center(
-                    child: SizedBox(
-                      width: 125,
-                      height: 125,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: AnimatedButton(
-                          childBuilder: (context, hover, pointerDown) =>
-                              Image.asset(
-                            'assets/images/better_profile_picture.jpg',
-                            fit: BoxFit.cover,
+                    child: AnimatedButton(
+                      onTap: () {
+                        //TODO
+                      },
+                      childBuilder: (context, hover, pointerDown) {
+                        return SizedBox(
+                          width: 125,
+                          height: 125,
+                          child: CircleAvatar(
+                            radius: 62.5, // Half of width and height
+                            backgroundImage: const AssetImage(
+                                'assets/images/better_profile_picture.jpg'),
+                            child: userProfile!.ntnuUsername == 'fredrch' ||
+                                    userProfile!.ntnuUsername == 'erlenlst'
+                                ? const Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(
+                                          8.0), // Adjust padding as needed
+                                      child: Icon(
+                                        Icons.check_circle,
+                                        color: OnlineTheme
+                                            .blue2, // Change color if needed
+                                        size: 30, // Adjust size as needed
+                                      ),
+                                    ),
+                                  )
+                                : null,
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -113,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Padding(
                   padding: aboveBelowPadding,
                   child: constValueTextInput(
-                      'NTNU-brukernavn', userProfile!.username),
+                      'NTNU-brukernavn', userProfile!.ntnuUsername),
                 ),
                 // const Separator(),
                 Padding(
