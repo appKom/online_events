@@ -97,8 +97,8 @@ class ShowParticipants extends StaticPage {
                     itemBuilder: (context, index) {
                       final attendee = sortedAttendees[index];
                       final bool isVerified =
-                          attendee.fullName == "Fredrik Carsten Hansteen" ||
-                              attendee.fullName == "Erlend Løvoll Strøm";
+                          attendee.fullName == "Mads Hermansen";
+
                       final String indexStr =
                           (index + 1).toString().padLeft(3, '0');
                       return Row(
@@ -127,6 +127,10 @@ class ShowParticipants extends StaticPage {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
+                                if (isVerified)
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
                                 if (isVerified)
                                   const Icon(Icons.check_circle_sharp,
                                       color: OnlineTheme.blue2, size: 16),

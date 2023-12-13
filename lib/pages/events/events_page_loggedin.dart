@@ -24,7 +24,7 @@ class EventsPageLoggedIn extends ScrollablePage {
 
     // Filter eventModels to include only future events
     final futureEvents = eventModels.where((event) {
-      final eventDate = DateTime.parse(event.startDate);
+      final eventDate = DateTime.parse(event.endDate);
       return eventDate.isAfter(now);
     }).toList();
 

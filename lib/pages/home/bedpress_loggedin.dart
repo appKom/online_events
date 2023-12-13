@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/core/models/user_model.dart';
+import 'package:online_events/main.dart';
 // ignore: unused_import
 import 'package:online_events/pages/event/event_page.dart';
 import 'package:online_events/pages/event/event_page_loggedin.dart';
@@ -25,8 +27,12 @@ class BedpressLoggedIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Filter models where eventType is 2 and 3
-    final filteredModels = models
+    final futureEvents = models.where((event) {
+      final eventDate = DateTime.parse(event.endDate);
+      return eventDate.isAfter(DateTime.now());
+    }).toList();
+    
+    final filteredModels = futureEvents
         .where((model) => model.eventType == 2 || model.eventType == 3)
         .toList();
 
@@ -64,11 +70,12 @@ class BedpressLoggedIn extends StatelessWidget {
 }
 
 class BedpressCardLoggedIn extends StatelessWidget {
-  const BedpressCardLoggedIn(
-      {super.key,
-      required this.model,
-      required this.attendeeInfoModel,
-      required this.attendeeInfoModels});
+  const BedpressCardLoggedIn({
+    super.key,
+    required this.model,
+    required this.attendeeInfoModel,
+    required this.attendeeInfoModels,
+  });
 
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
@@ -96,11 +103,15 @@ class BedpressCardLoggedIn extends StatelessWidget {
 
     if (matchingAttendeeInfo != null) {
       PageNavigator.navigateTo(EventPageLoggedIn(
-          model: model, attendeeInfoModel: matchingAttendeeInfo));
+        model: model,
+        attendeeInfoModel: matchingAttendeeInfo,
+      ));
     } else {
       // Handle the case where no matching ID is found
       PageNavigator.navigateTo(EventPageLoggedIn(
-          model: model, attendeeInfoModel: DEFAULT_ATTENDEE_MODEL));
+        model: model,
+        attendeeInfoModel: DEFAULT_ATTENDEE_MODEL,
+      ));
     }
   }
 
@@ -173,12 +184,12 @@ class BedpressCardLoggedIn extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
                     decoration: BoxDecoration(
-                      color: model.eventType == 3
-                          ? OnlineTheme.blue2
+                      gradient: model.eventType == 3
+                          ? OnlineTheme.blueGradient
                           : (model.eventType == 2
-                              ? OnlineTheme.pink2
-                              : Colors.transparent),
-                      borderRadius: BorderRadius.circular(3),
+                              ? OnlineTheme.redGradient
+                              : null),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       getEventTypeDisplay(),
