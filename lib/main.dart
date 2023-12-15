@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:online_events/core/models/article_model.dart';
 import 'package:online_events/pages/home/home_page.dart';
 import 'package:online_events/services/env.dart';
@@ -17,14 +18,16 @@ bool loggedIn = false;
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load(fileName: 'lib/.env');
+  await Env.initialize();
+
+  SecureStorage.initialize();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   runApp(const MainApp());
-
-  await Env.initialize();
-  SecureStorage.initialize();
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -47,12 +50,12 @@ Future main() async {
   }
 
   String? token = await FirebaseMessaging.instance.getToken();
-    if (token != null) {
-      print("FCM Registration Token: $token");
-      // You can now use this token to send push notifications to this device
-    } else {
-      print("Failed to get FCM token");
-    }
+  if (token != null) {
+    print("FCM Registration Token: $token");
+    // You can now use this token to send push notifications to this device
+  } else {
+    print("Failed to get FCM token");
+  }
 
   Future.wait([Client.getEvents(), Client.getArticles()]).then((responses) {
     final events = responses[0] as List<EventModel>?;
