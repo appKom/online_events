@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart'
 
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'firebase_options.dart';
 
 // ...
@@ -40,8 +41,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC-QHS9ig6dhX72xNKxt-aP6ZnbE-GfY88',
+  static FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['WEB_API_KEY']!,
     appId: '1:358865722949:web:5ad88b438ae885cfa84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',
@@ -50,16 +51,16 @@ class DefaultFirebaseOptions {
     measurementId: 'G-7R51FZW12X',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBtiC3LoYdau575xSyWV8Y_eUVYbOp06L4',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['ANDROID_API_KEY']!,
     appId: '1:358865722949:android:553577a5aa15be23a84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',
     storageBucket: 'online-appen.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDEBlBdUgZTPVyEu0pZ49euwkz9FTUFXWQ',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['IOS_API_KEY']!,
     appId: '1:358865722949:ios:b81d5584227bbe00a84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',
@@ -67,8 +68,8 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.onlineEvents',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDEBlBdUgZTPVyEu0pZ49euwkz9FTUFXWQ',
+  static FirebaseOptions macos = FirebaseOptions(
+    apiKey: dotenv.env['MAC_API_KEY']!,
     appId: '1:358865722949:ios:c40eb05ca5ca7d9ba84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',
