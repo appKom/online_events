@@ -35,7 +35,7 @@ class EventRegistrationCardLoggedIn extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 90,
+              width: 95,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -68,7 +68,7 @@ class EventRegistrationCardLoggedIn extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 5),
             ),
             SizedBox(
-              width: 90,
+              width: 95,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -101,7 +101,7 @@ class EventRegistrationCardLoggedIn extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 5),
             ),
             SizedBox(
-              width: 90,
+              width: 95,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

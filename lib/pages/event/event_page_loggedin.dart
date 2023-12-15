@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/event_organizers.dart';
+import 'package:online_events/core/models/user_model.dart';
 import 'package:online_events/pages/event/cards/event_attendees.dart';
 import 'package:online_events/pages/event/cards/event_card_countdown.dart';
 import 'package:online_events/pages/event/cards/event_participants_loggedin.dart';
@@ -24,8 +25,8 @@ import 'cards/event_description_card.dart';
 
 class EventPageLoggedIn extends ScrollablePage {
   const EventPageLoggedIn(
-      {super.key, required this.model, required this.attendeeInfoModel});
-//
+      {super.key, required this.model, required this.attendeeInfoModel,});
+      
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
 
@@ -184,7 +185,7 @@ class RegistrationCard extends StatelessWidget {
           ),
           if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
             EventCardButtons(
-                model: model, attendeeInfoModel: attendeeInfoModel),
+                model: model, attendeeInfoModel: attendeeInfoModel,),
           const SizedBox(
             height: 16,
           ),
@@ -227,11 +228,7 @@ Widget header(int statusCode) {
   switch (statusCode) {
     case 502:
       badgeText = 'Closed';
-      gradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.redAccent, Colors.red], // Red gradient
-      );
+      gradient = OnlineTheme.redGradient;
       break;
 
     case 502:

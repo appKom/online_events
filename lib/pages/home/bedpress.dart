@@ -16,8 +16,14 @@ class Bedpress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Filter models where eventType is 2 and 3
-    final filteredModels = models.where((model) => model.eventType == 2 || model.eventType == 3).toList();
+    final futureEvents = models.where((event) {
+      final eventDate = DateTime.parse(event.endDate);
+      return eventDate.isAfter(DateTime.now());
+    }).toList();
+
+    final filteredModels = futureEvents
+        .where((model) => model.eventType == 2 || model.eventType == 3)
+        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -32,7 +38,8 @@ class Bedpress extends StatelessWidget {
           height: 333,
           child: ListView.builder(
             itemCount: filteredModels.length, // Use count of filtered models
-            itemBuilder: (context, index) => buildItem(context, index, filteredModels),
+            itemBuilder: (context, index) =>
+                buildItem(context, index, filteredModels),
             scrollDirection: Axis.horizontal,
           ),
         ),
@@ -40,7 +47,8 @@ class Bedpress extends StatelessWidget {
     );
   }
 
-  Widget? buildItem(BuildContext context, int index, List<EventModel> filteredModels) {
+  Widget? buildItem(
+      BuildContext context, int index, List<EventModel> filteredModels) {
     return Container(
       margin: const EdgeInsets.only(right: 24),
       child: BedpressCard(
@@ -64,7 +72,9 @@ class BedpressCard extends StatelessWidget {
   }
 
   String truncateWithEllipsis(String text, int maxLength) {
-    return (text.length <= maxLength) ? text : '${text.substring(0, maxLength)}...';
+    return (text.length <= maxLength)
+        ? text
+        : '${text.substring(0, maxLength)}...';
   }
 
   void showInfo() {
@@ -73,7 +83,9 @@ class BedpressCard extends StatelessWidget {
 
   String getEventTypeDisplay() {
     // Check if the eventTypeDisplay is 'Bedriftspresentasjon'
-    return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpress' : model.eventTypeDisplay;
+    return model.eventTypeDisplay == 'Bedriftspresentasjon'
+        ? 'Bedpress'
+        : model.eventTypeDisplay;
   }
 
   @override
@@ -123,7 +135,8 @@ class BedpressCard extends StatelessWidget {
                   top: 222 + 10,
                   left: 15,
                   child: Text(
-                    truncateWithEllipsis(model.title, 35), // Use title from EventModel
+                    truncateWithEllipsis(
+                        model.title, 35), // Use title from EventModel
                     style: OnlineTheme.textStyle(
                       color: OnlineTheme.gray11,
                       weight: 7,
@@ -134,12 +147,15 @@ class BedpressCard extends StatelessWidget {
                   left: 15,
                   bottom: 15,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
                     decoration: BoxDecoration(
-                      color: model.eventType == 3
-                          ? OnlineTheme.blue2
-                          : (model.eventType == 2 ? OnlineTheme.pink2 : Colors.transparent),
-                      borderRadius: BorderRadius.circular(3),
+                      gradient: model.eventType == 3
+                          ? OnlineTheme.blueGradient
+                          : (model.eventType == 2
+                              ? OnlineTheme.redGradient
+                              : null),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       getEventTypeDisplay(),
@@ -162,7 +178,8 @@ class BedpressCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        model.numberOfSeatsTaken == null && model.maxCapacity == null
+                        model.numberOfSeatsTaken == null &&
+                                model.maxCapacity == null
                             ? '∞'
                             : '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}',
                         style: OnlineTheme.textStyle(size: 16),
