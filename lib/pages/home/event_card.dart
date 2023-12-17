@@ -58,7 +58,7 @@ class EventCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(EventPage(model: model));
+    PageNavigator.navigateTo(EventPageDisplay(model: model));
   }
 
   String peopleToString() {

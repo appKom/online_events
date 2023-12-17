@@ -105,6 +105,22 @@ abstract class Client {
     return allAttendees;
   }
 
+  static Future<AttendeeInfoModel?> getEventAttendance(int eventId) async {
+    final url = '$endpoint/api/v1/event/attendance-events/$eventId/';
+
+    final response = await http.get(
+      Uri.parse(url),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      return AttendeeInfoModel.fromJson(jsonResponse);
+    } else {
+      print('Failed to fetch attendance');
+      return null;
+    }
+  }
+
   static Future<List<AttendeesList>> getEventAttendees(int eventId) async {
     final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
 

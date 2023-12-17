@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/separator.dart';
+import 'package:online_events/core/client/client.dart';
+import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/event_organizers.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -18,109 +21,93 @@ import 'cards/event_card_buttons.dart';
 import 'cards/event_description_card.dart';
 import 'cards/event_participants.dart';
 
-class EventPage extends ScrollablePage {
+class EventPage extends StatefulWidget {
   const EventPage({super.key, required this.model});
 //
   final EventModel model;
 
   @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader(
-      buttons: [
-        if (loggedIn)
-          SizedBox.square(
-            dimension: 40,
-            child: Center(
-              child: AnimatedButton(
-                onTap: () {
-                  print('📸');
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return const ThemedIcon(
-                    icon: IconType.camScan,
-                    size: 24,
-                    color: OnlineTheme.white,
-                  );
-                },
-              ),
-            ),
-          ),
-        if (loggedIn)
-          SizedBox.square(
-            dimension: 40,
-            child: Center(
-              child: AnimatedButton(
-                onTap: () {
-                  AppNavigator.navigateToRoute(
-                    QRCode(name: 'Fredrik Hansteen'),
-                    additive: true,
-                  );
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return const ThemedIcon(
-                    icon: IconType.qr,
-                    size: 24,
-                    color: OnlineTheme.white,
-                  );
-                },
-              ),
-            ),
-          ),
-      ],
-    );
+  State<EventPage> createState() => _EventPageState();
+}
+
+class _EventPageState extends State<EventPage> {
+  AttendeeInfoModel attendeeInfoModel;
+
+  _EventPageState()
+      : attendeeInfoModel =
+            DEFAULT_ATTENDEE_MODEL; // Initialize with default or placeholder
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAttendance();
+  }
+
+  Future<void> fetchAttendance() async {
+    AttendeeInfoModel? attendance =
+        await Client.getEventAttendance(widget.model.id);
+    if (attendance != null) {
+      setState(() {
+        attendeeInfoModel = attendance;
+      });
+    }
+    // You can remove the else part if you're initializing with default value
   }
 
   @override
-  Widget content(BuildContext context) {
+  Widget build(BuildContext context) {
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SizedBox(height: OnlineHeader.height(context)),
-        SizedBox(
-          height: 230,
-          child: model.images.isNotEmpty
-              ? Image.network(
-                  model.images.first.original,
-                  fit: BoxFit.cover,
-                )
-              : SvgPicture.asset(
-                  'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
-                  fit: BoxFit.cover,
-                ),
-        ),
-        Padding(
-          padding: horizontalPadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 24),
-              Text(
-                model.title,
-                style: OnlineTheme.textStyle(size: 20, weight: 7),
-              ),
-              const SizedBox(height: 24),
-              AttendanceCard(
-                model: model,
-              ),
-              const SizedBox(height: 24),
-              EventDescriptionCard(
-                description: model.description,
-                organizer: eventOrganizers[model.organizer] ?? '',
-              ),
-              const SizedBox(height: 24),
-              RegistrationCard(
-                model: model, // Pass the model here
-              ),
-              const SizedBox(height: 24),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: OnlineHeader.height(context)),
+          SizedBox(
+            height: 230,
+            child: widget.model.images.isNotEmpty
+                ? Image.network(
+                    widget.model.images.first.original,
+                    fit: BoxFit.cover,
+                  )
+                : SvgPicture.asset(
+                    'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
+                    fit: BoxFit.cover,
+                  ),
           ),
-        ),
-        SizedBox(
-          height: Navbar.height(context) + 24,
-        ),
-      ],
+          Padding(
+            padding: horizontalPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 24),
+                Text(
+                  widget.model.title,
+                  style: OnlineTheme.textStyle(size: 20, weight: 7),
+                ),
+                const SizedBox(height: 24),
+                AttendanceCard(
+                  model: widget.model,
+                ),
+                const SizedBox(height: 24),
+                EventDescriptionCard(
+                  description: widget.model.description,
+                  organizer: eventOrganizers[widget.model.organizer] ?? '',
+                ),
+                const SizedBox(height: 24),
+                RegistrationCard(
+                  model: widget.model,
+                  attendeeInfoModel: attendeeInfoModel,
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: Navbar.height(context) + 24,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -129,8 +116,10 @@ class EventPage extends ScrollablePage {
 class RegistrationCard extends StatelessWidget {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
 
-  const RegistrationCard({super.key, required this.model});
+  const RegistrationCard(
+      {super.key, required this.model, required this.attendeeInfoModel});
   final EventModel model;
+  final AttendeeInfoModel attendeeInfoModel;
 
   @override
   Widget build(BuildContext context) {
@@ -146,9 +135,7 @@ class RegistrationCard extends StatelessWidget {
         children: [
           header(),
           const SizedBox(height: 16),
-          EventParticipants(
-            model: model,
-          ),
+          EventParticipants(model: model, attendeeInfoModel: attendeeInfoModel),
           const SizedBox(height: 20),
           Column(
             children: [
@@ -184,4 +171,19 @@ Widget header() {
       ],
     ),
   );
+}
+
+class EventPageDisplay extends StaticPage {
+  const EventPageDisplay({super.key, required this.model});
+  final EventModel model;
+
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
+    return EventPage(model: model);
+  }
 }
