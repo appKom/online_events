@@ -30,7 +30,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     double buttonHeight = 50;
     return Row(
       children: [
-        if (widget.attendeeInfoModel.isEligibleForSignup.status == true)
+        if (widget.attendeeInfoModel.isEligibleForSignup.status == true && loggedIn == true)
         Flexible(
           child: AnimatedButton(
             onTap: () {
@@ -54,7 +54,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
         const SizedBox(
           width: 10,
         ),
-        if (widget.attendeeInfoModel.isAttendee == true && widget.attendeeInfoModel.unattendDeadline.isAfter(DateTime.now()))
+        if (widget.attendeeInfoModel.isAttendee == true && widget.attendeeInfoModel.unattendDeadline.isAfter(DateTime.now()) && loggedIn == true)
         Flexible(
           child: AnimatedButton(
             onTap: () {
@@ -75,7 +75,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
             },
           ),
         ),
-        if (widget.attendeeInfoModel.isEligibleForSignup.statusCode == 503)
+        if (widget.attendeeInfoModel.isEligibleForSignup.statusCode == 503 && loggedIn == true)
         Flexible(
           child: AnimatedButton(
             onTap: () {
@@ -96,7 +96,28 @@ class _EventCardButtonsState extends State<EventCardButtons> {
         const SizedBox(
           width: 10,
         ),
-        if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now()))
+        if (loggedIn == false && widget.attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+        Flexible(
+          child: AnimatedButton(
+            onTap: () {
+               //TODO Noe skal skje her
+            },
+            childBuilder: (context, hover, pointerDown) {
+              return Container(
+                alignment: Alignment.center,
+                height: 50,
+                decoration: const BoxDecoration(
+                    gradient: OnlineTheme.purpleGradient,
+                    borderRadius: OnlineTheme.eventButtonRadius),
+                child: Text('Varsle meg', style: OnlineTheme.textStyle()),
+              );
+            },
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now()) && loggedIn == true)
         Flexible(
           child: AnimatedButton(
             onTap: () {

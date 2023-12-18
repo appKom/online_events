@@ -32,7 +32,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    fetchAttendeeInfo();
     fetchUserProfile();
   }
 
@@ -45,14 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<void> fetchAttendeeInfo() async {
-    List<AttendeeInfoModel> attendees = await Client.getAttendeeInfoModels();
-    if (attendees.isNotEmpty) {
-      setState(() {
-        attendeeInfoModels = attendees;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
