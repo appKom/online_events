@@ -14,7 +14,7 @@ class EventModel implements JsonModel {
   final int eventType;
   final String eventTypeDisplay;
   final int organizer;
-  final String? author;
+  final Author? author;
   final List<ImageModel> images;
   final List<String> companies;
   final bool isAttendanceEvent;
@@ -84,7 +84,7 @@ class EventModel implements JsonModel {
       eventType: json['event_type'],
       eventTypeDisplay: json['event_type_display'],
       organizer: json['organizer'],
-      author: json['author'],
+      author: json['author'] != null ? Author.fromJson(json['author']) : null,
       images: (json['images'] as List<dynamic>).map((imageJson) => ImageModel.fromJson(imageJson)).toList(),
       companies: List<String>.from(json['companies']),
       isAttendanceEvent: json['is_attendance_event'],
@@ -97,5 +97,30 @@ class EventModel implements JsonModel {
   @override
   String toString() {
     return 'EventModel: { id: $id, title: $title, startDate: $startDate, endDate: $endDate, location: $location,}';
+  }
+}
+
+class Author {
+  final int id;
+  final String firstName;
+  final String lastName;
+  final String userName; 
+
+  
+
+  Author({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.userName,
+  });
+
+  factory Author.fromJson(Map<String, dynamic> json) {
+    return Author(
+      id: json['id'] ?? 69,
+      firstName: json['firstName'] ?? '',
+      lastName: json['lastName'] ?? '',
+      userName: json['userName'] ?? '',
+    );
   }
 }

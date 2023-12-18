@@ -39,8 +39,8 @@ class _MyEventsPageState extends State<MyEventsPage> {
   void initState() {
     super.initState();
     if (loggedIn == true) {
+      fetchMoreEvents();
       fetchAttendeeInfo();
-      
     } else {
       setState(() {
         _isLoading = false;
@@ -48,8 +48,14 @@ class _MyEventsPageState extends State<MyEventsPage> {
     }
   }
 
-  
-
+  void fetchMoreEvents() async {
+    var moreEvents = await Client.getEvents(pages: [5, 6, 7]);
+    if (moreEvents != null) {
+      setState(() {
+        eventModels.addAll(moreEvents);
+      });
+    }
+  }
 
   Future<void> fetchAttendeeInfo() async {
     List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userId);
@@ -61,17 +67,16 @@ class _MyEventsPageState extends State<MyEventsPage> {
     }
   }
 
-
   @override
   void dispose() {
-    _isDisposed = true; // Set the flag to indicate the widget is disposed
+    _isDisposed = true;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const LoadingPageDisplay(); // Replace with your actual loading widget
+      return const LoadingPageDisplay();
     }
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);
@@ -97,18 +102,30 @@ class _MyEventsPageState extends State<MyEventsPage> {
       }).toList();
 
       List<EventModel> getEventsForDay(DateTime day) {
-        return upcomingEvents.where((event) {
-          final startDate = DateTime.parse(event.startDate);
-          final endDate = DateTime.parse(event.endDate);
-          final resetStartDate =
-              DateTime(startDate.year, startDate.month, startDate.day);
-          final resetEndDate =
-              DateTime(endDate.year, endDate.month, endDate.day);
-          return (day.isAtSameMomentAs(resetStartDate) ||
-                  day.isAfter(resetStartDate)) &&
-              (day.isAtSameMomentAs(resetEndDate) ||
-                  day.isBefore(resetEndDate));
-        }).toList();
+        List<EventModel> selectedEvents = [];
+
+        bool isEventOnDay(EventModel event, DateTime day) {
+          final startDate = DateTime.parse(event.startDate).toLocal();
+          final endDate = (event.endDate != null
+                  ? DateTime.parse(event.endDate)
+                  : startDate)
+              .toLocal();
+          final comparisonDayStart = DateTime(day.year, day.month, day.day);
+          final comparisonDayEnd =
+              DateTime(day.year, day.month, day.day, 23, 59, 59);
+
+          return (startDate.isAtSameMomentAs(comparisonDayStart) ||
+                  startDate.isBefore(comparisonDayEnd)) &&
+              (endDate.isAtSameMomentAs(comparisonDayStart) ||
+                  endDate.isAfter(comparisonDayStart));
+        }
+
+        selectedEvents
+            .addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
+        selectedEvents
+            .addAll(pastEvents.where((event) => isEventOnDay(event, day)));
+
+        return selectedEvents;
       }
 
       return SingleChildScrollView(

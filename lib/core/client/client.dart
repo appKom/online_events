@@ -18,25 +18,20 @@ abstract class Client {
     accessToken = token;
   }
 
-  static Future<List<EventModel>?> getEvents() async {
+  static Future<List<EventModel>?> getEvents(
+      {List<int> pages = const [1, 2, 3, 4]}) async {
     List<EventModel> allEvents = [];
 
-    // URLs for each page
-    List<String> urls = [
-      '$endpoint/api/v1/event/events/',
-      '$endpoint/api/v1/event/events/?page=2',
-      '$endpoint/api/v1/event/events/?page=3',
-      '$endpoint/api/v1/event/events/?page=4',
-    ];
-
-    for (var url in urls) {
+    for (int page in pages) {
+      String url = page == 1
+          ? '$endpoint/api/v1/event/events/'
+          : '$endpoint/api/v1/event/events/?page=$page';
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final responseBody =
             utf8.decode(response.bodyBytes, allowMalformed: true);
         final jsonResponse = jsonDecode(responseBody);
-
         final events = jsonResponse['results']
             .map<EventModel>((eventJson) => EventModel.fromJson(eventJson))
             .toList();
@@ -100,6 +95,7 @@ abstract class Client {
       return null;
     }
   }
+
   static Future<List<AttendedEvents>> getAttendedEvents(int userId) async {
     List<AttendedEvents> allAttendees = [];
 
