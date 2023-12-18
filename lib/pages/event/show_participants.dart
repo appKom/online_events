@@ -10,7 +10,7 @@ import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/attendees-list.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/waitlist.dart';
-import 'package:online_events/pages/event/event_page_loggedin.dart';
+import 'package:online_events/pages/event/event_page.dart';
 import 'package:online_events/services/app_navigator.dart';
 
 import '/theme/theme.dart';
@@ -50,8 +50,7 @@ class ShowParticipants extends StaticPage {
                     color: Colors.white,
                     size: 40,
                   ),
-                  onPressed: () => PageNavigator.navigateTo(EventPageLoggedIn(
-                      model: model, attendeeInfoModel: attendeeInfoModel)),
+                  onPressed: () => PageNavigator.navigateTo(EventPageDisplay(model: model,)),
                 ),
                 const SizedBox(
                   width: 25,

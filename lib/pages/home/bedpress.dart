@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/event/event_page.dart';
-
 import '/services/page_navigator.dart';
 import '/pages/home/event_card.dart';
 import '/theme/themed_icon.dart';
@@ -11,8 +10,12 @@ import '/theme/themed_icon.dart';
 import '../../theme/theme.dart';
 
 class Bedpress extends StatelessWidget {
-  final List<EventModel> models; // Change to use EventModel
-  const Bedpress({super.key, required this.models});
+  const Bedpress({
+    super.key,
+    required this.models,
+  });
+
+  final List<EventModel> models;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class Bedpress extends StatelessWidget {
       final eventDate = DateTime.parse(event.endDate);
       return eventDate.isAfter(DateTime.now());
     }).toList();
-
+    
     final filteredModels = futureEvents
         .where((model) => model.eventType == 2 || model.eventType == 3)
         .toList();
@@ -37,31 +40,31 @@ class Bedpress extends StatelessWidget {
         SizedBox(
           height: 333,
           child: ListView.builder(
-            itemCount: filteredModels.length, // Use count of filtered models
-            itemBuilder: (context, index) =>
-                buildItem(context, index, filteredModels),
+            itemCount: filteredModels.length, 
+            itemBuilder: (c, i) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    right: i < filteredModels.length - 1 ? 24 : 0),
+                child: BedpressCard(
+                  model: filteredModels[i], 
+                ),
+              );
+            },
             scrollDirection: Axis.horizontal,
           ),
         ),
       ],
     );
   }
-
-  Widget? buildItem(
-      BuildContext context, int index, List<EventModel> filteredModels) {
-    return Container(
-      margin: const EdgeInsets.only(right: 24),
-      child: BedpressCard(
-        model: filteredModels[index], // Use the model from the filtered list
-      ),
-    );
-  }
 }
 
 class BedpressCard extends StatelessWidget {
-  final EventModel model;
+  const BedpressCard({
+    super.key,
+    required this.model,
+  });
 
-  const BedpressCard({super.key, required this.model});
+  final EventModel model;
 
   // Example of a method to format the date
   String formatDate() {
@@ -78,13 +81,13 @@ class BedpressCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(EventPageDisplay(model: model));
+    PageNavigator.navigateTo(EventPageDisplay(model: model,));
   }
 
   String getEventTypeDisplay() {
     // Check if the eventTypeDisplay is 'Bedriftspresentasjon'
     return model.eventTypeDisplay == 'Bedriftspresentasjon'
-        ? 'Bedpress'
+        ? 'Bedpres'
         : model.eventTypeDisplay;
   }
 

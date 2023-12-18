@@ -121,8 +121,9 @@ abstract class Client {
     }
   }
 
-  static Future<List<AttendeesList>> getEventAttendees(int eventId) async {
-    final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
+  static Future<AttendeeInfoModel?> getEventAttendanceLoggedIn(
+      int eventId) async {
+    final url = '$endpoint/api/v1/event/attendance-events/$eventId/';
 
     final response = await http.get(
       Uri.parse(url),
@@ -132,10 +133,33 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final jsonResponse = jsonDecode(response.body);
+      return AttendeeInfoModel.fromJson(jsonResponse);
+    } else {
+      print('Failed to fetch attendance');
+      return null;
+    }
+  }
+
+  static Future<List<AttendeesList>> getEventAttendees(int eventId) async {
+    final url =
+        '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody) as List;
 
-      return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
+      return jsonResponse
+          .map<AttendeesList>((json) => AttendeesList.fromJson(json))
+          .toList();
     } else {
       print('Failed to fetch event attendees from $url');
       return [];
@@ -143,7 +167,8 @@ abstract class Client {
   }
 
   static Future<List<Waitlist>> getEventWaitlists(int eventId) async {
-    final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-on-waitlist/';
+    final url =
+        '$endpoint/api/v1/event/attendance-events/$eventId/public-on-waitlist/';
 
     final response = await http.get(
       Uri.parse(url),
@@ -153,16 +178,18 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody) as List;
 
-      return jsonResponse.map<Waitlist>((json) => Waitlist.fromJson(json)).toList();
+      return jsonResponse
+          .map<Waitlist>((json) => Waitlist.fromJson(json))
+          .toList();
     } else {
       print('Failed to fetch event waitlist from $url');
       return [];
     }
   }
-
 
   static Future<List<ArticleModel>?> getArticles() async {
     const url = '$endpoint/api/v1/articles/';
