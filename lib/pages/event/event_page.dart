@@ -41,7 +41,7 @@ class _EventPageState extends State<EventPage> {
     if (loggedIn) {
       fetchAttendanceLoggedIn();
     }
-    if (loggedIn == false){
+    if (loggedIn == false) {
       fetchAttendanceNotLoggedIn();
     }
   }
@@ -65,7 +65,6 @@ class _EventPageState extends State<EventPage> {
       });
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +81,30 @@ class _EventPageState extends State<EventPage> {
                 ? Image.network(
                     widget.model.images.first.original,
                     fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child; 
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return SvgPicture.asset(
+                        'assets/svg/online_hvit_o.svg', 
+                        fit: BoxFit.cover,
+                      );
+                    },
                   )
                 : SvgPicture.asset(
-                    'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
+                    'assets/svg/online_hvit_o.svg', 
                     fit: BoxFit.cover,
                   ),
           ),
@@ -147,8 +167,9 @@ class RegistrationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (loggedIn || attendeeInfoModel.isEligibleForSignup.statusCode == 6969)
-          header(attendeeInfoModel.isEligibleForSignup.statusCode),
+          if (loggedIn ||
+              attendeeInfoModel.isEligibleForSignup.statusCode == 6969)
+            header(attendeeInfoModel.isEligibleForSignup.statusCode),
           if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
             const SizedBox(height: 16),
           if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
@@ -162,7 +183,10 @@ class RegistrationCard extends StatelessWidget {
               attendeeInfoModel: attendeeInfoModel,
             ),
           const SizedBox(height: 10),
-          if ((loggedIn == true && attendeeInfoModel.isEligibleForSignup.status == false) || (loggedIn == false && attendeeInfoModel.isEligibleForSignup.statusCode == 6969))
+          if ((loggedIn == true &&
+                  attendeeInfoModel.isEligibleForSignup.status == false) ||
+              (loggedIn == false &&
+                  attendeeInfoModel.isEligibleForSignup.statusCode == 6969))
             Center(
               child: Text(
                 attendeeInfoModel.isEligibleForSignup.message,
@@ -172,14 +196,15 @@ class RegistrationCard extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-            EventCardButtons(
-              model: model,
-              attendeeInfoModel: attendeeInfoModel,
-            ),
-            if (loggedIn && attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-          const SizedBox(
-            height: 16,
+          EventCardButtons(
+            model: model,
+            attendeeInfoModel: attendeeInfoModel,
           ),
+          if (loggedIn &&
+              attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+            const SizedBox(
+              height: 16,
+            ),
           if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)
             EventCardCountdown(eventTime: eventDateTime),
           if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)

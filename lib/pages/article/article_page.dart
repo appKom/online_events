@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/separator.dart';
@@ -10,13 +11,13 @@ import 'package:online_events/theme/theme.dart';
 import '../../components/online_scaffold.dart';
 
 class ArticlePage extends ScrollablePage {
-  final ArticleModel article; // Add this line
+  final ArticleModel article; 
   final List<ArticleModel> articleModels;
   final ScrollController scrollController = ScrollController();
   ArticlePage(
       {super.key,
       required this.article,
-      required this.articleModels}); // Modify this line
+      required this.articleModels}); 
 
   List<dynamic> extractAndSplitContent(String content) {
     RegExp exp = RegExp(r'(https?://\S+\.(jpg|jpeg|png|gif))');
@@ -29,12 +30,10 @@ class ArticlePage extends ScrollablePage {
       String imgUrl = match.group(0)!;
       int startIndex = match.start;
 
-      // Add text segment
       if (startIndex > lastEnd) {
         segments.add(content.substring(lastEnd, startIndex));
       }
 
-      // Add image URL
       segments.add(Uri.parse(imgUrl));
       lastEnd = match.end;
     }
@@ -92,12 +91,40 @@ class ArticlePage extends ScrollablePage {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SizedBox(height: OnlineHeader.height(context)),
-        Image.network(
-          article.image?.original ??
-              'assets/images/fadderuka.png', // Use the article image
-          fit: BoxFit.cover,
-          height: 240,
-        ),
+        article.image?.original != null
+            ? Image.network(
+                article.image!
+                    .original, 
+                fit: BoxFit.cover,
+                height: 240,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child; 
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return SvgPicture.asset(
+                    'assets/svg/online_hvit_o.svg',
+                    fit: BoxFit.cover,
+                    height: 240,
+                  );
+                },
+              )
+            : SvgPicture.asset(
+                'assets/svg/online_hvit_o.svg',
+                fit: BoxFit.cover,
+                height: 240,
+              ),
         Padding(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
           child: Column(
@@ -105,12 +132,12 @@ class ArticlePage extends ScrollablePage {
             children: [
               const SizedBox(height: 30),
               Text(
-                article.heading, // Use the article heading
+                article.heading, 
                 style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
               const SizedBox(height: 14),
               Text(
-                'Skrevet av: ${article.authors},   ${dateToString()}', // Use the article authors
+                'Skrevet av: ${article.authors},   ${dateToString()}',
                 style: OnlineTheme.textStyle(),
               ),
               const Separator(margin: 20),
@@ -125,10 +152,32 @@ class ArticlePage extends ScrollablePage {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: contentSegments.map((segment) {
                   if (segment is Uri) {
-                    // If segment is an image URL
-                    return Image.network(segment.toString());
+                    return Image.network(
+                      segment.toString(),
+                      fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        } 
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      },
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return SvgPicture.asset(
+                          'assets/svg/online_hvit_o.svg', 
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    );
                   } else {
-                    // If segment is a text
                     return Text(
                       segment,
                       style: OnlineTheme.textStyle(),

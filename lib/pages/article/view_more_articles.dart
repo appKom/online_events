@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/article_model.dart';
 import 'package:online_events/main.dart';
@@ -173,12 +174,41 @@ class MoreArticleCard extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Image.network(
-                        articleModel.image?.original ??
-                            'assets/svg/online_hvit_o.svg', // Modify this line
-                        fit: BoxFit.cover,
-                        alignment: Alignment.bottomCenter,
-                      ),
+                      child: (articleModel.image?.original != null)
+                          ? Image.network(
+                              articleModel.image!
+                                  .original, 
+                              fit: BoxFit.cover,
+                              alignment: Alignment.bottomCenter,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child; 
+                                }
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return SvgPicture.asset(
+                                  'assets/svg/online_hvit_o.svg', 
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            )
+                          : SvgPicture.asset(
+                              'assets/svg/online_hvit_o.svg', 
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ],
                 ),

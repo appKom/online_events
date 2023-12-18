@@ -11,9 +11,10 @@ import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard(
-      {super.key,
-      required this.model,});
+  const EventCard({
+    super.key,
+    required this.model,
+  });
 
   final EventModel model;
 
@@ -62,7 +63,9 @@ class EventCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(EventPageDisplay(model: model,));
+    PageNavigator.navigateTo(EventPageDisplay(
+      model: model,
+    ));
   }
 
   String peopleToString() {
@@ -91,13 +94,39 @@ class EventCard extends StatelessWidget {
                     height: 84,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: model.images.isNotEmpty
+                      child: model.images
+                              .isNotEmpty 
                           ? Image.network(
-                              model.images.first.md,
+                              model.images.first
+                                  .md, 
                               fit: BoxFit.cover,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                } 
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return SvgPicture.asset(
+                                  'assets/svg/online_hvit_o.svg', 
+                                  fit: BoxFit.cover,
+                                );
+                              },
                             )
                           : SvgPicture.asset(
-                              'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
+                              'assets/svg/online_hvit_o.svg', 
                               fit: BoxFit.cover,
                             ),
                     ),
