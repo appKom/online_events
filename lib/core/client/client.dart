@@ -243,4 +243,37 @@ abstract class Client {
       return null;
     }
   }
+
+//   static Future<void> registerForEvent(String eventId) async {
+//     final url = '$endpoint/api/v1/event/attendance-events/$eventId/register/';
+
+//   final Map<String, dynamic> requestBody = {
+//     "recaptcha": "your_recaptcha_token_here", // You might need to handle recaptcha
+//     "allow_pictures": true,
+//     "show_as_attending_event": true,
+//     "note": "" 
+//   };
+
+//   try {
+//     final response = await http.post(
+//       Uri.parse(url),
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": 'Bearer $accessToken', 
+//       },
+//       body: json.encode(requestBody),
+//     );
+
+//     if (response.statusCode == 201) {
+//       // Handle successful registration
+//       print("Successfully registered for the event");
+//     } else {
+//       // Handle error
+//       print("Failed to register for the event: ${response.body}");
+//     }
+//   } catch (e) {
+//     // Handle any exceptions
+//     print("Error occurred: $e");
+//   }
+// }
 }
