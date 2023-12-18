@@ -1,4 +1,3 @@
-import 'attendee_info_model.dart';
 import 'image_model.dart';
 import 'json_model.dart';
 
@@ -22,7 +21,6 @@ class EventModel implements JsonModel {
   final int? maxCapacity;
   final bool? waitlist;
   final int? numberOfSeatsTaken;
-  final AttendeeInfoModel? attendeeInfo;
 
   EventModel({
     required this.id,
@@ -44,7 +42,6 @@ class EventModel implements JsonModel {
     this.waitlist,
     this.numberOfSeatsTaken,
     this.author,
-    this.attendeeInfo,
   });
 
   @override
@@ -69,19 +66,10 @@ class EventModel implements JsonModel {
       'max_capacity': maxCapacity,
       'waitlist': waitlist,
       'number_of_seats_taken': numberOfSeatsTaken,
-      'attendee_info': attendeeInfo?.toJson(),
     };
   }
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
-    AttendeeInfoModel? attendeeInfo;
-    if (json['attendee_info'] != null) {
-      AttendeeInfoModel tempAttendeeInfo = AttendeeInfoModel.fromJson(json['attendee_info']);
-      if (tempAttendeeInfo.id == json['id']) {
-        attendeeInfo = tempAttendeeInfo;
-      }
-    }
-
 
     return EventModel(
       id: json['id'],
@@ -103,12 +91,11 @@ class EventModel implements JsonModel {
       maxCapacity: json['max_capacity'],
       waitlist: json['waitlist'],
       numberOfSeatsTaken: json['number_of_seats_taken'],
-      attendeeInfo: attendeeInfo,
     );
   }
 
   @override
   String toString() {
-    return 'EventModel: { id: $id, title: $title, startDate: $startDate, endDate: $endDate, location: $location }';
+    return 'EventModel: { id: $id, title: $title, startDate: $startDate, endDate: $endDate, location: $location,}';
   }
 }

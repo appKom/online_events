@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
+import 'package:online_events/pages/home/event_card.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
 
-import '../home/event_card.dart';
 import '../../components/online_scaffold.dart';
 import '../../theme/theme.dart';
 import '/main.dart';
@@ -17,7 +18,15 @@ class EventsPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
+    final now = DateTime.now();
+
+    // Filter eventModels to include only future events
+    final futureEvents = eventModels.where((event) {
+      final eventDate = DateTime.parse(event.endDate);
+      return eventDate.isAfter(now);
+    }).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -31,13 +40,13 @@ class EventsPage extends ScrollablePage {
         const SizedBox(height: 24),
         Container(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
-          height: 111.0 * eventModels.length,
+          height: 111.0 * futureEvents.length,
           child: ListView.builder(
-            itemCount: eventModels.length,
+            itemCount: futureEvents.length,
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (c, i) => EventCard(
-              model: eventModels[i],
+              model: futureEvents[i],
             ),
           ),
         ),

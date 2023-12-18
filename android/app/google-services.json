@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "358865722949",
+    "project_id": "online-appen",
+    "storage_bucket": "online-appen.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358865722949:android:553577a5aa15be23a84d2c",
+        "android_client_info": {
+          "package_name": "no.ntnu.online.online_events"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtiC3LoYdau575xSyWV8Y_eUVYbOp06L4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

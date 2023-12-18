@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/event/cards/confirm_registration.dart';
-import 'package:online_events/pages/event/cards/confirm_unattend.dart';
+import 'package:online_events/core/models/attendee_info_model.dart';
+import 'package:online_events/core/models/event_model.dart';
 
 import '/components/animated_button.dart';
 import '/components/separator.dart';
@@ -13,7 +13,11 @@ bool isRegistered = false;
 
 /// This appears to be the sus buttons on the bottom
 class EventCardButtons extends StatefulWidget {
-  const EventCardButtons({super.key});
+  const EventCardButtons(
+      {super.key, required this.model, required this.attendeeInfoModel});
+
+  final EventModel model;
+  final AttendeeInfoModel attendeeInfoModel;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -21,127 +25,122 @@ class EventCardButtons extends StatefulWidget {
 }
 
 class _EventCardButtonsState extends State<EventCardButtons> {
-
   @override
   Widget build(BuildContext context) {
     double buttonHeight = 50;
-
-    BoxDecoration boxDecoration(bool isForSePameldte, bool isForVisBillett, bool isRegistered) {
-      return BoxDecoration(
-        gradient: isForSePameldte
-            ? LinearGradient(
-                colors: [
-                  Colors.blue[300]!,
-                  Colors.blue[800]!,
-                ], // Blue gradient for "Se Påmeldte"
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              )
-            : isForVisBillett
-                ? const LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 130, 13, 173),
-                      Color.fromARGB(255, 251, 45, 251)
-                    ], // Yellow gradient for "Vis Billett"
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  )
-                : LinearGradient(
-                    colors: isRegistered
-                        ? [Colors.orange[300]!, Colors.red[800]!] // Red gradient for "Meld av"
-                        : [Colors.green[300]!, Colors.green[800]!], // Green gradient for "Meld meg på"
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+    return Row(
+      children: [
+        if (widget.attendeeInfoModel.isEligibleForSignup.status == true && loggedIn == true)
+        Flexible(
+          child: AnimatedButton(
+            onTap: () {
+              //TODO at noe faktisk skjer her
+            },
+            childBuilder: (context, hover, pointerDown) {
+              return Container(
+                alignment: Alignment.center,
+                height: buttonHeight,
+                decoration: BoxDecoration(
+                    gradient: OnlineTheme.greenGradient,
+                    borderRadius: OnlineTheme.eventButtonRadius),
+                child: Text(
+                  'Meld meg på',
+                  style: OnlineTheme.textStyle(),
+                ),
+              );
+            },
           ),
-        ],
-        borderRadius: OnlineTheme.buttonRadius,
-      );
-    }
-
-    // Button style
-    if (loggedIn) {
-      return Row(
-        children: [
-          Flexible(
-            child: AnimatedButton(
-              onTap: () {
-                setState(() { // Toggle isRegistered state
-                  isRegistered? AppNavigator.navigateToRoute(
-                  ConfirmUnattend(
-                    onConfirm: (){
-                      setState(() {
-                        isRegistered = false;
-                      });
-                    }
-                  ),
-                  additive: true,
-                ) : AppNavigator.navigateToRoute(
-                  ConfirmRegistration(
-                    onConfirm: (){
-                      setState(() {
-                        isRegistered = true;
-                      });
-                    }
-                  ),
-                  additive: true,
-                );
-                });
-              },
-              childBuilder: (context, hover, pointerDown) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: buttonHeight,
-                  decoration: boxDecoration(false, false, isRegistered),
-                  child: Text(
-                    isRegistered ? 'Meld av' : 'Meld meg på',
-                    style: OnlineTheme.textStyle(),
-                  ),
-                );
-              },
-            ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        if (widget.attendeeInfoModel.isAttendee == true && widget.attendeeInfoModel.unattendDeadline.isAfter(DateTime.now()) && loggedIn == true)
+        Flexible(
+          child: AnimatedButton(
+            onTap: () {
+              //TODO At noe skjer her
+            },
+            childBuilder: (context, hover, pointerDown) {
+              return Container(
+                alignment: Alignment.center,
+                height: buttonHeight,
+                decoration: BoxDecoration(
+                    gradient: OnlineTheme.redGradient,
+                    borderRadius: OnlineTheme.eventButtonRadius),
+                child: Text(
+                  'Meld av',
+                  style: OnlineTheme.textStyle(),
+                ),
+              );
+            },
           ),
-          const SizedBox(
-            width: 10,
+        ),
+        if (widget.attendeeInfoModel.isEligibleForSignup.statusCode == 503 && loggedIn == true)
+        Flexible(
+          child: AnimatedButton(
+            onTap: () {
+               //TODO Noe skal skje her
+            },
+            childBuilder: (context, hover, pointerDown) {
+              return Container(
+                alignment: Alignment.center,
+                height: 50,
+                decoration: const BoxDecoration(
+                    gradient: OnlineTheme.yellowGradient,
+                    borderRadius: OnlineTheme.eventButtonRadius),
+                child: Text('Meld på venteliste', style: OnlineTheme.textStyle()),
+              );
+            },
           ),
-          Flexible(
-            child: AnimatedButton(
-              onTap: () {
-                // Navigate to ShowParticipants regardless of isRegistered state
-                AppNavigator.navigateToRoute(
-                  ShowParticipants(),
-                  additive: true,
-                );
-              },
-              childBuilder: (context, hover, pointerDown) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: 50,
-                  decoration: boxDecoration(true, false, false), // Use false for blue gradient
-                  child: Text('Se Påmeldte', style: OnlineTheme.textStyle()),
-                );
-              },
-            ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        if (loggedIn == false && widget.attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+        Flexible(
+          child: AnimatedButton(
+            onTap: () {
+               //TODO Noe skal skje her
+            },
+            childBuilder: (context, hover, pointerDown) {
+              return Container(
+                alignment: Alignment.center,
+                height: 50,
+                decoration: const BoxDecoration(
+                    gradient: OnlineTheme.purpleGradient,
+                    borderRadius: OnlineTheme.eventButtonRadius),
+                child: Text('Varsle meg', style: OnlineTheme.textStyle()),
+              );
+            },
           ),
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          const Separator(margin: 1),
-          Center(
-            child: Text(
-              'Du må være logget inn for å se din status.',
-              style: OnlineTheme.textStyle(),
-            ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now()) && loggedIn == true)
+        Flexible(
+          child: AnimatedButton(
+            onTap: () {
+              // Navigate to ShowParticipants regardless of isRegistered state
+              PageNavigator.navigateTo(
+                ShowParticipants(
+                    model: widget.model,
+                    attendeeInfoModel: widget.attendeeInfoModel),
+              );
+            },
+            childBuilder: (context, hover, pointerDown) {
+              return Container(
+                alignment: Alignment.center,
+                height: 50,
+                decoration: const BoxDecoration(
+                    gradient: OnlineTheme.blueGradient,
+                    borderRadius: OnlineTheme.eventButtonRadius),
+                child: Text('Se Påmeldte', style: OnlineTheme.textStyle()),
+              );
+            },
           ),
-        ],
-      );
-    }
+        ),
+      ],
+    );
   }
 }

@@ -83,7 +83,7 @@ class PromotedArticle extends StatelessWidget {
                       Positioned.fill(child: Container(color: OnlineTheme.gray13)),
                       Positioned(
                         left: 20,
-                        bottom: 60,
+                        bottom: 65,
                         child: Text(
                           article.heading, // Modify this line
                           style: OnlineTheme.textStyle(weight: 5),
@@ -91,10 +91,10 @@ class PromotedArticle extends StatelessWidget {
                       ),
                       Positioned(
                         left: 20,
-                        bottom: 42,
+                        bottom: 38,
                         child: Text(
-                          article.authors, // Modify this line
-                          style: OnlineTheme.textStyle(weight: 4, size: 12),
+                          'Skrevet av ${article.authors}', // Modify this line
+                          style: OnlineTheme.textStyle(weight: 4, size: 14),
                         ),
                       ),
                       // ... (other Positioned widgets)

@@ -6,7 +6,7 @@ abstract class AuthService {
   static const redirectUri = 'http://10.0.2.2:3000/callback';
 
   static String get authorizationUrl =>
-      'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=${Uri.encodeComponent(redirectUri)}&response_type=code&scope=openid+profile+onlineweb4';
+      'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=${Uri.encodeComponent(redirectUri)}&response_type=code&scope=openid+profile+onlineweb4+events';
 
   static Future<Map<String, dynamic>?> exchangeCodeForToken(String code) async {
     final response = await http.post(

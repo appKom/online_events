@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
-
+import 'package:online_events/pages/home/bedpress.dart';
+import 'package:online_events/pages/home/event_card.dart';
 import '/pages/home/promoted_article.dart';
 import '../../services/page_navigator.dart';
-import '/pages/home/event_card.dart';
 import '../events/events_page.dart';
-import '/pages/home/bedpress.dart';
 import '../../components/online_scaffold.dart';
 import '../../theme/theme.dart';
 import '/main.dart';
@@ -28,7 +27,8 @@ class HomePage extends ScrollablePage {
   @override
   Widget content(BuildContext context) {
     // final style = OnlineTheme.textStyle(weight: 5);
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -39,12 +39,13 @@ class HomePage extends ScrollablePage {
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 222,
-            child:  ListView.builder(
+            child: ListView.builder(
               itemCount: 1,
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (c, i) => PromotedArticle(
-                article: articleModels[i], articleModels: articleModels,
+                article: articleModels[i],
+                articleModels: articleModels,
               ),
             ),
           ),

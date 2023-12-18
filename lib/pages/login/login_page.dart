@@ -31,7 +31,7 @@ class LoginPage extends StaticPage {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Logg Inn', style: headerStyle),
+            Text('Logg inn med Online', style: headerStyle),
             const SizedBox(height: 24),
             AnimatedButton(
               onTap: () {
@@ -48,7 +48,7 @@ class LoginPage extends StaticPage {
                   ),
                   child: Center(
                     child: Text(
-                      'Logg Inn med NTNU',
+                      'Logg Inn',
                       style: OnlineTheme.textStyle(),
                     ),
                   ),

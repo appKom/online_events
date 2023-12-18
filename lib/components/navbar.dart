@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:online_events/main.dart';
+// ignore: unused_import
+import 'package:online_events/pages/events/my_events_page.dart';
 import '/pages/drinking_games/drinking_games_page.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/home/home_page.dart';
@@ -22,50 +24,31 @@ class Navbar extends StatefulWidget {
 }
 
 class NavbarState extends State<Navbar> {
-  static final buttons = [
-    NavbarButton(
-      icon: IconType.home,
-      activeIcon: IconType.homeFilled,
-      onPressed: () => PageNavigator.navigateTo(const HomePage()),
-    ),
-    NavbarButton(
-      icon: IconType.calendarClock,
-      activeIcon: IconType.calendarClockFilled,
-      onPressed: () => PageNavigator.navigateTo(const MyEventsPage()),
-    ),
-    NavbarButton(
-      icon: IconType.beer,
-      activeIcon: IconType.beerFilled,
-      onPressed: () => PageNavigator.navigateTo(const DrinkingGamesPage()),
-    ),
-    NavbarButton(
-      icon: IconType.settings,
-      activeIcon: IconType.settingsFilled,
-      onPressed: () => PageNavigator.navigateTo(const SettingsPage()),
-    ),
-  ];
-
   int selected = 0;
 
-  @override
-  Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: OnlineTheme.background.withOpacity(0.9),
-        border: const Border(top: BorderSide(width: 1, color: OnlineTheme.gray14)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: List.generate(
-          buttons.length,
-          (i) => navButton(i, padding.bottom),
+  // Initialize buttons directly in the declaration
+  List<NavbarButton> get buttons => [
+        NavbarButton(
+          icon: IconType.home,
+          activeIcon: IconType.homeFilled,
+          onPressed: () => PageNavigator.navigateTo(const HomePage()), // Use global loggedIn
         ),
-      ),
-    );
-  }
+        NavbarButton(
+          icon: IconType.calendarClock,
+          activeIcon: IconType.calendarClockFilled,
+          onPressed: () => PageNavigator.navigateTo(const MyEventsPageDisplay()),
+        ),
+        NavbarButton(
+          icon: IconType.beer,
+          activeIcon: IconType.beerFilled,
+          onPressed: () => PageNavigator.navigateTo(const DrinkingGamesPage()),
+        ),
+        NavbarButton(
+          icon: IconType.settings,
+          activeIcon: IconType.settingsFilled,
+          onPressed: () => PageNavigator.navigateTo(const SettingsPage()),
+        ),
+      ];
 
   Widget navButton(int i, double padding) {
     final active = i == selected;
@@ -94,6 +77,27 @@ class NavbarState extends State<Navbar> {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).padding;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: OnlineTheme.background.withOpacity(0.9),
+        border:
+            const Border(top: BorderSide(width: 1, color: OnlineTheme.gray14)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: List.generate(
+          buttons.length,
+          (i) => navButton(i, padding.bottom),
         ),
       ),
     );

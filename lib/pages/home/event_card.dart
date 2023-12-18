@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/separator.dart';
+import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/event/event_page.dart';
 import '../../services/page_navigator.dart';
 import '../../theme/theme.dart';
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard({super.key, required this.model});
+  const EventCard(
+      {super.key,
+      required this.model,});
 
   final EventModel model;
 
@@ -29,24 +33,24 @@ class EventCard extends StatelessWidget {
   ];
 
   String formatDateSpan(String startDate, String endDate) {
-  DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
-  DateFormat outputDayMonthFormat = DateFormat("dd. MMMM");
+    DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
+    DateFormat outputDayMonthFormat = DateFormat("dd. MMMM");
 
-  DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
-  DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
+    DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
+    DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
 
-  if (startDateTime.year == endDateTime.year &&
-      startDateTime.month == endDateTime.month &&
-      startDateTime.day == endDateTime.day) {
-    // Same day
-    return outputDayMonthFormat.format(startDateTime);
-  } else {
-    // Different days
-    String formattedStartDate = outputDayMonthFormat.format(startDateTime);
-    String formattedEndDate = outputDayMonthFormat.format(endDateTime);
-    return "$formattedStartDate - $formattedEndDate";
+    if (startDateTime.year == endDateTime.year &&
+        startDateTime.month == endDateTime.month &&
+        startDateTime.day == endDateTime.day) {
+      // Same day
+      return outputDayMonthFormat.format(startDateTime);
+    } else {
+      // Different days
+      String formattedStartDate = outputDayMonthFormat.format(startDateTime);
+      String formattedEndDate = outputDayMonthFormat.format(endDateTime);
+      return "$formattedStartDate - $formattedEndDate";
+    }
   }
-}
 
   String shortenName() {
     final name = model.title;
@@ -58,7 +62,7 @@ class EventCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(EventPage(model: model));
+    PageNavigator.navigateTo(EventPageDisplay(model: model,));
   }
 
   String peopleToString() {
@@ -119,10 +123,8 @@ class EventCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        subHeader(
-                          Icons.calendar_month_outlined,
-                          formatDateSpan(model.startDate, model.endDate)
-                        ),
+                        subHeader(Icons.calendar_month_outlined,
+                            formatDateSpan(model.startDate, model.endDate)),
                         subHeader(
                           Icons.people_outline,
                           peopleToString(),

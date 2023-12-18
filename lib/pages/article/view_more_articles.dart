@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/core/models/event_model.dart';
-import 'package:online_events/pages/article/second_article_page.dart';
-import 'package:online_events/pages/event/event_page.dart';
+import 'package:online_events/main.dart';
+import 'package:online_events/pages/article/article_page.dart';
 
 import '/services/page_navigator.dart';
-import '/pages/home/event_card.dart';
-import '/theme/themed_icon.dart';
 
 import '../../theme/theme.dart';
 
@@ -37,13 +33,13 @@ class ViewMoreArticles extends StatelessWidget {
         const SizedBox(height: 24),
         GestureDetector(
           onTap: () {
-        // Scroll to the top when tapped
-        scrollController.animateTo(
-          0, // Scroll to the top
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      },
+            // Scroll to the top when tapped
+            scrollController.animateTo(
+              0, // Scroll to the top
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          },
           child: SizedBox(
             height: 266,
             child: ListView.builder(
@@ -117,7 +113,24 @@ class MoreArticleCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(SecondArticlePage(article: articleModel));
+    PageNavigator.navigateTo(ArticlePage(
+      article: articleModel,
+      articleModels: articleModels,
+    ));
+  }
+
+  List<String> splitHeading(String heading) {
+    if (heading.length <= 30) {
+      return [heading, ''];
+    } else {
+      int splitIndex = heading.lastIndexOf(' ', 30);
+      if (splitIndex == -1) {
+        splitIndex = 30; // Fallback in case there's no space to split
+      }
+      final part1 = heading.substring(0, splitIndex);
+      final part2 = heading.substring(splitIndex + 1);
+      return [part1, part2];
+    }
   }
 
   @override
@@ -125,6 +138,26 @@ class MoreArticleCard extends StatelessWidget {
     final timeToRead =
         calculateReadingTime(articleModel.content, articleModel.ingress);
     final readingTimeText = "$timeToRead min å lese";
+    final List<String> headingParts = splitHeading(articleModel.heading);
+    final String part1 = headingParts[0];
+    final String part2 = headingParts[1];
+
+    // Function to format the authors' names
+    String formatAuthors(String authors) {
+      // Split the authors by ',' and get the first names
+      final authorNames = authors.split(',').map((author) {
+        final names = author.trim().split(' ');
+        return names.isNotEmpty ? names[0] : ''; // Get the first name
+      }).toList();
+
+      // Join the first names with ' og ' to display them
+      return authorNames.join(' og ');
+    }
+
+    final formattedAuthors = articleModel.authors.length > 28
+        ? formatAuthors(articleModel.authors)
+        : articleModel.authors;
+
     return AnimatedButton(
       onTap: showInfo,
       childBuilder: (context, hover, pointerDown) {
@@ -136,14 +169,18 @@ class MoreArticleCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  flex: 2,
-                  child: Image.network(
-                    articleModel.image?.original ??
-                        'assets/svg/online_hvit_o.svg', // Modify this line
-                    fit: BoxFit.cover,
-                    alignment: Alignment.bottomCenter,
-                  ),
+                Stack(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Image.network(
+                        articleModel.image?.original ??
+                            'assets/svg/online_hvit_o.svg', // Modify this line
+                        fit: BoxFit.cover,
+                        alignment: Alignment.bottomCenter,
+                      ),
+                    ),
+                  ],
                 ),
                 Expanded(
                   flex: 1,
@@ -153,20 +190,31 @@ class MoreArticleCard extends StatelessWidget {
                           child: Container(color: OnlineTheme.gray13)),
                       Positioned(
                         left: 20,
-                        bottom: 60,
+                        bottom: 80,
                         child: Text(
-                          articleModel.heading, // This line will now wrap text
+                          part1, // This line will now wrap text
                           style: OnlineTheme.textStyle(weight: 5),
                           overflow: TextOverflow
-                              .visible, // Ensures text wraps instead of being truncated
+                              .ellipsis, // Truncate with ellipsis if too long
+                          maxLines: 2,
                         ),
                       ),
                       Positioned(
                         left: 20,
-                        bottom: 40,
+                        bottom: 62,
                         child: Text(
-                          articleModel.authors, // Modify this line
-                          style: OnlineTheme.textStyle(weight: 4, size: 12),
+                          part2,
+                          style: OnlineTheme.textStyle(weight: 5),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        bottom: 35,
+                        child: Text(
+                          'Skrevet av: $formattedAuthors', // Modify this line
+                          style: OnlineTheme.textStyle(weight: 4, size: 14),
                         ),
                       ),
                       // ... (other Positioned widgets)
