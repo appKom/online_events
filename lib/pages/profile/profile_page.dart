@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
+import 'package:online_events/pages/events/my_events_page.dart';
 import 'package:online_events/pages/home/home_page.dart';
 import 'package:online_events/pages/loading/loading_display_page.dart';
 import 'package:online_events/components/online_header.dart';
@@ -17,7 +18,8 @@ import '/theme/themed_icon.dart';
 import '/theme/theme.dart';
 import '/main.dart';
 
-List<AttendeeInfoModel> attendeeInfoModels = [];
+
+int userId = 0;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -44,6 +46,8 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +55,10 @@ class _ProfilePageState extends State<ProfilePage> {
     final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);
+
+    if (userProfile != null) {
+      userId = userProfile!.id;
+    }
 
     if (userProfile != null) {
       return Scaffold(

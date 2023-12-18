@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:online_events/core/models/article_model.dart';
+import 'package:online_events/core/models/attended_events.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/attendees-list.dart';
 import 'package:online_events/core/models/user_model.dart';
@@ -49,6 +50,38 @@ abstract class Client {
     return allEvents;
   }
 
+  static Future<List<EventModel>?> getPastEvents() async {
+    List<EventModel> pastEvents = [];
+
+    // URLs for each page
+    List<String> urls = [
+      '$endpoint/api/v1/event/events/?page?5',
+      '$endpoint/api/v1/event/events/?page=6',
+      '$endpoint/api/v1/event/events/?page=7',
+      '$endpoint/api/v1/event/events/?page=8',
+    ];
+
+    for (var url in urls) {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final responseBody =
+            utf8.decode(response.bodyBytes, allowMalformed: true);
+        final jsonResponse = jsonDecode(responseBody);
+
+        final events = jsonResponse['results']
+            .map<EventModel>((eventJson) => EventModel.fromJson(eventJson))
+            .toList();
+
+        pastEvents.addAll(events);
+      } else {
+        print('Failed to fetch events from $url');
+      }
+    }
+
+    return pastEvents;
+  }
+
   static Future<UserModel?> getUserProfile() async {
     const url = '$endpoint/api/v1/profile/';
 
@@ -67,15 +100,13 @@ abstract class Client {
       return null;
     }
   }
-
-  static Future<List<AttendeeInfoModel>> getAttendeeInfoModels() async {
-    List<AttendeeInfoModel> allAttendees = [];
+  static Future<List<AttendedEvents>> getAttendedEvents(int userId) async {
+    List<AttendedEvents> allAttendees = [];
 
     // URLs for each page
     List<String> urls = [
-      '$endpoint/api/v1/event/attendance-events/?ordering=-registration_start',
-      '$endpoint/api/v1/event/attendance-events/?ordering=-registration_start&page=2',
-      '$endpoint/api/v1/event/attendance-events/?ordering=-registration_start&page=3',
+      '$endpoint/api/v1/event/attendees/?allow_pictures=&attended=&event=&extras=&ordering=-id&show_as_attending_event=&user=$userId',
+      '$endpoint/api/v1/event/attendees/?allow_pictures=&attended=&event=&extras=&ordering=-id&page=2&show_as_attending_event=&user=$userId',
     ];
 
     for (var url in urls) {
@@ -92,8 +123,8 @@ abstract class Client {
         final jsonResponse = jsonDecode(responseBody);
 
         final attendees = jsonResponse['results']
-            .map<AttendeeInfoModel>(
-                (attendeeJson) => AttendeeInfoModel.fromJson(attendeeJson))
+            .map<AttendedEvents>(
+                (attendeeJson) => AttendedEvents.fromJson(attendeeJson))
             .toList();
 
         allAttendees.addAll(attendees);

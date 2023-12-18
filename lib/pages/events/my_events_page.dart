@@ -5,9 +5,11 @@ import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/online_scaffold.dart';
 import 'package:online_events/components/separator.dart';
 import 'package:online_events/core/client/client.dart';
+import 'package:online_events/core/models/attended_events.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/home/event_card.dart';
+import 'package:online_events/pages/loading/loading_display_page.dart';
 import 'package:online_events/pages/login/auth_web_view_page.dart';
 import 'package:online_events/pages/login/login_page.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
@@ -17,7 +19,8 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../theme/theme.dart';
 import '/main.dart';
 
-List<int> registeredEvents = [];
+List<AttendedEvents> attendedEvents = [];
+List<EventModel> pastEventModels = [];
 
 class MyEventsPage extends StatefulWidget {
   const MyEventsPage({Key? key}) : super(key: key);
@@ -30,31 +33,34 @@ class _MyEventsPageState extends State<MyEventsPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   bool _isDisposed = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     if (loggedIn == true) {
-      _populateRegisteredEvents();
       fetchAttendeeInfo();
-    }
-  }
-
-  Future<void> fetchAttendeeInfo() async {
-    List<AttendeeInfoModel> attendees = await Client.getAttendeeInfoModels();
-    if (!_isDisposed && attendees.isNotEmpty) {
+      
+    } else {
       setState(() {
-        attendeeInfoModels = attendees;
+        _isLoading = false;
       });
     }
   }
 
-  void _populateRegisteredEvents() {
-    registeredEvents = attendeeInfoModels
-        .where((attendeeInfo) => attendeeInfo.isAttendee)
-        .map((attendeeInfo) => attendeeInfo.id)
-        .toList();
+  
+
+
+  Future<void> fetchAttendeeInfo() async {
+    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userId);
+    if (!_isDisposed) {
+      setState(() {
+        attendedEvents = allAttendees;
+        _isLoading = false;
+      });
+    }
   }
+
 
   @override
   void dispose() {
@@ -64,6 +70,9 @@ class _MyEventsPageState extends State<MyEventsPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const LoadingPageDisplay(); // Replace with your actual loading widget
+    }
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);
 
@@ -71,17 +80,17 @@ class _MyEventsPageState extends State<MyEventsPage> {
     if (loggedIn) {
       final now = DateTime.now();
 
-      // Filter for upcoming registered events
       final upcomingEvents = eventModels
-          .where((model) => registeredEvents.contains(model.id))
+          .where((model) => attendedEvents
+              .any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isAfter(now);
       }).toList();
 
-      // Filter for past registered events
       final pastEvents = eventModels
-          .where((model) => registeredEvents.contains(model.id))
+          .where((model) => attendedEvents
+              .any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isBefore(now);
