@@ -96,7 +96,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
         const SizedBox(
           width: 10,
         ),
-        if (loggedIn == false && widget.attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+        if (widget.attendeeInfoModel.isEligibleForSignup.statusCode == 501)
         Flexible(
           child: AnimatedButton(
             onTap: () {
@@ -117,7 +117,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
         const SizedBox(
           width: 10,
         ),
-        if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now()) && loggedIn == true)
+        if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now()) && loggedIn == true && widget.attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
         Flexible(
           child: AnimatedButton(
             onTap: () {

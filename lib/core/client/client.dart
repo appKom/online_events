@@ -113,7 +113,8 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
+      final String decodedResponseBody = utf8.decode(response.bodyBytes);
+      final jsonResponse = jsonDecode(decodedResponseBody);
       return AttendeeInfoModel.fromJson(jsonResponse);
     } else {
       print('Failed to fetch attendance');
@@ -133,7 +134,8 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
+      final String decodedResponseBody = utf8.decode(response.bodyBytes);
+      final jsonResponse = jsonDecode(decodedResponseBody);
       return AttendeeInfoModel.fromJson(jsonResponse);
     } else {
       print('Failed to fetch attendance');

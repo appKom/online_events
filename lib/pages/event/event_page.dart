@@ -65,6 +65,7 @@ class _EventPageState extends State<EventPage> {
       });
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -161,11 +162,6 @@ class RegistrationCard extends StatelessWidget {
               attendeeInfoModel: attendeeInfoModel,
             ),
           const SizedBox(height: 10),
-            EventCardButtons(
-              model: model,
-              attendeeInfoModel: attendeeInfoModel,
-            ),
-
           if ((loggedIn == true && attendeeInfoModel.isEligibleForSignup.status == false) || (loggedIn == false && attendeeInfoModel.isEligibleForSignup.statusCode == 6969))
             Center(
               child: Text(
@@ -176,7 +172,6 @@ class RegistrationCard extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          if (loggedIn && attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
             EventCardButtons(
               model: model,
               attendeeInfoModel: attendeeInfoModel,
