@@ -4,9 +4,7 @@ import 'package:online_events/core/client/client.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/core/models/event_organizers.dart';
-import 'package:online_events/pages/event/cards/event_card_countdown.dart';
-import 'package:online_events/pages/event/cards/event_participants.dart';
-import 'package:online_events/pages/event/cards/event_registration_card.dart';
+import 'package:online_events/pages/event/cards/registration_card.dart';
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
@@ -18,12 +16,12 @@ import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'cards/card_badge.dart';
 import 'cards/attendance_card.dart';
-import 'cards/event_card_buttons.dart';
 import 'cards/event_description_card.dart';
+
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key, required this.model});
-//
   final EventModel model;
 
   @override
@@ -38,17 +36,14 @@ class _EventPageState extends State<EventPage> {
   @override
   void initState() {
     super.initState();
-    if (loggedIn) {
-      fetchAttendanceLoggedIn();
-    }
-    if (loggedIn == false) {
-      fetchAttendanceNotLoggedIn();
-    }
+    refreshAttendance();
   }
 
-  Future<void> fetchAttendanceLoggedIn() async {
-    AttendeeInfoModel? attendance =
-        await Client.getEventAttendanceLoggedIn(widget.model.id);
+  Future<void> refreshAttendance() async {
+    AttendeeInfoModel? attendance = loggedIn
+        ? await Client.getEventAttendanceLoggedIn(widget.model.id)
+        : await Client.getEventAttendance(widget.model.id);
+
     if (attendance != null) {
       setState(() {
         attendeeInfoModel = attendance;
@@ -56,60 +51,52 @@ class _EventPageState extends State<EventPage> {
     }
   }
 
-  Future<void> fetchAttendanceNotLoggedIn() async {
-    AttendeeInfoModel? attendance =
-        await Client.getEventAttendance(widget.model.id);
-    if (attendance != null) {
-      setState(() {
-        attendeeInfoModel = attendance;
-      });
-    }
+  void onUnregisterSuccess() {
+    refreshAttendance();
   }
 
   @override
   Widget build(BuildContext context) {
-    const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Scaffold(
+    key: scaffoldKey,
+    backgroundColor: OnlineTheme.background,
+    body:RefreshIndicator(
+      onRefresh: refreshAttendance,
+      child: ListView(
         children: [
-          SizedBox(height: OnlineHeader.height(context)),
-          SizedBox(
-            height: 230,
-            child: widget.model.images.isNotEmpty
-                ? Image.network(
-                    widget.model.images.first.original,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child; 
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      return SvgPicture.asset(
-                        'assets/svg/online_hvit_o.svg', 
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )
-                : SvgPicture.asset(
-                    'assets/svg/online_hvit_o.svg', 
-                    fit: BoxFit.cover,
-                  ),
-          ),
+          SizedBox(height: OnlineHeader.height(context)-8),
+          widget.model.images.isNotEmpty
+              ? Image.network(
+                  widget.model.images.first.original,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return SvgPicture.asset(
+                      'assets/svg/online_hvit_o.svg',
+                      fit: BoxFit.cover,
+                    );
+                  },
+                )
+              : SvgPicture.asset(
+                  'assets/svg/online_hvit_o.svg',
+                  fit: BoxFit.cover,
+                ),
           Padding(
-            padding: horizontalPadding,
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -119,9 +106,7 @@ class _EventPageState extends State<EventPage> {
                   style: OnlineTheme.textStyle(size: 20, weight: 7),
                 ),
                 const SizedBox(height: 24),
-                AttendanceCard(
-                  model: widget.model,
-                ),
+                AttendanceCard(model: widget.model),
                 const SizedBox(height: 24),
                 EventDescriptionCard(
                   description: widget.model.description,
@@ -131,105 +116,16 @@ class _EventPageState extends State<EventPage> {
                 RegistrationCard(
                   model: widget.model,
                   attendeeInfoModel: attendeeInfoModel,
+                  onUnregisterSuccess: onUnregisterSuccess,
                 ),
                 const SizedBox(height: 24),
               ],
             ),
           ),
-          SizedBox(
-            height: Navbar.height(context) + 24,
-          ),
+          SizedBox(height: Navbar.height(context) + 24),
         ],
       ),
-    );
-  }
-}
-
-/// Påmelding
-class RegistrationCard extends StatelessWidget {
-  static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
-
-  const RegistrationCard(
-      {super.key, required this.model, required this.attendeeInfoModel});
-  final EventModel model;
-  final AttendeeInfoModel attendeeInfoModel;
-
-  @override
-  Widget build(BuildContext context) {
-    final eventDateTime = DateTime.parse(model.startDate);
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: OnlineTheme.background.lighten(20),
-        border: Border.all(color: OnlineTheme.gray10.darken(80), width: 1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (loggedIn ||
-              attendeeInfoModel.isEligibleForSignup.statusCode == 6969)
-            header(attendeeInfoModel.isEligibleForSignup.statusCode),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            const SizedBox(height: 16),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            EventParticipants(
-              model: model,
-              attendeeInfoModel: attendeeInfoModel,
-            ),
-          const SizedBox(height: 16),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            EventRegistrationCard(
-              attendeeInfoModel: attendeeInfoModel,
-            ),
-          const SizedBox(height: 10),
-          if ((loggedIn == true &&
-                  attendeeInfoModel.isEligibleForSignup.status == false) ||
-              (loggedIn == false &&
-                  attendeeInfoModel.isEligibleForSignup.statusCode == 6969))
-            Center(
-              child: Text(
-                attendeeInfoModel.isEligibleForSignup.message,
-                style: OnlineTheme.textStyle(),
-              ),
-            ),
-          const SizedBox(
-            height: 10,
-          ),
-          EventCardButtons(
-            model: model,
-            attendeeInfoModel: attendeeInfoModel,
-          ),
-          if (loggedIn &&
-              attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            const SizedBox(
-              height: 16,
-            ),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)
-            EventCardCountdown(eventTime: eventDateTime),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)
-            Center(
-                child: Text(
-              'Til til arrangementet starter',
-              style: OnlineTheme.textStyle(weight: 5),
-            )),
-          if (attendeeInfoModel.id == -1 &&
-              eventDateTime.isAfter(DateTime.now()))
-            EventCardCountdown(eventTime: eventDateTime),
-          if (attendeeInfoModel.id == -1 &&
-              eventDateTime.isAfter(DateTime.now()))
-            const SizedBox(
-              height: 10,
-            ),
-          if (attendeeInfoModel.id == -1 &&
-              eventDateTime.isAfter(DateTime.now()))
-            Center(
-                child: Text(
-              'Til til arrangementet starter',
-              style: OnlineTheme.textStyle(weight: 5),
-            )),
-        ],
-      ),
+    ),
     );
   }
 }

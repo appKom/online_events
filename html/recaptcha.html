@@ -1,19 +1,21 @@
 <html>
   <head>
     <title>reCAPTCHA</title>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer> 
+</script>
   </head>
   <body style='background-color: aqua;'>
     <div style='height: 60px;'></div>
     <form action="?" method="POST">
       <div class="g-recaptcha" 
-        data-sitekey="6LdrfjUpAAAAAKWf3HgZgixWM6FUKlo0umnNUK_h"
+        data-sitekey="6LdyyDUpAAAAAC4ccYfkgncSx36Pp3XvvsfeWkbE"
         data-callback="captchaCallback"></div>
 
     </form>
     <script>
       function captchaCallback(response){
         //console.log(response);
+        alert(response);
         if(typeof Captcha!=="undefined"){
           Captcha.postMessage(response);
         }

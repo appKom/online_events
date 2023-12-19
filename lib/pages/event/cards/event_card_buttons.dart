@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
 import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/pages/event/cards/recaptcha.dart';
+import 'package:online_events/pages/event/event_page.dart';
 
 import '/components/animated_button.dart';
 import '/main.dart';
@@ -17,10 +19,11 @@ bool isRegistered = false;
 /// This appears to be the sus buttons on the bottom
 class EventCardButtons extends StatefulWidget {
   const EventCardButtons(
-      {super.key, required this.model, required this.attendeeInfoModel});
+      {super.key, required this.model, required this.attendeeInfoModel, required this.onUnregisterSuccess,});
 
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
+  final VoidCallback onUnregisterSuccess;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -35,7 +38,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     // Your request body
     final Map<String, dynamic> requestBody = {
       "recaptcha":
-          "your_recaptcha_token_here", // You might need to handle recaptcha
+          "onlineweb4.fields.recaptcha.validate_recaptcha", // You might need to handle recaptcha
       "allow_pictures": true,
       "show_as_attending_event": true,
       "note": "" // Any additional note if required
@@ -53,6 +56,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
       if (response.statusCode == 201) {
         // Handle successful registration
+        
         print("Successfully registered for the event");
       } else {
         // Handle error
@@ -79,6 +83,10 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
       if (response.statusCode == 204) {
         // Handle successful unregistration
+        ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+          const SnackBar(content: Text("Du har blitt avmeldt arrangementet")),
+        );
+        widget.onUnregisterSuccess(); // Call the callback
         print("Successfully unregistered from the event");
       } else {
         // Handle error
@@ -100,7 +108,9 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           Flexible(
             child: AnimatedButton(
               onTap: () {
-                registerForEvent(widget.model.id.toString());
+                //Midlertidig fiks, burde fikse reCaptcha inne i appen
+                PageNavigator.navigateTo(ReCaptchaDisplay(model: widget.model,)); 
+                // registerForEvent(widget.model.id.toString());
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(
