@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:online_events/main.dart';
+import 'package:online_events/pages/login/auth_service.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/app_navigator.dart';
 import '../../core/client/client.dart';
-import 'auth_service.dart';
+
 
 class LoginWebView extends StatefulWidget {
   const LoginWebView({super.key});
@@ -21,40 +22,39 @@ class LoginWebViewState extends State<LoginWebView> {
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
       body: InAppWebView(
-        initialUrlRequest:
-            URLRequest(url: Uri.parse(AuthService.authorizationUrl)),
-        onWebViewCreated: (controller) {
-          webViewController = controller;
-        },
-        onLoadStart: (controller, url) async {
-          print('Uri.parse: ${Uri.parse(AuthService.authorizationUrl)}');
-          print('url.toString(): ${url.toString()}');
-          print('AuthService.redirectUri: ${AuthService.redirectUri}');
-
-
-          if (url.toString().startsWith(AuthService.redirectUri)) {
-            final code = Uri.parse(url.toString()).queryParameters['code'];
-            print('Alt riktig til nå');
-            if (code != null) {
-              final tokenData = await AuthService.exchangeCodeForToken(code);
-              if (tokenData != null) {
-                // Navigate to the ProfilePage with the token data
-                PageNavigator.navigateTo(const ProfilePageDisplay());
-                print('tokendata: $tokenData');
-                Client.setAccessToken(tokenData['access_token']);
-                setState(() {
-                  loggedIn = true;
-                });
-
-                // Close the WebView by popping the current route
-                Navigator.pop(context);
-              } else {
-                print('Noe feil skjedde tokenData = null');
-              }
-            }
-          }
-        },
+        initialUrlRequest: URLRequest(url: Uri.parse(AuthService.authorizationUrl)),
+        onWebViewCreated: _onWebViewCreated,
+        onLoadStart: _onLoadStart,
       ),
     );
+  }
+
+  void _onWebViewCreated(InAppWebViewController controller) {
+    webViewController = controller;
+  }
+
+  Future<void> _onLoadStart(InAppWebViewController controller, Uri? url) async {
+    if (url == null || !url.toString().startsWith(AuthService.redirectUri)) return;
+
+    final code = url.queryParameters['code'];
+    if (code == null) {
+      print('No authorization code received');
+      return;
+    }
+
+    try {
+      final tokenData = await AuthService.exchangeCodeForToken(code);
+      if (tokenData == null) {
+        print('Token exchange failed');
+        return;
+      }
+
+      Client.setAccessToken(tokenData['access_token']);
+      setState(() => loggedIn = true);
+      PageNavigator.navigateTo(const ProfilePageDisplay());
+      Navigator.pop(context);
+    } catch (e) {
+      print('Error during token exchange: $e');
+    }
   }
 }
