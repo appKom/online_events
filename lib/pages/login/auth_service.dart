@@ -6,7 +6,7 @@ abstract class AuthService {
   static const String redirectUri = 'https://cloud.appwrite.io/v1/account/sessions/oauth2/callback/oidc/65706141ead327e0436a'; // Replace with your Appwrite redirect URI
 
   static String get authorizationUrl =>
-      'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=${Uri.encodeComponent(redirectUri)}&response_type=code&scope=openid+profile+onlineweb4+events';
+      'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=$redirectUri&response_type=code&scope=openid+profile+onlineweb4+events';
 
   static Future<Map<String, dynamic>?> exchangeCodeForToken(String code) async {
     final response = await http.post(

@@ -27,6 +27,11 @@ class LoginWebViewState extends State<LoginWebView> {
           webViewController = controller;
         },
         onLoadStart: (controller, url) async {
+          print('Uri.parse: ${Uri.parse(AuthService.authorizationUrl)}');
+          print('url.toString(): ${url.toString()}');
+          print('AuthService.redirectUri: ${AuthService.redirectUri}');
+
+
           if (url.toString().startsWith(AuthService.redirectUri)) {
             final code = Uri.parse(url.toString()).queryParameters['code'];
             print('Alt riktig til nå');
