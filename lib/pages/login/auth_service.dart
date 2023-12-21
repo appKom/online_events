@@ -13,7 +13,6 @@ abstract class AuthService {
     try {
       final response = await http.post(
         Uri.parse('https://old.online.ntnu.no/openid/token'),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {
           'grant_type': 'authorization_code',
           'code': code,
