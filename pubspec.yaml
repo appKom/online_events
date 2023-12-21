@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.7
-  http: ^1.1.0
+  http: ^1.0.0
   carousel_slider: ^4.0.0
   intl: ^0.18.0
   flutter_secure_storage: ^9.0.0
@@ -24,6 +24,7 @@ dependencies:
   firebase_messaging: ^14.7.9
   firebase_core: ^2.24.2
   webview_flutter: ^4.4.2
+  appwrite: ^11.0.1
  
 
 
