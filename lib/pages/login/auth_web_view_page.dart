@@ -19,7 +19,7 @@ class LoginWebViewState extends State<LoginWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(title: const Text('Login')),
       body: InAppWebView(
         initialUrlRequest:
             URLRequest(url: Uri.parse(AuthService.authorizationUrl)),
@@ -29,6 +29,7 @@ class LoginWebViewState extends State<LoginWebView> {
         onLoadStart: (controller, url) async {
           if (url.toString().startsWith(AuthService.redirectUri)) {
             final code = Uri.parse(url.toString()).queryParameters['code'];
+            print('Alt riktig til nå');
             if (code != null) {
               final tokenData = await AuthService.exchangeCodeForToken(code);
               if (tokenData != null) {
@@ -43,8 +44,7 @@ class LoginWebViewState extends State<LoginWebView> {
                 // Close the WebView by popping the current route
                 Navigator.pop(context);
               } else {
-                // Handle error
-                // Optionally, show an error message or take other appropriate actions
+                print('Noe feil skjedde tokenData = null');
               }
             }
           }
