@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:online_events/main.dart';
 import 'package:online_events/pages/login/auth_service.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/app_navigator.dart';
 import '../../core/client/client.dart';
-
 
 class LoginWebView extends StatefulWidget {
   const LoginWebView({super.key});
@@ -15,28 +14,30 @@ class LoginWebView extends StatefulWidget {
 }
 
 class LoginWebViewState extends State<LoginWebView> {
-  late InAppWebViewController webViewController;
+  late WebViewController controller;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(AuthService.authorizationUrl)),
-        onWebViewCreated: _onWebViewCreated,
-        onLoadStart: _onLoadStart,
-      ),
-    );
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith(AuthService.redirectUri)) {
+              _handleRedirectUri(request.url);
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(AuthService.authorizationUrl));
   }
 
-  void _onWebViewCreated(InAppWebViewController controller) {
-    webViewController = controller;
-  }
-
-  Future<void> _onLoadStart(InAppWebViewController controller, Uri? url) async {
-    if (url == null || !url.toString().startsWith(AuthService.redirectUri)) return;
-
-    final code = url.queryParameters['code'];
+  Future<void> _handleRedirectUri(String url) async {
+    Uri uri = Uri.parse(url);
+    final code = uri.queryParameters['code'];
     if (code == null) {
       print('No authorization code received');
       return;
@@ -56,5 +57,13 @@ class LoginWebViewState extends State<LoginWebView> {
     } catch (e) {
       print('Error during token exchange: $e');
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Login')),
+      body: WebViewWidget(controller: controller),
+    );
   }
 }
