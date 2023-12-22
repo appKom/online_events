@@ -18,7 +18,6 @@ import '/theme/themed_icon.dart';
 import '/theme/theme.dart';
 import '/main.dart';
 
-
 int userId = 0;
 
 class ProfilePage extends StatefulWidget {
@@ -46,9 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  
-
-
   @override
   Widget build(BuildContext context) {
     const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
@@ -61,6 +57,10 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     if (userProfile != null) {
+      const String defaultImage =
+          'assets/images/better_profile_picture.jpg';
+      const String specialImage =
+          'assets/images/profile_picture.png';
       return Scaffold(
         backgroundColor: Colors.black,
         body: SingleChildScrollView(
@@ -92,21 +92,24 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: 125,
                           height: 125,
                           child: CircleAvatar(
-                            radius: 62.5, // Half of width and height
-                            backgroundImage: const AssetImage(
-                                'assets/images/better_profile_picture.jpg'),
+                            radius: 62.5, 
+                            backgroundImage: AssetImage(
+                          userProfile!.ntnuUsername == 'erlenst'
+                            ? specialImage 
+                            : defaultImage 
+                        ),
                             child: userProfile!.ntnuUsername == 'fredrch' ||
                                     userProfile!.ntnuUsername == 'erlenlst'
                                 ? const Align(
                                     alignment: Alignment.bottomRight,
                                     child: Padding(
                                       padding: EdgeInsets.all(
-                                          8.0), // Adjust padding as needed
+                                          8.0), 
                                       child: Icon(
                                         Icons.check_circle,
                                         color: OnlineTheme
-                                            .blue2, // Change color if needed
-                                        size: 30, // Adjust size as needed
+                                            .blue2, 
+                                        size: 30, 
                                       ),
                                     ),
                                   )
