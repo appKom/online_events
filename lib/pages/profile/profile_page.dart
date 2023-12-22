@@ -94,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: CircleAvatar(
                             radius: 62.5, 
                             backgroundImage: AssetImage(
-                          userProfile!.ntnuUsername == 'erlenst'
+                          userProfile!.ntnuUsername == 'erlenlst'
                             ? specialImage 
                             : defaultImage 
                         ),
