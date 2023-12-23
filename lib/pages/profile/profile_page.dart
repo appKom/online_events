@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/pages/events/my_events_page.dart';
-import 'package:online_events/pages/home/home_page.dart';
-import 'package:online_events/pages/loading/loading_display_page.dart';
-import 'package:online_events/components/online_header.dart';
-import '/components/online_scaffold.dart';
 
-import '../../core/client/client.dart';
-import '../../core/models/user_model.dart';
-import '/theme/themed_icon_button.dart';
-import '../../services/page_navigator.dart';
-import '/components/separator.dart';
+import '/components/animated_button.dart';
 import '/components/navbar.dart';
-import '/theme/themed_icon.dart';
-import '/theme/theme.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/core/client/client.dart';
+import '/core/models/user_model.dart';
 import '/main.dart';
+import '/pages/home/home_page.dart';
+import '/pages/loading/loading_display_page.dart';
+import '/services/page_navigator.dart';
+import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
+import '/theme/themed_icon_button.dart';
 
 int userId = 0;
 
@@ -49,18 +47,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
     final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     if (userProfile != null) {
       userId = userProfile!.id;
     }
 
     if (userProfile != null) {
-      const String defaultImage =
-          'assets/images/better_profile_picture.jpg';
-      const String specialImage =
-          'assets/images/profile_picture.png';
+      const String defaultImage = 'assets/images/better_profile_picture.jpg';
+      const String specialImage = 'assets/images/profile_picture.png';
       return Scaffold(
         backgroundColor: Colors.black,
         body: SingleChildScrollView(
@@ -92,24 +87,18 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: 125,
                           height: 125,
                           child: CircleAvatar(
-                            radius: 62.5, 
-                            backgroundImage: AssetImage(
-                          userProfile!.ntnuUsername == 'erlenlst'
-                            ? specialImage 
-                            : defaultImage 
-                        ),
-                            child: userProfile!.ntnuUsername == 'fredrch' ||
-                                    userProfile!.ntnuUsername == 'erlenlst'
+                            radius: 62.5,
+                            backgroundImage:
+                                AssetImage(userProfile!.ntnuUsername == 'erlenlst' ? specialImage : defaultImage),
+                            child: userProfile!.ntnuUsername == 'fredrch' || userProfile!.ntnuUsername == 'erlenlst'
                                 ? const Align(
                                     alignment: Alignment.bottomRight,
                                     child: Padding(
-                                      padding: EdgeInsets.all(
-                                          8.0), 
+                                      padding: EdgeInsets.all(8.0),
                                       child: Icon(
                                         Icons.check_circle,
-                                        color: OnlineTheme
-                                            .blue2, 
-                                        size: 30, 
+                                        color: OnlineTheme.blue2,
+                                        size: 30,
                                       ),
                                     ),
                                   )
@@ -128,14 +117,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 8),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput(
-                      'NTNU-brukernavn', userProfile!.ntnuUsername),
+                  child: constValueTextInput('NTNU-brukernavn', userProfile!.ntnuUsername),
                 ),
                 // const Separator(),
                 Padding(
                   padding: aboveBelowPadding,
-                  child:
-                      constValueTextInput('Telefon', userProfile!.phoneNumber),
+                  child: constValueTextInput('Telefon', userProfile!.phoneNumber),
                 ),
                 // const Separator(),
                 Padding(
@@ -150,13 +137,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 5),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput(
-                      'Klassetrinn', userProfile!.year.toString()),
+                  child: constValueTextInput('Klassetrinn', userProfile!.year.toString()),
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput(
-                      'Startår', userProfile!.startedDate.year.toString()),
+                  child: constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
@@ -197,8 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 40,
                   child: CustomPaint(
-                    painter:
-                        StudyCoursePainter(year: userProfile!.year.toDouble()),
+                    painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
                   ),
                 ),
                 const Separator(margin: 40),
@@ -208,18 +192,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child:
-                      constValueTextInput('Github', userProfile!.github ?? ''),
+                  child: constValueTextInput('Github', userProfile!.github ?? ''),
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput(
-                      'Linkedin', userProfile!.linkedin ?? ''),
+                  child: constValueTextInput('Linkedin', userProfile!.linkedin ?? ''),
                 ),
                 Padding(
-                    padding: aboveBelowPadding,
-                    child: constValueTextInput(
-                        'Hjemmeside', userProfile!.website ?? '')),
+                    padding: aboveBelowPadding, child: constValueTextInput('Hjemmeside', userProfile!.website ?? '')),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
                   child: AnimatedButton(
@@ -394,8 +374,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
-        paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -403,8 +382,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0),
-        Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);

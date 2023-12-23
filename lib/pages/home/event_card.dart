@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/core/models/event_model.dart';
-import 'package:online_events/pages/event/event_page.dart';
-import '../../services/page_navigator.dart';
-import '../../theme/theme.dart';
 import 'package:intl/intl.dart';
-import 'package:collection/collection.dart';
+
+import '/components/animated_button.dart';
+import '/components/separator.dart';
+import '/core/models/event_model.dart';
+import '/pages/event/event_page.dart';
+import '/services/page_navigator.dart';
+import '/theme/theme.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({
@@ -94,39 +93,31 @@ class EventCard extends StatelessWidget {
                     height: 84,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: model.images
-                              .isNotEmpty 
+                      child: model.images.isNotEmpty
                           ? Image.network(
-                              model.images.first
-                                  .md, 
+                              model.images.first.md,
                               fit: BoxFit.cover,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
+                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                                 if (loadingProgress == null) {
                                   return child;
-                                } 
+                                }
                                 return Center(
                                   child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                                         : null,
                                   ),
                                 );
                               },
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
+                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                 return SvgPicture.asset(
-                                  'assets/svg/online_hvit_o.svg', 
+                                  'assets/svg/online_hvit_o.svg',
                                   fit: BoxFit.cover,
                                 );
                               },
                             )
                           : SvgPicture.asset(
-                              'assets/svg/online_hvit_o.svg', 
+                              'assets/svg/online_hvit_o.svg',
                               fit: BoxFit.cover,
                             ),
                     ),
@@ -152,8 +143,7 @@ class EventCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        subHeader(Icons.calendar_month_outlined,
-                            formatDateSpan(model.startDate, model.endDate)),
+                        subHeader(Icons.calendar_month_outlined, formatDateSpan(model.startDate, model.endDate)),
                         subHeader(
                           Icons.people_outline,
                           peopleToString(),

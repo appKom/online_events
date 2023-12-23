@@ -52,8 +52,9 @@ class LoginWebViewState extends State<LoginWebView> {
 
       Client.setAccessToken(tokenData['access_token']);
       setState(() => loggedIn = true);
+      AppNavigator.pop();
+      // print(tokenData);
       PageNavigator.navigateTo(const ProfilePageDisplay());
-      Navigator.pop(context);
     } catch (e) {
       print('Error during token exchange: $e');
     }

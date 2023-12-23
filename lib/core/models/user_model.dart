@@ -15,7 +15,7 @@ class UserModel {
   final String? linkedin;
   final List<dynamic> positions;
   final List<dynamic> specialPositions;
-  final String rfid;
+  final String? rfid;
   final int fieldOfStudy;
   final DateTime startedDate;
   final bool compiled;
@@ -49,7 +49,7 @@ class UserModel {
     this.linkedin,
     required this.positions,
     required this.specialPositions,
-    required this.rfid,
+    this.rfid,
     required this.fieldOfStudy,
     required this.startedDate,
     required this.compiled,

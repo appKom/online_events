@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/core/client/client.dart';
-import 'package:online_events/core/models/attended_events.dart';
-import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/core/models/event_model.dart';
-import 'package:online_events/pages/home/event_card.dart';
-import 'package:online_events/pages/loading/loading_display_page.dart';
-import 'package:online_events/pages/login/auth_web_view_page.dart';
-import 'package:online_events/pages/login/login_page.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
-import 'package:online_events/services/app_navigator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../theme/theme.dart';
+import '/components/animated_button.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/core/client/client.dart';
+import '/core/models/attended_events.dart';
+import '/core/models/event_model.dart';
 import '/main.dart';
+import '/pages/home/event_card.dart';
+import '/pages/loading/loading_display_page.dart';
+import '/pages/login/auth_web_view_page.dart';
+import '/pages/profile/profile_page.dart';
+import '/theme/theme.dart';
 
 List<AttendedEvents> attendedEvents = [];
 List<EventModel> pastEventModels = [];
@@ -78,24 +75,21 @@ class _MyEventsPageState extends State<MyEventsPage> {
     if (_isLoading) {
       return const LoadingPageDisplay();
     }
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     final style = OnlineTheme.textStyle(size: 20, weight: 7);
     if (loggedIn) {
       final now = DateTime.now();
 
       final upcomingEvents = eventModels
-          .where((model) => attendedEvents
-              .any((attendedEvent) => attendedEvent.event == model.id))
+          .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isAfter(now);
       }).toList();
 
       final pastEvents = eventModels
-          .where((model) => attendedEvents
-              .any((attendedEvent) => attendedEvent.event == model.id))
+          .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isBefore(now);
@@ -106,24 +100,16 @@ class _MyEventsPageState extends State<MyEventsPage> {
 
         bool isEventOnDay(EventModel event, DateTime day) {
           final startDate = DateTime.parse(event.startDate).toLocal();
-          final endDate = (event.endDate != null
-                  ? DateTime.parse(event.endDate)
-                  : startDate)
-              .toLocal();
+          final endDate = DateTime.parse(event.endDate).toLocal();
           final comparisonDayStart = DateTime(day.year, day.month, day.day);
-          final comparisonDayEnd =
-              DateTime(day.year, day.month, day.day, 23, 59, 59);
+          final comparisonDayEnd = DateTime(day.year, day.month, day.day, 23, 59, 59);
 
-          return (startDate.isAtSameMomentAs(comparisonDayStart) ||
-                  startDate.isBefore(comparisonDayEnd)) &&
-              (endDate.isAtSameMomentAs(comparisonDayStart) ||
-                  endDate.isAfter(comparisonDayStart));
+          return (startDate.isAtSameMomentAs(comparisonDayStart) || startDate.isBefore(comparisonDayEnd)) &&
+              (endDate.isAtSameMomentAs(comparisonDayStart) || endDate.isAfter(comparisonDayStart));
         }
 
-        selectedEvents
-            .addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
-        selectedEvents
-            .addAll(pastEvents.where((event) => isEventOnDay(event, day)));
+        selectedEvents.addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
+        selectedEvents.addAll(pastEvents.where((event) => isEventOnDay(event, day)));
 
         return selectedEvents;
       }
@@ -170,9 +156,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
                       return Container(
                         margin: const EdgeInsets.all(4.0),
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                            color: OnlineTheme.gray16,
-                            shape: BoxShape.rectangle),
+                        decoration: const BoxDecoration(color: OnlineTheme.gray16, shape: BoxShape.rectangle),
                         child: Text(
                           date.day.toString(),
                           style: OnlineTheme.textStyle(),
@@ -206,10 +190,8 @@ class _MyEventsPageState extends State<MyEventsPage> {
                 headerStyle: const HeaderStyle(
                   formatButtonVisible: false,
                   titleCentered: true,
-                  leftChevronIcon:
-                      Icon(Icons.arrow_back_ios, color: Colors.white),
-                  rightChevronIcon:
-                      Icon(Icons.arrow_forward_ios, color: Colors.white),
+                  leftChevronIcon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                  rightChevronIcon: Icon(Icons.arrow_forward_ios, color: Colors.white),
                   titleTextStyle: TextStyle(color: Colors.white),
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(

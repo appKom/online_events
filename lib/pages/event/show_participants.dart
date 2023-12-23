@@ -1,23 +1,20 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/core/client/client.dart';
-import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/core/models/attendees-list.dart';
-import 'package:online_events/core/models/event_model.dart';
-import 'package:online_events/core/models/waitlist.dart';
-import 'package:online_events/pages/event/event_page.dart';
-import 'package:online_events/services/app_navigator.dart';
 
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/core/client/client.dart';
+import '/core/models/attendee_info_model.dart';
+import '/core/models/attendees-list.dart';
+import '/core/models/event_model.dart';
+import '/core/models/waitlist.dart';
+import '/pages/event/event_page.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class ShowParticipants extends StaticPage {
-  const ShowParticipants(
-      {super.key, required this.model, required this.attendeeInfoModel});
+  const ShowParticipants({super.key, required this.model, required this.attendeeInfoModel});
 
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
@@ -32,7 +29,6 @@ class ShowParticipants extends StaticPage {
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 25);
 
     return LayoutBuilder(builder: (context, constraints) {
-      final maxSize = min(constraints.maxWidth, constraints.maxHeight);
       final eventId = model.id;
 
       return SingleChildScrollView(
@@ -50,7 +46,9 @@ class ShowParticipants extends StaticPage {
                     color: Colors.white,
                     size: 40,
                   ),
-                  onPressed: () => PageNavigator.navigateTo(EventPageDisplay(model: model,)),
+                  onPressed: () => PageNavigator.navigateTo(EventPageDisplay(
+                    model: model,
+                  )),
                 ),
                 const SizedBox(
                   width: 25,
@@ -67,50 +65,41 @@ class ShowParticipants extends StaticPage {
             ),
             FutureBuilder<List<AttendeesList>>(
               future: Client.getEventAttendees(eventId).then((attendees) {
-                if (attendees != null) {
-                  attendees.sort((a, b) {
-                    if (a.isVisible && !b.isVisible) {
-                      return -1;
-                    } else if (!a.isVisible && b.isVisible) {
-                      return 1;
-                    }
-                    return 0;
-                  });
-                }
-                return attendees ?? [];
+                attendees.sort((a, b) {
+                  if (a.isVisible && !b.isVisible) {
+                    return -1;
+                  } else if (!a.isVisible && b.isVisible) {
+                    return 1;
+                  }
+                  return 0;
+                });
+                return attendees;
               }),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}',
-                      style: OnlineTheme.textStyle());
+                  return Text('Error: ${snapshot.error}', style: OnlineTheme.textStyle());
                 } else if (snapshot.hasData) {
                   List<AttendeesList> sortedAttendees = snapshot.data!;
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: sortedAttendees.length,
-                    separatorBuilder: (context, index) =>
-                        const Separator(), // Thinner divider
+                    separatorBuilder: (context, index) => const Separator(), // Thinner divider
                     itemBuilder: (context, index) {
                       final attendee = sortedAttendees[index];
-                      final bool isVerified =
-                          attendee.fullName == "Mads Hermansen";
+                      final bool isVerified = attendee.fullName == "Mads Hermansen";
 
-                      final String indexStr =
-                          (index + 1).toString().padLeft(3, '0');
+                      final String indexStr = (index + 1).toString().padLeft(3, '0');
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: horizontalPadding,
                             child: Text('$indexStr. ',
-                                style: OnlineTheme.textStyle(
-                                    size: 16,
-                                    color: isVerified
-                                        ? Colors.green
-                                        : Colors.white)),
+                                style:
+                                    OnlineTheme.textStyle(size: 16, color: isVerified ? Colors.green : Colors.white)),
                           ),
                           Expanded(
                             child: Row(
@@ -119,10 +108,7 @@ class ShowParticipants extends StaticPage {
                                   child: Text(
                                     attendee.fullName,
                                     style: OnlineTheme.textStyle(
-                                        size: 16,
-                                        color: isVerified
-                                            ? Colors.green
-                                            : Colors.white),
+                                        size: 16, color: isVerified ? Colors.green : Colors.white),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
@@ -131,8 +117,7 @@ class ShowParticipants extends StaticPage {
                                     width: 5,
                                   ),
                                 if (isVerified)
-                                  const Icon(Icons.check_circle_sharp,
-                                      color: OnlineTheme.blue2, size: 16),
+                                  const Icon(Icons.check_circle_sharp, color: OnlineTheme.blue2, size: 16),
                               ],
                             ),
                           ),
@@ -142,18 +127,12 @@ class ShowParticipants extends StaticPage {
                               children: [
                                 Text(
                                   '${attendee.yearOfStudy}. klasse',
-                                  style: OnlineTheme.textStyle(
-                                      size: 16,
-                                      color: isVerified
-                                          ? Colors.green
-                                          : Colors.white),
+                                  style:
+                                      OnlineTheme.textStyle(size: 16, color: isVerified ? Colors.green : Colors.white),
                                   textAlign: TextAlign.right,
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.people,
-                                      color: isVerified
-                                          ? Colors.green
-                                          : Colors.white),
+                                  icon: Icon(Icons.people, color: isVerified ? Colors.green : Colors.white),
                                   onPressed: () {
                                     // Your onPressed functionality here
                                   },
@@ -166,8 +145,7 @@ class ShowParticipants extends StaticPage {
                     },
                   );
                 } else {
-                  return Text('No attendees found',
-                      style: OnlineTheme.textStyle());
+                  return Text('No attendees found', style: OnlineTheme.textStyle());
                 }
               },
             ),
@@ -193,24 +171,21 @@ class ShowParticipants extends StaticPage {
             ),
             FutureBuilder<List<Waitlist>>(
               future: Client.getEventWaitlists(eventId).then((attendees) {
-                if (attendees != null) {
-                  attendees.sort((a, b) {
-                    if (a.isVisible && !b.isVisible) {
-                      return -1;
-                    } else if (!a.isVisible && b.isVisible) {
-                      return 1;
-                    }
-                    return 0;
-                  });
-                }
-                return attendees ?? [];
+                attendees.sort((a, b) {
+                  if (a.isVisible && !b.isVisible) {
+                    return -1;
+                  } else if (!a.isVisible && b.isVisible) {
+                    return 1;
+                  }
+                  return 0;
+                });
+                return attendees;
               }),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}',
-                      style: OnlineTheme.textStyle());
+                  return Text('Error: ${snapshot.error}', style: OnlineTheme.textStyle());
                 } else if (snapshot.hasData) {
                   List<Waitlist> sortedAttendees = snapshot.data!;
                   return ListView.separated(
@@ -221,21 +196,16 @@ class ShowParticipants extends StaticPage {
                     itemBuilder: (context, index) {
                       final attendee = sortedAttendees[index];
                       final bool isVerified =
-                          attendee.fullName == "Fredrik Carsten Hansteen" ||
-                              attendee.fullName == "Erlend Løvoll Strøm";
-                      final String indexStr =
-                          (index + 1).toString().padLeft(3, '0');
+                          attendee.fullName == "Fredrik Carsten Hansteen" || attendee.fullName == "Erlend Løvoll Strøm";
+                      final String indexStr = (index + 1).toString().padLeft(3, '0');
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: horizontalPadding,
                             child: Text('$indexStr. ',
-                                style: OnlineTheme.textStyle(
-                                    size: 16,
-                                    color: isVerified
-                                        ? Colors.green
-                                        : Colors.white)),
+                                style:
+                                    OnlineTheme.textStyle(size: 16, color: isVerified ? Colors.green : Colors.white)),
                           ),
                           Expanded(
                             child: Row(
@@ -244,16 +214,12 @@ class ShowParticipants extends StaticPage {
                                   child: Text(
                                     attendee.fullName,
                                     style: OnlineTheme.textStyle(
-                                        size: 16,
-                                        color: isVerified
-                                            ? Colors.green
-                                            : Colors.white),
+                                        size: 16, color: isVerified ? Colors.green : Colors.white),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 if (isVerified)
-                                  const Icon(Icons.check_circle_sharp,
-                                      color: OnlineTheme.blue2, size: 16),
+                                  const Icon(Icons.check_circle_sharp, color: OnlineTheme.blue2, size: 16),
                               ],
                             ),
                           ),
@@ -267,8 +233,7 @@ class ShowParticipants extends StaticPage {
                                   textAlign: TextAlign.right,
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.people,
-                                      color: Colors.white),
+                                  icon: const Icon(Icons.people, color: Colors.white),
                                   onPressed: () {
                                     // Your onPressed functionality here
                                   },
@@ -281,8 +246,7 @@ class ShowParticipants extends StaticPage {
                     },
                   );
                 } else {
-                  return Text('No attendees found',
-                      style: OnlineTheme.textStyle());
+                  return Text('No attendees found', style: OnlineTheme.textStyle());
                 }
               },
             ),

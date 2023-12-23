@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:online_events/core/models/article_model.dart';
 import 'package:online_events/core/models/attended_events.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
@@ -8,7 +9,6 @@ import 'package:online_events/core/models/user_model.dart';
 import 'package:online_events/core/models/waitlist.dart';
 
 import '../models/event_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract class Client {
   static const endpoint = 'https://old.online.ntnu.no';
@@ -18,23 +18,17 @@ abstract class Client {
     accessToken = token;
   }
 
-  static Future<List<EventModel>?> getEvents(
-      {List<int> pages = const [1, 2, 3, 4]}) async {
+  static Future<List<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
     List<EventModel> allEvents = [];
 
     for (int page in pages) {
-      String url = page == 1
-          ? '$endpoint/api/v1/event/events/'
-          : '$endpoint/api/v1/event/events/?page=$page';
+      String url = page == 1 ? '$endpoint/api/v1/event/events/' : '$endpoint/api/v1/event/events/?page=$page';
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        final responseBody =
-            utf8.decode(response.bodyBytes, allowMalformed: true);
+        final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
         final jsonResponse = jsonDecode(responseBody);
-        final events = jsonResponse['results']
-            .map<EventModel>((eventJson) => EventModel.fromJson(eventJson))
-            .toList();
+        final events = jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
 
         allEvents.addAll(events);
       } else {
@@ -60,13 +54,10 @@ abstract class Client {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        final responseBody =
-            utf8.decode(response.bodyBytes, allowMalformed: true);
+        final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
         final jsonResponse = jsonDecode(responseBody);
 
-        final events = jsonResponse['results']
-            .map<EventModel>((eventJson) => EventModel.fromJson(eventJson))
-            .toList();
+        final events = jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
 
         pastEvents.addAll(events);
       } else {
@@ -88,7 +79,9 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
+      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final jsonResponse = jsonDecode(responseBody);
+      print('json response: $jsonResponse');
       return UserModel.fromJson(jsonResponse);
     } else {
       print('Failed to fetch user profile');
@@ -114,13 +107,11 @@ abstract class Client {
       );
 
       if (response.statusCode == 200) {
-        final responseBody =
-            utf8.decode(response.bodyBytes, allowMalformed: true);
+        final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
         final jsonResponse = jsonDecode(responseBody);
 
         final attendees = jsonResponse['results']
-            .map<AttendedEvents>(
-                (attendeeJson) => AttendedEvents.fromJson(attendeeJson))
+            .map<AttendedEvents>((attendeeJson) => AttendedEvents.fromJson(attendeeJson))
             .toList();
 
         allAttendees.addAll(attendees);
@@ -149,8 +140,7 @@ abstract class Client {
     }
   }
 
-  static Future<AttendeeInfoModel?> getEventAttendanceLoggedIn(
-      int eventId) async {
+  static Future<AttendeeInfoModel?> getEventAttendanceLoggedIn(int eventId) async {
     final url = '$endpoint/api/v1/event/attendance-events/$eventId/';
 
     final response = await http.get(
@@ -171,8 +161,7 @@ abstract class Client {
   }
 
   static Future<List<AttendeesList>> getEventAttendees(int eventId) async {
-    final url =
-        '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
+    final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
 
     final response = await http.get(
       Uri.parse(url),
@@ -182,13 +171,10 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody =
-          utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody) as List;
 
-      return jsonResponse
-          .map<AttendeesList>((json) => AttendeesList.fromJson(json))
-          .toList();
+      return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
     } else {
       print('Failed to fetch event attendees from $url');
       return [];
@@ -196,8 +182,7 @@ abstract class Client {
   }
 
   static Future<List<Waitlist>> getEventWaitlists(int eventId) async {
-    final url =
-        '$endpoint/api/v1/event/attendance-events/$eventId/public-on-waitlist/';
+    final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-on-waitlist/';
 
     final response = await http.get(
       Uri.parse(url),
@@ -207,13 +192,10 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody =
-          utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody) as List;
 
-      return jsonResponse
-          .map<Waitlist>((json) => Waitlist.fromJson(json))
-          .toList();
+      return jsonResponse.map<Waitlist>((json) => Waitlist.fromJson(json)).toList();
     } else {
       print('Failed to fetch event waitlist from $url');
       return [];
@@ -226,8 +208,7 @@ abstract class Client {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final responseBody =
-          utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
 
       final articles = jsonResponse['results']
@@ -251,7 +232,7 @@ abstract class Client {
 //     "recaptcha": "your_recaptcha_token_here", // You might need to handle recaptcha
 //     "allow_pictures": true,
 //     "show_as_attending_event": true,
-//     "note": "" 
+//     "note": ""
 //   };
 
 //   try {
@@ -259,7 +240,7 @@ abstract class Client {
 //       Uri.parse(url),
 //       headers: {
 //         "Content-Type": "application/json",
-//         "Authorization": 'Bearer $accessToken', 
+//         "Authorization": 'Bearer $accessToken',
 //       },
 //       body: json.encode(requestBody),
 //     );
