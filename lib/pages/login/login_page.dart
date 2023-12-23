@@ -24,7 +24,7 @@ class LoginPage extends StaticPage {
     );
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: OnlineTheme.background,
       body: Padding(
         padding: EdgeInsets.only(left: padding.left, right: padding.right),
         child: Column(

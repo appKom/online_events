@@ -31,13 +31,24 @@ class MyEventsPageState extends State<MyEventsPage> {
   DateTime? _selectedDay;
   bool _isDisposed = false;
   bool _isLoading = true;
+  int currentPage = 7;
 
   @override
   void initState() {
     super.initState();
-    if (loggedIn == true) {
-      fetchMoreEvents();
-      fetchAttendeeInfo();
+    _isLoading = true; // Assuming you want to show a loading indicator
+    if (loggedIn) {
+      fetchMoreEvents().then((_) {
+        // Fetch attendee info or do other actions after events are fetched
+        fetchAttendeeInfo();
+      }).catchError((error) {
+        // Handle any errors here
+      }).whenComplete(() {
+        // This block will run after fetchMoreEvents, regardless of success or failure
+        setState(() {
+          _isLoading = false;
+        });
+      });
     } else {
       setState(() {
         _isLoading = false;
@@ -45,12 +56,27 @@ class MyEventsPageState extends State<MyEventsPage> {
     }
   }
 
-  void fetchMoreEvents() async {
-    var moreEvents = await Client.getEvents(pages: [5, 6, 7]);
-    if (moreEvents != null) {
+  Future<void> fetchMoreEvents() async {
+    int nextPage1 = currentPage + 1; // First next page
+    int nextPage2 = currentPage + 2; // Second next page
+
+    try {
+      var moreEventsPage1 = await Client.getEvents(pages: [nextPage1]);
+      var moreEventsPage2 = await Client.getEvents(pages: [nextPage2]);
+
       setState(() {
-        eventModels.addAll(moreEvents);
+        if (moreEventsPage1 != null) {
+          eventModels.addAll(moreEventsPage1);
+        }
+        if (moreEventsPage2 != null) {
+          eventModels.addAll(moreEventsPage2);
+        }
+        currentPage +=
+            2; // Update the current page by 2 since two pages are fetched
       });
+    } catch (e) {
+      // Handle the error here
+      print('Error fetching events: $e');
     }
   }
 
@@ -75,21 +101,24 @@ class MyEventsPageState extends State<MyEventsPage> {
     if (_isLoading) {
       return const LoadingPageDisplay();
     }
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     final style = OnlineTheme.textStyle(size: 20, weight: 7);
     if (loggedIn) {
       final now = DateTime.now();
 
       final upcomingEvents = eventModels
-          .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
+          .where((model) => attendedEvents
+              .any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isAfter(now);
       }).toList();
 
       final pastEvents = eventModels
-          .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
+          .where((model) => attendedEvents
+              .any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isBefore(now);
@@ -102,14 +131,19 @@ class MyEventsPageState extends State<MyEventsPage> {
           final startDate = DateTime.parse(event.startDate).toLocal();
           final endDate = DateTime.parse(event.endDate).toLocal();
           final comparisonDayStart = DateTime(day.year, day.month, day.day);
-          final comparisonDayEnd = DateTime(day.year, day.month, day.day, 23, 59, 59);
+          final comparisonDayEnd =
+              DateTime(day.year, day.month, day.day, 23, 59, 59);
 
-          return (startDate.isAtSameMomentAs(comparisonDayStart) || startDate.isBefore(comparisonDayEnd)) &&
-              (endDate.isAtSameMomentAs(comparisonDayStart) || endDate.isAfter(comparisonDayStart));
+          return (startDate.isAtSameMomentAs(comparisonDayStart) ||
+                  startDate.isBefore(comparisonDayEnd)) &&
+              (endDate.isAtSameMomentAs(comparisonDayStart) ||
+                  endDate.isAfter(comparisonDayStart));
         }
 
-        selectedEvents.addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
-        selectedEvents.addAll(pastEvents.where((event) => isEventOnDay(event, day)));
+        selectedEvents
+            .addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
+        selectedEvents
+            .addAll(pastEvents.where((event) => isEventOnDay(event, day)));
 
         return selectedEvents;
       }
@@ -156,7 +190,9 @@ class MyEventsPageState extends State<MyEventsPage> {
                       return Container(
                         margin: const EdgeInsets.all(4.0),
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(color: OnlineTheme.gray0, shape: BoxShape.rectangle),
+                        decoration: const BoxDecoration(
+                            color: OnlineTheme.gray0,
+                            shape: BoxShape.rectangle),
                         child: Text(
                           date.day.toString(),
                           style: OnlineTheme.textStyle(),
@@ -190,8 +226,10 @@ class MyEventsPageState extends State<MyEventsPage> {
                 headerStyle: const HeaderStyle(
                   formatButtonVisible: false,
                   titleCentered: true,
-                  leftChevronIcon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                  rightChevronIcon: Icon(Icons.arrow_forward_ios, color: Colors.white),
+                  leftChevronIcon:
+                      Icon(Icons.arrow_back_ios, color: Colors.white),
+                  rightChevronIcon:
+                      Icon(Icons.arrow_forward_ios, color: Colors.white),
                   titleTextStyle: TextStyle(color: Colors.white),
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(
@@ -211,6 +249,25 @@ class MyEventsPageState extends State<MyEventsPage> {
                 child: Text('Tidligere Arrangementer', style: style),
               ),
               _buildEventList(pastEvents),
+              const SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: AnimatedButton(
+                  onTap: () {
+                    fetchMoreEvents();
+                  },
+                  childBuilder: (context, hover, pointerDown) {
+                    return SizedBox(
+                      height: 25,
+                      child: Text(
+                        'Mer',
+                        style: OnlineTheme.textStyle(size: 16),
+                      ),
+                    );
+                  },
+                ),
+              ),
               SizedBox(height: Navbar.height(context)),
             ],
           ),

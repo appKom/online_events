@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
       const String defaultImage = 'assets/images/better_profile_picture.jpg';
       const String specialImage = 'assets/images/profile_picture.png';
       return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: OnlineTheme.background,
         body: SingleChildScrollView(
           // Wrap the main content in a SingleChildScrollView
           child: Padding(
