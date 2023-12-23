@@ -34,38 +34,37 @@ class EventCard extends StatelessWidget {
 
   String formatDateSpan(String startDate, String endDate) {
     DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
-    DateFormat outputDayMonthFormat = DateFormat("dd. MMMM");
+    DateFormat outputDayFormat = DateFormat("dd");
+    DateFormat outputMonthFormat = DateFormat("MMMM");
 
     DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
     DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
 
-    String translateMonth(String date) {
-      for (var month in monthsNorwegian.keys) {
-        if (date.contains(month)) {
-          return date.replaceAll(month, monthsNorwegian[month]!);
-        }
-      }
-      return date; // Return original if no translation found
+    String translateMonth(String month) {
+      return monthsNorwegian[month] ??
+          month; 
     }
 
+    String startDay = outputDayFormat.format(startDateTime);
+    String endDay = outputDayFormat.format(endDateTime);
+    String startMonth = translateMonth(outputMonthFormat.format(startDateTime));
+    String endMonth = translateMonth(outputMonthFormat.format(endDateTime));
+
     if (startDateTime.year == endDateTime.year &&
-        startDateTime.month == endDateTime.month &&
-        startDateTime.day == endDateTime.day) {
-      // Same day
-      return translateMonth(outputDayMonthFormat.format(startDateTime));
+        startDateTime.month == endDateTime.month) {
+      if (startDateTime.day == endDateTime.day) {
+        return '$startDay. $startMonth';
+      } else {
+        return '$startDay.-$endDay. $startMonth';
+      }
     } else {
-      // Different days
-      String formattedStartDate =
-          translateMonth(outputDayMonthFormat.format(startDateTime));
-      String formattedEndDate =
-          translateMonth(outputDayMonthFormat.format(endDateTime));
-      return "$formattedStartDate - $formattedEndDate";
+      return '$startDay. $startMonth - $endDay. $endMonth';
     }
   }
 
   String shortenName() {
     final name = model.title;
-    return name.replaceAll('Bedriftspresentasjon', 'Bedpress');
+    return name.replaceAll('Bedriftspresentasjon', 'Bedpres');
   }
 
   String registeredToString() {

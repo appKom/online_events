@@ -31,21 +31,22 @@ class MyEventsPageState extends State<MyEventsPage> {
   DateTime? _selectedDay;
   bool _isDisposed = false;
   bool _isLoading = true;
-  int currentPage = 7;
+  int currentPage = 4;
 
   @override
   void initState() {
     super.initState();
-    _isLoading = true; 
+    _isLoading = true;
     if (loggedIn) {
       fetchMoreEvents().then((_) {
         fetchAttendeeInfo();
       }).catchError((error) {
-        // Todo
       }).whenComplete(() {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       });
     } else {
       setState(() {
@@ -55,32 +56,42 @@ class MyEventsPageState extends State<MyEventsPage> {
   }
 
   Future<void> fetchMoreEvents() async {
-    int nextPage1 = currentPage + 1; // First next page
-    int nextPage2 = currentPage + 2; // Second next page
+    int nextPage1 = currentPage + 1;
+    int nextPage2 = currentPage + 2;
 
     try {
       var moreEventsPage1 = await Client.getEvents(pages: [nextPage1]);
       var moreEventsPage2 = await Client.getEvents(pages: [nextPage2]);
 
-      setState(() {
-        if (moreEventsPage1 != null) {
-          eventModels.addAll(moreEventsPage1);
-        }
-        if (moreEventsPage2 != null) {
-          eventModels.addAll(moreEventsPage2);
-        }
-        currentPage +=
-            2; 
-      });
+      if (mounted) {
+        setState(() {
+          if (moreEventsPage1 != null) {
+            for (var event in moreEventsPage1) {
+              if (!eventModels
+                  .any((existingEvent) => existingEvent.id == event.id)) {
+                eventModels.add(event);
+              }
+            }
+          }
+          if (moreEventsPage2 != null) {
+            for (var event in moreEventsPage2) {
+              if (!eventModels
+                  .any((existingEvent) => existingEvent.id == event.id)) {
+                eventModels.add(event);
+              }
+            }
+          }
+          currentPage += 2;
+        });
+      }
     } catch (e) {
-      // Handle the error here
       print('Error fetching events: $e');
     }
   }
 
   Future<void> fetchAttendeeInfo() async {
     List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userId);
-    if (!_isDisposed) {
+    if (mounted) {
       setState(() {
         attendedEvents = allAttendees;
         _isLoading = false;
@@ -102,7 +113,7 @@ class MyEventsPageState extends State<MyEventsPage> {
     return Center(
       child: Text(
         _norwegianWeekDays[i % 7],
-        style: OnlineTheme.textStyle(), 
+        style: OnlineTheme.textStyle(),
       ),
     );
   }
@@ -389,8 +400,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                   },
                 ),
               ),
-              
-              SizedBox(height: Navbar.height(context)+10),
+              SizedBox(height: Navbar.height(context) + 10),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:online_events/pages/login/auth_service.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import 'package:online_events/services/app_navigator.dart';
 import '../../core/client/client.dart';
+import '../../theme/theme.dart';
 
 class LoginWebView extends StatefulWidget {
   const LoginWebView({super.key});
@@ -21,6 +22,7 @@ class LoginWebViewState extends State<LoginWebView> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      // ..setBackgroundColor(OnlineTheme.background)
       ..setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) {

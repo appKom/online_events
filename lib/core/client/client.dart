@@ -81,7 +81,6 @@ abstract class Client {
     if (response.statusCode == 200) {
       final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
-      print('json response: $jsonResponse');
       return UserModel.fromJson(jsonResponse);
     } else {
       print('Failed to fetch user profile');

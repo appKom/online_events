@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 abstract class AuthService {
   static const String clientId = '972717';
   static const String redirectUri =
-      'https://cloud.appwrite.io/v1/account/sessions/oauth2/callback/oidc/65706141ead327e0436a'; // Replace with your Appwrite redirect URI
+      'https://cloud.appwrite.io/v1/account/sessions/oauth2/callback/oidc/65706141ead327e0436a'; 
 
   static String get authorizationUrl =>
       'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=$redirectUri&response_type=code&scope=openid+profile+onlineweb4+events';
