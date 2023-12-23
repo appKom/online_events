@@ -20,13 +20,13 @@ List<AttendedEvents> attendedEvents = [];
 List<EventModel> pastEventModels = [];
 
 class MyEventsPage extends StatefulWidget {
-  const MyEventsPage({Key? key}) : super(key: key);
+  const MyEventsPage({super.key});
 
   @override
-  _MyEventsPageState createState() => _MyEventsPageState();
+  MyEventsPageState createState() => MyEventsPageState();
 }
 
-class _MyEventsPageState extends State<MyEventsPage> {
+class MyEventsPageState extends State<MyEventsPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   bool _isDisposed = false;
@@ -156,7 +156,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
                       return Container(
                         margin: const EdgeInsets.all(4.0),
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(color: OnlineTheme.gray16, shape: BoxShape.rectangle),
+                        decoration: const BoxDecoration(color: OnlineTheme.gray0, shape: BoxShape.rectangle),
                         child: Text(
                           date.day.toString(),
                           style: OnlineTheme.textStyle(),
