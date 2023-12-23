@@ -36,15 +36,13 @@ class MyEventsPageState extends State<MyEventsPage> {
   @override
   void initState() {
     super.initState();
-    _isLoading = true; // Assuming you want to show a loading indicator
+    _isLoading = true; 
     if (loggedIn) {
       fetchMoreEvents().then((_) {
-        // Fetch attendee info or do other actions after events are fetched
         fetchAttendeeInfo();
       }).catchError((error) {
-        // Handle any errors here
+        // Todo
       }).whenComplete(() {
-        // This block will run after fetchMoreEvents, regardless of success or failure
         setState(() {
           _isLoading = false;
         });
@@ -72,7 +70,7 @@ class MyEventsPageState extends State<MyEventsPage> {
           eventModels.addAll(moreEventsPage2);
         }
         currentPage +=
-            2; // Update the current page by 2 since two pages are fetched
+            2; 
       });
     } catch (e) {
       // Handle the error here
@@ -88,6 +86,70 @@ class MyEventsPageState extends State<MyEventsPage> {
         _isLoading = false;
       });
     }
+  }
+
+  static const List<String> _norwegianWeekDays = [
+    'Man',
+    'Tir',
+    'Ons',
+    'Tor',
+    'Fre',
+    'Lør',
+    'Søn'
+  ];
+
+  Widget _customDaysOfWeekBuilder(BuildContext context, int i) {
+    return Center(
+      child: Text(
+        _norwegianWeekDays[i % 7],
+        style: OnlineTheme.textStyle(), 
+      ),
+    );
+  }
+
+  static const List<String> _norwegianMonths = [
+    'Januar',
+    'Februar',
+    'Mars',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+  ];
+
+  // Custom Header Widget
+  Widget _customHeaderWidget({
+    required DateTime focusedDay,
+    required VoidCallback onLeftArrowTap,
+    required VoidCallback onRightArrowTap,
+    required VoidCallback onTitleTap,
+  }) {
+    String monthName = _norwegianMonths[focusedDay.month - 1];
+    int year = focusedDay.year;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: onLeftArrowTap,
+        ),
+        GestureDetector(
+          onTap: onTitleTap,
+          child: Text('$monthName $year',
+              style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
+        ),
+        IconButton(
+          icon: Icon(Icons.arrow_forward_ios),
+          onPressed: onRightArrowTap,
+        ),
+      ],
+    );
   }
 
   @override
@@ -148,6 +210,22 @@ class MyEventsPageState extends State<MyEventsPage> {
         return selectedEvents;
       }
 
+      Widget _buildCustomWeekdayHeaders() {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: _norwegianWeekDays
+              .map((day) => Expanded(
+                    child: Center(
+                      child: Text(
+                        day,
+                        style: OnlineTheme.textStyle(), // Your desired style
+                      ),
+                    ),
+                  ))
+              .toList(),
+        );
+      }
+
       return SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -158,7 +236,38 @@ class MyEventsPageState extends State<MyEventsPage> {
               Center(
                 child: Text('Mine Arrangementer', style: style),
               ),
+              _customHeaderWidget(
+                focusedDay: _focusedDay,
+                onLeftArrowTap: () {
+                  setState(() {
+                    _focusedDay = DateTime(_focusedDay.year,
+                        _focusedDay.month - 1, _focusedDay.day);
+                  });
+                },
+                onRightArrowTap: () {
+                  setState(() {
+                    _focusedDay = DateTime(_focusedDay.year,
+                        _focusedDay.month + 1, _focusedDay.day);
+                  });
+                },
+                onTitleTap: () {
+                  // Define what happens when the title is tapped, if needed
+                },
+              ),
+              _buildCustomWeekdayHeaders(),
               TableCalendar(
+                headerVisible: false,
+                daysOfWeekVisible: false,
+                calendarFormat: CalendarFormat.month,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+
+                // rowHeight: 55.0,
+                availableCalendarFormats: const {CalendarFormat.month: ''},
+                onPageChanged: (focusedDay) {
+                  setState(() {
+                    _focusedDay = focusedDay;
+                  });
+                },
                 focusedDay: _focusedDay,
                 firstDay: DateTime(2000),
                 lastDay: DateTime(2100),
@@ -250,7 +359,7 @@ class MyEventsPageState extends State<MyEventsPage> {
               ),
               _buildEventList(pastEvents),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               Center(
                 child: AnimatedButton(
@@ -258,17 +367,30 @@ class MyEventsPageState extends State<MyEventsPage> {
                     fetchMoreEvents();
                   },
                   childBuilder: (context, hover, pointerDown) {
-                    return SizedBox(
-                      height: 25,
-                      child: Text(
-                        'Mer',
-                        style: OnlineTheme.textStyle(size: 16),
-                      ),
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'MER',
+                          style: OnlineTheme.textStyle(weight: 4),
+                        ),
+                        const SizedBox(width: 2),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 4),
+                          child: Icon(
+                            Icons.navigate_next,
+                            color: OnlineTheme.gray9,
+                            size: 15,
+                          ),
+                        ),
+                      ],
                     );
                   },
                 ),
               ),
-              SizedBox(height: Navbar.height(context)),
+              
+              SizedBox(height: Navbar.height(context)+10),
             ],
           ),
         ),

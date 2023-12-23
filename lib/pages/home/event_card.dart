@@ -17,20 +17,20 @@ class EventCard extends StatelessWidget {
 
   final EventModel model;
 
-  static const months = [
-    'Januar',
-    'Februar',
-    'Mars',
-    'April',
-    'Mai',
-    'Juni',
-    'Juli',
-    'August',
-    'September',
-    'Oktober',
-    'November',
-    'Desember',
-  ];
+  static const monthsNorwegian = {
+    'January': 'Januar',
+    'February': 'Februar',
+    'March': 'Mars',
+    'April': 'April',
+    'May': 'Mai',
+    'June': 'Juni',
+    'July': 'Juli',
+    'August': 'August',
+    'September': 'September',
+    'October': 'Oktober',
+    'November': 'November',
+    'December': 'Desember',
+  };
 
   String formatDateSpan(String startDate, String endDate) {
     DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
@@ -39,15 +39,26 @@ class EventCard extends StatelessWidget {
     DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
     DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
 
+    String translateMonth(String date) {
+      for (var month in monthsNorwegian.keys) {
+        if (date.contains(month)) {
+          return date.replaceAll(month, monthsNorwegian[month]!);
+        }
+      }
+      return date; // Return original if no translation found
+    }
+
     if (startDateTime.year == endDateTime.year &&
         startDateTime.month == endDateTime.month &&
         startDateTime.day == endDateTime.day) {
       // Same day
-      return outputDayMonthFormat.format(startDateTime);
+      return translateMonth(outputDayMonthFormat.format(startDateTime));
     } else {
       // Different days
-      String formattedStartDate = outputDayMonthFormat.format(startDateTime);
-      String formattedEndDate = outputDayMonthFormat.format(endDateTime);
+      String formattedStartDate =
+          translateMonth(outputDayMonthFormat.format(startDateTime));
+      String formattedEndDate =
+          translateMonth(outputDayMonthFormat.format(endDateTime));
       return "$formattedStartDate - $formattedEndDate";
     }
   }
@@ -97,19 +108,25 @@ class EventCard extends StatelessWidget {
                           ? Image.network(
                               model.images.first.md,
                               fit: BoxFit.cover,
-                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
                                 if (loadingProgress == null) {
                                   return child;
                                 }
                                 return Center(
                                   child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
                                         : null,
                                   ),
                                 );
                               },
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
                                 return SvgPicture.asset(
                                   'assets/svg/online_hvit_o.svg',
                                   fit: BoxFit.cover,
@@ -143,7 +160,8 @@ class EventCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        subHeader(Icons.calendar_month_outlined, formatDateSpan(model.startDate, model.endDate)),
+                        subHeader(Icons.calendar_month_outlined,
+                            formatDateSpan(model.startDate, model.endDate)),
                         subHeader(
                           Icons.people_outline,
                           peopleToString(),

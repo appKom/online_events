@@ -23,7 +23,7 @@ class Bedpress extends StatelessWidget {
       final eventDate = DateTime.parse(event.endDate);
       return eventDate.isAfter(DateTime.now());
     }).toList();
-    
+
     final filteredModels = futureEvents
         .where((model) => model.eventType == 2 || model.eventType == 3)
         .toList();
@@ -40,13 +40,13 @@ class Bedpress extends StatelessWidget {
         SizedBox(
           height: 333,
           child: ListView.builder(
-            itemCount: filteredModels.length, 
+            itemCount: filteredModels.length,
             itemBuilder: (c, i) {
               return Padding(
                 padding: EdgeInsets.only(
                     right: i < filteredModels.length - 1 ? 24 : 0),
                 child: BedpressCard(
-                  model: filteredModels[i], 
+                  model: filteredModels[i],
                 ),
               );
             },
@@ -66,12 +66,26 @@ class BedpressCard extends StatelessWidget {
 
   final EventModel model;
 
-  // Example of a method to format the date
+  static const monthsNorwegian = [
+    'Januar',
+    'Februar',
+    'Mars',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
+  ];
+
   String formatDate() {
     final date = DateTime.parse(model.startDate);
-    final month = date.month;
     final day = date.day.toString().padLeft(2, '0');
-    return "$day. ${EventCard.months[month - 1].substring(0, 3)}";
+    final month = monthsNorwegian[date.month - 1]; // Norwegian month
+    return "$day. $month";
   }
 
   String truncateWithEllipsis(String text, int maxLength) {
@@ -81,7 +95,9 @@ class BedpressCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(EventPageDisplay(model: model,));
+    PageNavigator.navigateTo(EventPageDisplay(
+      model: model,
+    ));
   }
 
   String getEventTypeDisplay() {
