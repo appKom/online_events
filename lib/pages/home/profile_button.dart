@@ -33,11 +33,33 @@ class ProfileButton extends StatelessWidget {
       child: Center(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Image.asset(
-            'assets/images/better_profile_picture.jpg',
-            width: 40,
-            height: 40,
+          child: Image.network(
+            'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${userName}/view?project=65706141ead327e0436a&mode=public',
             fit: BoxFit.cover,
+            height: 40,
+            width: 40,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return const Icon(
+                Icons.person,
+                color: Colors.white,
+                size: 20,
+              );
+            },
           ),
         ),
       ),

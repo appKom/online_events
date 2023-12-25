@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:online_events/pages/profile/dummy.dart';
+
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
-import '/core/client/client.dart';
+import '/core/client/client.dart' as io;
 import '/core/models/user_model.dart';
 import '/main.dart';
 import '/pages/home/home_page.dart';
@@ -15,8 +21,10 @@ import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import '/theme/themed_icon_button.dart';
+import 'package:appwrite/appwrite.dart';
 
 int userId = 0;
+String userName = '';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -27,19 +35,78 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserModel? userProfile;
+  late Storage storage;
+
+  File? _imageFile;
 
   @override
   void initState() {
     super.initState();
     fetchUserProfile();
+
+    final client = Client()
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject('65706141ead327e0436a');
+
+    storage = Storage(client);
   }
 
   Future<void> fetchUserProfile() async {
-    UserModel? profile = await Client.getUserProfile();
+    UserModel? profile = await io.Client.getUserProfile();
     if (profile != null) {
       setState(() {
         userProfile = profile;
+        userName = userProfile!.ntnuUsername;
       });
+    }
+  }
+
+  Future<void> pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: source);
+    setState(() {
+      if (pickedFile != null) {
+        _imageFile = File(pickedFile.path);
+      }
+    });
+  }
+
+  Future<void> uploadImage() async {
+    if (_imageFile == null) {
+      print("No image selected");
+      return;
+    }
+
+    String fileName = userProfile?.ntnuUsername ?? 'default' + '.jpg';
+
+    try {
+      await storage.getFile(
+        bucketId: '658996fac01c08570158',
+        fileId: fileName,
+      );
+
+      await storage.deleteFile(
+        bucketId: '658996fac01c08570158',
+        fileId: fileName,
+      );
+    } catch (e) {
+      //Should probaly handle
+    }
+
+    try {
+      final file = await storage.createFile(
+        bucketId: '658996fac01c08570158',
+        fileId: fileName,
+        file: InputFile.fromPath(path: _imageFile!.path, filename: fileName),
+      );
+      
+      print("Image uploaded successfully: $file");
+      setState(() {
+        //hei
+      });
+      PageNavigator.navigateTo(const DummyDisplay());
+    } catch (e) {
+      print("Error uploading image: $e");
     }
   }
 
@@ -47,19 +114,17 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
     final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     if (userProfile != null) {
       userId = userProfile!.id;
     }
 
     if (userProfile != null) {
-      const String defaultImage = 'assets/images/better_profile_picture.jpg';
-      const String specialImage = 'assets/images/profile_picture.png';
       return Scaffold(
         backgroundColor: OnlineTheme.background,
         body: SingleChildScrollView(
-          // Wrap the main content in a SingleChildScrollView
           child: Padding(
             padding: EdgeInsets.only(left: padding.left, right: padding.right),
             child: Column(
@@ -79,37 +144,55 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Center(
                     child: AnimatedButton(
-                      onTap: () {
-                        //TODO
+                      onTap: () async {
+                        await pickImage(ImageSource.gallery);
+                        if (_imageFile != null) {
+                          await uploadImage();
+                        }
                       },
                       childBuilder: (context, hover, pointerDown) {
-                        return SizedBox(
-                          width: 125,
-                          height: 125,
-                          child: CircleAvatar(
-                            radius: 62.5,
-                            backgroundImage:
-                                AssetImage(userProfile!.ntnuUsername == 'erlenlst' ? specialImage : defaultImage),
-                            child: userProfile!.ntnuUsername == 'fredrch' || userProfile!.ntnuUsername == 'erlenlst'
-                                ? const Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Icon(
-                                        Icons.check_circle,
-                                        color: OnlineTheme.blue2,
-                                        size: 30,
-                                      ),
+                        return ClipOval(
+                          child: SizedBox(
+                              width: 125,
+                              height: 125,
+                              child: Image.network(
+                                'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${userProfile!.ntnuUsername}/view?project=65706141ead327e0436a&mode=public',
+                                fit: BoxFit.cover,
+                                height: 240,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
                                     ),
-                                  )
-                                : null,
-                          ),
+                                  );
+                                },
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/default_profile_picture.png',
+                                    fit: BoxFit.cover,
+                                    height: 240,
+                                  );
+                                },
+                              ),),
                         );
                       },
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
                 Text(
                   'Kontakt',
                   style: headerStyle,
@@ -117,12 +200,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 8),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput('NTNU-brukernavn', userProfile!.ntnuUsername),
+                  child: constValueTextInput(
+                      'NTNU-brukernavn', userProfile!.ntnuUsername),
                 ),
                 // const Separator(),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput('Telefon', userProfile!.phoneNumber),
+                  child:
+                      constValueTextInput('Telefon', userProfile!.phoneNumber),
                 ),
                 // const Separator(),
                 Padding(
@@ -137,11 +222,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 5),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput('Klassetrinn', userProfile!.year.toString()),
+                  child: constValueTextInput(
+                      'Klassetrinn', userProfile!.year.toString()),
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
+                  child: constValueTextInput(
+                      'Startår', userProfile!.startedDate.year.toString()),
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
@@ -182,7 +269,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 40,
                   child: CustomPaint(
-                    painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
+                    painter:
+                        StudyCoursePainter(year: userProfile!.year.toDouble()),
                   ),
                 ),
                 const Separator(margin: 40),
@@ -192,14 +280,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput('Github', userProfile!.github ?? ''),
+                  child:
+                      constValueTextInput('Github', userProfile!.github ?? ''),
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput('Linkedin', userProfile!.linkedin ?? ''),
+                  child: constValueTextInput(
+                      'Linkedin', userProfile!.linkedin ?? ''),
                 ),
                 Padding(
-                    padding: aboveBelowPadding, child: constValueTextInput('Hjemmeside', userProfile!.website ?? '')),
+                    padding: aboveBelowPadding,
+                    child: constValueTextInput(
+                        'Hjemmeside', userProfile!.website ?? '')),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
                   child: AnimatedButton(
@@ -374,7 +466,8 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
+        paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -382,7 +475,8 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0),
+        Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);
