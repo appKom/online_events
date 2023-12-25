@@ -68,7 +68,7 @@ class HomePage extends ScrollablePage {
             ),
           ),
           AnimatedButton(
-            onTap: () => PageNavigator.navigateTo(const EventsPage()),
+            onTap: () => PageNavigator.navigateTo(const EventsPageDisplay()),
             behavior: HitTestBehavior.opaque,
             childBuilder: (context, hover, pointerDown) {
               return Row(

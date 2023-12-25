@@ -31,23 +31,25 @@ class MyEventsPageState extends State<MyEventsPage> {
   DateTime? _selectedDay;
   bool _isDisposed = false;
   bool _isLoading = true;
-  int currentPage = 4;
+  int currentPage = 1;
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
     if (loggedIn) {
-      fetchMoreEvents().then((_) {
-        fetchAttendeeInfo();
-      }).catchError((error) {
-      }).whenComplete(() {
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
+      fetchMoreEvents()
+          .then((_) {
+            fetchAttendeeInfo();
+          })
+          .catchError((error) {})
+          .whenComplete(() {
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+              });
+            }
           });
-        }
-      });
     } else {
       setState(() {
         _isLoading = false;
@@ -58,10 +60,12 @@ class MyEventsPageState extends State<MyEventsPage> {
   Future<void> fetchMoreEvents() async {
     int nextPage1 = currentPage + 1;
     int nextPage2 = currentPage + 2;
+    int nextPage3 = currentPage + 3;
 
     try {
       var moreEventsPage1 = await Client.getEvents(pages: [nextPage1]);
       var moreEventsPage2 = await Client.getEvents(pages: [nextPage2]);
+      var moreEventsPage3 = await Client.getEvents(pages: [nextPage3]);
 
       if (mounted) {
         setState(() {
@@ -75,6 +79,14 @@ class MyEventsPageState extends State<MyEventsPage> {
           }
           if (moreEventsPage2 != null) {
             for (var event in moreEventsPage2) {
+              if (!eventModels
+                  .any((existingEvent) => existingEvent.id == event.id)) {
+                eventModels.add(event);
+              }
+            }
+          }
+          if (moreEventsPage3 != null) {
+            for (var event in moreEventsPage3) {
               if (!eventModels
                   .any((existingEvent) => existingEvent.id == event.id)) {
                 eventModels.add(event);

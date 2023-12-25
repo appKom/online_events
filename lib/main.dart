@@ -57,7 +57,7 @@ Future main() async {
     print("Failed to get FCM token");
   }
 
-  Future.wait([Client.getEvents(pages: [1, 2, 3, 4]), Client.getArticles()]).then((responses) {
+  Future.wait([Client.getEvents(pages: [1]), Client.getArticles()]).then((responses) {
     final events = responses[0] as List<EventModel>?;
     final articles = responses[1] as List<ArticleModel>?;
 
