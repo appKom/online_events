@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/pixel/pixel.dart';
 
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
-import 'profile_page.dart';
+import 'pixel.dart';
 
-class DummyDisplay extends StaticPage {
-  const DummyDisplay({super.key});
+class DummyDisplay2 extends StaticPage {
+  const DummyDisplay2({super.key});
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader();
@@ -14,6 +13,6 @@ class DummyDisplay extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    return const ProfilePage();
+    return const PixelPage();
   }
 }

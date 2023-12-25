@@ -1,16 +1,18 @@
-import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:appwrite/models.dart' as io;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:appwrite/appwrite.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
-
 import '../../components/animated_button.dart';
 import '../../components/online_scaffold.dart';
+import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
-import 'package:http/http.dart' as http;
-import 'package:cloudinary_sdk/cloudinary_sdk.dart';
+import 'custom_file.dart';
+import 'dummy2.dart';
 
 class PixelPage extends StatefulWidget {
   const PixelPage({super.key});
@@ -20,113 +22,155 @@ class PixelPage extends StatefulWidget {
 }
 
 class PixelPageState extends State<PixelPage> {
+  late Storage storage;
   File? _imageFile;
-  String? _imageUrl;
 
-  final Cloudinary cloudinary = Cloudinary.basic(
-    cloudName: 'dgha3rudz',
-  );
+  //TODO Comments, like picture, show User Profile and chronological order
 
-  Future<void> _pickImage(ImageSource source) async {
+  @override
+  void initState() {
+    super.initState();
+    final client = Client()
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject('65706141ead327e0436a');
+    storage = Storage(client);
+  }
+
+  Future<void> pickImage(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile =
-        await picker.pickImage(source: source); // corrected variable name here
+    final XFile? pickedFile = await picker.pickImage(source: source);
     setState(() {
       if (pickedFile != null) {
-        _imageFile = File(pickedFile.path); // consistent variable name
+        _imageFile = File(pickedFile.path);
       }
     });
   }
 
-  Future<void> _uploadImage() async {
-    if (_imageFile == null) return;
+
+  Future<void> uploadImage() async {
+    if (_imageFile == null) {
+      print("No image selected");
+      return;
+    }
+
     try {
-      String fileName = 'test1';
-      final response = await cloudinary.unsignedUploadResource(
-        CloudinaryUploadResource(
-          filePath: _imageFile!.path,
-          resourceType: CloudinaryResourceType.image,
-          uploadPreset: 'zcaifeop', // Set your upload preset here
-          fileName: fileName,
-        ),
+      await storage.getFile(
+        bucketId: '658996fac01c08570158',
+        fileId: ID.unique(),
       );
-      if (response.isSuccessful) {
-        print('suksee');
-        setState(() {
-          _imageUrl = response.secureUrl;
-        });
-      }
+
+      await storage.deleteFile(
+        bucketId: '6589b4e47f3c8840e723',
+        fileId: ID.unique(),
+      );
     } catch (e) {
-      print('Error uploading image: $e');
+      //Should probaly handle
+    }
+
+    try {
+      final file = await storage.createFile(
+        bucketId: '6589b4e47f3c8840e723',
+        fileId: ID.unique(),
+        file: InputFile.fromPath(path: _imageFile!.path, filename: ID.unique(),),
+      );
+
+      print("Image uploaded successfully: $file");
+      setState(() {
+        //hei
+      });
+      PageNavigator.navigateTo(const DummyDisplay2());
+    } catch (e) {
+      print("Error uploading image: $e");
     }
   }
 
-  List<String> imageUrls = [
-    'https://res.cloudinary.com/dgha3rudz/image/upload/v1703415759/public/ahryfjzxgcgwoncx2hjm.jpg',
-    // add more URLs here
-  ];
+  Future<List<CustomFile>> getSortedImages() async {
+    try {
+      final response =
+          await storage.listFiles(bucketId: '6589b4e47f3c8840e723');
+      List<CustomFile> files = parseFiles(response);
+      files.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      return files;
+    } catch (e) {
+      print("Error retrieving images: $e");
+      return [];
+    }
+  }
+
+  List<CustomFile> parseFiles(io.FileList fileList) {
+    return fileList.files.map((file) {
+      // Assuming each file object has a method to convert it to a Map<String, dynamic>
+      Map<String, dynamic> fileData = file.toMap();
+      print(fileData);
+      return CustomFile.fromJson(fileData);
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Scaffold(
+      backgroundColor: OnlineTheme.background,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(height: OnlineHeader.height(context) + 20),
           Text(
             'Pixel',
-            style: OnlineTheme.textStyle(size: 30, weight: 7),
+            style: OnlineTheme.textStyle(size: 30, weight: 7)
+                .copyWith(color: Colors.white),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(
-            height: 20,
+          const SizedBox(height: 20),
+          Flexible(
+            // Changed from Expanded to Flexible
+            child: FutureBuilder<List<CustomFile>>(
+              future: getSortedImages(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Text('No images found');
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    var file = snapshot.data![index];
+                    return Image.network(file.url);
+                  },
+                );
+              },
+            ),
           ),
-          Container(
-            height: 50,
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 20), // Add padding at the bottom for the button
             child: AnimatedButton(
               onTap: () async {
-                await _pickImage(ImageSource.gallery);
+                await pickImage(ImageSource.gallery);
                 if (_imageFile != null) {
-                  await _uploadImage();
+                  await uploadImage();
                 }
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(
-                  height: OnlineTheme.buttonHeight,
+                  height: 50,
                   decoration: const BoxDecoration(
                     gradient: OnlineTheme.purpleGradient,
-                    borderRadius: OnlineTheme.buttonRadius,
+                    borderRadius: OnlineTheme.eventButtonRadius,
                   ),
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Text(
-                          'Last opp',
-                          style: OnlineTheme.textStyle(weight: 5),
-                        ),
-                      ),
-                    ],
+                  child: Center(
+                    child: Text(
+                      'Last opp',
+                      style: OnlineTheme.textStyle(),
+                    ),
                   ),
                 );
               },
             ),
           ),
-          const SizedBox(
-            height: 50,
-          ),
-          if (_imageFile != null)
-            Container(
-              height: 150,
-              child: Image.file(_imageFile!),
-            ),
-          Column(
-            children: [
-              for (var imageUrl in imageUrls) Image.network(imageUrl),
-            ],
-          ),
-          SizedBox(height: Navbar.height(context)),
+          SizedBox(height: Navbar.height(context) + 10),
         ],
       ),
     );
