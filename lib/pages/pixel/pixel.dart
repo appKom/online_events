@@ -5,6 +5,7 @@ import 'package:appwrite/models.dart' as io;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:appwrite/appwrite.dart';
+import 'package:intl/intl.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
@@ -75,6 +76,17 @@ class PixelPageState extends State<PixelPage> {
     }).toList();
   }
 
+  String formatRelativeTime(DateTime createdAt) {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
+
+    if (difference.inHours >= 1) {
+      return '${difference.inHours}h';
+    } else {
+      return '${difference.inMinutes}min';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding +
@@ -128,6 +140,8 @@ class PixelPageState extends State<PixelPage> {
                           ? file.name.substring(lastCommaIndex + 1).trim()
                           : '';
 
+                      String formattedDate = formatRelativeTime(file.createdAt);
+
                       PixelUserClass fileNameDetails = PixelUserClass(
                           nameBeforeComma: nameBeforeComma,
                           nameAfterLastComma: nameAfterLastComma);
@@ -145,7 +159,9 @@ class PixelPageState extends State<PixelPage> {
                                     width: 10,
                                   ),
                                   AnimatedButton(onTap: () {
-                                    PageNavigator.navigateTo(ViewPixelUser(pixelUserClass: fileNameDetails,));
+                                    PageNavigator.navigateTo(ViewPixelUser(
+                                      pixelUserClass: fileNameDetails,
+                                    ));
                                   }, childBuilder:
                                       (context, hover, pointerDown) {
                                     return ClipOval(
@@ -194,8 +210,13 @@ class PixelPageState extends State<PixelPage> {
                                   ),
                                   Text(
                                     nameAfterLastComma,
-                                    style: OnlineTheme.textStyle(),
+                                    style: OnlineTheme.textStyle(weight: 4),
                                   ),
+                                  const Spacer(),
+                                  Text(
+                                    formattedDate,
+                                    style: OnlineTheme.textStyle(weight: 4),
+                                  )
                                 ],
                               ),
                             ),
