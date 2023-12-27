@@ -24,7 +24,7 @@ import '/theme/themed_icon_button.dart';
 import 'package:appwrite/appwrite.dart';
 
 int userId = 0;
-String userName = '';
+UserModel? userProfile;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -34,7 +34,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  UserModel? userProfile;
+  
   late Storage storage;
 
   File? _imageFile;
@@ -56,7 +56,6 @@ class _ProfilePageState extends State<ProfilePage> {
     if (profile != null) {
       setState(() {
         userProfile = profile;
-        userName = userProfile!.ntnuUsername;
       });
     }
   }

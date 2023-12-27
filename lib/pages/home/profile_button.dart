@@ -34,7 +34,7 @@ class ProfileButton extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.network(
-            'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${userName}/view?project=65706141ead327e0436a&mode=public',
+            'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${userProfile!.ntnuUsername}/view?project=65706141ead327e0436a&mode=public',
             fit: BoxFit.cover,
             height: 40,
             width: 40,

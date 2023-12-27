@@ -2,8 +2,9 @@ class CustomFile {
   final String id;
   final String url;
   final DateTime createdAt;
+  final String name;
 
-  CustomFile({required this.id, required this.url, required this.createdAt});
+  CustomFile({required this.id, required this.url, required this.createdAt, required this.name});
 
   static CustomFile fromJson(Map<String, dynamic> json) {
     String fileID = json['\$id'];
@@ -15,6 +16,7 @@ class CustomFile {
     }
     return CustomFile(
       id: json['\$id'] ?? 'default_id',
+      name: json['name'] ?? '',
       url: url,
       createdAt: json['dateCreated'] != null
           ? DateTime.parse(json['dateCreated'] as String)

@@ -1,10 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/components/animated_button.dart';
-
-import 'package:sensors_plus/sensors_plus.dart';
 
 class SpinLine extends StatefulWidget {
   const SpinLine({super.key});
@@ -14,24 +11,8 @@ class SpinLine extends StatefulWidget {
 }
 
 class SpinLineState extends State<SpinLine> {
-  late double _rotation = 0.0;
-  StreamSubscription? _gyroscopeSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    _gyroscopeSubscription = gyroscopeEvents.listen((GyroscopeEvent event) {
-      setState(() {
-        _rotation += event.y; // Adjust this calculation based on your needs
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _gyroscopeSubscription?.cancel();
-    super.dispose();
-  }
+  double _rotation = 0.0;
+  double _startHorizontalDrag = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +20,22 @@ class SpinLineState extends State<SpinLine> {
       child: AnimatedButton(
         childBuilder: (context, hover, pointerDown) {
           return GestureDetector(
+            onHorizontalDragStart: (details) {
+              _startHorizontalDrag = details.localPosition.dx;
+            },
+            onHorizontalDragUpdate: (details) {
+              setState(() {
+                double delta = details.localPosition.dx - _startHorizontalDrag;
+                _rotation += delta * 0.01; // Adjust the multiplier as needed
+              });
+            },
             onTap: () {
               // Implement tap functionality if needed
             },
             child: Transform.rotate(
               angle: _rotation,
-              child: SvgPicture.asset('assets/svg/online_hvit_o.svg', height: 300),
+              child:
+                  SvgPicture.asset('assets/svg/online_hvit_o.svg', height: 300),
             ),
           );
         },

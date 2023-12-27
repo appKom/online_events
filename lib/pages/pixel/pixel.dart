@@ -9,10 +9,12 @@ import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import '../../components/animated_button.dart';
 import '../../components/online_scaffold.dart';
+import '../../components/separator.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
 import 'custom_file.dart';
 import 'dummy2.dart';
+import 'upload_page.dart';
 
 class PixelPage extends StatefulWidget {
   const PixelPage({super.key});
@@ -46,50 +48,13 @@ class PixelPageState extends State<PixelPage> {
     });
   }
 
-
-  Future<void> uploadImage() async {
-    if (_imageFile == null) {
-      print("No image selected");
-      return;
-    }
-
-    try {
-      await storage.getFile(
-        bucketId: '658996fac01c08570158',
-        fileId: ID.unique(),
-      );
-
-      await storage.deleteFile(
-        bucketId: '6589b4e47f3c8840e723',
-        fileId: ID.unique(),
-      );
-    } catch (e) {
-      //Should probaly handle
-    }
-
-    try {
-      final file = await storage.createFile(
-        bucketId: '6589b4e47f3c8840e723',
-        fileId: ID.unique(),
-        file: InputFile.fromPath(path: _imageFile!.path, filename: ID.unique(),),
-      );
-
-      print("Image uploaded successfully: $file");
-      setState(() {
-        //hei
-      });
-      PageNavigator.navigateTo(const DummyDisplay2());
-    } catch (e) {
-      print("Error uploading image: $e");
-    }
-  }
-
   Future<List<CustomFile>> getSortedImages() async {
     try {
       final response =
           await storage.listFiles(bucketId: '6589b4e47f3c8840e723');
       List<CustomFile> files = parseFiles(response);
-      files.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      files.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
       return files;
     } catch (e) {
       print("Error retrieving images: $e");
@@ -120,23 +85,107 @@ class PixelPageState extends State<PixelPage> {
                 .copyWith(color: Colors.white),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
           Flexible(
             // Changed from Expanded to Flexible
             child: FutureBuilder<List<CustomFile>>(
               future: getSortedImages(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Text('No images found');
+                  return const Text('No images found');
                 }
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var file = snapshot.data![index];
-                    return Image.network(file.url);
+                    int commaIndex = file.name.indexOf(',');
+
+                    String nameBeforeComma = commaIndex != -1
+                        ? file.name.substring(0, commaIndex)
+                        : file.name;
+                    String description =
+                        commaIndex != -1 && file.name.length > commaIndex + 1
+                            ? file.name.substring(commaIndex + 1).trim()
+                            : ''; 
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 50,
+                            decoration: const BoxDecoration(
+                                color: OnlineTheme.background),
+                            child: Row(
+                              children: [
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                ClipOval(
+                                  child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Image.network(
+                                      'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$nameBeforeComma/view?project=65706141ead327e0436a&mode=public',
+                                      fit: BoxFit.cover,
+                                      height: 50,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                : null,
+                                          ),
+                                        );
+                                      },
+                                      errorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/default_profile_picture.png',
+                                          fit: BoxFit.cover,
+                                          height: 50,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  nameBeforeComma,
+                                  style: OnlineTheme.textStyle(),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Image.network(file.url),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Container(
+                            height: 20,
+                            child: Text(
+                              description,
+                              style: OnlineTheme.textStyle(),
+                            ),
+                          ),
+                          const Separator(margin: 20),
+                        ]);
                   },
                 );
               },
@@ -147,11 +196,8 @@ class PixelPageState extends State<PixelPage> {
                 horizontal: 25,
                 vertical: 20), // Add padding at the bottom for the button
             child: AnimatedButton(
-              onTap: () async {
-                await pickImage(ImageSource.gallery);
-                if (_imageFile != null) {
-                  await uploadImage();
-                }
+              onTap: () {
+                PageNavigator.navigateTo(const UploadPageDisplay());
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(
