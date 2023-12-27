@@ -6,12 +6,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/core/models/user_model.dart';
+import 'package:online_events/main.dart';
 import 'package:online_events/pages/pixel/pixel.dart';
 import '../../components/navbar.dart';
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
+import '../login/auth_web_view_page.dart';
 import '../profile/profile_page.dart';
 import 'dummy2.dart';
 
@@ -132,95 +134,139 @@ class UploadPageState extends State<UploadPage> {
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);
-    return Scaffold(
-      backgroundColor: OnlineTheme.background,
-      body: SingleChildScrollView(child:  Padding(
-        padding: EdgeInsets.only(left: padding.left, right: padding.right),
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: OnlineHeader.height(context) + 20),
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 40,
+    if (loggedIn) {
+      return Scaffold(
+        backgroundColor: OnlineTheme.background,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(left: padding.left, right: padding.right),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: OnlineHeader.height(context) + 20),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      onPressed: () =>
+                          PageNavigator.navigateTo(const PixelPageDisplay()),
+                    ),
+                    const SizedBox(
+                      width: 18,
+                    ),
+                    Center(
+                      child: Text(
+                        'Last opp et bilde',
+                        style: OnlineTheme.textStyle(size: 25, weight: 5),
+                      ),
+                    ),
+                  ],
+                ),
+                TextFormField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(
+                    labelText: 'Beskrivelse',
+                    fillColor: OnlineTheme.white,
                   ),
-                  onPressed: () =>
-                      PageNavigator.navigateTo(const PixelPageDisplay()),
+                  onChanged: (_) => checkIfButtonShouldBeEnabled(),
                 ),
-                const SizedBox(
-                  width: 18,
-                ),
-                Center(
-                  child: Text(
-                    'Last opp et bilde',
-                    style: OnlineTheme.textStyle(size: 25, weight: 5),
-                  ),
-                ),
-              ],
-            ),
-            TextFormField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Beskrivelse',
-                fillColor: OnlineTheme.white,
-              ),
-              onChanged: (_) => checkIfButtonShouldBeEnabled(),
-            ),
-            if (_selectedImage != null) Image.file(_selectedImage!),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-              child: Row(children: [
-                AnimatedButton(
-                    onTap: () => pickImage(ImageSource.gallery),
-                    childBuilder: (context, hover, pointerDown) {
+                if (_selectedImage != null) Image.file(_selectedImage!),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                  child: Row(children: [
+                    AnimatedButton(
+                        onTap: () => pickImage(ImageSource.gallery),
+                        childBuilder: (context, hover, pointerDown) {
+                          return Container(
+                            height: 50,
+                            width: 150,
+                            decoration: const BoxDecoration(
+                              gradient: OnlineTheme.purpleGradient,
+                              borderRadius: OnlineTheme.eventButtonRadius,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Velg bilde',
+                                style: OnlineTheme.textStyle(),
+                              ),
+                            ),
+                          );
+                        }),
+                    const Spacer(),
+                    AnimatedButton(onTap: () {
+                      if (_selectedImage != null) {
+                        uploadImage();
+                      }
+                    }, childBuilder: (context, hover, pointerDown) {
                       return Container(
                         height: 50,
                         width: 150,
-                        decoration: const BoxDecoration(
-                          gradient: OnlineTheme.purpleGradient,
+                        decoration: BoxDecoration(
+                          gradient: OnlineTheme.greenGradient,
                           borderRadius: OnlineTheme.eventButtonRadius,
                         ),
                         child: Center(
                           child: Text(
-                            'Velg bilde',
+                            'Publiser',
                             style: OnlineTheme.textStyle(),
                           ),
                         ),
                       );
                     }),
-                const Spacer(),
-                AnimatedButton(onTap: () {
-                  if (_selectedImage != null) {
-                    uploadImage();
-                  }
-                }, childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    height: 50,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      gradient: OnlineTheme.greenGradient,
-                      borderRadius: OnlineTheme.eventButtonRadius,
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Publiser',
-                        style: OnlineTheme.textStyle(),
-                      ),
-                    ),
-                  );
-                }),
-              ]),
+                  ]),
+                ),
+                SizedBox(height: Navbar.height(context) + 10),
+              ],
             ),
-            SizedBox(height: Navbar.height(context) + 10),
-          ],
-          
+          ),
         ),
-      ),
-      ),
-    );
+      );
+    } else {
+      void onPressed() {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const LoginWebView(),
+        ));
+      }
+
+      return Padding(
+          padding: EdgeInsets.only(left: padding.left, right: padding.right),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: OnlineHeader.height(context)),
+              Center(
+                child: Text(
+                  'Du må være inlogget for å se dine arrangementer',
+                  style: OnlineTheme.textStyle(),
+                ),
+              ),
+              const SizedBox(
+                height: 120,
+              ),
+              AnimatedButton(
+                  onTap: onPressed,
+                  childBuilder: (context, hover, pointerDown) {
+                    return Container(
+                      height: OnlineTheme.buttonHeight,
+                      decoration: BoxDecoration(
+                        gradient: OnlineTheme.greenGradient,
+                        borderRadius: OnlineTheme.buttonRadius,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Logg Inn',
+                          style: OnlineTheme.textStyle(weight: 5),
+                        ),
+                      ),
+                    );
+                  })
+            ],
+          ));
+    }
   }
 }
 
