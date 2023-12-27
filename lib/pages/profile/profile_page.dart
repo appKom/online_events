@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:online_events/pages/profile/dummy.dart';
 
-
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
@@ -34,7 +33,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  
   late Storage storage;
 
   File? _imageFile;
@@ -98,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
         fileId: fileName,
         file: InputFile.fromPath(path: _imageFile!.path, filename: fileName),
       );
-      
+
       print("Image uploaded successfully: $file");
       setState(() {
         //hei
@@ -150,42 +148,42 @@ class _ProfilePageState extends State<ProfilePage> {
                         }
                       },
                       childBuilder: (context, hover, pointerDown) {
-                        return ClipOval(
-                          child: SizedBox(
-                              width: 125,
-                              height: 125,
-                              child: Image.network(
-                                'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${userProfile!.ntnuUsername}/view?project=65706141ead327e0436a&mode=public',
-                                fit: BoxFit.cover,
-                                height: 240,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  }
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                    ),
-                                  );
-                                },
-                                errorBuilder: (BuildContext context,
-                                    Object exception, StackTrace? stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/default_profile_picture.png',
-                                    fit: BoxFit.cover,
-                                    height: 240,
-                                  );
-                                },
-                              ),),
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ClipOval(
+                              child: SizedBox(
+                                width: 125,
+                                height: 125,
+                                child: _imageFile != null
+                                    ? Image.file(
+                                        _imageFile!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.network(
+                                        'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=65706141ead327e0436a&mode=public',
+                                        fit: BoxFit.cover,
+                                        height: 240,
+                                        errorBuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace? stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/default_profile_picture.png',
+                                            fit: BoxFit.cover,
+                                            height: 240,
+                                          );
+                                        },
+                                      ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                'Trykk for å laste opp profil bilde',
+                                style: OnlineTheme.textStyle(color: OnlineTheme.blue2)
+                              ),
+                            ),
+                          ],
                         );
                       },
                     ),
