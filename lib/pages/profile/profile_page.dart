@@ -34,7 +34,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late Storage storage;
-
+  bool showInfoAboutPicture = false;
   File? _imageFile;
 
   @override
@@ -167,6 +167,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                         errorBuilder: (BuildContext context,
                                             Object exception,
                                             StackTrace? stackTrace) {
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            if (!showInfoAboutPicture) {
+                                              setState(() {
+                                                showInfoAboutPicture = true;
+                                              });
+                                            }
+                                          });
                                           return Image.asset(
                                             'assets/images/default_profile_picture.png',
                                             fit: BoxFit.cover,
@@ -176,13 +184,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 8.0),
-                              child: Text(
-                                'Trykk for å laste opp profil bilde',
-                                style: OnlineTheme.textStyle(color: OnlineTheme.blue2)
+                            if (showInfoAboutPicture)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                    'Trykk for å laste opp profil bilde',
+                                    style: OnlineTheme.textStyle(
+                                        color: OnlineTheme.blue2)),
                               ),
-                            ),
                           ],
                         );
                       },
