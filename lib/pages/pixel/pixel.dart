@@ -68,23 +68,27 @@ class PixelPageState extends State<PixelPage> {
 
   List<CustomFile> parseFiles(io.FileList fileList) {
     return fileList.files.map((file) {
-      // Assuming each file object has a method to convert it to a Map<String, dynamic>
       Map<String, dynamic> fileData = file.toMap();
-      print(fileData);
       return CustomFile.fromJson(fileData);
     }).toList();
   }
 
   String formatRelativeTime(DateTime createdAt) {
-    final now = DateTime.now();
-    final difference = now.difference(createdAt);
+  final now = DateTime.now();
+  final difference = now.difference(createdAt);
 
-    if (difference.inHours >= 1) {
-      return '${difference.inHours}h';
-    } else {
-      return '${difference.inMinutes}min';
-    }
+  if (difference.inDays >= 7) {
+    return '${(difference.inDays / 7).floor()}w';
+  } else if (difference.inDays >= 1) {
+    return '${difference.inDays}d';
+  } else if (difference.inHours >= 1) {
+    return '${difference.inHours}t';
+  } else if (difference.inMinutes >= 1) {
+    return '${difference.inMinutes}min';
+  } else {
+    return '${difference.inSeconds}s';
   }
+}
 
   @override
   Widget build(BuildContext context) {
