@@ -17,7 +17,6 @@ import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
 import '../login/auth_web_view_page.dart';
 import 'custom_file.dart';
-import 'dummy2.dart';
 import 'pixel_class.dart';
 import 'upload_page.dart';
 
@@ -105,7 +104,6 @@ class PixelPageState extends State<PixelPage> {
               textAlign: TextAlign.center,
             ),
             Flexible(
-              // Changed from Expanded to Flexible
               child: FutureBuilder<List<CustomFile>>(
                 future: getSortedImages(),
                 builder: (context, snapshot) {
@@ -317,6 +315,19 @@ class PixelPageState extends State<PixelPage> {
 
 class PixelPageDisplay extends StaticPage {
   const PixelPageDisplay({super.key});
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
+    return const PixelPage();
+  }
+}
+
+class DummyDisplay2 extends StaticPage {
+  const DummyDisplay2({super.key});
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader();

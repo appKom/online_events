@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:online_events/pages/profile/dummy.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
@@ -520,6 +519,19 @@ class StudyCoursePainter extends CustomPainter {
 
 class ProfilePageDisplay extends StaticPage {
   const ProfilePageDisplay({super.key});
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
+    return const ProfilePage();
+  }
+}
+
+class DummyDisplay extends StaticPage {
+  const DummyDisplay({super.key});
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader();

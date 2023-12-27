@@ -5,17 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/core/models/user_model.dart';
-import 'package:online_events/main.dart';
 import 'package:online_events/pages/pixel/pixel.dart';
 import '../../components/navbar.dart';
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
-import '../login/auth_web_view_page.dart';
 import '../profile/profile_page.dart';
-import 'dummy2.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key});
@@ -27,10 +23,8 @@ class UploadPage extends StatefulWidget {
 class UploadPageState extends State<UploadPage> {
   final TextEditingController titleController = TextEditingController();
   late Storage storage;
-  File? _imageFile;
   final TextEditingController _titleController = TextEditingController();
   File? _selectedImage;
-  bool _isButtonEnabled = false;
 
   @override
   void initState() {
@@ -124,9 +118,7 @@ class UploadPageState extends State<UploadPage> {
 
   void checkIfButtonShouldBeEnabled() {
     if (_selectedImage != null && _titleController.text.isNotEmpty) {
-      setState(() => _isButtonEnabled = true);
     } else {
-      setState(() => _isButtonEnabled = false);
     }
   }
 
@@ -139,7 +131,7 @@ class UploadPageState extends State<UploadPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
-          child: Column(
+          child: Flexible(child:  Column(
             children: <Widget>[
               SizedBox(height: OnlineHeader.height(context) + 20),
               Row(
@@ -172,17 +164,19 @@ class UploadPageState extends State<UploadPage> {
                 ),
                 onChanged: (_) => checkIfButtonShouldBeEnabled(),
               ),
+              const SizedBox(height: 10,),
               if (_selectedImage != null) Image.file(_selectedImage!),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                 child: Row(children: [
+                  Flexible(child: 
                   AnimatedButton(
                       onTap: () => pickImage(ImageSource.gallery),
                       childBuilder: (context, hover, pointerDown) {
                         return Container(
                           height: 50,
-                          width: 150,
+                         
                           decoration: const BoxDecoration(
                             gradient: OnlineTheme.purpleGradient,
                             borderRadius: OnlineTheme.eventButtonRadius,
@@ -194,8 +188,11 @@ class UploadPageState extends State<UploadPage> {
                             ),
                           ),
                         );
-                      }),
-                  const Spacer(),
+                      }),),
+                  // const Spacer(),
+                  const SizedBox(width: 10,),
+                  if (_selectedImage != null)
+                  Flexible(child: 
                   AnimatedButton(onTap: () {
                     if (_selectedImage != null) {
                       uploadImage();
@@ -203,7 +200,7 @@ class UploadPageState extends State<UploadPage> {
                   }, childBuilder: (context, hover, pointerDown) {
                     return Container(
                       height: 50,
-                      width: 150,
+                      
                       decoration: BoxDecoration(
                         gradient: OnlineTheme.greenGradient,
                         borderRadius: OnlineTheme.eventButtonRadius,
@@ -216,10 +213,12 @@ class UploadPageState extends State<UploadPage> {
                       ),
                     );
                   }),
+                  ),
                 ]),
               ),
               SizedBox(height: Navbar.height(context) + 10),
             ],
+          ),
           ),
         ),
       ),
