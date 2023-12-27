@@ -108,7 +108,7 @@ class UploadPageState extends State<UploadPage> {
         fileId: ID.unique(),
         file: InputFile.fromPath(
           path: _selectedImage!.path,
-          filename: '${userProfile!.ntnuUsername}, ${_titleController.text}',
+          filename: '${userProfile!.ntnuUsername}, ${_titleController.text}, ${userProfile!.firstName} ${userProfile!.lastName}',
         ),
       );
 

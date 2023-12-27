@@ -8,6 +8,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
+import 'package:online_events/pages/pixel/view_pixel_user.dart';
 import '../../components/animated_button.dart';
 import '../../components/online_scaffold.dart';
 import '../../components/separator.dart';
@@ -16,6 +17,7 @@ import '../../theme/theme.dart';
 import '../login/auth_web_view_page.dart';
 import 'custom_file.dart';
 import 'dummy2.dart';
+import 'pixel_class.dart';
 import 'upload_page.dart';
 
 class PixelPage extends StatefulWidget {
@@ -105,15 +107,31 @@ class PixelPageState extends State<PixelPage> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       var file = snapshot.data![index];
-                      int commaIndex = file.name.indexOf(',');
+                      int firstCommaIndex = file.name.indexOf(',');
+                      int lastCommaIndex = file.name.lastIndexOf(',');
 
-                      String nameBeforeComma = commaIndex != -1
-                          ? file.name.substring(0, commaIndex)
+                      String nameBeforeComma = firstCommaIndex != -1
+                          ? file.name.substring(0, firstCommaIndex)
                           : file.name;
-                      String description =
-                          commaIndex != -1 && file.name.length > commaIndex + 1
-                              ? file.name.substring(commaIndex + 1).trim()
-                              : '';
+                      String description = (firstCommaIndex != -1 &&
+                              lastCommaIndex != -1 &&
+                              firstCommaIndex < lastCommaIndex)
+                          ? file.name
+                              .substring(firstCommaIndex + 1, lastCommaIndex)
+                              .trim()
+                          : (firstCommaIndex != -1
+                              ? file.name.substring(firstCommaIndex + 1).trim()
+                              : '');
+
+                      String nameAfterLastComma = lastCommaIndex != -1 &&
+                              file.name.length > lastCommaIndex + 1
+                          ? file.name.substring(lastCommaIndex + 1).trim()
+                          : '';
+
+                      PixelUserClass fileNameDetails = PixelUserClass(
+                          nameBeforeComma: nameBeforeComma,
+                          nameAfterLastComma: nameAfterLastComma);
+
                       return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -126,50 +144,56 @@ class PixelPageState extends State<PixelPage> {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  ClipOval(
-                                    child: SizedBox(
-                                      width: 50,
-                                      height: 50,
-                                      child: Image.network(
-                                        'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$nameBeforeComma/view?project=65706141ead327e0436a&mode=public',
-                                        fit: BoxFit.cover,
+                                  AnimatedButton(onTap: () {
+                                    PageNavigator.navigateTo(ViewPixelUser(pixelUserClass: fileNameDetails,));
+                                  }, childBuilder:
+                                      (context, hover, pointerDown) {
+                                    return ClipOval(
+                                      child: SizedBox(
+                                        width: 50,
                                         height: 50,
-                                        loadingBuilder: (BuildContext context,
-                                            Widget child,
-                                            ImageChunkEvent? loadingProgress) {
-                                          if (loadingProgress == null) {
-                                            return child;
-                                          }
-                                          return Center(
-                                            child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                  : null,
-                                            ),
-                                          );
-                                        },
-                                        errorBuilder: (BuildContext context,
-                                            Object exception,
-                                            StackTrace? stackTrace) {
-                                          return Image.asset(
-                                            'assets/images/default_profile_picture.png',
-                                            fit: BoxFit.cover,
-                                            height: 50,
-                                          );
-                                        },
+                                        child: Image.network(
+                                          'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$nameBeforeComma/view?project=65706141ead327e0436a&mode=public',
+                                          fit: BoxFit.cover,
+                                          height: 50,
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            );
+                                          },
+                                          errorBuilder: (BuildContext context,
+                                              Object exception,
+                                              StackTrace? stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/default_profile_picture.png',
+                                              fit: BoxFit.cover,
+                                              height: 50,
+                                            );
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                    );
+                                  }),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
-                                    nameBeforeComma,
+                                    nameAfterLastComma,
                                     style: OnlineTheme.textStyle(),
                                   ),
                                 ],
@@ -233,7 +257,6 @@ class PixelPageState extends State<PixelPage> {
       }
 
       return Padding(
-        
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
