@@ -58,14 +58,25 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
+  final ImagePicker picker = ImagePicker();
+
+  try {
     final XFile? pickedFile = await picker.pickImage(source: source);
+
     setState(() {
       if (pickedFile != null) {
         _imageFile = File(pickedFile.path);
+      } else {
+        print("No image was selected");
       }
     });
+  } catch (e) {
+    print("Error picking image: $e");
+
+    setState(() {
+    });
   }
+}
 
   Future<void> uploadImage() async {
     if (_imageFile == null) {
