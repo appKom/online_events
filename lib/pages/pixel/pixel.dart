@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
+import 'package:online_events/pages/pixel/info_page_pixel.dart';
 import 'package:online_events/pages/pixel/view_pixel_user.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import '../../components/animated_button.dart';
@@ -114,11 +115,37 @@ class PixelPageState extends State<PixelPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(height: OnlineHeader.height(context) + 20),
-            Text(
-              'Pixel',
-              style: OnlineTheme.textStyle(size: 30, weight: 7)
-                  .copyWith(color: Colors.white),
-              textAlign: TextAlign.center,
+            Center(
+              child: Row(
+                children: [
+                  // SizedBox(
+                  //   height: 30,
+                  //   width: 30,
+                  //   child: Image.asset('assets/images/pixel_logo.png'),
+                  // ),
+                  // const SizedBox(
+                  //   width: 5,
+                  // ),
+                  Text(
+                    'Pixel',
+                    style: OnlineTheme.textStyle(size: 30, weight: 7)
+                        .copyWith(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(),
+                  AnimatedButton(
+                      onTap: () => AppNavigator.navigateToRoute(
+                            InfoPagePixel(),
+                            additive: true,
+                          ),
+                      childBuilder: (context, hover, pointerDown) {
+                        return const Icon(
+                          Icons.info_outline,
+                          color: OnlineTheme.white,
+                        );
+                      })
+                ],
+              ),
             ),
             Flexible(
               child: FutureBuilder<List<CustomFile>>(
@@ -268,7 +295,8 @@ class PixelPageState extends State<PixelPage> {
                                           try {
                                             deleteImage(file.id);
                                             print('Image deleted successfully');
-                                            PageNavigator.navigateTo(const DummyDisplay2());
+                                            PageNavigator.navigateTo(
+                                                const DummyDisplay2());
                                           } catch (e) {
                                             print("Error deleting image: $e");
                                           }
@@ -286,7 +314,7 @@ class PixelPageState extends State<PixelPage> {
                               height: 20,
                               child: Text(
                                 description,
-                                style: OnlineTheme.textStyle(),
+                                style: OnlineTheme.textStyle(size: 16),
                               ),
                             ),
                             const Separator(margin: 20),

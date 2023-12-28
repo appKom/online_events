@@ -53,6 +53,8 @@ class LoginWebViewState extends State<LoginWebView> {
       }
 
       Client.setAccessToken(tokenData['access_token']);
+      Client.setRefreshToken(tokenData['refresh_token']);
+      Client.setExpiresIn(tokenData['expires_in']);
       setState(() => loggedIn = true);
       AppNavigator.pop();
       // print(tokenData);
