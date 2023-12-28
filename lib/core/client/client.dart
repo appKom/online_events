@@ -33,21 +33,32 @@ abstract class Client {
   }
 
   static Future<bool> _refreshToken() async {
-    final response = await http.post(
-      Uri.parse('https://old.online.ntnu.no/openid/token'),
-      body: {
-        'refresh_token': refreshToken,
-        'grant_type': 'refresh_token',
-      },
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('https://old.online.ntnu.no/openid/token'),
+        headers: {
+          'Content-Type':
+              'application/x-www-form-urlencoded', 
+        },
+        body: {
+          'refresh_token': refreshToken,
+          'grant_type': 'refresh_token',
+          'client_id': '972717', 
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-      setAccessToken(responseBody['access_token']);
-      setExpiresIn(responseBody['expires_in']);
-      return true;
-    } else {
-      print('Failed to refresh token');
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+        setAccessToken(responseBody['access_token']);
+        setExpiresIn(responseBody['expires_in']);
+        return true;
+      } else {
+        print(
+            'Failed to refresh token: ${response.statusCode} ${response.reasonPhrase} ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Exception during token refresh: $e');
       return false;
     }
   }
