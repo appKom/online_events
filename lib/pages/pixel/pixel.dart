@@ -10,6 +10,7 @@ import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
 import 'package:online_events/pages/pixel/view_pixel_user.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
 import '../../components/animated_button.dart';
 import '../../components/online_scaffold.dart';
 import '../../components/separator.dart';
@@ -74,21 +75,33 @@ class PixelPageState extends State<PixelPage> {
   }
 
   String formatRelativeTime(DateTime createdAt) {
-  final now = DateTime.now();
-  final difference = now.difference(createdAt);
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
 
-  if (difference.inDays >= 7) {
-    return '${(difference.inDays / 7).floor()}w';
-  } else if (difference.inDays >= 1) {
-    return '${difference.inDays}d';
-  } else if (difference.inHours >= 1) {
-    return '${difference.inHours}t';
-  } else if (difference.inMinutes >= 1) {
-    return '${difference.inMinutes}min';
-  } else {
-    return '${difference.inSeconds}s';
+    if (difference.inDays >= 7) {
+      return '${(difference.inDays / 7).floor()}w';
+    } else if (difference.inDays >= 1) {
+      return '${difference.inDays}d';
+    } else if (difference.inHours >= 1) {
+      return '${difference.inHours}t';
+    } else if (difference.inMinutes >= 1) {
+      return '${difference.inMinutes}min';
+    } else {
+      return '${difference.inSeconds}s';
+    }
   }
-}
+
+  void deleteImage(String fileId) async {
+    print(fileId);
+    try {
+      print(fileId);
+      await storage.deleteFile(
+          bucketId: '6589b4e47f3c8840e723', fileId: fileId);
+      print('Bilde er slettet');
+    } catch (e) {
+      print("Error deleting image: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +238,47 @@ class PixelPageState extends State<PixelPage> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Image.network(file.url),
+                            Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                Image.network(file.url),
+                                AnimatedButton(
+                                  childBuilder: (context, hover, pointerDown) {
+                                    return Container(
+                                      height: 35,
+                                      width: 35,
+                                      decoration: BoxDecoration(
+                                        color: OnlineTheme.white,
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 1,
+                                            blurRadius: 1,
+                                            offset: const Offset(0, 1),
+                                          ),
+                                        ],
+                                      ),
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        iconSize: 24,
+                                        icon: const Icon(Icons.delete,
+                                            color: OnlineTheme.background),
+                                        onPressed: () async {
+                                          try {
+                                            deleteImage(file.id);
+                                            print('Image deleted successfully');
+                                            PageNavigator.navigateTo(const DummyDisplay2());
+                                          } catch (e) {
+                                            print("Error deleting image: $e");
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                             const SizedBox(
                               height: 4,
                             ),
