@@ -51,9 +51,9 @@ class CommentPageState extends State<CommentPage> {
         );
         List<dynamic> latestComments = latestPost.data['comments'];
 
-        latestComments.addAll([
-          '[$userName, ${_titleController.text}, ${DateTime.now().toString()}]'
-        ]);
+        String newComment =
+            '[$userName, ${_titleController.text}, ${DateTime.now().toString()}]';
+        latestComments.add(newComment);
 
         await database.updateDocument(
           databaseId: '658df78529d1a989a672',
@@ -64,8 +64,10 @@ class CommentPageState extends State<CommentPage> {
           },
         );
         print('Comment posted successfully');
+        setState(() {
+          widget.post.comments.add(newComment);
+        });
         _titleController.clear();
-        setState(() {});
       } catch (e) {
         print("Error posting comment: $e");
       }
@@ -101,162 +103,148 @@ class CommentPageState extends State<CommentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OnlineTheme.background,
-      body: Column(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: OnlineHeader.height(context) + 20),
-                Row(children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                      size: 40,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: OnlineHeader.height(context) - 10),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                          onPressed: () => PageNavigator.navigateTo(
+                              const PixelPageDisplay()),
+                        ),
+                        const SizedBox(
+                          width: 60,
+                        ),
+                        Center(
+                          child: Text(
+                            'Kommentarer',
+                            style: OnlineTheme.textStyle(size: 25, weight: 5),
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: () =>
-                        PageNavigator.navigateTo(const PixelPageDisplay()),
-                  ),
-                  const SizedBox(
-                    width: 60,
-                  ),
-                  Center(
-                    child: Text(
-                      'Kommentarer',
-                      style: OnlineTheme.textStyle(size: 25, weight: 5),
-                    ),
-                  ),
-                ]),
-                const SizedBox(
-                  height: 30,
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.post.comments.length,
-                  itemBuilder: (context, index) {
-                    List<String> commentParts =
-                        widget.post.comments[index].split(', ');
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: widget.post.comments.length,
+                      itemBuilder: (context, index) {
+                        List<String> commentParts =
+                            widget.post.comments[index].split(', ');
 
-                    String username = commentParts[0];
-                    if (username.startsWith('[')) {
-                      username = username.substring(1);
-                    }
+                        String username = commentParts[0];
+                        if (username.startsWith('[')) {
+                          username = username.substring(1);
+                        }
 
-                    if (commentParts.length >= 3) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              AnimatedButton(onTap: () {
-                                PageNavigator.navigateTo(
-                                    ViewPixelUserDisplay(userName: username));
-                              }, childBuilder: (context, hover, pointerDown) {
-                                return ClipOval(
-                                  child: SizedBox(
-                                    width: 30,
-                                    height: 30,
-                                    child: Image.network(
-                                      'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$username/view?project=65706141ead327e0436a&mode=public',
-                                      fit: BoxFit.cover,
-                                      height: 50,
-                                      loadingBuilder: (BuildContext context,
-                                          Widget child,
-                                          ImageChunkEvent? loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          return child;
-                                        }
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            value: loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null
-                                                ? loadingProgress
-                                                        .cumulativeBytesLoaded /
-                                                    loadingProgress
-                                                        .expectedTotalBytes!
-                                                : null,
-                                          ),
-                                        );
-                                      },
-                                      errorBuilder: (BuildContext context,
-                                          Object exception,
-                                          StackTrace? stackTrace) {
-                                        return Image.asset(
-                                          'assets/images/default_profile_picture.png',
-                                          fit: BoxFit.cover,
-                                          height: 30,
-                                        );
-                                      },
+                        String commentText = commentParts[1];
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipOval(
+                                    child: SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: Image.network(
+                                        'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$username/view?project=65706141ead327e0436a&mode=public',
+                                        fit: BoxFit.cover,
+                                        height: 30,
+                                        errorBuilder:
+                                            (context, exception, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/default_profile_picture.png',
+                                            fit: BoxFit.cover,
+                                            height: 30,
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
-                                );
-                              }),
-                              const SizedBox(
-                                width: 6,
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '$username:',
+                                          style: OnlineTheme.textStyle(
+                                              size: 16, weight: 5),
+                                        ),
+                                        Text(
+                                          commentText,
+                                          style:
+                                              OnlineTheme.textStyle(size: 14),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  if (userProfile!.ntnuUsername == username)
+                                    IconButton(
+                                      icon: Icon(Icons.delete,
+                                          color: OnlineTheme.white),
+                                      onPressed: () async {
+                                        await deleteComment(index);
+                                      },
+                                    ),
+                                ],
                               ),
-                              Text('$username:',
-                                  style: OnlineTheme.textStyle(
-                                      size: 16, weight: 5)),
-                              const SizedBox(width: 8),
-                              Text(commentParts[1],
-                                  style: OnlineTheme.textStyle(size: 14)),
-                              if (userProfile!.ntnuUsername ==
-                                  widget.post.username)
-                                const Spacer(),
-                              if (userProfile!.ntnuUsername == username)
-                                AnimatedButton(
-                                    onTap: () {},
-                                    childBuilder:
-                                        (context, hover, pointerDown) {
-                                      return IconButton(
-                                        padding: EdgeInsets.zero,
-                                        iconSize: 24,
-                                        icon: const Icon(Icons.delete,
-                                            color: OnlineTheme.white),
-                                        onPressed: () async {
-                                          await deleteComment(index);
-                                        },
-                                      );
-                                    }),
-                            ],
-                          ),
-                          const Divider()
-                        ],
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: TextFormField(
-              controller: _titleController,
-              style: OnlineTheme.textStyle(color: OnlineTheme.white),
-              decoration: InputDecoration(
-                labelText: 'Skriv en kommentar',
-                labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: OnlineTheme.white),
-                ),
-                focusedBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: OnlineTheme.white),
+                            ),
+                            const Divider(),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              onFieldSubmitted: (value) {
-                postComment(widget.post.id, widget.post, userProfile!.username);
-              },
             ),
-          ),
-          SizedBox(height: Navbar.height(context) + 10),
-        ],
+            Container(
+              padding: EdgeInsets.only(
+                left: 10,
+                right: 10,
+                bottom: 80 + MediaQuery.of(context).padding.bottom,
+              ),
+              color: OnlineTheme.background,
+              child: TextFormField(
+                controller: _titleController,
+                style: OnlineTheme.textStyle(color: OnlineTheme.white),
+                decoration: InputDecoration(
+                  labelText: 'Skriv en kommentar',
+                  labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                  hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: OnlineTheme.white),
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: OnlineTheme.white),
+                  ),
+                ),
+                onFieldSubmitted: (value) {
+                  postComment(
+                      widget.post.id, widget.post, userProfile!.username);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
