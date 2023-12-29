@@ -56,7 +56,7 @@ class InfoPagePixel extends DarkOverlay {
             ),
           ),
           const Separator(margin: 2),
-          Text('Dersom du har lagt ut et bilde kan du slette bildet selv. Hvis ikke du har lagt ut bilde, men vil fremdeles ha det slettet, send en mail til fredrik.carsten.hansteen@online.ntnu.no for å få et bilde slettet', style: OnlineTheme.textStyle(),)
+          Text('Dersom du har lagt ut et bilde kan du slette bildet selv. Hvis ikke du har lagt ut bilde, men vil fremdeles ha det slettet, send en mail til fredrik.carsten.hansteen@online.ntnu.no for å få bildet slettet', style: OnlineTheme.textStyle(),)
         ],
       );
     });

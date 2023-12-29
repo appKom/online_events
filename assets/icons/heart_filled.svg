@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.2 -1.2 24 24" height="24" width="24"
+    style="background-color: #dd070c">
+    <title>interface-essential-alert-triangle-1</title>
+    <g>
+        <path d="M20.574 18.51525H21.6v2.05875h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M19.54125 16.456500000000002h1.03275v2.05875h-1.03275Z" fill="#ffffff"
+            stroke-width="1"></path>
+        <path d="M1.026 20.574h19.548000000000002V21.6H1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M18.51525 14.39775h1.026v2.05875h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M17.4825 12.34575h1.03275v2.052H17.4825Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M16.456500000000002 10.287h1.026v2.05875h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M15.4305 8.228250000000001h1.026v2.05875h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M14.39775 6.169500000000001h1.03275v2.05875h-1.03275Z" fill="#ffffff"
+            stroke-width="1"></path>
+        <path d="M13.37175 4.11075h1.026v2.05875h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M12.34575 2.05875h1.026v2.052h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path
+            d="m12.34575 14.39775 -3.0915000000000004 0 0 1.03275 -1.026 0 0 3.0847500000000005 1.026 0 0 1.026 3.0915000000000004 0 0 -1.026 1.026 0 0 -3.0847500000000005 -1.026 0 0 -1.03275z"
+            fill="#ffffff" stroke-width="1"></path>
+        <path
+            d="M12.34575 6.169500000000001h-3.0915000000000004v1.03275h-1.026v4.11075h1.026v2.05875h3.0915000000000004v-2.05875h1.026v-4.11075h-1.026Zm0 4.1175h-1.03275v-2.05875h-1.026v-1.026h1.026v1.026h1.03275Z"
+            fill="#ffffff" stroke-width="1"></path>
+        <path d="M11.313000000000002 1.026h1.03275v1.03275h-1.03275Z" fill="#ffffff"
+            stroke-width="1"></path>
+        <path d="M10.287 0h1.026v1.026h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M9.25425 1.026h1.03275v1.03275h-1.03275Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M8.228250000000001 2.05875h1.026v2.052h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M7.20225 4.11075h1.026v2.05875h-1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M6.169500000000001 6.169500000000001h1.03275v2.05875H6.169500000000001Z"
+            fill="#ffffff" stroke-width="1"></path>
+        <path d="M5.1435 8.228250000000001h1.026v2.05875H5.1435Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M4.11075 10.287h1.03275v2.05875H4.11075Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M3.0847500000000005 12.34575h1.026v2.052H3.0847500000000005Z" fill="#ffffff"
+            stroke-width="1"></path>
+        <path d="M2.05875 14.39775h1.026v2.05875H2.05875Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M1.026 16.456500000000002h1.03275v2.05875H1.026Z" fill="#ffffff" stroke-width="1"></path>
+        <path d="M0 18.51525h1.026v2.05875H0Z" fill="#ffffff" stroke-width="1"></path>
+    </g>
+</svg>

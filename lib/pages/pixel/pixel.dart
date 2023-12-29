@@ -12,6 +12,7 @@ import 'package:online_events/main.dart';
 import 'package:online_events/pages/pixel/cards/description_card.dart';
 import 'package:online_events/pages/pixel/cards/image_card.dart';
 import 'package:online_events/pages/pixel/cards/not_logged_in_card.dart';
+import 'package:online_events/pages/pixel/cards/who_posted_card.dart';
 import 'package:online_events/pages/pixel/comments.page.dart';
 import 'package:online_events/pages/pixel/info_page_pixel.dart';
 import 'package:online_events/pages/pixel/cards/likes_card.dart';
@@ -93,6 +94,7 @@ class PixelPageState extends State<PixelPage> {
           },
         );
         print('Likes incremented successfully');
+        setState(() {});
       } catch (e) {
         print("Error incrementing likes: $e");
       }
@@ -207,79 +209,14 @@ class PixelPageState extends State<PixelPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                height: 50,
-                                decoration: const BoxDecoration(
-                                    color: OnlineTheme.background),
-                                child: Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    AnimatedButton(onTap: () {
-                                      PageNavigator.navigateTo(
-                                          ViewPixelUserDisplay(
-                                        userName: nameBeforeComma,
-                                      ));
-                                    }, childBuilder:
-                                        (context, hover, pointerDown) {
-                                      return ClipOval(
-                                        child: SizedBox(
-                                          width: 50,
-                                          height: 50,
-                                          child: Image.network(
-                                            'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$nameBeforeComma/view?project=65706141ead327e0436a&mode=public',
-                                            fit: BoxFit.cover,
-                                            height: 50,
-                                            loadingBuilder:
-                                                (BuildContext context,
-                                                    Widget child,
-                                                    ImageChunkEvent?
-                                                        loadingProgress) {
-                                              if (loadingProgress == null) {
-                                                return child;
-                                              }
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  value: loadingProgress
-                                                              .expectedTotalBytes !=
-                                                          null
-                                                      ? loadingProgress
-                                                              .cumulativeBytesLoaded /
-                                                          loadingProgress
-                                                              .expectedTotalBytes!
-                                                      : null,
-                                                ),
-                                              );
-                                            },
-                                            errorBuilder: (BuildContext context,
-                                                Object exception,
-                                                StackTrace? stackTrace) {
-                                              return Image.asset(
-                                                'assets/images/default_profile_picture.png',
-                                                fit: BoxFit.cover,
-                                                height: 50,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      nameAfterLastComma,
-                                      style: OnlineTheme.textStyle(weight: 4),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      formatRelativeTime(post.createdAt),
-                                      style: OnlineTheme.textStyle(weight: 4),
-                                    )
-                                  ],
-                                ),
-                              ),
+                                  height: 50,
+                                  decoration: const BoxDecoration(
+                                      color: OnlineTheme.background),
+                                  child: WhoPostedCard(
+                                      post: post,
+                                      nameBeforeComma: nameBeforeComma,
+                                      nameAfterLastComma: nameAfterLastComma,
+                                      formatDate: formatRelativeTime)),
                               const SizedBox(
                                 height: 10,
                               ),
