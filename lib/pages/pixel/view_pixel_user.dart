@@ -1,5 +1,6 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/pixel/pixel_class.dart';
+import 'package:online_events/pages/pixel/pixel_user_class.dart';
 import 'package:online_events/theme/theme.dart';
 
 import '../../components/animated_button.dart';
@@ -7,23 +8,58 @@ import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 import 'pixel.dart';
 
-class ViewPixelUser extends StaticPage {
-  const ViewPixelUser({super.key, required this.pixelUserClass});
+class ViewPixelUser extends StatefulWidget {
+  const ViewPixelUser({super.key, required this.userName});
 
-  final PixelUserClass pixelUserClass;
+  final String userName;
+  
 
   @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
+  ViewPixelUserState createState() => ViewPixelUserState();
+}
+
+class ViewPixelUserState extends State<ViewPixelUser> {
+  late Databases database;
+  PixelUserClass? userData;
+
+  @override
+  void initState() {
+    super.initState();
+    final client = Client()
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject('65706141ead327e0436a');
+    database = Databases(client);
+
+    fetchPixelUserInfo().then((userData) {
+      if (userData != null) {
+        setState(() {
+          this.userData = userData;
+        });
+      }
+    });
+  }
+
+  Future<PixelUserClass?> fetchPixelUserInfo() async {
+    try {
+      print(widget.userName);
+      final response = await database.getDocument(
+          collectionId: '658df9d98bf50c887791',
+          documentId: widget.userName,
+          databaseId: '658df9c7899c43cd556f');
+      return PixelUserClass.fromJson(response.data);
+    } catch (e) {
+      print('Error fetching document data: $e');
+    }
+    return null;
   }
 
   @override
-  Widget content(BuildContext context) {
+  Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: OnlineHeader.height(context) + 50),
         Text(
-          pixelUserClass.nameAfterLastComma,
+          '${userData?.firstName} ${userData?.lastName}',
           style: OnlineTheme.textStyle(size: 32),
         ),
         const SizedBox(
@@ -34,10 +70,10 @@ class ViewPixelUser extends StaticPage {
         }, childBuilder: (context, hover, pointerDown) {
           return ClipOval(
             child: SizedBox(
-              // width: 50,
+              width: 300,
               height: 300,
               child: Image.network(
-                'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${pixelUserClass.nameBeforeComma}/view?project=65706141ead327e0436a&mode=public',
+                'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${widget.userName}/view?project=65706141ead327e0436a&mode=public',
                 fit: BoxFit.cover,
                 height: 300,
                 loadingBuilder: (BuildContext context, Widget child,
@@ -66,7 +102,27 @@ class ViewPixelUser extends StaticPage {
             ),
           );
         }),
+        const SizedBox(height: 10,),
+        Text('${userData?.year}. Klasse', style: OnlineTheme.textStyle(weight: 5, size: 18),),
       ],
+    );
+  }
+}
+
+class ViewPixelUserDisplay extends StaticPage {
+  const ViewPixelUserDisplay({super.key, required this.userName});
+
+  final String userName;
+
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
+    return ViewPixelUser(
+      userName: userName,
     );
   }
 }

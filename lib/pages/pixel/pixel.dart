@@ -19,7 +19,7 @@ import '../../components/separator.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
 import '../login/auth_web_view_page.dart';
-import 'pixel_class.dart';
+import 'pixel_user_class.dart';
 import 'upload_page.dart';
 import 'user_post.dart';
 
@@ -203,10 +203,6 @@ class PixelPageState extends State<PixelPage> {
 
                       String formattedDate = post.postCreated;
 
-                      PixelUserClass fileNameDetails = PixelUserClass(
-                          nameBeforeComma: nameBeforeComma,
-                          nameAfterLastComma: nameAfterLastComma);
-
                       return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -220,8 +216,8 @@ class PixelPageState extends State<PixelPage> {
                                     width: 10,
                                   ),
                                   AnimatedButton(onTap: () {
-                                    PageNavigator.navigateTo(ViewPixelUser(
-                                      pixelUserClass: fileNameDetails,
+                                    PageNavigator.navigateTo(ViewPixelUserDisplay(
+                                      userName: nameBeforeComma,
                                     ));
                                   }, childBuilder:
                                       (context, hover, pointerDown) {
