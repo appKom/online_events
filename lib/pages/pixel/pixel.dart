@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
+import 'package:online_events/pages/pixel/comments.page.dart';
 import 'package:online_events/pages/pixel/info_page_pixel.dart';
 import 'package:online_events/pages/pixel/view_pixel_user.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
@@ -18,7 +19,6 @@ import '../../components/separator.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
 import '../login/auth_web_view_page.dart';
-import 'custom_file.dart';
 import 'pixel_class.dart';
 import 'upload_page.dart';
 import 'user_post.dart';
@@ -42,7 +42,6 @@ class PixelPageState extends State<PixelPage> {
     final client = Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
         .setProject('65706141ead327e0436a');
-    storage = Storage(client);
     database = Databases(client);
   }
 
@@ -387,6 +386,26 @@ class PixelPageState extends State<PixelPage> {
                                       ),
                                   ],
                                 )),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Row(
+                              children: [
+                                const Spacer(),
+                                AnimatedButton(
+                                  onTap: () => PageNavigator.navigateTo(
+                                      CommentPageDisplay(post: post)),
+                                  childBuilder: (context, hover, pointerDown) {
+                                    return Text(
+                                      'Vis kommentarer',
+                                      style: OnlineTheme.textStyle(
+                                          color: OnlineTheme.gray10),
+                                    );
+                                  },
+                                ),
+                                const Spacer(),
+                              ],
+                            ),
                             const Separator(margin: 20),
                           ]);
                     },

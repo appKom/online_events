@@ -10,6 +10,7 @@ class UserPostModel {
   String postCreated;
   final DateTime createdAt;
   List<String> likedBy;
+  List<String> comments;
   
 
   UserPostModel({
@@ -24,11 +25,13 @@ class UserPostModel {
     required this.postCreated,
     required this.createdAt,
     required this.likedBy,
+    required this.comments,
   });
 
   factory UserPostModel.fromJson(Map<String, dynamic> json) {
     String fileID = json['\$id'] as String;
     List<String> likedBy = List<String>.from(json['liked_by'] ?? []);
+    List<String> comments = List<String>.from(json['comments'] ?? []);
 
     DateTime parsedCreatedAt;
     if (json['\$createdAt'] != null) {
@@ -50,6 +53,7 @@ class UserPostModel {
       postCreated: json['post_created'], 
       createdAt: parsedCreatedAt,
       likedBy: likedBy,
+      comments: comments,
     );
   }
 
