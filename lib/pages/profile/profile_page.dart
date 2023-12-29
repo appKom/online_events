@@ -281,36 +281,33 @@ class _ProfilePageState extends State<ProfilePage> {
                             const SizedBox(
                               height: 5,
                             ),
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              child: TextFormField(
-                                controller: _titleController,
-                                style: OnlineTheme.textStyle(
-                                    color: OnlineTheme.white),
-                                decoration: InputDecoration(
-                                  labelText: 'Skriv om deg selv:',
-                                  labelStyle: OnlineTheme.textStyle(
-                                      color: OnlineTheme.white),
-                                  hintStyle: OnlineTheme.textStyle(
-                                      color: OnlineTheme.white),
-                                  enabledBorder: const UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: OnlineTheme.white),
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: OnlineTheme.white),
-                                  ),
-                                ),
-                                onFieldSubmitted: (value) {
-                                  saveBiography();
-                                },
-                              ),
-                            ),
                           ],
                         );
                       },
                     ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: _titleController,
+                    style: OnlineTheme.textStyle(color: OnlineTheme.white),
+                    decoration: InputDecoration(
+                      labelText: 'Skriv om deg selv:',
+                      labelStyle:
+                          OnlineTheme.textStyle(color: OnlineTheme.white),
+                      hintStyle:
+                          OnlineTheme.textStyle(color: OnlineTheme.white),
+                      enabledBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: OnlineTheme.white),
+                      ),
+                      focusedBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: OnlineTheme.white),
+                      ),
+                    ),
+                    onFieldSubmitted: (value) {
+                      saveBiography();
+                    },
                   ),
                 ),
                 const SizedBox(
