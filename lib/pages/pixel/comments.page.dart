@@ -202,7 +202,7 @@ class CommentPageState extends State<CommentPage> {
                                   widget.post.username)
                                 const Spacer(),
                               if (userProfile!.ntnuUsername ==
-                                  widget.post.username)
+                                  username)
                                 AnimatedButton(
                                     onTap: () {},
                                     childBuilder:

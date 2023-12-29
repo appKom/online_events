@@ -302,6 +302,8 @@ class PixelPageState extends State<PixelPage> {
                                 alignment: Alignment.bottomRight,
                                 children: [
                                   Image.network(post.imageLink),
+
+                                  if (post.username == userProfile!.username)
                                   AnimatedButton(
                                     childBuilder:
                                         (context, hover, pointerDown) {
