@@ -5,6 +5,7 @@ class PixelUserClass {
   String lastName;
   String ntnuUserName;
   int year;
+  String? biography;
   
 
   PixelUserClass({
@@ -14,6 +15,7 @@ class PixelUserClass {
     required this.lastName,
     required this.ntnuUserName,
     required this.year,
+    this.biography,
   });
 
   factory PixelUserClass.fromJson(Map<String, dynamic> json) {
@@ -25,11 +27,12 @@ class PixelUserClass {
       lastName: json['last_name'], 
       ntnuUserName: json['ntnuUsername'],
       year: json['year'],
+      biography: json['biography'],
     );
   }
 
   @override
   String toString() {
-    return 'PixelUserClass(userName: $userName, id: $id, firstName: $firstName, lastName: $lastName, ntnuUserName: $ntnuUserName, year: $year)';
+    return 'PixelUserClass(userName: $userName, id: $id, firstName: $firstName, lastName: $lastName, ntnuUserName: $ntnuUserName, year: $year, biography: $biography)';
   }
 }

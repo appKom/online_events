@@ -42,31 +42,35 @@ class CommentPageState extends State<CommentPage> {
     UserPostModel post,
     String userName,
   ) async {
-    try {
-      final latestPost = await database.getDocument(
-        databaseId: '658df78529d1a989a672',
-        collectionId: '658dfd035a1c33a77037',
-        documentId: postId,
-      );
-      List<dynamic> latestComments = latestPost.data['comments'];
+    if (_titleController.text.isNotEmpty) {
+      try {
+        final latestPost = await database.getDocument(
+          databaseId: '658df78529d1a989a672',
+          collectionId: '658dfd035a1c33a77037',
+          documentId: postId,
+        );
+        List<dynamic> latestComments = latestPost.data['comments'];
 
-      latestComments.addAll([
-        '[$userName, ${_titleController.text}, ${DateTime.now().toString()}]'
-      ]);
+        latestComments.addAll([
+          '[$userName, ${_titleController.text}, ${DateTime.now().toString()}]'
+        ]);
 
-      await database.updateDocument(
-        databaseId: '658df78529d1a989a672',
-        collectionId: '658dfd035a1c33a77037',
-        documentId: postId,
-        data: {
-          'comments': latestComments,
-        },
-      );
-      print('Comment posted successfully');
-      _titleController.clear();
-      setState(() {});
-    } catch (e) {
-      print("Error posting comment: $e");
+        await database.updateDocument(
+          databaseId: '658df78529d1a989a672',
+          collectionId: '658dfd035a1c33a77037',
+          documentId: postId,
+          data: {
+            'comments': latestComments,
+          },
+        );
+        print('Comment posted successfully');
+        _titleController.clear();
+        setState(() {});
+      } catch (e) {
+        print("Error posting comment: $e");
+      }
+    } else {
+      print("Comment must contain at least one character.");
     }
   }
 
@@ -147,7 +151,8 @@ class CommentPageState extends State<CommentPage> {
                           Row(
                             children: [
                               AnimatedButton(onTap: () {
-                                PageNavigator.navigateTo(ViewPixelUserDisplay(userName: username));
+                                PageNavigator.navigateTo(
+                                    ViewPixelUserDisplay(userName: username));
                               }, childBuilder: (context, hover, pointerDown) {
                                 return ClipOval(
                                   child: SizedBox(
@@ -201,8 +206,7 @@ class CommentPageState extends State<CommentPage> {
                               if (userProfile!.ntnuUsername ==
                                   widget.post.username)
                                 const Spacer(),
-                              if (userProfile!.ntnuUsername ==
-                                  username)
+                              if (userProfile!.ntnuUsername == username)
                                 AnimatedButton(
                                     onTap: () {},
                                     childBuilder:

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../pixel/pixel_user_class.dart';
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
@@ -36,6 +37,8 @@ class _ProfilePageState extends State<ProfilePage> {
   bool showInfoAboutPicture = false;
   File? _imageFile;
   late Databases database;
+  final TextEditingController _titleController = TextEditingController();
+  PixelUserClass? pixelUserData;
 
   @override
   void initState() {
@@ -48,6 +51,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
     storage = Storage(client);
     database = Databases(client);
+
+    fetchPixelUserInfo().then((userData) {
+      print(userData);
+      if (userData != null) {
+        setState(() {
+          pixelUserData = userData;
+        });
+      }
+    });
   }
 
   Future<void> fetchUserProfile() async {
@@ -69,45 +81,77 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       await database.createDocument(
-        
-        collectionId: '658df9d98bf50c887791', 
-        databaseId: '658df9c7899c43cd556f',
-        documentId: userProfile!.username,
-        data: {
-          'username': userProfile!.username,
-          'id': userProfile!.id,
-          'first_name': userProfile!.firstName,
-          'last_name': userProfile!.lastName,
-          'ntnuUsername': userProfile!.ntnuUsername,
-          'year': userProfile!.year
-        }
-      );
+          collectionId: '658df9d98bf50c887791',
+          databaseId: '658df9c7899c43cd556f',
+          documentId: userProfile!.username,
+          data: {
+            'username': userProfile!.username,
+            'id': userProfile!.id,
+            'first_name': userProfile!.firstName,
+            'last_name': userProfile!.lastName,
+            'ntnuUsername': userProfile!.ntnuUsername,
+            'year': userProfile!.year
+          });
       print("UserProfile saved successfully");
     } catch (e) {
       print("Error saving UserProfile: $e");
     }
   }
 
-  Future<void> pickImage(ImageSource source) async {
-  final ImagePicker picker = ImagePicker();
-
-  try {
-    final XFile? pickedFile = await picker.pickImage(source: source);
-
-    setState(() {
-      if (pickedFile != null) {
-        _imageFile = File(pickedFile.path);
-      } else {
-        print("No image was selected");
+  Future<void> saveBiography() async {
+    if (userProfile == null && _titleController.text.isNotEmpty) {
+      print("UserProfile is null");
+      return;
+    }
+    try {
+      await database.updateDocument(
+          collectionId: '658df9d98bf50c887791',
+          databaseId: '658df9c7899c43cd556f',
+          documentId: userProfile!.username,
+          data: {'biography': _titleController.text});
+      print("Biography saved successfully");
+      if (pixelUserData != null) {
+        pixelUserData!.biography = _titleController.text;
+        setState(() {});
       }
-    });
-  } catch (e) {
-    print("Error picking image: $e");
-
-    setState(() {
-    });
+      _titleController.clear();
+    } catch (e) {
+      print("Error saving Biography: $e");
+    }
   }
-}
+
+  Future<PixelUserClass?> fetchPixelUserInfo() async {
+    try {
+      final response = await database.getDocument(
+          collectionId: '658df9d98bf50c887791',
+          documentId: userProfile!.username,
+          databaseId: '658df9c7899c43cd556f');
+      return PixelUserClass.fromJson(response.data);
+    } catch (e) {
+      print('Error fetching document data: $e');
+    }
+    return null;
+  }
+
+  Future<void> pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+
+    try {
+      final XFile? pickedFile = await picker.pickImage(source: source);
+
+      setState(() {
+        if (pickedFile != null) {
+          _imageFile = File(pickedFile.path);
+        } else {
+          print("No image was selected");
+        }
+      });
+    } catch (e) {
+      print("Error picking image: $e");
+
+      setState(() {});
+    }
+  }
 
   Future<void> uploadImage() async {
     if (_imageFile == null) {
@@ -151,6 +195,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
+    String biographyText = pixelUserData?.biography ?? '';
     final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);
@@ -233,13 +278,56 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style: OnlineTheme.textStyle(
                                         color: OnlineTheme.blue2)),
                               ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              child: TextFormField(
+                                controller: _titleController,
+                                style: OnlineTheme.textStyle(
+                                    color: OnlineTheme.white),
+                                decoration: InputDecoration(
+                                  labelText: 'Skriv om deg selv:',
+                                  labelStyle: OnlineTheme.textStyle(
+                                      color: OnlineTheme.white),
+                                  hintStyle: OnlineTheme.textStyle(
+                                      color: OnlineTheme.white),
+                                  enabledBorder: const UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: OnlineTheme.white),
+                                  ),
+                                  focusedBorder: const UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: OnlineTheme.white),
+                                  ),
+                                ),
+                                onFieldSubmitted: (value) {
+                                  saveBiography();
+                                },
+                              ),
+                            ),
                           ],
                         );
                       },
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(
+                  height: 12,
+                ),
+                Text(
+                  'Biografi',
+                  style: headerStyle,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Padding(
+                  padding: aboveBelowPadding,
+                  child: constValueTextInput('Biografi', biographyText),
+                ),
+                const Separator(margin: 5),
                 Text(
                   'Kontakt',
                   style: headerStyle,

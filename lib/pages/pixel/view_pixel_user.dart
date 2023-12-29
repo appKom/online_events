@@ -6,6 +6,7 @@ import 'package:online_events/theme/theme.dart';
 import '../../components/animated_button.dart';
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
+import '../../components/separator.dart';
 import 'pixel.dart';
 
 class ViewPixelUser extends StatefulWidget {
@@ -41,7 +42,6 @@ class ViewPixelUserState extends State<ViewPixelUser> {
 
   Future<PixelUserClass?> fetchPixelUserInfo() async {
     try {
-      print(widget.userName);
       final response = await database.getDocument(
           collectionId: '658df9d98bf50c887791',
           documentId: widget.userName,
@@ -104,6 +104,8 @@ class ViewPixelUserState extends State<ViewPixelUser> {
         }),
         const SizedBox(height: 10,),
         Text('${userData?.year}. Klasse', style: OnlineTheme.textStyle(weight: 5, size: 18),),
+        const Separator(margin: 10,),
+        Text(userData?.biography ?? '', style: OnlineTheme.textStyle(),),
       ],
     );
   }
