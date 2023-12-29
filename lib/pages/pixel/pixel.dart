@@ -21,6 +21,7 @@ import '../login/auth_web_view_page.dart';
 import 'custom_file.dart';
 import 'pixel_class.dart';
 import 'upload_page.dart';
+import 'user_post.dart';
 
 class PixelPage extends StatefulWidget {
   const PixelPage({super.key});
@@ -32,8 +33,8 @@ class PixelPage extends StatefulWidget {
 class PixelPageState extends State<PixelPage> {
   late Storage storage;
   File? _imageFile;
-
-  //TODO Comments, like picture, show User Profile and chronological order
+  late Databases database;
+  bool showHeartAnimation = false;
 
   @override
   void initState() {
@@ -42,37 +43,21 @@ class PixelPageState extends State<PixelPage> {
         .setEndpoint('https://cloud.appwrite.io/v1')
         .setProject('65706141ead327e0436a');
     storage = Storage(client);
+    database = Databases(client);
   }
 
-  Future<void> pickImage(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: source);
-    setState(() {
-      if (pickedFile != null) {
-        _imageFile = File(pickedFile.path);
-      }
-    });
-  }
+  Future<List<UserPostModel>> getUserPosts() async {
+    final response = await database.listDocuments(
+        collectionId: '658dfd035a1c33a77037',
+        databaseId: '658df78529d1a989a672');
 
-  Future<List<CustomFile>> getSortedImages() async {
-    try {
-      final response =
-          await storage.listFiles(bucketId: '6589b4e47f3c8840e723');
-      List<CustomFile> files = parseFiles(response);
-      files.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    List<UserPostModel> posts = response.documents
+        .map((doc) => UserPostModel.fromJson(doc.data))
+        .toList();
 
-      return files;
-    } catch (e) {
-      print("Error retrieving images: $e");
-      return [];
-    }
-  }
+    posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-  List<CustomFile> parseFiles(io.FileList fileList) {
-    return fileList.files.map((file) {
-      Map<String, dynamic> fileData = file.toMap();
-      return CustomFile.fromJson(fileData);
-    }).toList();
+    return posts;
   }
 
   String formatRelativeTime(DateTime createdAt) {
@@ -92,15 +77,63 @@ class PixelPageState extends State<PixelPage> {
     }
   }
 
-  void deleteImage(String fileId) async {
-    print(fileId);
+  Future<void> likePost(
+      String postId, UserPostModel post, String userId) async {
+    if (!post.likedBy.contains(userId)) {
+      try {
+        await database.updateDocument(
+          databaseId: '658df78529d1a989a672',
+          collectionId: '658dfd035a1c33a77037',
+          documentId: postId,
+          data: {
+            'number_of_likes': post.numberOfLikes + 1,
+            'liked_by': [...post.likedBy, userId],
+          },
+        );
+        print('Likes incremented successfully');
+        setState(() {});
+      } catch (e) {
+        print("Error incrementing likes: $e");
+      }
+    }
+  }
+
+  Future<void> unlikePost(
+      String postId, UserPostModel post, String userId) async {
+    if (post.likedBy.contains(userId)) {
+      try {
+        List<String> updatedLikedBy = List<String>.from(post.likedBy)
+          ..remove(userId);
+
+        await database.updateDocument(
+          databaseId: '658df78529d1a989a672',
+          collectionId: '658dfd035a1c33a77037',
+          documentId: postId,
+          data: {
+            'number_of_likes': post.numberOfLikes - 1,
+            'liked_by': updatedLikedBy,
+          },
+        );
+        print('Post unliked successfully');
+        setState(() {});
+      } catch (e) {
+        print("Error unliking post: $e");
+      }
+    }
+  }
+
+  Future<void> deletePost(String postId) async {
     try {
-      print(fileId);
-      await storage.deleteFile(
-          bucketId: '6589b4e47f3c8840e723', fileId: fileId);
-      print('Bilde er slettet');
+      await database.deleteDocument(
+        databaseId: '658df78529d1a989a672',
+        collectionId: '658dfd035a1c33a77037',
+        documentId: postId,
+      );
+      print('Post deleted successfully');
+
+      setState(() {});
     } catch (e) {
-      print("Error deleting image: $e");
+      print("Error deleting post: $e");
     }
   }
 
@@ -148,41 +181,28 @@ class PixelPageState extends State<PixelPage> {
               ),
             ),
             Flexible(
-              child: FutureBuilder<List<CustomFile>>(
-                future: getSortedImages(),
+              child: FutureBuilder<List<UserPostModel>>(
+                future: getUserPosts(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   }
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text('No images found');
+                    return const Text('No posts found');
                   }
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
+                      UserPostModel post = snapshot.data![index];
                       var file = snapshot.data![index];
-                      int firstCommaIndex = file.name.indexOf(',');
-                      int lastCommaIndex = file.name.lastIndexOf(',');
 
-                      String nameBeforeComma = firstCommaIndex != -1
-                          ? file.name.substring(0, firstCommaIndex)
-                          : file.name;
-                      String description = (firstCommaIndex != -1 &&
-                              lastCommaIndex != -1 &&
-                              firstCommaIndex < lastCommaIndex)
-                          ? file.name
-                              .substring(firstCommaIndex + 1, lastCommaIndex)
-                              .trim()
-                          : (firstCommaIndex != -1
-                              ? file.name.substring(firstCommaIndex + 1).trim()
-                              : '');
+                      String nameBeforeComma = post.username;
+                      String description = post.description;
 
-                      String nameAfterLastComma = lastCommaIndex != -1 &&
-                              file.name.length > lastCommaIndex + 1
-                          ? file.name.substring(lastCommaIndex + 1).trim()
-                          : '';
+                      String nameAfterLastComma =
+                          '${post.firstName} ${post.lastName}';
 
-                      String formattedDate = formatRelativeTime(file.createdAt);
+                      String formattedDate = post.postCreated;
 
                       PixelUserClass fileNameDetails = PixelUserClass(
                           nameBeforeComma: nameBeforeComma,
@@ -256,7 +276,7 @@ class PixelPageState extends State<PixelPage> {
                                   ),
                                   const Spacer(),
                                   Text(
-                                    formattedDate,
+                                    formatRelativeTime(post.createdAt),
                                     style: OnlineTheme.textStyle(weight: 4),
                                   )
                                 ],
@@ -265,47 +285,69 @@ class PixelPageState extends State<PixelPage> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Stack(
-                              alignment: Alignment.bottomRight,
-                              children: [
-                                Image.network(file.url),
-                                AnimatedButton(
-                                  childBuilder: (context, hover, pointerDown) {
-                                    return Container(
-                                      height: 35,
-                                      width: 35,
-                                      decoration: BoxDecoration(
-                                        color: OnlineTheme.white,
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 1,
-                                            blurRadius: 1,
-                                            offset: const Offset(0, 1),
-                                          ),
-                                        ],
-                                      ),
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        iconSize: 24,
-                                        icon: const Icon(Icons.delete,
-                                            color: OnlineTheme.background),
-                                        onPressed: () async {
-                                          try {
-                                            deleteImage(file.id);
-                                            print('Image deleted successfully');
-                                            PageNavigator.navigateTo(
-                                                const DummyDisplay2());
-                                          } catch (e) {
-                                            print("Error deleting image: $e");
-                                          }
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
+                            GestureDetector(
+                              onDoubleTap: () async {
+                                if (!post.likedBy
+                                    .contains(userProfile!.id.toString())) {
+                                  await likePost(post.id, post,
+                                      userProfile!.id.toString());
+                                  setState(() {
+                                    showHeartAnimation = true;
+                                  });
+                                  // Hide the heart icon after a short delay
+                                  Future.delayed(
+                                      const Duration(milliseconds: 500), () {
+                                    setState(() {
+                                      showHeartAnimation = false;
+                                    });
+                                  });
+                                }
+                              },
+                              child: Stack(
+                                alignment: Alignment.bottomRight,
+                                children: [
+                                  Image.network(post.imageLink),
+                                  AnimatedButton(
+                                    childBuilder:
+                                        (context, hover, pointerDown) {
+                                      return Container(
+                                        height: 35,
+                                        width: 35,
+                                        decoration: BoxDecoration(
+                                          color: OnlineTheme.white,
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 1,
+                                              blurRadius: 1,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ],
+                                        ),
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          iconSize: 24,
+                                          icon: const Icon(Icons.delete,
+                                              color: OnlineTheme.background),
+                                          onPressed: () async {
+                                            try {
+                                              deletePost(post.id);
+                                              print(
+                                                  'Image deleted successfully');
+                                              PageNavigator.navigateTo(
+                                                  const DummyDisplay2());
+                                            } catch (e) {
+                                              print("Error deleting image: $e");
+                                            }
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                             const SizedBox(
                               height: 4,
@@ -313,10 +355,38 @@ class PixelPageState extends State<PixelPage> {
                             Container(
                               height: 20,
                               child: Text(
-                                description,
-                                style: OnlineTheme.textStyle(size: 16),
+                                '${post.numberOfLikes} likerklikk',
+                                style: OnlineTheme.textStyle(),
                               ),
                             ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Container(
+                                height: 20,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '${post.username}: $description',
+                                      style: OnlineTheme.textStyle(size: 16),
+                                    ),
+                                    const Spacer(),
+                                    if (post.likedBy
+                                        .contains(userProfile!.id.toString()))
+                                      IconButton(
+                                        padding: EdgeInsets.zero,
+                                        iconSize: 24,
+                                        icon: const Icon(Icons.heart_broken,
+                                            color: OnlineTheme.red1),
+                                        onPressed: () async {
+                                          String userId =
+                                              userProfile!.id.toString();
+                                          await unlikePost(
+                                              post.id, post, userId);
+                                        },
+                                      ),
+                                  ],
+                                )),
                             const Separator(margin: 20),
                           ]);
                     },

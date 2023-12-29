@@ -35,6 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late Storage storage;
   bool showInfoAboutPicture = false;
   File? _imageFile;
+  late Databases database;
 
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
         .setProject('65706141ead327e0436a');
 
     storage = Storage(client);
+    database = Databases(client);
   }
 
   Future<void> fetchUserProfile() async {
@@ -54,6 +56,35 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         userProfile = profile;
       });
+
+      await saveUserProfileToDatabase();
+    }
+  }
+
+  Future<void> saveUserProfileToDatabase() async {
+    if (userProfile == null) {
+      print("UserProfile is null");
+      return;
+    }
+
+    try {
+      await database.createDocument(
+        
+        collectionId: '658df9d98bf50c887791', 
+        databaseId: '658df9c7899c43cd556f',
+        documentId: userProfile!.username,
+        data: {
+          'username': userProfile!.username,
+          'id': userProfile!.id,
+          'first_name': userProfile!.firstName,
+          'last_name': userProfile!.lastName,
+          'ntnuUsername': userProfile!.ntnuUsername,
+          'year': userProfile!.year
+        }
+      );
+      print("UserProfile saved successfully");
+    } catch (e) {
+      print("Error saving UserProfile: $e");
     }
   }
 

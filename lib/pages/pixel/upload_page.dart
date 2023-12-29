@@ -4,6 +4,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:intl/intl.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/pages/pixel/pixel.dart';
 import '../../components/navbar.dart';
@@ -25,6 +26,7 @@ class UploadPageState extends State<UploadPage> {
   late Storage storage;
   final TextEditingController _titleController = TextEditingController();
   File? _selectedImage;
+  late Databases database;
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class UploadPageState extends State<UploadPage> {
         .setEndpoint('https://cloud.appwrite.io/v1')
         .setProject('65706141ead327e0436a');
     storage = Storage(client);
+    database = Databases(client);
   }
 
   Future<void> pickImage(ImageSource source) async {
@@ -96,14 +99,16 @@ class UploadPageState extends State<UploadPage> {
       //Should probaly handle
     }
 
+    String imageIdBeNotPoppin = '${userProfile!.username}${formatDateTime(DateTime.now())}';
+
     try {
       final file = await storage.createFile(
         bucketId: '6589b4e47f3c8840e723',
-        fileId: ID.unique(),
+        fileId: imageIdBeNotPoppin,
         file: InputFile.fromPath(
           path: _selectedImage!.path,
           filename:
-              '${userProfile!.ntnuUsername}, ${_titleController.text}, ${userProfile!.firstName} ${userProfile!.lastName}',
+              '${userProfile!.username}${formatDateTime(DateTime.now())}',
         ),
       );
 
@@ -111,9 +116,50 @@ class UploadPageState extends State<UploadPage> {
       setState(() {
         //hei
       });
+      savePostToDataBase(imageIdBeNotPoppin);
       PageNavigator.navigateTo(const DummyDisplay2());
     } catch (e) {
       print("Error uploading image: $e");
+    }
+  }
+
+  String formatDateTime(DateTime dateTime) {
+    String formattedDate =
+        '${dateTime.day}_${dateTime.month}_${dateTime.year}_${dateTime.second}';
+    return formattedDate;
+  }
+
+  String formatDateTime2(DateTime dateTime) {
+  final DateFormat formatter = DateFormat('dd.MM.yyyy.HH:mm:ss');
+  return formatter.format(dateTime);
+}
+
+  Future<void> savePostToDataBase(String imageIdbePoppin) async {
+    String imageId = imageIdbePoppin;
+    if (userProfile == null) {
+      print("UserProfile is null");
+      return;
+    }
+
+    try {
+      await database.createDocument(
+          collectionId: '658dfd035a1c33a77037',
+          databaseId: '658df78529d1a989a672',
+          documentId: ID.unique(),
+          data: {
+            'image_name': userProfile!.username,
+            'number_of_likes': 0,
+            'username': userProfile!.ntnuUsername,
+            'first_name': userProfile!.firstName,
+            'last_name': userProfile!.lastName,
+            'description': _titleController.text,
+            'post_created': formatDateTime2(DateTime.now()),
+            'image_link':
+                'https://cloud.appwrite.io/v1/storage/buckets/6589b4e47f3c8840e723/files/$imageId/view?project=65706141ead327e0436a&mode=public'
+          });
+      print("Post saved successfully");
+    } catch (e) {
+      print("Error posting post: $e");
     }
   }
 
@@ -162,19 +208,13 @@ class UploadPageState extends State<UploadPage> {
                   style: OnlineTheme.textStyle(color: OnlineTheme.white),
                   decoration: InputDecoration(
                     labelText: 'Beskrivelse',
-                    labelStyle: OnlineTheme.textStyle(
-                        color: OnlineTheme.white), 
-                    hintStyle: OnlineTheme.textStyle(
-                        color: OnlineTheme.white), 
+                    labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                    hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
                     enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: OnlineTheme
-                              .white), 
+                      borderSide: BorderSide(color: OnlineTheme.white),
                     ),
                     focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: OnlineTheme
-                              .white), 
+                      borderSide: BorderSide(color: OnlineTheme.white),
                     ),
                   ),
                   onChanged: (_) => checkIfButtonShouldBeEnabled(),
