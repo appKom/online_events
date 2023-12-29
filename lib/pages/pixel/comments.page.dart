@@ -34,7 +34,6 @@ class CommentPageState extends State<CommentPage> {
         .setEndpoint('https://cloud.appwrite.io/v1')
         .setProject('65706141ead327e0436a');
     database = Databases(client);
-    print(widget.post.comments);
   }
 
   Future<void> postComment(
@@ -158,25 +157,33 @@ class CommentPageState extends State<CommentPage> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipOval(
-                                    child: SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: Image.network(
-                                        'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$username/view?project=65706141ead327e0436a&mode=public',
-                                        fit: BoxFit.cover,
-                                        height: 30,
-                                        errorBuilder:
-                                            (context, exception, stackTrace) {
-                                          return Image.asset(
-                                            'assets/images/default_profile_picture.png',
-                                            fit: BoxFit.cover,
-                                            height: 30,
-                                          );
-                                        },
+                                  AnimatedButton(onTap: () {
+                                    PageNavigator.navigateTo(
+                                        ViewPixelUserDisplay(
+                                      userName: username,
+                                    ));
+                                  }, childBuilder:
+                                      (context, hover, pointerDown) {
+                                    return ClipOval(
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: Image.network(
+                                          'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$username/view?project=65706141ead327e0436a&mode=public',
+                                          fit: BoxFit.cover,
+                                          height: 50,
+                                          errorBuilder:
+                                              (context, exception, stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/default_profile_picture.png',
+                                              fit: BoxFit.cover,
+                                              height: 50,
+                                            );
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                    );
+                                  }),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Column(
