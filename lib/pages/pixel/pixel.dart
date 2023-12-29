@@ -9,8 +9,12 @@ import 'package:intl/intl.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
+import 'package:online_events/pages/pixel/cards/description_card.dart';
+import 'package:online_events/pages/pixel/cards/image_card.dart';
+import 'package:online_events/pages/pixel/cards/not_logged_in_card.dart';
 import 'package:online_events/pages/pixel/comments.page.dart';
 import 'package:online_events/pages/pixel/info_page_pixel.dart';
+import 'package:online_events/pages/pixel/cards/likes_card.dart';
 import 'package:online_events/pages/pixel/view_pixel_user.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import '../../components/animated_button.dart';
@@ -32,7 +36,6 @@ class PixelPage extends StatefulWidget {
 
 class PixelPageState extends State<PixelPage> {
   late Storage storage;
-  File? _imageFile;
   late Databases database;
   bool showHeartAnimation = false;
 
@@ -90,7 +93,6 @@ class PixelPageState extends State<PixelPage> {
           },
         );
         print('Likes incremented successfully');
-        setState(() {});
       } catch (e) {
         print("Error incrementing likes: $e");
       }
@@ -136,6 +138,14 @@ class PixelPageState extends State<PixelPage> {
     }
   }
 
+  Future<void> refreshPage() async {
+    getUserPosts();
+
+    setState(() {
+      //
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding +
@@ -143,344 +153,219 @@ class PixelPageState extends State<PixelPage> {
     if (loggedIn) {
       return Scaffold(
         backgroundColor: OnlineTheme.background,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(height: OnlineHeader.height(context) + 20),
-            Center(
-              child: Row(
-                children: [
-                  // SizedBox(
-                  //   height: 30,
-                  //   width: 30,
-                  //   child: Image.asset('assets/images/pixel_logo.png'),
-                  // ),
-                  // const SizedBox(
-                  //   width: 5,
-                  // ),
-                  Text(
-                    'Pixel',
-                    style: OnlineTheme.textStyle(size: 30, weight: 7)
-                        .copyWith(color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Spacer(),
-                  AnimatedButton(
-                      onTap: () => AppNavigator.navigateToRoute(
-                            InfoPagePixel(),
-                            additive: true,
-                          ),
-                      childBuilder: (context, hover, pointerDown) {
-                        return const Icon(
-                          Icons.info_outline,
-                          color: OnlineTheme.white,
-                        );
-                      })
-                ],
+        body: RefreshIndicator(
+          onRefresh: refreshPage,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(height: OnlineHeader.height(context) + 20),
+              Center(
+                child: Row(
+                  children: [
+                    Text(
+                      'Pixel',
+                      style: OnlineTheme.textStyle(size: 30, weight: 7)
+                          .copyWith(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                    const Spacer(),
+                    AnimatedButton(
+                        onTap: () => AppNavigator.navigateToRoute(
+                              InfoPagePixel(),
+                              additive: true,
+                            ),
+                        childBuilder: (context, hover, pointerDown) {
+                          return const Icon(
+                            Icons.info_outline,
+                            color: OnlineTheme.white,
+                          );
+                        })
+                  ],
+                ),
               ),
-            ),
-            Flexible(
-              child: FutureBuilder<List<UserPostModel>>(
-                future: getUserPosts(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text('No posts found');
-                  }
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      UserPostModel post = snapshot.data![index];
-                      var file = snapshot.data![index];
+              Flexible(
+                child: FutureBuilder<List<UserPostModel>>(
+                  future: getUserPosts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Text('No posts found');
+                    }
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        UserPostModel post = snapshot.data![index];
 
-                      String nameBeforeComma = post.username;
-                      String description = post.description;
+                        String nameBeforeComma = post.username;
 
-                      String nameAfterLastComma =
-                          '${post.firstName} ${post.lastName}';
+                        String nameAfterLastComma =
+                            '${post.firstName} ${post.lastName}';
 
-                      String formattedDate = post.postCreated;
-
-                      return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 50,
-                              decoration: const BoxDecoration(
-                                  color: OnlineTheme.background),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  AnimatedButton(onTap: () {
-                                    PageNavigator.navigateTo(ViewPixelUserDisplay(
-                                      userName: nameBeforeComma,
-                                    ));
-                                  }, childBuilder:
-                                      (context, hover, pointerDown) {
-                                    return ClipOval(
-                                      child: SizedBox(
-                                        width: 50,
-                                        height: 50,
-                                        child: Image.network(
-                                          'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$nameBeforeComma/view?project=65706141ead327e0436a&mode=public',
-                                          fit: BoxFit.cover,
+                        return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 50,
+                                decoration: const BoxDecoration(
+                                    color: OnlineTheme.background),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    AnimatedButton(onTap: () {
+                                      PageNavigator.navigateTo(
+                                          ViewPixelUserDisplay(
+                                        userName: nameBeforeComma,
+                                      ));
+                                    }, childBuilder:
+                                        (context, hover, pointerDown) {
+                                      return ClipOval(
+                                        child: SizedBox(
+                                          width: 50,
                                           height: 50,
-                                          loadingBuilder: (BuildContext context,
-                                              Widget child,
-                                              ImageChunkEvent?
-                                                  loadingProgress) {
-                                            if (loadingProgress == null) {
-                                              return child;
-                                            }
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                value: loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null
-                                                    ? loadingProgress
-                                                            .cumulativeBytesLoaded /
-                                                        loadingProgress
-                                                            .expectedTotalBytes!
-                                                    : null,
-                                              ),
-                                            );
-                                          },
-                                          errorBuilder: (BuildContext context,
-                                              Object exception,
-                                              StackTrace? stackTrace) {
-                                            return Image.asset(
-                                              'assets/images/default_profile_picture.png',
-                                              fit: BoxFit.cover,
-                                              height: 50,
-                                            );
-                                          },
+                                          child: Image.network(
+                                            'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$nameBeforeComma/view?project=65706141ead327e0436a&mode=public',
+                                            fit: BoxFit.cover,
+                                            height: 50,
+                                            loadingBuilder:
+                                                (BuildContext context,
+                                                    Widget child,
+                                                    ImageChunkEvent?
+                                                        loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              }
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  value: loadingProgress
+                                                              .expectedTotalBytes !=
+                                                          null
+                                                      ? loadingProgress
+                                                              .cumulativeBytesLoaded /
+                                                          loadingProgress
+                                                              .expectedTotalBytes!
+                                                      : null,
+                                                ),
+                                              );
+                                            },
+                                            errorBuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/default_profile_picture.png',
+                                                fit: BoxFit.cover,
+                                                height: 50,
+                                              );
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  }),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    nameAfterLastComma,
-                                    style: OnlineTheme.textStyle(weight: 4),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    formatRelativeTime(post.createdAt),
-                                    style: OnlineTheme.textStyle(weight: 4),
-                                  )
-                                ],
+                                      );
+                                    }),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      nameAfterLastComma,
+                                      style: OnlineTheme.textStyle(weight: 4),
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      formatRelativeTime(post.createdAt),
+                                      style: OnlineTheme.textStyle(weight: 4),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onDoubleTap: () async {
-                                if (!post.likedBy
-                                    .contains(userProfile!.id.toString())) {
-                                  await likePost(post.id, post,
-                                      userProfile!.id.toString());
-                                  setState(() {
-                                    showHeartAnimation = true;
-                                  });
-                                  // Hide the heart icon after a short delay
-                                  Future.delayed(
-                                      const Duration(milliseconds: 500), () {
-                                    setState(() {
-                                      showHeartAnimation = false;
-                                    });
-                                  });
-                                }
-                              },
-                              child: Stack(
-                                alignment: Alignment.bottomRight,
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ImageCard(
+                                  post: post,
+                                  onLikePost: (String postId,
+                                      UserPostModel post, String userId) {
+                                    likePost(postId, post, userId);
+                                  },
+                                  onDeletePost: (String postId) {
+                                    deletePost(postId);
+                                  }),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              LikesCard(post: post),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              DescriptionCard(
+                                post: post,
+                                onUnlikePost: (String postId,
+                                    UserPostModel post, String userId) {
+                                  unlikePost(postId, post, userId);
+                                },
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Row(
                                 children: [
-                                  Image.network(post.imageLink),
-
-                                  if (post.username == userProfile!.username)
+                                  const Spacer(),
                                   AnimatedButton(
+                                    onTap: () => PageNavigator.navigateTo(
+                                        CommentPageDisplay(post: post)),
                                     childBuilder:
                                         (context, hover, pointerDown) {
-                                      return Container(
-                                        height: 35,
-                                        width: 35,
-                                        decoration: BoxDecoration(
-                                          color: OnlineTheme.white,
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 1,
-                                              offset: const Offset(0, 1),
-                                            ),
-                                          ],
-                                        ),
-                                        child: IconButton(
-                                          padding: EdgeInsets.zero,
-                                          iconSize: 24,
-                                          icon: const Icon(Icons.delete,
-                                              color: OnlineTheme.background),
-                                          onPressed: () async {
-                                            try {
-                                              deletePost(post.id);
-                                              print(
-                                                  'Image deleted successfully');
-                                              PageNavigator.navigateTo(
-                                                  const DummyDisplay2());
-                                            } catch (e) {
-                                              print("Error deleting image: $e");
-                                            }
-                                          },
-                                        ),
+                                      return Text(
+                                        'Vis kommentarer',
+                                        style: OnlineTheme.textStyle(
+                                            color: OnlineTheme.gray10),
                                       );
                                     },
                                   ),
+                                  const Spacer(),
                                 ],
                               ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Container(
-                              height: 20,
-                              child: Text(
-                                '${post.numberOfLikes} likerklikk',
-                                style: OnlineTheme.textStyle(),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Container(
-                                height: 20,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '${post.username}: $description',
-                                      style: OnlineTheme.textStyle(size: 16),
-                                    ),
-                                    const Spacer(),
-                                    if (post.likedBy
-                                        .contains(userProfile!.id.toString()))
-                                      IconButton(
-                                        padding: EdgeInsets.zero,
-                                        iconSize: 24,
-                                        icon: const Icon(Icons.heart_broken,
-                                            color: OnlineTheme.red1),
-                                        onPressed: () async {
-                                          String userId =
-                                              userProfile!.id.toString();
-                                          await unlikePost(
-                                              post.id, post, userId);
-                                        },
-                                      ),
-                                  ],
-                                )),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                const Spacer(),
-                                AnimatedButton(
-                                  onTap: () => PageNavigator.navigateTo(
-                                      CommentPageDisplay(post: post)),
-                                  childBuilder: (context, hover, pointerDown) {
-                                    return Text(
-                                      'Vis kommentarer',
-                                      style: OnlineTheme.textStyle(
-                                          color: OnlineTheme.gray10),
-                                    );
-                                  },
-                                ),
-                                const Spacer(),
-                              ],
-                            ),
-                            const Separator(margin: 20),
-                          ]);
-                    },
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 25,
-                  vertical: 20), // Add padding at the bottom for the button
-              child: AnimatedButton(
-                onTap: () {
-                  PageNavigator.navigateTo(const UploadPageDisplay());
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      gradient: OnlineTheme.purpleGradient,
-                      borderRadius: OnlineTheme.eventButtonRadius,
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Last opp',
-                        style: OnlineTheme.textStyle(),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: Navbar.height(context) + 10),
-          ],
-        ),
-      );
-    } else {
-      void onPressed() {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const LoginWebView(),
-        ));
-      }
-
-      return Padding(
-          padding: EdgeInsets.only(left: padding.left, right: padding.right),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: OnlineHeader.height(context)),
-              Center(
-                child: Text(
-                  'Du må være inlogget for å se Pixel',
-                  style: OnlineTheme.textStyle(),
+                              const Separator(margin: 20),
+                            ]);
+                      },
+                    );
+                  },
                 ),
               ),
-              const SizedBox(
-                height: 120,
-              ),
-              AnimatedButton(
-                  onTap: onPressed,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 20), // Add padding at the bottom for the button
+                child: AnimatedButton(
+                  onTap: () {
+                    PageNavigator.navigateTo(const UploadPageDisplay());
+                  },
                   childBuilder: (context, hover, pointerDown) {
                     return Container(
-                      height: OnlineTheme.buttonHeight,
-                      decoration: BoxDecoration(
-                        gradient: OnlineTheme.greenGradient,
-                        borderRadius: OnlineTheme.buttonRadius,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        gradient: OnlineTheme.purpleGradient,
+                        borderRadius: OnlineTheme.eventButtonRadius,
                       ),
                       child: Center(
                         child: Text(
-                          'Logg Inn',
-                          style: OnlineTheme.textStyle(weight: 5),
+                          'Last opp',
+                          style: OnlineTheme.textStyle(),
                         ),
                       ),
                     );
-                  })
+                  },
+                ),
+              ),
+              SizedBox(height: Navbar.height(context) + 10),
             ],
-          ));
+          ),
+        ),
+      );
+    } else {
+      return const NotLoggedInCard();
     }
   }
 }
