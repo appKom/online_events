@@ -152,7 +152,7 @@ class CommentPageState extends State<CommentPage> {
                                   width: 30,
                                   height: 30,
                                   child: Image.network(
-                                    'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${widget.post.username}/view?project=65706141ead327e0436a&mode=public',
+                                    'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$username/view?project=65706141ead327e0436a&mode=public',
                                     fit: BoxFit.cover,
                                     height: 50,
                                     loadingBuilder: (BuildContext context,
