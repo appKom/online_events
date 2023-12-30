@@ -12,6 +12,7 @@ import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
+import '../home/profile_button.dart';
 import '../profile/profile_page.dart';
 
 class UploadPage extends StatefulWidget {
@@ -99,7 +100,8 @@ class UploadPageState extends State<UploadPage> {
       //Should probaly handle
     }
 
-    String imageIdBeNotPoppin = '${userProfile!.username}${formatDateTime(DateTime.now())}';
+    String imageIdBeNotPoppin =
+        '${userProfile!.username}${formatDateTime(DateTime.now())}';
 
     try {
       final file = await storage.createFile(
@@ -107,8 +109,7 @@ class UploadPageState extends State<UploadPage> {
         fileId: imageIdBeNotPoppin,
         file: InputFile.fromPath(
           path: _selectedImage!.path,
-          filename:
-              '${userProfile!.username}${formatDateTime(DateTime.now())}',
+          filename: '${userProfile!.username}${formatDateTime(DateTime.now())}',
         ),
       );
 
@@ -130,9 +131,9 @@ class UploadPageState extends State<UploadPage> {
   }
 
   String formatDateTime2(DateTime dateTime) {
-  final DateFormat formatter = DateFormat('dd.MM.yyyy.HH:mm:ss');
-  return formatter.format(dateTime);
-}
+    final DateFormat formatter = DateFormat('dd.MM.yyyy.HH:mm:ss');
+    return formatter.format(dateTime);
+  }
 
   Future<void> savePostToDataBase(String imageIdbePoppin) async {
     String imageId = imageIdbePoppin;
@@ -288,7 +289,11 @@ class UploadPageDisplay extends StaticPage {
   const UploadPageDisplay({super.key});
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader();
+    return OnlineHeader(
+      buttons: const [
+        ProfileButton(),
+      ],
+    );
   }
 
   @override

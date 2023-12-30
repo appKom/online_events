@@ -15,8 +15,9 @@ import '../../components/online_scaffold.dart';
 import '../../components/separator.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
+import '../home/profile_button.dart';
 import 'upload_page.dart';
-import 'user_post.dart';
+import 'models/user_post.dart';
 
 class PixelPage extends StatefulWidget {
   const PixelPage({super.key});
@@ -83,7 +84,6 @@ class PixelPageState extends State<PixelPage> {
         .toList();
 
     posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    
 
     return posts;
   }
@@ -119,7 +119,6 @@ class PixelPageState extends State<PixelPage> {
           },
         );
         setState(() {});
-        print(post.likedBy);
       } catch (e) {
         showErrorTop("Error: $e");
       }
@@ -143,7 +142,6 @@ class PixelPageState extends State<PixelPage> {
           },
         );
         setState(() {});
-        print(post.likedBy);
       } catch (e) {
         showErrorTop("Error: $e");
       }
@@ -223,7 +221,6 @@ class PixelPageState extends State<PixelPage> {
                         UserPostModel post = snapshot.data![index];
 
                         String nameBeforeComma = post.username;
-
                         String nameAfterLastComma =
                             '${post.firstName} ${post.lastName}';
 
@@ -333,7 +330,11 @@ class PixelPageDisplay extends StaticPage {
   const PixelPageDisplay({super.key});
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader();
+    return OnlineHeader(
+      buttons: const [
+        ProfileButton(),
+      ],
+    );
   }
 
   @override
@@ -346,7 +347,11 @@ class DummyDisplay2 extends StaticPage {
   const DummyDisplay2({super.key});
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader();
+    return OnlineHeader(
+      buttons: const [
+        ProfileButton(),
+      ],
+    );
   }
 
   @override

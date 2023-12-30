@@ -1,14 +1,15 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/pixel/user_post.dart';
+import 'package:online_events/pages/pixel/models/user_post.dart';
 
 import '../../components/animated_button.dart';
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 import '../../services/page_navigator.dart';
 import '../../theme/theme.dart';
+import '../home/profile_button.dart';
 import 'pixel.dart';
-import 'pixel_user_class.dart';
+import 'models/pixel_user_class.dart';
 import 'view_pixel_user.dart';
 
 class LikeByPage extends StatefulWidget {
@@ -157,7 +158,9 @@ class LikedByPageDisplay extends StaticPage {
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader();
+    return OnlineHeader(buttons: const [
+        ProfileButton(),
+      ],);
   }
 
   @override

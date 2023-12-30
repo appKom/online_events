@@ -1,19 +1,19 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/pixel/pixel_user_class.dart';
+import 'package:online_events/pages/pixel/models/pixel_user_class.dart';
 import 'package:online_events/theme/theme.dart';
 
 import '../../components/animated_button.dart';
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 import '../../components/separator.dart';
+import '../home/profile_button.dart';
 import 'pixel.dart';
 
 class ViewPixelUser extends StatefulWidget {
   const ViewPixelUser({super.key, required this.userName});
 
   final String userName;
-  
 
   @override
   ViewPixelUserState createState() => ViewPixelUserState();
@@ -102,10 +102,20 @@ class ViewPixelUserState extends State<ViewPixelUser> {
             ),
           );
         }),
-        const SizedBox(height: 10,),
-        Text('${userData?.year}. Klasse', style: OnlineTheme.textStyle(weight: 5, size: 18),),
-        const Separator(margin: 10,),
-        Text(userData?.biography ?? '', style: OnlineTheme.textStyle(),),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          '${userData?.year}. Klasse',
+          style: OnlineTheme.textStyle(weight: 5, size: 18),
+        ),
+        const Separator(
+          margin: 10,
+        ),
+        Text(
+          userData?.biography ?? '',
+          style: OnlineTheme.textStyle(),
+        ),
       ],
     );
   }
@@ -118,7 +128,11 @@ class ViewPixelUserDisplay extends StaticPage {
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader();
+    return OnlineHeader(
+      buttons: const [
+        ProfileButton(),
+      ],
+    );
   }
 
   @override

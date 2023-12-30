@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../pixel/pixel_user_class.dart';
+import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
@@ -317,12 +317,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   'Biografi',
                   style: headerStyle,
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
+
                 Padding(
-                  padding: aboveBelowPadding,
-                  child: constValueTextInput('Biografi', biographyText),
+                  padding: const EdgeInsets.symmetric(vertical: 30),
+                  child: Container(
+                    // height: OnlineTheme.buttonHeight,
+                    decoration: const BoxDecoration(
+                      color: OnlineTheme.gray14,
+                      borderRadius: OnlineTheme.buttonRadius,
+                    ),
+                    child: Center(
+                      child: Text(
+                        biographyText,
+                        style: OnlineTheme.textStyle(weight: 5),
+                      ),
+                    ),
+                  ),
                 ),
                 const Separator(margin: 5),
                 Text(

@@ -1,7 +1,8 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:online_events/pages/pixel/pixel.dart';
-import 'package:online_events/pages/pixel/user_post.dart';
+import 'package:online_events/pages/pixel/models/user_post.dart';
 import 'package:online_events/pages/pixel/view_pixel_user.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 
@@ -10,6 +11,7 @@ import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
+import '../home/profile_button.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage({super.key, required this.post});
@@ -49,7 +51,7 @@ class CommentPageState extends State<CommentPage> {
         List<dynamic> latestComments = latestPost.data['comments'];
 
         String newComment =
-            '[$userName, ${_titleController.text}, ${DateTime.now().toString()}]';
+            '[$userName, ${_titleController.text}, ${DateTime.now()}]';
         latestComments.add(newComment);
 
         await database.updateDocument(
@@ -75,10 +77,10 @@ class CommentPageState extends State<CommentPage> {
   OverlayEntry? _overlayEntry;
 
   void showErrorTop(String message) {
-    _overlayEntry?.remove(); 
+    _overlayEntry?.remove();
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        top: MediaQuery.of(context).padding.top + 160, 
+        top: MediaQuery.of(context).padding.top + 160,
         left: 20,
         right: 20,
         child: Material(
@@ -129,6 +131,26 @@ class CommentPageState extends State<CommentPage> {
     }
   }
 
+  String timeAgo(String dateTimeString) {
+    final dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    final dateTimeUtc = dateFormat.parse(dateTimeString, true).toUtc();
+    final nowUtc = DateTime.now().toUtc();
+    final difference = nowUtc.difference(dateTimeUtc);
+
+    if (difference.inSeconds < 60) {
+      return '${difference.inSeconds}s';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes}min';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours}h';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}d';
+    } else {
+      final weeks = (difference.inDays / 7).floor();
+      return '${weeks}w';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,21 +192,32 @@ class CommentPageState extends State<CommentPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: widget.post.comments.length,
                       itemBuilder: (context, index) {
-                        List<String> commentParts =
-                            widget.post.comments[index].split(', ');
+                        String comment = widget.post.comments[index];
 
-                        String username = commentParts[0];
-                        if (username.startsWith('[')) {
-                          username = username.substring(1);
+                        if (comment.startsWith('[')) {
+                          comment = comment.substring(1);
+                        }
+                        if (comment.endsWith(']')) {
+                          comment = comment.substring(0, comment.length - 1);
                         }
 
-                        String commentText = commentParts[1];
+                        int firstCommaIndex = comment.indexOf(',');
+                        int lastCommaIndex = comment.lastIndexOf(',');
+
+                        String username =
+                            comment.substring(0, firstCommaIndex).trim();
+                        String commentText = comment
+                            .substring(firstCommaIndex + 1, lastCommaIndex)
+                            .trim();
+                        String timeAgoString =
+                            comment.substring(lastCommaIndex + 1).trim();
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -221,10 +254,23 @@ class CommentPageState extends State<CommentPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          '$username:',
-                                          style: OnlineTheme.textStyle(
-                                              size: 16, weight: 5),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '$username:',
+                                              style: OnlineTheme.textStyle(
+                                                  size: 16, weight: 5),
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              timeAgo(timeAgoString),
+                                              style: OnlineTheme.textStyle(
+                                                  size: 14,
+                                                  color: OnlineTheme.gray8),
+                                            ),
+                                          ],
                                         ),
                                         Text(
                                           commentText,
@@ -295,7 +341,11 @@ class CommentPageDisplay extends StaticPage {
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader();
+    return OnlineHeader(
+      buttons: const [
+        ProfileButton(),
+      ],
+    );
   }
 
   @override

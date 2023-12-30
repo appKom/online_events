@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/pixel/user_post.dart';
+import 'package:online_events/pages/pixel/models/user_post.dart';
 import '../../../components/animated_button.dart';
 import '../../../components/online_header.dart';
 import '../../login/auth_web_view_page.dart';

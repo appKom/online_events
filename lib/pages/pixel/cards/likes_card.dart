@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_events/pages/pixel/liked_by_page.dart';
-import 'package:online_events/pages/pixel/user_post.dart';
+import 'package:online_events/pages/pixel/models/user_post.dart';
 import 'package:online_events/services/page_navigator.dart';
 import '../../../components/animated_button.dart';
 import '../../profile/profile_page.dart';
