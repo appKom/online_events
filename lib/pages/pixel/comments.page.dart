@@ -142,12 +142,12 @@ class CommentPageState extends State<CommentPage> {
     } else if (difference.inMinutes < 60) {
       return '${difference.inMinutes}min';
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}h';
+      return '${difference.inHours}t';
     } else if (difference.inDays < 7) {
       return '${difference.inDays}d';
     } else {
       final weeks = (difference.inDays / 7).floor();
-      return '${weeks}w';
+      return '${weeks}uker';
     }
   }
 
@@ -321,6 +321,7 @@ class CommentPageState extends State<CommentPage> {
                     borderSide: BorderSide(color: OnlineTheme.white),
                   ),
                 ),
+                maxLength: 350,
                 onFieldSubmitted: (value) {
                   postComment(
                       widget.post.id, widget.post, userProfile!.username);

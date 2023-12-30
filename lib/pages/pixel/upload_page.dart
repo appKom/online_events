@@ -178,106 +178,116 @@ class UploadPageState extends State<UploadPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
-          child: Flexible(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: OnlineHeader.height(context) + 20),
-                Row(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: OnlineHeader.height(context) + 20),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                    onPressed: () =>
+                        PageNavigator.navigateTo(const PixelPageDisplay()),
+                  ),
+                  const SizedBox(
+                    width: 18,
+                  ),
+                  Center(
+                    child: Text(
+                      'Last opp et bilde',
+                      style: OnlineTheme.textStyle(size: 25, weight: 5),
+                    ),
+                  ),
+                ],
+              ),
+              TextFormField(
+                controller: _titleController,
+                style: OnlineTheme.textStyle(color: OnlineTheme.white),
+                decoration: InputDecoration(
+                  labelText: 'Beskrivelse',
+                  labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                  hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: OnlineTheme.white),
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: OnlineTheme.white),
+                  ),
+                ),
+                maxLength: 500,
+                onChanged: (_) => checkIfButtonShouldBeEnabled(),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              if (_selectedImage != null) Image.file(_selectedImage!),
+              if (_selectedImage != null)
+              const SizedBox(height: 10,),
+              if (_selectedImage != null)
+                Column(
                   children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                      onPressed: () =>
-                          PageNavigator.navigateTo(const PixelPageDisplay()),
-                    ),
-                    const SizedBox(
-                      width: 18,
-                    ),
-                    Center(
-                      child: Text(
-                        'Last opp et bilde',
-                        style: OnlineTheme.textStyle(size: 25, weight: 5),
-                      ),
+                    Text(
+                      _titleController.text,
+                      style: OnlineTheme.textStyle(),
                     ),
                   ],
                 ),
-                TextFormField(
-                  controller: _titleController,
-                  style: OnlineTheme.textStyle(color: OnlineTheme.white),
-                  decoration: InputDecoration(
-                    labelText: 'Beskrivelse',
-                    labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                    hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                    enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: OnlineTheme.white),
-                    ),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: OnlineTheme.white),
-                    ),
-                  ),
-                  onChanged: (_) => checkIfButtonShouldBeEnabled(),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                if (_selectedImage != null) Image.file(_selectedImage!),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                  child: Row(children: [
-                    Flexible(
-                      child: AnimatedButton(
-                          onTap: () => pickImage(ImageSource.gallery),
-                          childBuilder: (context, hover, pointerDown) {
-                            return Container(
-                              height: 50,
-                              decoration: const BoxDecoration(
-                                gradient: OnlineTheme.purpleGradient,
-                                borderRadius: OnlineTheme.eventButtonRadius,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Velg bilde',
-                                  style: OnlineTheme.textStyle(),
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                    // const Spacer(),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    if (_selectedImage != null)
-                      Flexible(
-                        child: AnimatedButton(onTap: () {
-                          if (_selectedImage != null) {
-                            uploadImage();
-                          }
-                        }, childBuilder: (context, hover, pointerDown) {
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                child: Row(children: [
+                  Flexible(
+                    child: AnimatedButton(
+                        onTap: () => pickImage(ImageSource.gallery),
+                        childBuilder: (context, hover, pointerDown) {
                           return Container(
                             height: 50,
-                            decoration: BoxDecoration(
-                              gradient: OnlineTheme.greenGradient,
+                            decoration: const BoxDecoration(
+                              gradient: OnlineTheme.purpleGradient,
                               borderRadius: OnlineTheme.eventButtonRadius,
                             ),
                             child: Center(
                               child: Text(
-                                'Publiser',
+                                'Velg bilde',
                                 style: OnlineTheme.textStyle(),
                               ),
                             ),
                           );
                         }),
-                      ),
-                  ]),
-                ),
-                SizedBox(height: Navbar.height(context) + 10),
-              ],
-            ),
+                  ),
+                  // const Spacer(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  if (_selectedImage != null)
+                    Flexible(
+                      child: AnimatedButton(onTap: () {
+                        if (_selectedImage != null) {
+                          uploadImage();
+                        }
+                      }, childBuilder: (context, hover, pointerDown) {
+                        return Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            gradient: OnlineTheme.greenGradient,
+                            borderRadius: OnlineTheme.eventButtonRadius,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Publiser',
+                              style: OnlineTheme.textStyle(),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                ]),
+              ),
+              SizedBox(height: Navbar.height(context) + 10),
+            ],
           ),
         ),
       ),

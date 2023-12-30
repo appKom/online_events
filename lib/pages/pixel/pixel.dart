@@ -93,7 +93,7 @@ class PixelPageState extends State<PixelPage> {
     final difference = now.difference(createdAt);
 
     if (difference.inDays >= 7) {
-      return '${(difference.inDays / 7).floor()}w';
+      return '${(difference.inDays / 7).floor()}uker';
     } else if (difference.inDays >= 1) {
       return '${difference.inDays}d';
     } else if (difference.inHours >= 1) {
