@@ -17,10 +17,9 @@ class ImageCard extends StatelessWidget {
   final Function(String, UserPostModel, String) onLikePost;
   final Function(String) onDeletePost;
 
-  
-
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onDoubleTap: () async {
         if (!post.likedBy.contains(userProfile!.username.toString())) {
@@ -30,7 +29,11 @@ class ImageCard extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
-          Image.network(post.imageLink),
+          Image.network(
+            post.imageLink,
+            width: screenWidth,
+            fit: BoxFit.cover,
+          ),
           if (post.username == userProfile!.username)
             AnimatedButton(
               childBuilder: (context, hover, pointerDown) {
@@ -56,7 +59,7 @@ class ImageCard extends StatelessWidget {
                         const Icon(Icons.delete, color: OnlineTheme.background),
                     onPressed: () async {
                       try {
-                        onDeletePost(post.username);
+                        onDeletePost(post.id);
                         print('Image deleted successfully');
                         PageNavigator.navigateTo(const DummyDisplay2());
                       } catch (e) {

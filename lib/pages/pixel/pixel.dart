@@ -118,7 +118,9 @@ class PixelPageState extends State<PixelPage> {
             'liked_by': [...post.likedBy, userName],
           },
         );
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       } catch (e) {
         showErrorTop("Error: $e");
       }
@@ -141,7 +143,9 @@ class PixelPageState extends State<PixelPage> {
             'liked_by': updatedLikedBy,
           },
         );
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       } catch (e) {
         showErrorTop("Error: $e");
       }
@@ -156,7 +160,10 @@ class PixelPageState extends State<PixelPage> {
         documentId: postId,
       );
 
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
+      PageNavigator.navigateTo(const DummyDisplay2());
     } catch (e) {
       showErrorTop("Error: $e");
     }
@@ -251,7 +258,12 @@ class PixelPageState extends State<PixelPage> {
                               const SizedBox(
                                 height: 4,
                               ),
-                              LikesCard(post: post),
+                              LikesCard(
+                                  post: post,
+                                  onUnlikePost: (String postId,
+                                      UserPostModel post, String userId) {
+                                    unlikePost(postId, post, userId);
+                                  }),
                               const SizedBox(
                                 height: 4,
                               ),
@@ -283,7 +295,7 @@ class PixelPageState extends State<PixelPage> {
                                   const Spacer(),
                                 ],
                               ),
-                              const Separator(margin: 20),
+                              const Separator(margin: 10),
                             ]);
                       },
                     );
