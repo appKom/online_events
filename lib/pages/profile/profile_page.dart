@@ -317,23 +317,48 @@ class _ProfilePageState extends State<ProfilePage> {
                   'Biografi',
                   style: headerStyle,
                 ),
+                FutureBuilder<PixelUserClass?>(
+                    future: fetchPixelUserInfo(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: OnlineTheme.gray14,
+                            borderRadius: OnlineTheme.buttonRadius,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '',
+                              style: OnlineTheme.textStyle(weight: 5),
+                            ),
+                          ),
+                        ),
+                      ); 
+                      }
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30),
-                  child: Container(
-                    // height: OnlineTheme.buttonHeight,
-                    decoration: const BoxDecoration(
-                      color: OnlineTheme.gray14,
-                      borderRadius: OnlineTheme.buttonRadius,
-                    ),
-                    child: Center(
-                      child: Text(
-                        biographyText,
-                        style: OnlineTheme.textStyle(weight: 5),
-                      ),
-                    ),
-                  ),
-                ),
+                      if (snapshot.hasError) {
+                        return Text(
+                            "Error: ${snapshot.error}"); 
+                      }
+                      String biographyText = snapshot.data?.biography ?? '';
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: OnlineTheme.gray14,
+                            borderRadius: OnlineTheme.buttonRadius,
+                          ),
+                          child: Center(
+                            child: Text(
+                              biographyText,
+                              style: OnlineTheme.textStyle(weight: 5),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
                 const Separator(margin: 5),
                 Text(
                   'Kontakt',
