@@ -11,10 +11,8 @@ class InfoPagePixel extends DarkOverlay {
 
   @override
   Widget content(BuildContext context, Animation<double> animation) {
-    final padding = MediaQuery.of(context).padding;
 
     return LayoutBuilder(builder: (context, constraints) {
-      final maxSize = min(constraints.maxWidth, constraints.maxHeight);
 
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,

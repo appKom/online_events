@@ -20,13 +20,13 @@ class DescriptionCard extends StatelessWidget {
               style: OnlineTheme.textStyle(size: 16),
             ),
             const Spacer(),
-            if (post.likedBy.contains(userProfile!.id.toString()))
+            if (post.likedBy.contains(userProfile!.username.toString()))
               IconButton(
                 padding: EdgeInsets.zero,
                 iconSize: 24,
                 icon: const Icon(Icons.heart_broken, color: OnlineTheme.red1),
                 onPressed: () async {
-                  String userId = userProfile!.id.toString();
+                  String userId = userProfile!.username.toString();
                   await onUnlikePost(post.id, post, userId);
                 },
               ),

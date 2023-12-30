@@ -14,7 +14,8 @@ import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class ShowParticipants extends StaticPage {
-  const ShowParticipants({super.key, required this.model, required this.attendeeInfoModel});
+  const ShowParticipants(
+      {super.key, required this.model, required this.attendeeInfoModel});
 
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
@@ -79,28 +80,61 @@ class ShowParticipants extends StaticPage {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}', style: OnlineTheme.textStyle());
+                  return Text('Error: ${snapshot.error}',
+                      style: OnlineTheme.textStyle());
                 } else if (snapshot.hasData) {
                   List<AttendeesList> sortedAttendees = snapshot.data!;
                   return ListView.separated(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: sortedAttendees.length,
-                    separatorBuilder: (context, index) => const Separator(), // Thinner divider
+                    separatorBuilder: (context, index) =>
+                        const Separator(), // Thinner divider
                     itemBuilder: (context, index) {
                       final attendee = sortedAttendees[index];
-                      final bool isVerified = attendee.fullName == "Mads Hermansen";
+                      final bool isVerified =
+                          attendee.fullName == "Mads Hermansen";
 
-                      final String indexStr = (index + 1).toString().padLeft(3, '0');
+                      final String indexStr =
+                          (index + 1).toString().padLeft(3, '0');
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: horizontalPadding,
                             child: Text('$indexStr. ',
-                                style:
-                                    OnlineTheme.textStyle(size: 16, color: isVerified ? Colors.green : Colors.white)),
+                                style: OnlineTheme.textStyle(
+                                    size: 16,
+                                    color: isVerified
+                                        ? Colors.green
+                                        : Colors.white)),
                           ),
+                          // const SizedBox(width: 5,),
+                          // AnimatedButton(onTap: () {
+                          //   PageNavigator.navigateTo(ViewPixelUserDisplay(
+                          //     userName: attendee.id.toString(),
+                          //   ));
+                          // }, childBuilder: (context, hover, pointerDown) {
+                          //   return ClipOval(
+                          //     child: SizedBox(
+                          //       width: 30,
+                          //       height: 30,
+                          //       child: Image.network(
+                          //         'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${attendee.id}/view?project=65706141ead327e0436a&mode=public',
+                          //         fit: BoxFit.cover,
+                          //         height: 30,
+                          //         errorBuilder:
+                          //             (context, exception, stackTrace) {
+                          //           return Image.asset(
+                          //             'assets/images/default_profile_picture.png',
+                          //             fit: BoxFit.cover,
+                          //             height: 50,
+                          //           );
+                          //         },
+                          //       ),
+                          //     ),
+                          //   );
+                          // }),
                           Expanded(
                             child: Row(
                               children: [
@@ -108,7 +142,10 @@ class ShowParticipants extends StaticPage {
                                   child: Text(
                                     attendee.fullName,
                                     style: OnlineTheme.textStyle(
-                                        size: 16, color: isVerified ? Colors.green : Colors.white),
+                                        size: 16,
+                                        color: isVerified
+                                            ? Colors.green
+                                            : Colors.white),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
@@ -117,7 +154,8 @@ class ShowParticipants extends StaticPage {
                                     width: 5,
                                   ),
                                 if (isVerified)
-                                  const Icon(Icons.check_circle_sharp, color: OnlineTheme.blue2, size: 16),
+                                  const Icon(Icons.check_circle_sharp,
+                                      color: OnlineTheme.blue2, size: 16),
                               ],
                             ),
                           ),
@@ -127,12 +165,18 @@ class ShowParticipants extends StaticPage {
                               children: [
                                 Text(
                                   '${attendee.yearOfStudy}. klasse',
-                                  style:
-                                      OnlineTheme.textStyle(size: 16, color: isVerified ? Colors.green : Colors.white),
+                                  style: OnlineTheme.textStyle(
+                                      size: 16,
+                                      color: isVerified
+                                          ? Colors.green
+                                          : Colors.white),
                                   textAlign: TextAlign.right,
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.people, color: isVerified ? Colors.green : Colors.white),
+                                  icon: Icon(Icons.people,
+                                      color: isVerified
+                                          ? Colors.green
+                                          : Colors.white),
                                   onPressed: () {
                                     // Your onPressed functionality here
                                   },
@@ -145,7 +189,8 @@ class ShowParticipants extends StaticPage {
                     },
                   );
                 } else {
-                  return Text('No attendees found', style: OnlineTheme.textStyle());
+                  return Text('No attendees found',
+                      style: OnlineTheme.textStyle());
                 }
               },
             ),
@@ -185,27 +230,32 @@ class ShowParticipants extends StaticPage {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}', style: OnlineTheme.textStyle());
+                  return Text('Error: ${snapshot.error}',
+                      style: OnlineTheme.textStyle());
                 } else if (snapshot.hasData) {
                   List<Waitlist> sortedAttendees = snapshot.data!;
                   return ListView.separated(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: sortedAttendees.length,
                     separatorBuilder: (context, index) => const Separator(),
                     itemBuilder: (context, index) {
                       final attendee = sortedAttendees[index];
                       final bool isVerified =
                           attendee.fullName == "Mads Hermansen";
-                      final String indexStr = (index + 1).toString().padLeft(3, '0');
+                      final String indexStr =
+                          (index + 1).toString().padLeft(3, '0');
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: horizontalPadding,
                             child: Text('$indexStr. ',
-                                style:
-                                    OnlineTheme.textStyle(size: 16, color: isVerified ? Colors.green : Colors.white)),
+                                style: OnlineTheme.textStyle(
+                                    size: 16,
+                                    color: isVerified
+                                        ? Colors.green
+                                        : Colors.white)),
                           ),
                           Expanded(
                             child: Row(
@@ -214,12 +264,16 @@ class ShowParticipants extends StaticPage {
                                   child: Text(
                                     attendee.fullName,
                                     style: OnlineTheme.textStyle(
-                                        size: 16, color: isVerified ? Colors.green : Colors.white),
+                                        size: 16,
+                                        color: isVerified
+                                            ? Colors.green
+                                            : Colors.white),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 if (isVerified)
-                                  const Icon(Icons.check_circle_sharp, color: OnlineTheme.blue2, size: 16),
+                                  const Icon(Icons.check_circle_sharp,
+                                      color: OnlineTheme.blue2, size: 16),
                               ],
                             ),
                           ),
@@ -233,7 +287,8 @@ class ShowParticipants extends StaticPage {
                                   textAlign: TextAlign.right,
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.people, color: Colors.white),
+                                  icon: const Icon(Icons.people,
+                                      color: Colors.white),
                                   onPressed: () {
                                     // Your onPressed functionality here
                                   },
@@ -246,7 +301,8 @@ class ShowParticipants extends StaticPage {
                     },
                   );
                 } else {
-                  return Text('No attendees found', style: OnlineTheme.textStyle());
+                  return Text('No attendees found',
+                      style: OnlineTheme.textStyle());
                 }
               },
             ),

@@ -23,8 +23,8 @@ class ImageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onDoubleTap: () async {
-        if (!post.likedBy.contains(userProfile!.id.toString())) {
-          await onLikePost(post.id, post, userProfile!.id.toString());
+        if (!post.likedBy.contains(userProfile!.username.toString())) {
+          await onLikePost(post.id, post, userProfile!.username.toString());
         }
       },
       child: Stack(
@@ -56,7 +56,7 @@ class ImageCard extends StatelessWidget {
                         const Icon(Icons.delete, color: OnlineTheme.background),
                     onPressed: () async {
                       try {
-                        onDeletePost(post.id);
+                        onDeletePost(post.username);
                         print('Image deleted successfully');
                         PageNavigator.navigateTo(const DummyDisplay2());
                       } catch (e) {

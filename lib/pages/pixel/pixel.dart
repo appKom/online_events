@@ -1,11 +1,5 @@
-import 'dart:io';
-import 'dart:math';
-
-import 'package:appwrite/models.dart' as io;
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:appwrite/appwrite.dart';
-import 'package:intl/intl.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
@@ -16,15 +10,11 @@ import 'package:online_events/pages/pixel/cards/who_posted_card.dart';
 import 'package:online_events/pages/pixel/comments.page.dart';
 import 'package:online_events/pages/pixel/info_page_pixel.dart';
 import 'package:online_events/pages/pixel/cards/likes_card.dart';
-import 'package:online_events/pages/pixel/view_pixel_user.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
 import '../../components/animated_button.dart';
 import '../../components/online_scaffold.dart';
 import '../../components/separator.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
-import '../login/auth_web_view_page.dart';
-import 'pixel_user_class.dart';
 import 'upload_page.dart';
 import 'user_post.dart';
 
@@ -39,6 +29,7 @@ class PixelPageState extends State<PixelPage> {
   late Storage storage;
   late Databases database;
   bool showHeartAnimation = false;
+  OverlayEntry? _overlayEntry;
 
   @override
   void initState() {
@@ -47,6 +38,39 @@ class PixelPageState extends State<PixelPage> {
         .setEndpoint('https://cloud.appwrite.io/v1')
         .setProject('65706141ead327e0436a');
     database = Databases(client);
+  }
+
+  void showErrorTop(String message) {
+    _overlayEntry?.remove();
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).padding.top + 160,
+        left: 20,
+        right: 20,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              gradient: OnlineTheme.redGradient,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+
+    Future.delayed(const Duration(seconds: 3), () {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    });
   }
 
   Future<List<UserPostModel>> getUserPosts() async {
@@ -59,6 +83,7 @@ class PixelPageState extends State<PixelPage> {
         .toList();
 
     posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    
 
     return posts;
   }
@@ -81,8 +106,8 @@ class PixelPageState extends State<PixelPage> {
   }
 
   Future<void> likePost(
-      String postId, UserPostModel post, String userId) async {
-    if (!post.likedBy.contains(userId)) {
+      String postId, UserPostModel post, String userName) async {
+    if (!post.likedBy.contains(userName)) {
       try {
         await database.updateDocument(
           databaseId: '658df78529d1a989a672',
@@ -90,13 +115,13 @@ class PixelPageState extends State<PixelPage> {
           documentId: postId,
           data: {
             'number_of_likes': post.numberOfLikes + 1,
-            'liked_by': [...post.likedBy, userId],
+            'liked_by': [...post.likedBy, userName],
           },
         );
-        print('Likes incremented successfully');
         setState(() {});
+        print(post.likedBy);
       } catch (e) {
-        print("Error incrementing likes: $e");
+        showErrorTop("Error: $e");
       }
     }
   }
@@ -117,10 +142,10 @@ class PixelPageState extends State<PixelPage> {
             'liked_by': updatedLikedBy,
           },
         );
-        print('Post unliked successfully');
         setState(() {});
+        print(post.likedBy);
       } catch (e) {
-        print("Error unliking post: $e");
+        showErrorTop("Error: $e");
       }
     }
   }
@@ -132,11 +157,10 @@ class PixelPageState extends State<PixelPage> {
         collectionId: '658dfd035a1c33a77037',
         documentId: postId,
       );
-      print('Post deleted successfully');
 
       setState(() {});
     } catch (e) {
-      print("Error deleting post: $e");
+      showErrorTop("Error: $e");
     }
   }
 
@@ -150,8 +174,6 @@ class PixelPageState extends State<PixelPage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
     if (loggedIn) {
       return Scaffold(
         backgroundColor: OnlineTheme.background,
@@ -223,8 +245,8 @@ class PixelPageState extends State<PixelPage> {
                               ImageCard(
                                   post: post,
                                   onLikePost: (String postId,
-                                      UserPostModel post, String userId) {
-                                    likePost(postId, post, userId);
+                                      UserPostModel post, String userName) {
+                                    likePost(postId, post, userName);
                                   },
                                   onDeletePost: (String postId) {
                                     deletePost(postId);

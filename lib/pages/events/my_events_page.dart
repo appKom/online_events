@@ -29,7 +29,6 @@ class MyEventsPage extends StatefulWidget {
 class MyEventsPageState extends State<MyEventsPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  bool _isDisposed = false;
   bool _isLoading = true;
   int currentPage = 1;
 
@@ -177,7 +176,6 @@ class MyEventsPageState extends State<MyEventsPage> {
 
   @override
   void dispose() {
-    _isDisposed = true;
     super.dispose();
   }
 

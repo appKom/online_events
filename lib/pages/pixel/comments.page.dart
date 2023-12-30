@@ -1,13 +1,11 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:online_events/pages/pixel/pixel.dart';
 import 'package:online_events/pages/pixel/user_post.dart';
 import 'package:online_events/pages/pixel/view_pixel_user.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 
 import '../../components/animated_button.dart';
-import '../../components/navbar.dart';
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 import '../../services/app_navigator.dart';
@@ -62,17 +60,51 @@ class CommentPageState extends State<CommentPage> {
             'comments': latestComments,
           },
         );
-        print('Comment posted successfully');
         setState(() {
           widget.post.comments.add(newComment);
         });
         _titleController.clear();
       } catch (e) {
-        print("Error posting comment: $e");
+        showErrorTop("Error: $e");
       }
     } else {
-      print("Comment must contain at least one character.");
+      showErrorTop("Kommentaren må inneholde minst et symbol");
     }
+  }
+
+  OverlayEntry? _overlayEntry;
+
+  void showErrorTop(String message) {
+    _overlayEntry?.remove(); 
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).padding.top + 160, 
+        left: 20,
+        right: 20,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              gradient: OnlineTheme.redGradient,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+
+    Future.delayed(const Duration(seconds: 3), () {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    });
   }
 
   Future<void> deleteComment(int index) async {
@@ -88,13 +120,12 @@ class CommentPageState extends State<CommentPage> {
           'comments': updatedComments,
         },
       );
-      print('Comment deleted successfully');
 
       setState(() {
         widget.post.comments = updatedComments;
       });
     } catch (e) {
-      print("Error deleting comment: $e");
+      showErrorTop("Error: $e");
     }
   }
 
@@ -136,7 +167,7 @@ class CommentPageState extends State<CommentPage> {
                     ),
                     ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: widget.post.comments.length,
                       itemBuilder: (context, index) {
                         List<String> commentParts =
@@ -153,7 +184,7 @@ class CommentPageState extends State<CommentPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -205,7 +236,7 @@ class CommentPageState extends State<CommentPage> {
                                   ),
                                   if (userProfile!.ntnuUsername == username)
                                     IconButton(
-                                      icon: Icon(Icons.delete,
+                                      icon: const Icon(Icons.delete,
                                           color: OnlineTheme.white),
                                       onPressed: () async {
                                         await deleteComment(index);

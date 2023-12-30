@@ -21,13 +21,13 @@ class PixelUserClass {
   factory PixelUserClass.fromJson(Map<String, dynamic> json) {
 
     return PixelUserClass(
-      userName: json['username'], 
-      id: json['id'], 
-      firstName: json['first_name'], 
-      lastName: json['last_name'], 
-      ntnuUserName: json['ntnuUsername'],
-      year: json['year'],
-      biography: json['biography'],
+      userName: json['username'] ?? '', 
+      id: json['id'] ?? 0, 
+      firstName: json['first_name'] ?? '', 
+      lastName: json['last_name'] ?? '', 
+      ntnuUserName: json['ntnuUsername'] ?? '',
+      year: json['year'] ?? '',
+      biography: json['biography'] ?? '',
     );
   }
 
