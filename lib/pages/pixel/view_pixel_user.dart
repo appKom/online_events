@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:online_events/pages/pixel/models/pixel_user_class.dart';
 import 'package:online_events/theme/theme.dart';
 
@@ -28,7 +29,7 @@ class ViewPixelUserState extends State<ViewPixelUser> {
     super.initState();
     final client = Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject('65706141ead327e0436a');
+        .setProject(dotenv.env['PROJECT_ID']);
     database = Databases(client);
 
     fetchPixelUserInfo().then((userData) {
@@ -43,9 +44,9 @@ class ViewPixelUserState extends State<ViewPixelUser> {
   Future<PixelUserClass?> fetchPixelUserInfo() async {
     try {
       final response = await database.getDocument(
-          collectionId: '658df9d98bf50c887791',
+          collectionId: dotenv.env['USER_COLLECTION_ID']!,
           documentId: widget.userName,
-          databaseId: '658df9c7899c43cd556f');
+          databaseId: dotenv.env['USER_DATABASE_ID']!);
       return PixelUserClass.fromJson(response.data);
     } catch (e) {
       print('Error fetching document data: $e');
@@ -73,7 +74,7 @@ class ViewPixelUserState extends State<ViewPixelUser> {
               width: 300,
               height: 300,
               child: Image.network(
-                'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${widget.userName}/view?project=65706141ead327e0436a&mode=public',
+                'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${widget.userName}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                 fit: BoxFit.cover,
                 height: 300,
                 loadingBuilder: (BuildContext context, Widget child,

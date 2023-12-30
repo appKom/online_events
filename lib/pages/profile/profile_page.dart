@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -47,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     final client = Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject('65706141ead327e0436a');
+        .setProject(dotenv.env['PROJECT_ID']);
 
     storage = Storage(client);
     database = Databases(client);
@@ -81,8 +82,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       await database.createDocument(
-          collectionId: '658df9d98bf50c887791',
-          databaseId: '658df9c7899c43cd556f',
+          collectionId: dotenv.env['USER_COLLECTION_ID']!,
+          databaseId: dotenv.env['USER_DATABASE_ID']!,
           documentId: userProfile!.username,
           data: {
             'username': userProfile!.username,
@@ -105,8 +106,8 @@ class _ProfilePageState extends State<ProfilePage> {
     }
     try {
       await database.updateDocument(
-          collectionId: '658df9d98bf50c887791',
-          databaseId: '658df9c7899c43cd556f',
+          collectionId: dotenv.env['USER_COLLECTION_ID']!,
+          databaseId: dotenv.env['USER_DATABASE_ID']!,
           documentId: userProfile!.username,
           data: {'biography': _titleController.text});
       print("Biography saved successfully");
@@ -123,9 +124,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<PixelUserClass?> fetchPixelUserInfo() async {
     try {
       final response = await database.getDocument(
-          collectionId: '658df9d98bf50c887791',
+          collectionId: dotenv.env['USER_COLLECTION_ID']!,
           documentId: userProfile!.username,
-          databaseId: '658df9c7899c43cd556f');
+          databaseId: dotenv.env['USER_DATABASE_ID']!);
       return PixelUserClass.fromJson(response.data);
     } catch (e) {
       print('Error fetching document data: $e');
@@ -163,12 +164,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       await storage.getFile(
-        bucketId: '658996fac01c08570158',
+        bucketId: dotenv.env['USER_BUCKET_ID']!,
         fileId: fileName,
       );
 
       await storage.deleteFile(
-        bucketId: '658996fac01c08570158',
+        bucketId: dotenv.env['USER_BUCKET_ID']!,
         fileId: fileName,
       );
     } catch (e) {
@@ -177,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       final file = await storage.createFile(
-        bucketId: '658996fac01c08570158',
+        bucketId: dotenv.env['USER_BUCKET_ID']!,
         fileId: fileName,
         file: InputFile.fromPath(path: _imageFile!.path, filename: fileName),
       );
@@ -247,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         fit: BoxFit.cover,
                                       )
                                     : Image.network(
-                                        'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=65706141ead327e0436a&mode=public',
+                                        'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                                         fit: BoxFit.cover,
                                         height: 240,
                                         errorBuilder: (BuildContext context,

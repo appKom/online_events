@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
@@ -34,7 +35,7 @@ class UploadPageState extends State<UploadPage> {
     super.initState();
     final client = Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject('65706141ead327e0436a');
+        .setProject(dotenv.env['PROJECT_ID']);
     storage = Storage(client);
     database = Databases(client);
   }
@@ -88,12 +89,12 @@ class UploadPageState extends State<UploadPage> {
 
     try {
       await storage.getFile(
-        bucketId: '658996fac01c08570158',
+        bucketId: dotenv.env['PIXEL_BUCKET_ID']!,
         fileId: ID.unique(),
       );
 
       await storage.deleteFile(
-        bucketId: '6589b4e47f3c8840e723',
+        bucketId: dotenv.env['PIXEL_BUCKET_ID']!,
         fileId: ID.unique(),
       );
     } catch (e) {
@@ -105,7 +106,7 @@ class UploadPageState extends State<UploadPage> {
 
     try {
       final file = await storage.createFile(
-        bucketId: '6589b4e47f3c8840e723',
+        bucketId: dotenv.env['PIXEL_BUCKET_ID']!,
         fileId: imageIdBeNotPoppin,
         file: InputFile.fromPath(
           path: _selectedImage!.path,
@@ -144,8 +145,8 @@ class UploadPageState extends State<UploadPage> {
 
     try {
       await database.createDocument(
-          collectionId: '658dfd035a1c33a77037',
-          databaseId: '658df78529d1a989a672',
+          collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
+          databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
           documentId: ID.unique(),
           data: {
             'image_name': userProfile!.username,

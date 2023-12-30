@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
@@ -37,7 +38,7 @@ class PixelPageState extends State<PixelPage> {
     super.initState();
     final client = Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject('65706141ead327e0436a');
+        .setProject(dotenv.env['PROJECT_ID']);
     database = Databases(client);
   }
 
@@ -76,8 +77,8 @@ class PixelPageState extends State<PixelPage> {
 
   Future<List<UserPostModel>> getUserPosts() async {
     final response = await database.listDocuments(
-        collectionId: '658dfd035a1c33a77037',
-        databaseId: '658df78529d1a989a672');
+        collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
+        databaseId: dotenv.env['PIXEL_DATABASE_ID']!);
 
     List<UserPostModel> posts = response.documents
         .map((doc) => UserPostModel.fromJson(doc.data))
@@ -110,8 +111,8 @@ class PixelPageState extends State<PixelPage> {
     if (!post.likedBy.contains(userName)) {
       try {
         await database.updateDocument(
-          databaseId: '658df78529d1a989a672',
-          collectionId: '658dfd035a1c33a77037',
+          databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
+          collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
           documentId: postId,
           data: {
             'number_of_likes': post.numberOfLikes + 1,
@@ -135,8 +136,8 @@ class PixelPageState extends State<PixelPage> {
           ..remove(userId);
 
         await database.updateDocument(
-          databaseId: '658df78529d1a989a672',
-          collectionId: '658dfd035a1c33a77037',
+          databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
+          collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
           documentId: postId,
           data: {
             'number_of_likes': post.numberOfLikes - 1,
@@ -155,8 +156,8 @@ class PixelPageState extends State<PixelPage> {
   Future<void> deletePost(String postId) async {
     try {
       await database.deleteDocument(
-        databaseId: '658df78529d1a989a672',
-        collectionId: '658dfd035a1c33a77037',
+        databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
+        collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
         documentId: postId,
       );
 

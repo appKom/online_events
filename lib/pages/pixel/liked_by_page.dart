@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:online_events/pages/pixel/models/user_post.dart';
 
 import '../../components/animated_button.dart';
@@ -30,7 +31,7 @@ class LikedByPageState extends State<LikeByPage> {
     super.initState();
     final client = Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject('65706141ead327e0436a');
+        .setProject(dotenv.env['PROJECT_ID']);
     database = Databases(client);
 
     fetchLikedByUsers();
@@ -39,9 +40,9 @@ class LikedByPageState extends State<LikeByPage> {
   void fetchLikedByUsers() async {
     for (var userName in widget.post.likedBy) {
       var result = await database.getDocument(
-          collectionId: '658df9d98bf50c887791',
+          collectionId: dotenv.env['USER_COLLECTION_ID']!,
           documentId: userName,
-          databaseId: '658df9c7899c43cd556f');
+          databaseId: dotenv.env['USER_DATABASE_ID']!);
       var user = PixelUserClass.fromJson(result.data);
       setState(() {
         users.add(user);
@@ -104,7 +105,7 @@ class LikedByPageState extends State<LikeByPage> {
                                 width: 50,
                                 height: 50,
                                 child: Image.network(
-                                  'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${users[index].userName}/view?project=65706141ead327e0436a&mode=public',
+                                  'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${users[index].userName}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                                   fit: BoxFit.cover,
                                   height: 50,
                                   errorBuilder:

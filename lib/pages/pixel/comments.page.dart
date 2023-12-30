@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:online_events/pages/pixel/pixel.dart';
 import 'package:online_events/pages/pixel/models/user_post.dart';
@@ -32,7 +33,7 @@ class CommentPageState extends State<CommentPage> {
     super.initState();
     final client = Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject('65706141ead327e0436a');
+        .setProject(dotenv.env['PROJECT_ID']);
     database = Databases(client);
   }
 
@@ -44,8 +45,8 @@ class CommentPageState extends State<CommentPage> {
     if (_titleController.text.isNotEmpty) {
       try {
         final latestPost = await database.getDocument(
-          databaseId: '658df78529d1a989a672',
-          collectionId: '658dfd035a1c33a77037',
+          databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
+          collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
           documentId: postId,
         );
         List<dynamic> latestComments = latestPost.data['comments'];
@@ -55,8 +56,8 @@ class CommentPageState extends State<CommentPage> {
         latestComments.add(newComment);
 
         await database.updateDocument(
-          databaseId: '658df78529d1a989a672',
-          collectionId: '658dfd035a1c33a77037',
+          databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
+          collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
           documentId: postId,
           data: {
             'comments': latestComments,
@@ -115,8 +116,8 @@ class CommentPageState extends State<CommentPage> {
       updatedComments.removeAt(index);
 
       await database.updateDocument(
-        databaseId: '658df78529d1a989a672',
-        collectionId: '658dfd035a1c33a77037',
+        databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
+        collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
         documentId: widget.post.id,
         data: {
           'comments': updatedComments,
@@ -233,7 +234,7 @@ class CommentPageState extends State<CommentPage> {
                                         width: 50,
                                         height: 50,
                                         child: Image.network(
-                                          'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$username/view?project=65706141ead327e0436a&mode=public',
+                                          'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/$username/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                                           fit: BoxFit.cover,
                                           height: 50,
                                           errorBuilder:

@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 abstract class AuthService {
   static const String clientId = '972717';
-  static const String redirectUri =
-      'https://cloud.appwrite.io/v1/account/sessions/oauth2/callback/oidc/65706141ead327e0436a'; 
+  static String redirectUri =
+      'https://cloud.appwrite.io/v1/account/sessions/oauth2/callback/oidc/${dotenv.env['PROJECT_ID']}'; 
 
   static String get authorizationUrl =>
       'https://old.online.ntnu.no/openid/authorize?client_id=$clientId&redirect_uri=$redirectUri&response_type=code&scope=openid+profile+onlineweb4+events';

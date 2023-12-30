@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:online_events/pages/pixel/models/user_post.dart';
 import '../../../components/animated_button.dart';
 import '../../../services/page_navigator.dart';
@@ -36,7 +37,7 @@ class WhoPostedCard extends StatelessWidget {
               width: 50,
               height: 50,
               child: Image.network(
-                'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/$nameBeforeComma/view?project=65706141ead327e0436a&mode=public',
+                'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/$nameBeforeComma/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                 fit: BoxFit.cover,
                 height: 50,
                 loadingBuilder: (BuildContext context, Widget child,
