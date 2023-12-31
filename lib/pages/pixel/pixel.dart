@@ -119,7 +119,6 @@ class PixelPageState extends State<PixelPage> {
             'liked_by': [...post.likedBy, userName],
           },
         );
-        
       } catch (e) {
         showErrorTop("Error: $e");
       }
@@ -142,7 +141,6 @@ class PixelPageState extends State<PixelPage> {
             'liked_by': updatedLikedBy,
           },
         );
-        
       } catch (e) {
         showErrorTop("Error: $e");
       }
@@ -243,20 +241,23 @@ class PixelPageState extends State<PixelPage> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              ImageCard(
-                                  post: post,
-                                  onLikePost: (String postId,
-                                      UserPostModel post, String userName) {
-                                    likePost(postId, post, userName);
-                                  },
-                                  onDeletePost: (String postId) {
-                                    deletePost(postId);
-                                  }),
+                              // ImageCard(
+                              //     post: post,
+                              //     onLikePost: (String postId,
+                              //         UserPostModel post, String userName) {
+                              //       likePost(postId, post, userName);
+                              //     },
+                              // onDeletePost: (String postId) {
+                              //   deletePost(postId);
+                              // }),
                               const SizedBox(
                                 height: 4,
                               ),
                               LikesCard(
                                   post: post,
+                                  onDeletePost: (String postId) {
+                                    deletePost(postId);
+                                  },
                                   onUnlikePost: (String postId,
                                       UserPostModel post, String userId) {
                                     unlikePost(postId, post, userId);

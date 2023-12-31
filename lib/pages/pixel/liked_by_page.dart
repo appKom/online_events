@@ -14,7 +14,7 @@ import 'models/pixel_user_class.dart';
 import 'view_pixel_user.dart';
 
 class LikeByPage extends StatefulWidget {
-  const LikeByPage({super.key, required this.post});
+  const LikeByPage({super.key, required this.post,});
 
   final UserPostModel post;
 
@@ -153,7 +153,7 @@ class LikedByPageState extends State<LikeByPage> {
 }
 
 class LikedByPageDisplay extends StaticPage {
-  const LikedByPageDisplay({super.key, required this.post});
+  const LikedByPageDisplay({super.key, required this.post,});
 
   final UserPostModel post;
 
@@ -166,6 +166,6 @@ class LikedByPageDisplay extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    return LikeByPage(post: post);
+    return LikeByPage(post: post,);
   }
 }
