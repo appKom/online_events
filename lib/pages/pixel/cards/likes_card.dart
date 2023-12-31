@@ -7,11 +7,66 @@ import '../../../components/animated_button.dart';
 import '../../profile/profile_page.dart';
 import '/theme/theme.dart';
 
-class LikesCard extends StatelessWidget {
-  const LikesCard({super.key, required this.post, required this.onUnlikePost});
-
+class LikesCard extends StatefulWidget {
   final UserPostModel post;
   final Function(String, UserPostModel, String) onUnlikePost;
+  final Function(String, UserPostModel, String) onLikePost;
+
+  const LikesCard({
+    Key? key,
+    required this.post,
+    required this.onUnlikePost,
+    required this.onLikePost,
+  }) : super(key: key);
+
+  @override
+  LikesCardState createState() => LikesCardState();
+}
+
+class LikesCardState extends State<LikesCard> {
+  late bool isLiked;
+  late int numberOfLikes;
+
+  @override
+  void initState() {
+    super.initState();
+    isLiked = widget.post.likedBy.contains(userProfile!.username);
+    numberOfLikes = widget.post.numberOfLikes;
+  }
+
+  void handleLike() async {
+    setState(() {
+      isLiked = true;
+      numberOfLikes++;
+    });
+
+    try {
+      String userId = userProfile!.username.toString();
+      await widget.onLikePost(widget.post.id, widget.post, userId);
+    } catch (error) {
+      setState(() {
+        isLiked = false;
+        numberOfLikes--;
+      });
+    }
+  }
+
+  void handleUnlike() async {
+    setState(() {
+      isLiked = false;
+      numberOfLikes--;
+    });
+
+    try {
+      String userId = userProfile!.username.toString();
+      await widget.onUnlikePost(widget.post.id, widget.post, userId);
+    } catch (error) {
+      setState(() {
+        isLiked = true;
+        numberOfLikes++;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,26 +76,24 @@ class LikesCard extends StatelessWidget {
         children: [
           AnimatedButton(
             onTap: () {
-              PageNavigator.navigateTo(LikedByPageDisplay(post: post));
+              PageNavigator.navigateTo(LikedByPageDisplay(post: widget.post));
             },
             childBuilder: (context, hover, pointerDown) {
               return Text(
-                '${post.numberOfLikes} likerklikk',
+                '$numberOfLikes likerklikk',
                 style: OnlineTheme.textStyle(),
               );
             },
           ),
-          const Spacer(),
-          if (post.likedBy.contains(userProfile!.username.toString()))
-            IconButton(
-              padding: EdgeInsets.zero,
-              iconSize: 24,
-              icon: const Icon(Icons.heart_broken, color: OnlineTheme.red1),
-              onPressed: () async {
-                String userId = userProfile!.username.toString();
-                await onUnlikePost(post.id, post, userId);
-              },
-            ),
+          const SizedBox(width: 10),
+          AnimatedButton(
+            onTap: isLiked ? handleUnlike : handleLike,
+            childBuilder: (context, hover, pointerDown) {
+              return Image.asset(isLiked
+                  ? 'assets/images/heart_filled.png'
+                  : 'assets/images/heart_not_filled.png');
+            },
+          ),
         ],
       ),
     );

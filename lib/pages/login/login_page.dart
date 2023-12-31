@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/login/terms_of_service.dart';
+import 'package:online_events/services/app_navigator.dart';
 import '/pages/login/auth_web_view_page.dart';
 
 import 'package:online_events/theme/theme.dart';
@@ -35,9 +37,7 @@ class LoginPage extends StaticPage {
             const SizedBox(height: 24),
             AnimatedButton(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const LoginWebView(),
-                ));
+                PageNavigator.navigateTo(TermsOfServicePage());
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(

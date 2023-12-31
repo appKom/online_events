@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/login/terms_of_service.dart';
 import 'package:online_events/pages/pixel/models/user_post.dart';
+import 'package:online_events/services/app_navigator.dart';
 import '../../../components/animated_button.dart';
 import '../../../components/online_header.dart';
 import '../../login/auth_web_view_page.dart';
@@ -13,9 +15,7 @@ class NotLoggedInCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onPressed() {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const LoginWebView(),
-      ));
+      PageNavigator.navigateTo(TermsOfServicePage());
     }
     final padding = MediaQuery.of(context).padding +
         const EdgeInsets.symmetric(horizontal: 25);

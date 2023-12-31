@@ -119,9 +119,7 @@ class PixelPageState extends State<PixelPage> {
             'liked_by': [...post.likedBy, userName],
           },
         );
-        if (mounted) {
-          setState(() {});
-        }
+        
       } catch (e) {
         showErrorTop("Error: $e");
       }
@@ -144,9 +142,7 @@ class PixelPageState extends State<PixelPage> {
             'liked_by': updatedLikedBy,
           },
         );
-        if (mounted) {
-          setState(() {});
-        }
+        
       } catch (e) {
         showErrorTop("Error: $e");
       }
@@ -264,6 +260,10 @@ class PixelPageState extends State<PixelPage> {
                                   onUnlikePost: (String postId,
                                       UserPostModel post, String userId) {
                                     unlikePost(postId, post, userId);
+                                  },
+                                  onLikePost: (String postId,
+                                      UserPostModel post, String userId) {
+                                    likePost(postId, post, userId);
                                   }),
                               const SizedBox(
                                 height: 4,

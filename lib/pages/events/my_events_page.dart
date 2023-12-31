@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/login/terms_of_service.dart';
+import 'package:online_events/services/app_navigator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '/components/animated_button.dart';
@@ -417,9 +419,7 @@ class MyEventsPageState extends State<MyEventsPage> {
       );
     } else {
       void onPressed() {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const LoginWebView(),
-        ));
+        PageNavigator.navigateTo(TermsOfServicePage());
       }
 
       return Padding(

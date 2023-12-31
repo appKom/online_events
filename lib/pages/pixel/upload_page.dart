@@ -219,6 +219,10 @@ class UploadPageState extends State<UploadPage> {
                   ),
                 ),
                 maxLength: 500,
+                maxLines: null, 
+                keyboardType:
+                    TextInputType.multiline, 
+                minLines: 1, 
                 onChanged: (_) => checkIfButtonShouldBeEnabled(),
               ),
               const SizedBox(
@@ -226,7 +230,9 @@ class UploadPageState extends State<UploadPage> {
               ),
               if (_selectedImage != null) Image.file(_selectedImage!),
               if (_selectedImage != null)
-              const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
               if (_selectedImage != null)
                 Column(
                   children: [
