@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/pages/events/not_logged_in_page.dart';
 import 'package:online_events/pages/login/terms_of_service.dart';
 import 'package:online_events/services/app_navigator.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -160,7 +161,7 @@ class MyEventsPageState extends State<MyEventsPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: onLeftArrowTap,
         ),
         GestureDetector(
@@ -169,7 +170,7 @@ class MyEventsPageState extends State<MyEventsPage> {
               style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
         ),
         IconButton(
-          icon: Icon(Icons.arrow_forward_ios),
+          icon: const Icon(Icons.arrow_forward_ios),
           onPressed: onRightArrowTap,
         ),
       ],
@@ -418,44 +419,7 @@ class MyEventsPageState extends State<MyEventsPage> {
         ),
       );
     } else {
-      void onPressed() {
-        PageNavigator.navigateTo(TermsOfServicePage());
-      }
-
-      return Padding(
-          padding: EdgeInsets.only(left: padding.left, right: padding.right),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: OnlineHeader.height(context)),
-              Center(
-                child: Text(
-                  'Du må være inlogget for å se dine arrangementer',
-                  style: OnlineTheme.textStyle(),
-                ),
-              ),
-              const SizedBox(
-                height: 120,
-              ),
-              AnimatedButton(
-                  onTap: onPressed,
-                  childBuilder: (context, hover, pointerDown) {
-                    return Container(
-                      height: OnlineTheme.buttonHeight,
-                      decoration: BoxDecoration(
-                        gradient: OnlineTheme.greenGradient,
-                        borderRadius: OnlineTheme.buttonRadius,
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Logg Inn',
-                          style: OnlineTheme.textStyle(weight: 5),
-                        ),
-                      ),
-                    );
-                  })
-            ],
-          ));
+      return const NotLoggedInPage();
     }
   }
 

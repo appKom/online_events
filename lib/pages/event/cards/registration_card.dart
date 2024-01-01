@@ -9,13 +9,15 @@ import 'package:online_events/pages/event/event_page.dart';
 import '/main.dart';
 import '/theme/theme.dart';
 
-
-
 class RegistrationCard extends StatelessWidget {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 24);
 
-  const RegistrationCard(
-      {super.key, required this.model, required this.attendeeInfoModel, required this.onUnregisterSuccess,});
+  const RegistrationCard({
+    super.key,
+    required this.model,
+    required this.attendeeInfoModel,
+    required this.onUnregisterSuccess,
+  });
   final EventModel model;
   final AttendeeInfoModel attendeeInfoModel;
   final VoidCallback onUnregisterSuccess;
@@ -64,7 +66,8 @@ class RegistrationCard extends StatelessWidget {
           ),
           EventCardButtons(
             model: model,
-            attendeeInfoModel: attendeeInfoModel, onUnregisterSuccess: onUnregisterSuccess,
+            attendeeInfoModel: attendeeInfoModel,
+            onUnregisterSuccess: onUnregisterSuccess,
           ),
           if (loggedIn &&
               attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
@@ -74,11 +77,16 @@ class RegistrationCard extends StatelessWidget {
           if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)
             EventCardCountdown(eventTime: eventDateTime),
           if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)
-            Center(
-                child: Text(
-              'Til til arrangementet starter',
-              style: OnlineTheme.textStyle(weight: 5),
-            )),
+            Column(
+              children: [
+                const SizedBox(height: 6,),
+                Center(
+                    child: Text(
+                  'Til til arrangementet starter',
+                  style: OnlineTheme.textStyle(weight: 5),
+                )),
+              ],
+            ),
           if (attendeeInfoModel.id == -1 &&
               eventDateTime.isAfter(DateTime.now()))
             EventCardCountdown(eventTime: eventDateTime),

@@ -157,7 +157,7 @@ class UploadPageState extends State<UploadPage> {
             'description': _titleController.text,
             'post_created': formatDateTime2(DateTime.now()),
             'image_link':
-                'https://cloud.appwrite.io/v1/storage/buckets/6589b4e47f3c8840e723/files/$imageId/view?project=65706141ead327e0436a&mode=public'
+                'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['PIXEL_BUCKET_ID']}/files/$imageId/view?project=${dotenv.env['PROJECT_ID']}&mode=public'
           });
       print("Post saved successfully");
     } catch (e) {

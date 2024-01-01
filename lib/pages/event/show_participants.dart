@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../components/animated_button.dart';
+import '../pixel/view_pixel_user.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
@@ -89,7 +92,7 @@ class ShowParticipants extends StaticPage {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: sortedAttendees.length,
                     separatorBuilder: (context, index) =>
-                        const Separator(), // Thinner divider
+                        const Separator(), 
                     itemBuilder: (context, index) {
                       final attendee = sortedAttendees[index];
                       final bool isVerified =
@@ -109,7 +112,7 @@ class ShowParticipants extends StaticPage {
                                         ? Colors.green
                                         : Colors.white)),
                           ),
-                          // const SizedBox(width: 5,),
+                          const SizedBox(width: 5,),
                           // AnimatedButton(onTap: () {
                           //   PageNavigator.navigateTo(ViewPixelUserDisplay(
                           //     userName: attendee.id.toString(),
@@ -120,7 +123,7 @@ class ShowParticipants extends StaticPage {
                           //       width: 30,
                           //       height: 30,
                           //       child: Image.network(
-                          //         'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${attendee.id}/view?project=65706141ead327e0436a&mode=public',
+                          //         'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${attendee.id}/preview?width=75&height=75&project=${dotenv.env['PROJECT_ID']}&mode=public',
                           //         fit: BoxFit.cover,
                           //         height: 30,
                           //         errorBuilder:

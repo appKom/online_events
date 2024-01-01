@@ -234,7 +234,7 @@ class CommentPageState extends State<CommentPage> {
                                         width: 50,
                                         height: 50,
                                         child: Image.network(
-                                          'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/$username/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+                                          'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/$username/preview?width=75&height=75&project=${dotenv.env['PROJECT_ID']}&mode=public',
                                           fit: BoxFit.cover,
                                           height: 50,
                                           errorBuilder:

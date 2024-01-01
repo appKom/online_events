@@ -105,7 +105,7 @@ class LikedByPageState extends State<LikeByPage> {
                                 width: 50,
                                 height: 50,
                                 child: Image.network(
-                                  'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${users[index].userName}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+                                  'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${users[index].userName}/preview?width=75&height=75&project=${dotenv.env['PROJECT_ID']}&mode=public',
                                   fit: BoxFit.cover,
                                   height: 50,
                                   errorBuilder:

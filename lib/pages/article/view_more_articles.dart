@@ -34,17 +34,16 @@ class ViewMoreArticles extends StatelessWidget {
         const SizedBox(height: 24),
         GestureDetector(
           onTap: () {
-            // Scroll to the top when tapped
             scrollController.animateTo(
-              0, // Scroll to the top
-              duration: Duration(milliseconds: 300),
+              0, 
+              duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
             );
           },
           child: SizedBox(
             height: 266,
             child: ListView.builder(
-              itemCount: 5, // Use count of filtered models
+              itemCount: 5, 
               itemBuilder: (context, index) =>
                   buildItem(context, index, modelsToShow),
               scrollDirection: Axis.horizontal,
@@ -61,7 +60,7 @@ class ViewMoreArticles extends StatelessWidget {
       margin: const EdgeInsets.only(right: 24),
       child: MoreArticleCard(
         articleModel:
-            modelsToShow[index], // Use the model from the filtered list
+            modelsToShow[index], 
       ),
     );
   }
@@ -89,11 +88,10 @@ class MoreArticleCard extends StatelessWidget {
 
   int calculateReadingTime(String heading, String ingress) {
     int wordCount = countWords(heading) + countWords(ingress);
-    return ((wordCount / 238) + 1).ceil(); // Dividing by 238 and rounding up
+    return ((wordCount / 238) + 1).ceil(); 
   }
 
   int countWords(String text) {
-    // Counts the number of words in a given string
     return text.split(' ').where((word) => word.isNotEmpty).length;
   }
 
@@ -104,7 +102,7 @@ class MoreArticleCard extends StatelessWidget {
     final dayString = day.toString().padLeft(2, '0');
 
     final month =
-        date.month - 1; // Months go from 1-12 but we need an index of 0-11
+        date.month - 1;
     final monthString = months[month];
 
     // TODO: If an event spans multiple days, show 01.-05. January
@@ -126,7 +124,7 @@ class MoreArticleCard extends StatelessWidget {
     } else {
       int splitIndex = heading.lastIndexOf(' ', 30);
       if (splitIndex == -1) {
-        splitIndex = 30; // Fallback in case there's no space to split
+        splitIndex = 30;
       }
       final part1 = heading.substring(0, splitIndex);
       final part2 = heading.substring(splitIndex + 1);
@@ -143,15 +141,13 @@ class MoreArticleCard extends StatelessWidget {
     final String part1 = headingParts[0];
     final String part2 = headingParts[1];
 
-    // Function to format the authors' names
+
     String formatAuthors(String authors) {
-      // Split the authors by ',' and get the first names
       final authorNames = authors.split(',').map((author) {
         final names = author.trim().split(' ');
-        return names.isNotEmpty ? names[0] : ''; // Get the first name
+        return names.isNotEmpty ? names[0] : ''; 
       }).toList();
 
-      // Join the first names with ' og ' to display them
       return authorNames.join(' og ');
     }
 

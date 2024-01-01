@@ -35,7 +35,7 @@ class ProfileButton extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.network(
-            'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile!.ntnuUsername}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+            'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile!.username}/preview?width=100&height=100&project=${dotenv.env['PROJECT_ID']}&mode=public',
             fit: BoxFit.cover,
             height: 40,
             width: 40,
