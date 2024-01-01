@@ -58,10 +58,12 @@ class LikesCardState extends State<LikesCard>
 
   void handleLike() async {
     _animationController.forward().then((_) => _animationController.reverse());
-    setState(() {
-      isLiked = true;
-      numberOfLikes++;
-    });
+    if (isLiked == false) {
+      setState(() {
+        isLiked = true;
+        numberOfLikes++;
+      });
+    }
 
     try {
       String userId = userProfile!.username.toString();
@@ -158,8 +160,9 @@ class LikesCardState extends State<LikesCard>
             children: [
               AnimatedButton(
                 onTap: () {
-                  PageNavigator.navigateTo(
-                      LikedByPageDisplay(post: widget.post,));
+                  PageNavigator.navigateTo(LikedByPageDisplay(
+                    post: widget.post,
+                  ));
                 },
                 childBuilder: (context, hover, pointerDown) {
                   return Text(

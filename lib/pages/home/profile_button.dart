@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 import '../../main.dart';
@@ -34,7 +35,7 @@ class ProfileButton extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.network(
-            'https://cloud.appwrite.io/v1/storage/buckets/658996fac01c08570158/files/${userProfile!.ntnuUsername}/view?project=65706141ead327e0436a&mode=public',
+            'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile!.ntnuUsername}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
             fit: BoxFit.cover,
             height: 40,
             width: 40,

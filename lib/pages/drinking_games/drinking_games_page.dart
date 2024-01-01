@@ -22,7 +22,8 @@ class DrinkingGamesPage extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -46,20 +47,20 @@ class DrinkingGamesPage extends ScrollablePage {
                 }),
             const SizedBox(height: 24),
             GameCard(
-              name: 'Bits',
-              imageSource: 'assets/images/bits.png',
+              name: 'SpineLine',
+              imageSource: 'assets/images/SpinLine.png',
               onTap: () {
-                PageNavigator.navigateTo(const BitsHomePage());
+                PageNavigator.navigateTo(const SpinLinePage());
               },
             ),
             const SizedBox(
               height: 24,
             ),
             GameCard(
-              name: 'SpineLine',
-              imageSource: 'assets/images/SpinLine.png',
+              name: 'Bits',
+              imageSource: 'assets/images/bits.png',
               onTap: () {
-                PageNavigator.navigateTo(const SpinLinePage());
+                PageNavigator.navigateTo(const BitsHomePage());
               },
             ),
             const SizedBox(height: 24),
@@ -79,8 +80,7 @@ class DrinkingGamesPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    // Properly implement the content method or make sure it's not called if not needed.
-    return Container(); // Return an empty Container or actual content if available
+    return Container();
   }
 }
 
@@ -105,8 +105,8 @@ class GameCard extends StatelessWidget {
         return ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: SizedBox(
-            width: double.infinity, // as wide as the parent allows
-            height: 222, // fixed height
+            width: double.infinity,
+            height: 222,
             child: Stack(
               children: [
                 Positioned.fill(
@@ -120,8 +120,8 @@ class GameCard extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Container(
-                    padding: const EdgeInsets.all(12), // Add some padding around the text
-                    color: Colors.black.withOpacity(0.5), // Semi-transparent background for the text
+                    padding: const EdgeInsets.all(12),
+                    color: Colors.black.withOpacity(0.5),
                     child: Text(
                       name,
                       style: OnlineTheme.textStyle(weight: 7, size: 20),

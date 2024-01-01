@@ -323,6 +323,7 @@ class CommentPageState extends State<CommentPage> {
                   ),
                 ),
                 maxLength: 350,
+                
                 onFieldSubmitted: (value) {
                   postComment(
                       widget.post.id, widget.post, userProfile!.username);
