@@ -36,16 +36,15 @@ class ViewMoreArticles extends StatelessWidget {
           onTap: () {
             scrollController.animateTo(
               0, 
-              duration: const Duration(milliseconds: 300),
+              duration: const const Duration(milliseconds: 300),
               curve: Curves.easeOut,
             );
           },
           child: SizedBox(
             height: 266,
             child: ListView.builder(
-              itemCount: 5, 
-              itemBuilder: (context, index) =>
-                  buildItem(context, index, modelsToShow),
+              itemCount: 5, // Use count of filtered models
+              itemBuilder: (context, index) => buildItem(context, index, modelsToShow),
               scrollDirection: Axis.horizontal,
             ),
           ),
@@ -54,13 +53,11 @@ class ViewMoreArticles extends StatelessWidget {
     );
   }
 
-  Widget? buildItem(
-      BuildContext context, int index, List<ArticleModel> modelsToShow) {
+  Widget? buildItem(BuildContext context, int index, List<ArticleModel> modelsToShow) {
     return Container(
       margin: const EdgeInsets.only(right: 24),
       child: MoreArticleCard(
-        articleModel:
-            modelsToShow[index], 
+        articleModel: modelsToShow[index], 
       ),
     );
   }
@@ -88,7 +85,7 @@ class MoreArticleCard extends StatelessWidget {
 
   int calculateReadingTime(String heading, String ingress) {
     int wordCount = countWords(heading) + countWords(ingress);
-    return ((wordCount / 238) + 1).ceil(); 
+    return ((wordCount / 238) + 1).ceil(); // Dividing by 238 and rounding up
   }
 
   int countWords(String text) {
@@ -101,8 +98,7 @@ class MoreArticleCard extends StatelessWidget {
     final day = date.day;
     final dayString = day.toString().padLeft(2, '0');
 
-    final month =
-        date.month - 1;
+    final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
     final monthString = months[month];
 
     // TODO: If an event spans multiple days, show 01.-05. January
@@ -134,26 +130,23 @@ class MoreArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeToRead =
-        calculateReadingTime(articleModel.content, articleModel.ingress);
+    final timeToRead = calculateReadingTime(articleModel.content, articleModel.ingress);
     final readingTimeText = "$timeToRead min å lese";
     final List<String> headingParts = splitHeading(articleModel.heading);
     final String part1 = headingParts[0];
     final String part2 = headingParts[1];
 
-
     String formatAuthors(String authors) {
       final authorNames = authors.split(',').map((author) {
         final names = author.trim().split(' ');
-        return names.isNotEmpty ? names[0] : ''; 
+        return names.isNotEmpty ? names[0] : '';
       }).toList();
 
       return authorNames.join(' og ');
     }
 
-    final formattedAuthors = articleModel.authors.length > 28
-        ? formatAuthors(articleModel.authors)
-        : articleModel.authors;
+    final formattedAuthors =
+        articleModel.authors.length > 28 ? formatAuthors(articleModel.authors) : articleModel.authors;
 
     return AnimatedButton(
       onTap: showInfo,
@@ -172,37 +165,30 @@ class MoreArticleCard extends StatelessWidget {
                       flex: 2,
                       child: (articleModel.image?.original != null)
                           ? Image.network(
-                              articleModel.image!
-                                  .original, 
+                              articleModel.image!.original,
                               fit: BoxFit.cover,
                               alignment: Alignment.bottomCenter,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
+                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                                 if (loadingProgress == null) {
-                                  return child; 
+                                  return child;
                                 }
                                 return Center(
                                   child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                                         : null,
                                   ),
                                 );
                               },
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
+                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                 return SvgPicture.asset(
-                                  'assets/svg/online_hvit_o.svg', 
+                                  'assets/svg/online_hvit_o.svg',
                                   fit: BoxFit.cover,
                                 );
                               },
                             )
                           : SvgPicture.asset(
-                              'assets/svg/online_hvit_o.svg', 
+                              'assets/svg/online_hvit_o.svg',
                               fit: BoxFit.cover,
                             ),
                     ),
@@ -212,16 +198,14 @@ class MoreArticleCard extends StatelessWidget {
                   flex: 1,
                   child: Stack(
                     children: [
-                      Positioned.fill(
-                          child: Container(color: OnlineTheme.gray13)),
+                      Positioned.fill(child: Container(color: OnlineTheme.gray13)),
                       Positioned(
                         left: 20,
                         bottom: 80,
                         child: Text(
                           part1, // This line will now wrap text
                           style: OnlineTheme.textStyle(weight: 5),
-                          overflow: TextOverflow
-                              .ellipsis, // Truncate with ellipsis if too long
+                          overflow: TextOverflow.ellipsis, // Truncate with ellipsis if too long
                           maxLines: 2,
                         ),
                       ),

@@ -1,24 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/pages/home/home_page.dart';
-import 'package:online_events/services/env.dart';
-import 'package:online_events/services/secure_storage.dart';
+
 import '/components/online_scaffold.dart';
+import '/core/models/article_model.dart';
+import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';
+import '/services/env.dart';
+import '/services/secure_storage.dart';
 import 'core/client/client.dart';
 import 'core/models/event_model.dart';
-import 'theme/theme.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'theme/theme.dart';
 
 bool loggedIn = false;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: 'lib/.env');
   await Env.initialize();
 
   SecureStorage.initialize();
@@ -57,7 +56,10 @@ Future main() async {
     print("Failed to get FCM token");
   }
 
-  Future.wait([Client.getEvents(pages: [1]), Client.getArticles()]).then((responses) {
+  Future.wait([
+    Client.getEvents(pages: [1]),
+    Client.getArticles()
+  ]).then((responses) {
     final events = responses[0] as List<EventModel>?;
     final articles = responses[1] as List<ArticleModel>?;
 
