@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/drinking_games/bytes/bytes_home_page.dart';
-import 'package:online_events/pages/drinking_games/spin_line_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
+import '/pages/drinking_games/bytes/bytes_home_page.dart';
+import '/pages/drinking_games/spin_line_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'bits/bits_home_page.dart';
@@ -22,8 +22,7 @@ class DrinkingGamesPage extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -40,11 +39,12 @@ class DrinkingGamesPage extends ScrollablePage {
             ),
             const SizedBox(height: 24),
             GameCard(
-                name: 'Terning',
-                imageSource: 'assets/images/diceHeader.jpg',
-                onTap: () {
-                  PageNavigator.navigateTo(const DicePage());
-                }),
+              name: 'Terning',
+              imageSource: 'assets/images/diceHeader.jpg',
+              onTap: () {
+                PageNavigator.navigateTo(const DicePage());
+              },
+            ),
             const SizedBox(height: 24),
             GameCard(
               name: 'SpineLine',

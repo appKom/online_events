@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../pixel/models/pixel_user_class.dart';
@@ -21,7 +21,6 @@ import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import '/theme/themed_icon_button.dart';
-import 'package:appwrite/appwrite.dart';
 
 int userId = 0;
 UserModel? userProfile;
@@ -46,9 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     fetchUserProfile();
 
-    final client = Client()
-        .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject(dotenv.env['PROJECT_ID']);
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
 
     storage = Storage(client);
     database = Databases(client);
@@ -196,10 +193,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
-    String biographyText = pixelUserData?.biography ?? '';
+    // String biographyText = pixelUserData?.biography ?? '';
     final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     if (userProfile != null) {
       userId = userProfile!.id;
@@ -251,11 +247,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                                         fit: BoxFit.cover,
                                         height: 240,
-                                        errorBuilder: (BuildContext context,
-                                            Object exception,
-                                            StackTrace? stackTrace) {
-                                          WidgetsBinding.instance
-                                              .addPostFrameCallback((_) {
+                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                          WidgetsBinding.instance.addPostFrameCallback((_) {
                                             if (!showInfoAboutPicture) {
                                               setState(() {
                                                 showInfoAboutPicture = true;
@@ -274,10 +267,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             if (showInfoAboutPicture)
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
-                                child: Text(
-                                    'Trykk for å laste opp profil bilde',
-                                    style: OnlineTheme.textStyle(
-                                        color: OnlineTheme.blue2)),
+                                child: Text('Trykk for å laste opp profil bilde',
+                                    style: OnlineTheme.textStyle(color: OnlineTheme.blue2)),
                               ),
                             const SizedBox(
                               height: 5,
@@ -295,10 +286,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: OnlineTheme.textStyle(color: OnlineTheme.white),
                     decoration: InputDecoration(
                       labelText: 'Skriv om deg selv:',
-                      labelStyle:
-                          OnlineTheme.textStyle(color: OnlineTheme.white),
-                      hintStyle:
-                          OnlineTheme.textStyle(color: OnlineTheme.white),
+                      labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                      hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
                       enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: OnlineTheme.white),
                       ),
@@ -323,25 +312,24 @@ class _ProfilePageState extends State<ProfilePage> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 30),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: OnlineTheme.gray14,
-                            borderRadius: OnlineTheme.buttonRadius,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '',
-                              style: OnlineTheme.textStyle(weight: 5),
+                          padding: const EdgeInsets.symmetric(vertical: 30),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: OnlineTheme.gray14,
+                              borderRadius: OnlineTheme.buttonRadius,
+                            ),
+                            child: Center(
+                              child: Text(
+                                '',
+                                style: OnlineTheme.textStyle(weight: 5),
+                              ),
                             ),
                           ),
-                        ),
-                      ); 
+                        );
                       }
 
                       if (snapshot.hasError) {
-                        return Text(
-                            "Error: ${snapshot.error}"); 
+                        return Text("Error: ${snapshot.error}");
                       }
                       String biographyText = snapshot.data?.biography ?? '';
                       return Padding(
@@ -368,14 +356,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 8),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput(
-                      'NTNU-brukernavn', userProfile!.ntnuUsername),
+                  child: constValueTextInput('NTNU-brukernavn', userProfile!.ntnuUsername),
                 ),
                 // const Separator(),
                 Padding(
                   padding: aboveBelowPadding,
-                  child:
-                      constValueTextInput('Telefon', userProfile!.phoneNumber),
+                  child: constValueTextInput('Telefon', userProfile!.phoneNumber),
                 ),
                 // const Separator(),
                 Padding(
@@ -390,13 +376,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 5),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput(
-                      'Klassetrinn', userProfile!.year.toString()),
+                  child: constValueTextInput('Klassetrinn', userProfile!.year.toString()),
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput(
-                      'Startår', userProfile!.startedDate.year.toString()),
+                  child: constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
@@ -437,8 +421,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 40,
                   child: CustomPaint(
-                    painter:
-                        StudyCoursePainter(year: userProfile!.year.toDouble()),
+                    painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
                   ),
                 ),
                 const Separator(margin: 40),
@@ -448,18 +431,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child:
-                      constValueTextInput('Github', userProfile!.github ?? ''),
+                  child: constValueTextInput('Github', userProfile!.github ?? ''),
                 ),
                 Padding(
                   padding: aboveBelowPadding,
-                  child: constValueTextInput(
-                      'Linkedin', userProfile!.linkedin ?? ''),
+                  child: constValueTextInput('Linkedin', userProfile!.linkedin ?? ''),
                 ),
                 Padding(
-                    padding: aboveBelowPadding,
-                    child: constValueTextInput(
-                        'Hjemmeside', userProfile!.website ?? '')),
+                    padding: aboveBelowPadding, child: constValueTextInput('Hjemmeside', userProfile!.website ?? '')),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
                   child: AnimatedButton(
@@ -634,8 +613,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
-        paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -643,8 +621,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0),
-        Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);

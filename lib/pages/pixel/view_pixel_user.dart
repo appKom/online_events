@@ -1,15 +1,14 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:online_events/pages/pixel/models/pixel_user_class.dart';
-import 'package:online_events/theme/theme.dart';
 
-import '../../components/animated_button.dart';
-import '../../components/online_header.dart';
-import '../../components/online_scaffold.dart';
-import '../../components/separator.dart';
 import '../home/profile_button.dart';
-import 'pixel.dart';
+import '/components/animated_button.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/pages/pixel/models/pixel_user_class.dart';
+import '/theme/theme.dart';
 
 class ViewPixelUser extends StatefulWidget {
   const ViewPixelUser({super.key, required this.userName});
@@ -27,9 +26,7 @@ class ViewPixelUserState extends State<ViewPixelUser> {
   @override
   void initState() {
     super.initState();
-    final client = Client()
-        .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject(dotenv.env['PROJECT_ID']);
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
     database = Databases(client);
 
     fetchPixelUserInfo().then((userData) {
@@ -77,22 +74,19 @@ class ViewPixelUserState extends State<ViewPixelUser> {
                 'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${widget.userName}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                 fit: BoxFit.cover,
                 height: 300,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
+                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                   if (loadingProgress == null) {
                     return child;
                   }
                   return Center(
                     child: CircularProgressIndicator(
                       value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
+                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                           : null,
                     ),
                   );
                 },
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace? stackTrace) {
+                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                   return Image.asset(
                     'assets/images/default_profile_picture.png',
                     fit: BoxFit.cover,

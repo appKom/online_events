@@ -4,7 +4,6 @@ import '/components/animated_button.dart';
 import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
 
-/// TODO: Standardize. This code is duplicated
 class EventDescriptionCard extends StatefulWidget {
   const EventDescriptionCard({
     super.key,
@@ -16,11 +15,10 @@ class EventDescriptionCard extends StatefulWidget {
   final String organizer;
 
   @override
-  // ignore: library_private_types_in_public_api
-  _DescriptionCardState createState() => _DescriptionCardState();
+  DescriptionCardState createState() => DescriptionCardState();
 }
 
-class _DescriptionCardState extends State<EventDescriptionCard> {
+class DescriptionCardState extends State<EventDescriptionCard> {
   bool _isExpanded = false;
 
   @override

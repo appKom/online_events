@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/core/models/event_model.dart';
-import 'package:online_events/pages/event/event_page.dart';
-import '/services/page_navigator.dart';
-import '/pages/home/event_card.dart';
-import '/theme/themed_icon.dart';
+import '/components/animated_button.dart';
+import '/core/models/event_model.dart';
+import '/pages/event/event_page.dart';
 
 import '../../theme/theme.dart';
+import '/services/page_navigator.dart';
+import '/theme/themed_icon.dart';
 
 class Bedpress extends StatelessWidget {
   const Bedpress({
@@ -24,9 +23,7 @@ class Bedpress extends StatelessWidget {
       return eventDate.isAfter(DateTime.now());
     }).toList();
 
-    final filteredModels = futureEvents
-        .where((model) => model.eventType == 2 || model.eventType == 3)
-        .toList();
+    final filteredModels = futureEvents.where((model) => model.eventType == 2 || model.eventType == 3).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,8 +40,7 @@ class Bedpress extends StatelessWidget {
             itemCount: filteredModels.length,
             itemBuilder: (c, i) {
               return Padding(
-                padding: EdgeInsets.only(
-                    right: i < filteredModels.length - 1 ? 24 : 0),
+                padding: EdgeInsets.only(right: i < filteredModels.length - 1 ? 24 : 0),
                 child: BedpressCard(
                   model: filteredModels[i],
                 ),
@@ -89,9 +85,7 @@ class BedpressCard extends StatelessWidget {
   }
 
   String truncateWithEllipsis(String text, int maxLength) {
-    return (text.length <= maxLength)
-        ? text
-        : '${text.substring(0, maxLength)}...';
+    return (text.length <= maxLength) ? text : '${text.substring(0, maxLength)}...';
   }
 
   void showInfo() {
@@ -102,9 +96,7 @@ class BedpressCard extends StatelessWidget {
 
   String getEventTypeDisplay() {
     // Check if the eventTypeDisplay is 'Bedriftspresentasjon'
-    return model.eventTypeDisplay == 'Bedriftspresentasjon'
-        ? 'Bedpres'
-        : model.eventTypeDisplay;
+    return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpres' : model.eventTypeDisplay;
   }
 
   @override
@@ -154,8 +146,7 @@ class BedpressCard extends StatelessWidget {
                   top: 222 + 10,
                   left: 15,
                   child: Text(
-                    truncateWithEllipsis(
-                        model.title, 35), // Use title from EventModel
+                    truncateWithEllipsis(model.title, 35), // Use title from EventModel
                     style: OnlineTheme.textStyle(
                       color: OnlineTheme.gray11,
                       weight: 7,
@@ -166,14 +157,11 @@ class BedpressCard extends StatelessWidget {
                   left: 15,
                   bottom: 15,
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
                     decoration: BoxDecoration(
                       gradient: model.eventType == 3
                           ? OnlineTheme.blueGradient
-                          : (model.eventType == 2
-                              ? OnlineTheme.redGradient
-                              : null),
+                          : (model.eventType == 2 ? OnlineTheme.redGradient : null),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -197,8 +185,7 @@ class BedpressCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        model.numberOfSeatsTaken == null &&
-                                model.maxCapacity == null
+                        model.numberOfSeatsTaken == null && model.maxCapacity == null
                             ? '∞'
                             : '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}',
                         style: OnlineTheme.textStyle(size: 16),

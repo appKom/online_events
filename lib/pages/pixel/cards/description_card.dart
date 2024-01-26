@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/pixel/models/user_post.dart';
-import '../../profile/profile_page.dart';
+
+import '/pages/pixel/models/user_post.dart';
 import '/theme/theme.dart';
-import 'package:online_events/pages/pixel/pixel.dart';
 
 class DescriptionCard extends StatelessWidget {
-  const DescriptionCard(
-      {super.key, required this.post, required this.onUnlikePost});
+  const DescriptionCard({super.key, required this.post, required this.onUnlikePost});
 
   final UserPostModel post;
   final Function(String, UserPostModel, String) onUnlikePost;
@@ -15,8 +13,7 @@ class DescriptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Row(
-        crossAxisAlignment:
-            CrossAxisAlignment.start, 
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Text(

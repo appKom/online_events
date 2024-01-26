@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/events/not_logged_in_page.dart';
-import 'package:online_events/pages/login/terms_of_service.dart';
-import 'package:online_events/services/app_navigator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '/components/animated_button.dart';
@@ -13,9 +10,9 @@ import '/core/client/client.dart';
 import '/core/models/attended_events.dart';
 import '/core/models/event_model.dart';
 import '/main.dart';
+import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/event_card.dart';
 import '/pages/loading/loading_display_page.dart';
-import '/pages/login/auth_web_view_page.dart';
 import '/pages/profile/profile_page.dart';
 import '/theme/theme.dart';
 
@@ -73,24 +70,21 @@ class MyEventsPageState extends State<MyEventsPage> {
         setState(() {
           if (moreEventsPage1 != null) {
             for (var event in moreEventsPage1) {
-              if (!eventModels
-                  .any((existingEvent) => existingEvent.id == event.id)) {
+              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
                 eventModels.add(event);
               }
             }
           }
           if (moreEventsPage2 != null) {
             for (var event in moreEventsPage2) {
-              if (!eventModels
-                  .any((existingEvent) => existingEvent.id == event.id)) {
+              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
                 eventModels.add(event);
               }
             }
           }
           if (moreEventsPage3 != null) {
             for (var event in moreEventsPage3) {
-              if (!eventModels
-                  .any((existingEvent) => existingEvent.id == event.id)) {
+              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
                 eventModels.add(event);
               }
             }
@@ -113,17 +107,9 @@ class MyEventsPageState extends State<MyEventsPage> {
     }
   }
 
-  static const List<String> _norwegianWeekDays = [
-    'Man',
-    'Tir',
-    'Ons',
-    'Tor',
-    'Fre',
-    'Lør',
-    'Søn'
-  ];
+  static const List<String> _norwegianWeekDays = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
 
-  Widget _customDaysOfWeekBuilder(BuildContext context, int i) {
+  Widget customDaysOfWeekBuilder(BuildContext context, int i) {
     return Center(
       child: Text(
         _norwegianWeekDays[i % 7],
@@ -166,8 +152,7 @@ class MyEventsPageState extends State<MyEventsPage> {
         ),
         GestureDetector(
           onTap: onTitleTap,
-          child: Text('$monthName $year',
-              style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
+          child: Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
         ),
         IconButton(
           icon: const Icon(Icons.arrow_forward_ios),
@@ -187,24 +172,21 @@ class MyEventsPageState extends State<MyEventsPage> {
     if (_isLoading) {
       return const LoadingPageDisplay();
     }
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     final style = OnlineTheme.textStyle(size: 20, weight: 7);
     if (loggedIn) {
       final now = DateTime.now();
 
       final upcomingEvents = eventModels
-          .where((model) => attendedEvents
-              .any((attendedEvent) => attendedEvent.event == model.id))
+          .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isAfter(now);
       }).toList();
 
       final pastEvents = eventModels
-          .where((model) => attendedEvents
-              .any((attendedEvent) => attendedEvent.event == model.id))
+          .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isBefore(now);
@@ -217,24 +199,19 @@ class MyEventsPageState extends State<MyEventsPage> {
           final startDate = DateTime.parse(event.startDate).toLocal();
           final endDate = DateTime.parse(event.endDate).toLocal();
           final comparisonDayStart = DateTime(day.year, day.month, day.day);
-          final comparisonDayEnd =
-              DateTime(day.year, day.month, day.day, 23, 59, 59);
+          final comparisonDayEnd = DateTime(day.year, day.month, day.day, 23, 59, 59);
 
-          return (startDate.isAtSameMomentAs(comparisonDayStart) ||
-                  startDate.isBefore(comparisonDayEnd)) &&
-              (endDate.isAtSameMomentAs(comparisonDayStart) ||
-                  endDate.isAfter(comparisonDayStart));
+          return (startDate.isAtSameMomentAs(comparisonDayStart) || startDate.isBefore(comparisonDayEnd)) &&
+              (endDate.isAtSameMomentAs(comparisonDayStart) || endDate.isAfter(comparisonDayStart));
         }
 
-        selectedEvents
-            .addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
-        selectedEvents
-            .addAll(pastEvents.where((event) => isEventOnDay(event, day)));
+        selectedEvents.addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
+        selectedEvents.addAll(pastEvents.where((event) => isEventOnDay(event, day)));
 
         return selectedEvents;
       }
 
-      Widget _buildCustomWeekdayHeaders() {
+      Widget buildCustomWeekdayHeaders() {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: _norwegianWeekDays
@@ -264,21 +241,19 @@ class MyEventsPageState extends State<MyEventsPage> {
                 focusedDay: _focusedDay,
                 onLeftArrowTap: () {
                   setState(() {
-                    _focusedDay = DateTime(_focusedDay.year,
-                        _focusedDay.month - 1, _focusedDay.day);
+                    _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
                   });
                 },
                 onRightArrowTap: () {
                   setState(() {
-                    _focusedDay = DateTime(_focusedDay.year,
-                        _focusedDay.month + 1, _focusedDay.day);
+                    _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
                   });
                 },
                 onTitleTap: () {
                   // Define what happens when the title is tapped, if needed
                 },
               ),
-              _buildCustomWeekdayHeaders(),
+              buildCustomWeekdayHeaders(),
               TableCalendar(
                 headerVisible: false,
                 daysOfWeekVisible: false,
@@ -323,9 +298,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                       return Container(
                         margin: const EdgeInsets.all(4.0),
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                            color: OnlineTheme.gray0,
-                            shape: BoxShape.rectangle),
+                        decoration: const BoxDecoration(color: OnlineTheme.gray0, shape: BoxShape.rectangle),
                         child: Text(
                           date.day.toString(),
                           style: OnlineTheme.textStyle(),
@@ -359,10 +332,8 @@ class MyEventsPageState extends State<MyEventsPage> {
                 headerStyle: const HeaderStyle(
                   formatButtonVisible: false,
                   titleCentered: true,
-                  leftChevronIcon:
-                      Icon(Icons.arrow_back_ios, color: Colors.white),
-                  rightChevronIcon:
-                      Icon(Icons.arrow_forward_ios, color: Colors.white),
+                  leftChevronIcon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                  rightChevronIcon: Icon(Icons.arrow_forward_ios, color: Colors.white),
                   titleTextStyle: TextStyle(color: Colors.white),
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(

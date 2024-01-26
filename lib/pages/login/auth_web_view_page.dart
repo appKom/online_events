@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:online_events/main.dart';
-import 'package:online_events/pages/login/auth_service.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
-import 'package:online_events/services/app_navigator.dart';
-import '../../core/client/client.dart';
-import '../../theme/theme.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import '/core/client/client.dart';
+import '/pages/login/auth_service.dart';
+import '/pages/profile/profile_page.dart';
+import '/services/app_navigator.dart';
 
 class LoginWebView extends StatefulWidget {
   const LoginWebView({super.key});

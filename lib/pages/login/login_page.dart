@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/login/terms_of_service.dart';
-import 'package:online_events/services/app_navigator.dart';
-import '/pages/login/auth_web_view_page.dart';
 
-import 'package:online_events/theme/theme.dart';
-import '/components/online_scaffold.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/pages/login/terms_of_service.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 
 class LoginPage extends StaticPage {
   const LoginPage({super.key});
@@ -37,7 +36,7 @@ class LoginPage extends StaticPage {
             const SizedBox(height: 24),
             AnimatedButton(
               onTap: () {
-                PageNavigator.navigateTo(TermsOfServicePage());
+                PageNavigator.navigateTo(const TermsOfServicePage());
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(

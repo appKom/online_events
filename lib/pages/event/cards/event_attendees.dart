@@ -15,7 +15,6 @@ class EventAttendees extends StatefulWidget {
   final AttendeeInfoModel attendeeInfoModel;
 
   @override
-  // ignore: library_private_types_in_public_api
   EventAttendeesButtonState createState() => EventAttendeesButtonState();
 }
 
@@ -35,10 +34,14 @@ class EventAttendeesButtonState extends State<EventAttendees> {
           return Container(
             alignment: Alignment.center,
             height: 50,
-            decoration: BoxDecoration(
-                gradient: OnlineTheme.blueGradient,
-                borderRadius: const BorderRadius.all(Radius.circular(10))), // Use false for blue gradient
-            child: Text('Se Påmeldte', style: OnlineTheme.textStyle()),
+            decoration: const BoxDecoration(
+              gradient: OnlineTheme.blueGradient,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Text(
+              'Se Påmeldte',
+              style: OnlineTheme.textStyle(),
+            ),
           );
         },
       ),

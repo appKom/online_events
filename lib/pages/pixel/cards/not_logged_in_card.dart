@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/login/terms_of_service.dart';
-import 'package:online_events/pages/pixel/models/user_post.dart';
-import 'package:online_events/services/app_navigator.dart';
-import '../../../components/animated_button.dart';
-import '../../../components/online_header.dart';
-import '../../login/auth_web_view_page.dart';
+
+import '/components/animated_button.dart';
+import '/components/online_header.dart';
+import '/pages/login/terms_of_service.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class NotLoggedInCard extends StatelessWidget {
@@ -17,8 +16,8 @@ class NotLoggedInCard extends StatelessWidget {
     void onPressed() {
       PageNavigator.navigateTo(TermsOfServicePage());
     }
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
     return Padding(
         padding: EdgeInsets.only(left: padding.left, right: padding.right),
         child: Column(
