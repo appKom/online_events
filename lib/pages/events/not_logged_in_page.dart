@@ -13,10 +13,10 @@ class NotLoggedInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onPressed() {
-      PageNavigator.navigateTo(TermsOfServicePage());
+      PageNavigator.navigateTo(const TermsOfServicePage());
     }
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
     return Padding(
         padding: EdgeInsets.only(left: padding.left, right: padding.right),
         child: Column(

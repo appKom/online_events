@@ -1,24 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/main.dart';
-import 'package:online_events/pages/pixel/cards/description_card.dart';
-import 'package:online_events/pages/pixel/cards/image_card.dart';
-import 'package:online_events/pages/pixel/cards/not_logged_in_card.dart';
-import 'package:online_events/pages/pixel/cards/who_posted_card.dart';
-import 'package:online_events/pages/pixel/comments.page.dart';
-import 'package:online_events/pages/pixel/info_page_pixel.dart';
-import 'package:online_events/pages/pixel/cards/likes_card.dart';
-import '../../components/animated_button.dart';
-import '../../components/online_scaffold.dart';
-import '../../components/separator.dart';
-import '../../services/app_navigator.dart';
-import '../../theme/theme.dart';
+import '/pages/pixel/cards/description_card.dart';
+import '/pages/pixel/cards/likes_card.dart';
+import '/pages/pixel/cards/not_logged_in_card.dart';
+import '/pages/pixel/cards/who_posted_card.dart';
+import '/pages/pixel/comments.page.dart';
+import '/pages/pixel/info_page_pixel.dart';
+
+import '/components/animated_button.dart';
+import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 import '../home/profile_button.dart';
-import 'upload_page.dart';
 import 'models/user_post.dart';
+import 'upload_page.dart';
 
 class PixelPage extends StatefulWidget {
   const PixelPage({super.key});
@@ -36,9 +36,7 @@ class PixelPageState extends State<PixelPage> {
   @override
   void initState() {
     super.initState();
-    final client = Client()
-        .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject(dotenv.env['PROJECT_ID']);
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
     database = Databases(client);
   }
 
@@ -77,12 +75,9 @@ class PixelPageState extends State<PixelPage> {
 
   Future<List<UserPostModel>> getUserPosts() async {
     final response = await database.listDocuments(
-        collectionId: dotenv.env['PIXEL_COLLECTION_ID']!,
-        databaseId: dotenv.env['PIXEL_DATABASE_ID']!);
+        collectionId: dotenv.env['PIXEL_COLLECTION_ID']!, databaseId: dotenv.env['PIXEL_DATABASE_ID']!);
 
-    List<UserPostModel> posts = response.documents
-        .map((doc) => UserPostModel.fromJson(doc.data))
-        .toList();
+    List<UserPostModel> posts = response.documents.map((doc) => UserPostModel.fromJson(doc.data)).toList();
 
     posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
@@ -106,8 +101,7 @@ class PixelPageState extends State<PixelPage> {
     }
   }
 
-  Future<void> likePost(
-      String postId, UserPostModel post, String userName) async {
+  Future<void> likePost(String postId, UserPostModel post, String userName) async {
     if (!post.likedBy.contains(userName)) {
       try {
         await database.updateDocument(
@@ -125,12 +119,10 @@ class PixelPageState extends State<PixelPage> {
     }
   }
 
-  Future<void> unlikePost(
-      String postId, UserPostModel post, String userId) async {
+  Future<void> unlikePost(String postId, UserPostModel post, String userId) async {
     if (post.likedBy.contains(userId)) {
       try {
-        List<String> updatedLikedBy = List<String>.from(post.likedBy)
-          ..remove(userId);
+        List<String> updatedLikedBy = List<String>.from(post.likedBy)..remove(userId);
 
         await database.updateDocument(
           databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
@@ -188,8 +180,7 @@ class PixelPageState extends State<PixelPage> {
                   children: [
                     Text(
                       'Pixel',
-                      style: OnlineTheme.textStyle(size: 30, weight: 7)
-                          .copyWith(color: Colors.white),
+                      style: OnlineTheme.textStyle(size: 30, weight: 7).copyWith(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                     const Spacer(),
@@ -223,82 +214,72 @@ class PixelPageState extends State<PixelPage> {
                         UserPostModel post = snapshot.data![index];
 
                         String nameBeforeComma = post.username;
-                        String nameAfterLastComma =
-                            '${post.firstName} ${post.lastName}';
+                        String nameAfterLastComma = '${post.firstName} ${post.lastName}';
 
-                        return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  height: 50,
-                                  decoration: const BoxDecoration(
-                                      color: OnlineTheme.background),
-                                  child: WhoPostedCard(
-                                      post: post,
-                                      nameBeforeComma: nameBeforeComma,
-                                      nameAfterLastComma: nameAfterLastComma,
-                                      formatDate: formatRelativeTime)),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              // ImageCard(
-                              //     post: post,
-                              //     onLikePost: (String postId,
-                              //         UserPostModel post, String userName) {
-                              //       likePost(postId, post, userName);
-                              //     },
-                              // onDeletePost: (String postId) {
-                              //   deletePost(postId);
-                              // }),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              LikesCard(
+                        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Container(
+                              height: 50,
+                              decoration: const BoxDecoration(color: OnlineTheme.background),
+                              child: WhoPostedCard(
                                   post: post,
-                                  onDeletePost: (String postId) {
-                                    deletePost(postId);
-                                  },
-                                  onUnlikePost: (String postId,
-                                      UserPostModel post, String userId) {
-                                    unlikePost(postId, post, userId);
-                                  },
-                                  onLikePost: (String postId,
-                                      UserPostModel post, String userId) {
-                                    likePost(postId, post, userId);
-                                  }),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              DescriptionCard(
-                                post: post,
-                                onUnlikePost: (String postId,
-                                    UserPostModel post, String userId) {
-                                  unlikePost(postId, post, userId);
+                                  nameBeforeComma: nameBeforeComma,
+                                  nameAfterLastComma: nameAfterLastComma,
+                                  formatDate: formatRelativeTime)),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          // ImageCard(
+                          //     post: post,
+                          //     onLikePost: (String postId,
+                          //         UserPostModel post, String userName) {
+                          //       likePost(postId, post, userName);
+                          //     },
+                          // onDeletePost: (String postId) {
+                          //   deletePost(postId);
+                          // }),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          LikesCard(
+                              post: post,
+                              onDeletePost: (String postId) {
+                                deletePost(postId);
+                              },
+                              onUnlikePost: (String postId, UserPostModel post, String userId) {
+                                unlikePost(postId, post, userId);
+                              },
+                              onLikePost: (String postId, UserPostModel post, String userId) {
+                                likePost(postId, post, userId);
+                              }),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          DescriptionCard(
+                            post: post,
+                            onUnlikePost: (String postId, UserPostModel post, String userId) {
+                              unlikePost(postId, post, userId);
+                            },
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            children: [
+                              const Spacer(),
+                              AnimatedButton(
+                                onTap: () => PageNavigator.navigateTo(CommentPageDisplay(post: post)),
+                                childBuilder: (context, hover, pointerDown) {
+                                  return Text(
+                                    'Vis kommentarer',
+                                    style: OnlineTheme.textStyle(color: OnlineTheme.gray10),
+                                  );
                                 },
                               ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Row(
-                                children: [
-                                  const Spacer(),
-                                  AnimatedButton(
-                                    onTap: () => PageNavigator.navigateTo(
-                                        CommentPageDisplay(post: post)),
-                                    childBuilder:
-                                        (context, hover, pointerDown) {
-                                      return Text(
-                                        'Vis kommentarer',
-                                        style: OnlineTheme.textStyle(
-                                            color: OnlineTheme.gray10),
-                                      );
-                                    },
-                                  ),
-                                  const Spacer(),
-                                ],
-                              ),
-                              const Separator(margin: 10),
-                            ]);
+                              const Spacer(),
+                            ],
+                          ),
+                          const Separator(margin: 10),
+                        ]);
                       },
                     );
                   },
@@ -306,8 +287,7 @@ class PixelPageState extends State<PixelPage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 25,
-                    vertical: 20), // Add padding at the bottom for the button
+                    horizontal: 25, vertical: 20), // Add padding at the bottom for the button
                 child: AnimatedButton(
                   onTap: () {
                     PageNavigator.navigateTo(const UploadPageDisplay());

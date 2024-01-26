@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:online_events/pages/pixel/liked_by_page.dart';
-import 'package:online_events/pages/pixel/models/user_post.dart';
-import 'package:online_events/services/page_navigator.dart';
-import '../../../components/animated_button.dart';
+
 import '../../profile/profile_page.dart';
 import '../pixel.dart';
+import '/components/animated_button.dart';
+import '/pages/pixel/liked_by_page.dart';
+import '/pages/pixel/models/user_post.dart';
+import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
 class LikesCard extends StatefulWidget {
@@ -15,19 +15,14 @@ class LikesCard extends StatefulWidget {
   final Function(String) onDeletePost;
 
   const LikesCard(
-      {Key? key,
-      required this.post,
-      required this.onUnlikePost,
-      required this.onLikePost,
-      required this.onDeletePost})
+      {Key? key, required this.post, required this.onUnlikePost, required this.onLikePost, required this.onDeletePost})
       : super(key: key);
 
   @override
   LikesCardState createState() => LikesCardState();
 }
 
-class LikesCardState extends State<LikesCard>
-    with SingleTickerProviderStateMixin {
+class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixin {
   late bool isLiked;
   late int numberOfLikes;
   late AnimationController _animationController;
@@ -131,8 +126,7 @@ class LikesCardState extends State<LikesCard>
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         iconSize: 24,
-                        icon: const Icon(Icons.delete,
-                            color: OnlineTheme.background),
+                        icon: const Icon(Icons.delete, color: OnlineTheme.background),
                         onPressed: () async {
                           try {
                             widget.onDeletePost(widget.post.id);
@@ -148,8 +142,7 @@ class LikesCardState extends State<LikesCard>
                 ),
               ScaleTransition(
                 scale: _animation,
-                child: Icon(Icons.favorite,
-                    size: 250, color: Colors.red.withOpacity(_animation.value)),
+                child: Icon(Icons.favorite, size: 250, color: Colors.red.withOpacity(_animation.value)),
               ),
             ],
           ),
@@ -175,9 +168,7 @@ class LikesCardState extends State<LikesCard>
               AnimatedButton(
                 onTap: isLiked ? handleUnlike : handleLike,
                 childBuilder: (context, hover, pointerDown) {
-                  return Image.asset(isLiked
-                      ? 'assets/images/heart_filled.png'
-                      : 'assets/images/heart_not_filled.png');
+                  return Image.asset(isLiked ? 'assets/images/heart_filled.png' : 'assets/images/heart_not_filled.png');
                 },
               ),
             ],

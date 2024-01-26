@@ -35,8 +35,8 @@ class ViewMoreArticles extends StatelessWidget {
         GestureDetector(
           onTap: () {
             scrollController.animateTo(
-              0, 
-              duration: const const Duration(milliseconds: 300),
+              0,
+              duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
             );
           },
@@ -57,7 +57,7 @@ class ViewMoreArticles extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: 24),
       child: MoreArticleCard(
-        articleModel: modelsToShow[index], 
+        articleModel: modelsToShow[index],
       ),
     );
   }
