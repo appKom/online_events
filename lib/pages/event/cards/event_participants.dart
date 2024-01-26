@@ -18,7 +18,7 @@ class EventParticipants extends StatelessWidget {
 
   String waitlistInfo() {
     if (attendeeInfoModel.isOnWaitlist) {
-      return '${attendeeInfoModel.numberOnWaitlist}/${attendeeInfoModel.whatPlaceIsUserOnWaitList}';
+      return '${attendeeInfoModel.whatPlaceIsUserOnWaitList}/${attendeeInfoModel.numberOnWaitlist}';
     } else {
       return '${attendeeInfoModel.numberOnWaitlist}';
     }

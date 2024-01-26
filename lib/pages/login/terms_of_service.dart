@@ -246,7 +246,7 @@ class TermsOfServicePage extends ScrollablePage {
                 ),
                 const Separator(margin: 5),
                 Text(
-                  'For eventuelle spørsmål eller bekymringer om disse Vilkårene, vennligst kontakt oss på app@online.ntnu.no',
+                  'For eventuelle spørsmål eller bekymringer om disse Vilkårene, vennligst kontakt oss på appkom@online.ntnu.no',
                   style: OnlineTheme.textStyle(),
                 ),
                 const Separator(margin: 5),

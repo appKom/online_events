@@ -55,9 +55,17 @@ class RegistrationCard extends StatelessWidget {
                   attendeeInfoModel.isEligibleForSignup.status == false) ||
               (loggedIn == false &&
                   attendeeInfoModel.isEligibleForSignup.statusCode == 6969))
+              if (attendeeInfoModel.isOnWaitlist == false)
             Center(
               child: Text(
                 attendeeInfoModel.isEligibleForSignup.message,
+                style: OnlineTheme.textStyle(),
+              ),
+            ),
+          if(attendeeInfoModel.isOnWaitlist == true)
+          Center(
+              child: Text(
+                'Du er nummer ${attendeeInfoModel.whatPlaceIsUserOnWaitList} på venteliste',
                 style: OnlineTheme.textStyle(),
               ),
             ),
