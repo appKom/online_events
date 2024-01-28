@@ -48,13 +48,13 @@ Future main() async {
     print('User declined or has not accepted permission');
   }
 
-  String? token = await FirebaseMessaging.instance.getToken();
-  if (token != null) {
-    print("FCM Registration Token: $token");
-    // You can now use this token to send push notifications to this device
-  } else {
-    print("Failed to get FCM token");
-  }
+  await FirebaseMessaging.instance.getToken();
+  // if (token != null) {
+  //   print("FCM Registration Token: $token");
+  //   // You can now use this token to send push notifications to this device
+  // } else {
+  //   print("Failed to get FCM token");
+  // }
 
   PageNavigator.navigateTo(const HomePage());
 
@@ -62,19 +62,6 @@ Future main() async {
 
   Client.getEvents(pages: [1]);
   Client.fetchArticles();
-
-  // Future.wait([]).then((responses) {
-  //   final events = responses[0] as List<EventModel>?;
-  //   final articles = responses[1] as List<ArticleModel>?;
-
-  //   if (events != null) {
-  //     eventModels.addAll(events);
-  //   }
-
-  //   if (articles != null) {
-  //     articleModels.addAll(articles);
-  //   }
-  // });
 }
 
 final List<EventModel> eventModels = [];

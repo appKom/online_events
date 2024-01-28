@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../core/client/client.dart';
 import '/components/animated_button.dart';
 import '/core/models/article_model.dart';
-import '/main.dart';
 import '/pages/article/article_page.dart';
 import '/services/page_navigator.dart';
 import '/theme/theme.dart';
@@ -17,8 +17,7 @@ class ViewMoreArticles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Filter models where eventType is 2 and 3
-    final modelsToShow = articleModels.skip(1).toList();
+    final modelsToShow = Client.articlesCache.value.skip(1).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,6 +123,34 @@ class MoreArticleCard extends StatelessWidget {
     }
   }
 
+  Widget imageOrDefault(String? source) {
+    if (source == null) return SvgPicture.asset('assets/svg/online_hvit_o.svg', fit: BoxFit.cover);
+
+    return Image.network(
+      source,
+      fit: BoxFit.cover,
+      alignment: Alignment.bottomCenter,
+      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return Center(
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                : null,
+          ),
+        );
+      },
+      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return SvgPicture.asset(
+          'assets/svg/online_hvit_o.svg',
+          fit: BoxFit.cover,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final timeToRead = calculateReadingTime(articleModel.content, articleModel.ingress);
@@ -155,41 +182,7 @@ class MoreArticleCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Stack(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: (articleModel.image?.original != null)
-                          ? Image.network(
-                              articleModel.image!.original,
-                              fit: BoxFit.cover,
-                              alignment: Alignment.bottomCenter,
-                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              },
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                return SvgPicture.asset(
-                                  'assets/svg/online_hvit_o.svg',
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            )
-                          : SvgPicture.asset(
-                              'assets/svg/online_hvit_o.svg',
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                  ],
-                ),
+                imageOrDefault(articleModel.image?.original),
                 Expanded(
                   flex: 1,
                   child: Stack(
@@ -219,7 +212,7 @@ class MoreArticleCard extends StatelessWidget {
                         left: 20,
                         bottom: 35,
                         child: Text(
-                          'Skrevet av: $formattedAuthors', // Modify this line
+                          formattedAuthors, // Modify this line
                           style: OnlineTheme.textStyle(weight: 4, size: 14),
                         ),
                       ),

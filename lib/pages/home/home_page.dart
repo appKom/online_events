@@ -37,39 +37,17 @@ class HomePage extends ScrollablePage {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: OnlineHeader.height(context) + 24),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            height: 222,
-            child: ValueListenableBuilder(
-              valueListenable: Client.articlesCache,
-              builder: (context, articles, child) {
-                if (articles.isEmpty) {
-                  return AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: SkeletonLoader(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  );
-                }
-
-                return PromotedArticle(article: articles.first);
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 24 + 10, bottom: 12),
-            child: Text(
-              'Kommende Arrangementer',
-              style: OnlineTheme.textStyle(size: 20, weight: 7),
-            ),
+          Text(
+            'Kommende Arrangementer',
+            style: OnlineTheme.textStyle(size: 20, weight: 7),
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 111 * 2,
-            child: FutureBuilder(
-              future: Client.getEvents(pages: [1]),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+            child: ValueListenableBuilder(
+              valueListenable: Client.eventsCache,
+              builder: (context, events, child) {
+                if (events.isEmpty) {
                   return Column(
                     children: [
                       EventCard.skeleton(),
@@ -78,14 +56,12 @@ class HomePage extends ScrollablePage {
                   );
                 }
 
-                if (snapshot.data == null) throw Exception('TODO');
-
                 return ListView.builder(
                   itemCount: 2,
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (c, i) => EventCard(
-                    model: snapshot.data!.elementAt(i),
+                    model: events.elementAt(i),
                   ),
                 );
               },
@@ -137,6 +113,33 @@ class HomePage extends ScrollablePage {
               if (events.isEmpty) return Bedpress.skeleton();
               return Bedpress(models: events);
             },
+          ),
+          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.only(top: 24, bottom: 12),
+            child: Text(
+              'Noe å lese på?',
+              style: OnlineTheme.textStyle(size: 20, weight: 7),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 222,
+            child: ValueListenableBuilder(
+              valueListenable: Client.articlesCache,
+              builder: (context, articles, child) {
+                if (articles.isEmpty) {
+                  return AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: SkeletonLoader(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  );
+                }
+
+                return PromotedArticle(article: articles.first);
+              },
+            ),
           ),
           SizedBox(height: Navbar.height(context) + 24),
         ],
