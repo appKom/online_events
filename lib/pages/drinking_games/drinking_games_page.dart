@@ -5,6 +5,7 @@ import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/drinking_games/bytes/bytes_home_page.dart';
+import '/pages/drinking_games/roulette_page.dart';
 import '/pages/drinking_games/spin_line_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
@@ -61,6 +62,14 @@ class DrinkingGamesPage extends ScrollablePage {
               imageSource: 'assets/images/bits.png',
               onTap: () {
                 PageNavigator.navigateTo(const BitsHomePage());
+              },
+            ),
+            const SizedBox(height: 24),
+            GameCard(
+              name: 'Roulette',
+              imageSource: 'assets/images/SpinLine.png',
+              onTap: () {
+                PageNavigator.navigateTo(const RoulettePage());
               },
             ),
             // const SizedBox(height: 24),
