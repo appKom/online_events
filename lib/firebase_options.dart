@@ -3,7 +3,8 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'services/env.dart';
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
@@ -35,7 +36,7 @@ class DefaultFirebaseOptions {
   }
 
   static FirebaseOptions web = FirebaseOptions(
-    apiKey: dotenv.env['WEB_API_KEY']!,
+    apiKey: Env.get('WEB_API_KEY'),
     appId: '1:358865722949:web:5ad88b438ae885cfa84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',
@@ -45,7 +46,7 @@ class DefaultFirebaseOptions {
   );
 
   static FirebaseOptions android = FirebaseOptions(
-    apiKey: dotenv.env['ANDROID_API_KEY']!,
+    apiKey: Env.get('ANDROID_API_KEY'),
     appId: '1:358865722949:android:553577a5aa15be23a84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',
@@ -53,7 +54,7 @@ class DefaultFirebaseOptions {
   );
 
   static FirebaseOptions ios = FirebaseOptions(
-    apiKey: dotenv.env['IOS_API_KEY']!,
+    apiKey: Env.get('IOS_API_KEY'),
     appId: '1:358865722949:ios:b81d5584227bbe00a84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',
@@ -62,7 +63,7 @@ class DefaultFirebaseOptions {
   );
 
   static FirebaseOptions macos = FirebaseOptions(
-    apiKey: dotenv.env['MAC_API_KEY']!,
+    apiKey: Env.get('MAC_API_KEY'),
     appId: '1:358865722949:ios:c40eb05ca5ca7d9ba84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',

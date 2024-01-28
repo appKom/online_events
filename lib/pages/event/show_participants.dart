@@ -65,6 +65,8 @@ class ShowParticipants extends StaticPage {
             ),
             FutureBuilder<List<AttendeesList>>(
               future: Client.getEventAttendees(eventId).then((attendees) {
+                attendees ??= [];
+
                 attendees.sort((a, b) {
                   if (a.isVisible && !b.isVisible) {
                     return -1;

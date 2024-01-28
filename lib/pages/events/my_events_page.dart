@@ -98,7 +98,7 @@ class MyEventsPageState extends State<MyEventsPage> {
   }
 
   Future<void> fetchAttendeeInfo() async {
-    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userId);
+    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userId) ?? [];
     if (mounted) {
       setState(() {
         attendedEvents = allAttendees;

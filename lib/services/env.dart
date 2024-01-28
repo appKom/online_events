@@ -9,7 +9,7 @@ abstract class Env {
 
   /// Get `value` of environment variable with name `key`.
   ///
-  /// Example: `URL='poltergeist.app'`
+  /// Example: `URL='ntnu.online.app'`
   static String get(String key) {
     if (!dotenv.isInitialized) throw Exception('Env has not been initialized! Please call Env.initialize() first.');
     return dotenv.get(key);
