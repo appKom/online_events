@@ -277,14 +277,12 @@ abstract class Client {
     if (response.statusCode == 200) {
       final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
+      print(jsonResponse);
 
-      return jsonResponse['results'].map(jsonReviver).cast<T>().toList();
+      // DO NOT CHANGE. HOLY LINE
+      return jsonResponse['results'].map((json) => jsonReviver(json)).cast<T>().toList();
     }
 
     return null;
-  }
-
-  void test() {
-    fetch('$endpoint/api/v1/articles/', ArticleModel.fromJson);
   }
 }

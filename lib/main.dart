@@ -58,7 +58,7 @@ Future main() async {
 
   Future.wait([
     Client.getEvents(pages: [1]),
-    Client.fetchArticles()
+    Client.fetchArticles(),
   ]).then((responses) {
     final events = responses[0] as List<EventModel>?;
     final articles = responses[1] as List<ArticleModel>?;
