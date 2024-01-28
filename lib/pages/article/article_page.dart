@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/pages/article/view_more_articles.dart';
-import 'package:online_events/pages/home/profile_button.dart';
 
-import 'package:online_events/theme/theme.dart';
-import '../../components/online_scaffold.dart';
+import '/components/online_scaffold.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/separator.dart';
+import '/core/models/article_model.dart';
+import '/pages/article/view_more_articles.dart';
+import '/pages/home/profile_button.dart';
+import '/theme/theme.dart';
 
 class ArticlePage extends ScrollablePage {
-  final ArticleModel article; 
-  final List<ArticleModel> articleModels;
+  final ArticleModel article;
   final ScrollController scrollController = ScrollController();
-  ArticlePage(
-      {super.key,
-      required this.article,
-      required this.articleModels}); 
+  ArticlePage({super.key, required this.article});
 
   List<dynamic> extractAndSplitContent(String content) {
     RegExp exp = RegExp(r'(https?://\S+\.(jpg|jpeg|png|gif))');
@@ -84,8 +80,7 @@ class ArticlePage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
     List<dynamic> contentSegments = extractAndSplitContent(article.content);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -93,26 +88,22 @@ class ArticlePage extends ScrollablePage {
         SizedBox(height: OnlineHeader.height(context)),
         article.image?.original != null
             ? Image.network(
-                article.image!
-                    .original, 
+                article.image!.original,
                 fit: BoxFit.cover,
                 height: 240,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
+                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                   if (loadingProgress == null) {
-                    return child; 
+                    return child;
                   }
                   return Center(
                     child: CircularProgressIndicator(
                       value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
+                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                           : null,
                     ),
                   );
                 },
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace? stackTrace) {
+                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                   return SvgPicture.asset(
                     'assets/svg/online_hvit_o.svg',
                     fit: BoxFit.cover,
@@ -132,7 +123,7 @@ class ArticlePage extends ScrollablePage {
             children: [
               const SizedBox(height: 30),
               Text(
-                article.heading, 
+                article.heading,
                 style: OnlineTheme.textStyle(size: 20, weight: 7),
               ),
               const SizedBox(height: 14),
@@ -155,24 +146,21 @@ class ArticlePage extends ScrollablePage {
                     return Image.network(
                       segment.toString(),
                       fit: BoxFit.cover,
-                      loadingBuilder: (BuildContext context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
+                      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                         if (loadingProgress == null) {
                           return child;
-                        } 
+                        }
                         return Center(
                           child: CircularProgressIndicator(
                             value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
+                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                                 : null,
                           ),
                         );
                       },
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                         return SvgPicture.asset(
-                          'assets/svg/online_hvit_o.svg', 
+                          'assets/svg/online_hvit_o.svg',
                           fit: BoxFit.cover,
                         );
                       },
@@ -190,7 +178,6 @@ class ArticlePage extends ScrollablePage {
                 height: 20,
               ),
               ViewMoreArticles(
-                articleModels: articleModels,
                 scrollController: scrollController,
               ),
               // ... other content based on the article data ...

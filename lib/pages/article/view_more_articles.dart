@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/main.dart';
-import 'package:online_events/pages/article/article_page.dart';
 
+import '/components/animated_button.dart';
+import '/core/models/article_model.dart';
+import '/main.dart';
+import '/pages/article/article_page.dart';
 import '/services/page_navigator.dart';
-
-import '../../theme/theme.dart';
+import '/theme/theme.dart';
 
 class ViewMoreArticles extends StatelessWidget {
-  final List<ArticleModel> articleModels; // Change to use EventModel
   final ScrollController scrollController;
   const ViewMoreArticles({
     super.key,
-    required this.articleModels,
     required this.scrollController,
   });
 
@@ -110,7 +107,6 @@ class MoreArticleCard extends StatelessWidget {
   void showInfo() {
     PageNavigator.navigateTo(ArticlePage(
       article: articleModel,
-      articleModels: articleModels,
     ));
   }
 

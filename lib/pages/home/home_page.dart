@@ -36,15 +36,14 @@ class HomePage extends ScrollablePage {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: OnlineHeader.height(context)),
+          SizedBox(height: OnlineHeader.height(context) + 24),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 222,
-            child: FutureBuilder(
-              future: Client.fetchArticles(),
-              builder: (context, snapshot) {
-                // Waiting for response
-                if (!snapshot.hasData) {
+            child: ValueListenableBuilder(
+              valueListenable: Client.articlesCache,
+              builder: (context, articles, child) {
+                if (articles.isEmpty) {
                   return AspectRatio(
                     aspectRatio: 16 / 9,
                     child: SkeletonLoader(
@@ -53,13 +52,7 @@ class HomePage extends ScrollablePage {
                   );
                 }
 
-                // No articles returned
-                if (snapshot.data == null) throw Exception('TODO');
-
-                // Articles were returned
-
-                // TODO: Second parameter is fishy
-                return PromotedArticle(article: snapshot.data!.first, articleModels: snapshot.data!);
+                return PromotedArticle(article: articles.first);
               },
             ),
           ),
