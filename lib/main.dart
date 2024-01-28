@@ -56,6 +56,8 @@ Future main() async {
     print("Failed to get FCM token");
   }
 
+  PageNavigator.navigateTo(const HomePage());
+
   Future.wait([
     Client.getEvents(pages: [1]),
     Client.fetchArticles(),
@@ -70,8 +72,6 @@ Future main() async {
     if (articles != null) {
       articleModels.addAll(articles);
     }
-
-    PageNavigator.navigateTo(const HomePage());
   });
 }
 

@@ -32,7 +32,7 @@ class EventPage extends StatefulWidget {
 class _EventPageState extends State<EventPage> {
   AttendeeInfoModel attendeeInfoModel;
 
-  _EventPageState() : attendeeInfoModel = DEFAULT_ATTENDEE_MODEL;
+  _EventPageState() : attendeeInfoModel = defaultAttendeeModel;
 
   @override
   void initState() {

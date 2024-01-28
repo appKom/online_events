@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:online_events/core/models/article_model.dart';
 import 'package:online_events/core/models/attended_events.dart';
 import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/core/models/attendees-list.dart';
+import 'package:online_events/core/models/attendees_list.dart';
 import 'package:online_events/core/models/user_model.dart';
 import 'package:online_events/core/models/waitlist.dart';
 
@@ -67,6 +67,8 @@ abstract class Client {
   }
 
   static Future<List<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
+    await Future.delayed(const Duration(seconds: 5));
+
     List<EventModel> allEvents = [];
 
     for (int page in pages) {
@@ -269,7 +271,10 @@ abstract class Client {
     }
   }
 
-  static Future<List<ArticleModel>?> fetchArticles() => fetch('$endpoint/api/v1/articles/', ArticleModel.fromJson);
+  static Future<List<ArticleModel>?> fetchArticles() async {
+    await Future.delayed(const Duration(seconds: 5));
+    return await fetch('$endpoint/api/v1/articles/', ArticleModel.fromJson);
+  }
 
   static Future<List<T>?> fetch<T>(String url, T Function(Map<String, dynamic> json) jsonReviver) async {
     final response = await http.get(Uri.parse(url));
@@ -277,7 +282,6 @@ abstract class Client {
     if (response.statusCode == 200) {
       final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
-      print(jsonResponse);
 
       // DO NOT CHANGE. HOLY LINE
       return jsonResponse['results'].map((json) => jsonReviver(json)).cast<T>().toList();

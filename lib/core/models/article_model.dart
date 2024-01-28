@@ -73,7 +73,7 @@ class ArticleModel implements JsonModel {
       'slug': slug,
       'tags': tags,
       'video': video,
-      'image': image != null ? image!.toJson() : null,
+      'image': image?.toJson(),
     };
   }
 }

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
-import 'package:online_events/pages/home/bedpress.dart';
+import 'package:online_events/components/skeleton_loader.dart';
+import 'package:online_events/core/client/client.dart';
 import 'package:online_events/pages/home/event_card.dart';
-import '/pages/home/promoted_article.dart';
-import '../../services/page_navigator.dart';
-import '../events/events_page.dart';
+
 import '../../components/online_scaffold.dart';
+import '../../services/page_navigator.dart';
 import '../../theme/theme.dart';
-import '/main.dart';
+import '../events/events_page.dart';
+import '/pages/home/promoted_article.dart';
 import 'profile_button.dart';
 
 class HomePage extends ScrollablePage {
@@ -27,8 +28,7 @@ class HomePage extends ScrollablePage {
   @override
   Widget content(BuildContext context) {
     // final style = OnlineTheme.textStyle(weight: 5);
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -39,14 +39,31 @@ class HomePage extends ScrollablePage {
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 222,
-            child: ListView.builder(
-              itemCount: 1,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (c, i) => PromotedArticle(
-                article: articleModels[i],
-                articleModels: articleModels,
-              ),
+            child: FutureBuilder(
+              future: Client.fetchArticles(),
+              builder: (context, snapshot) {
+                // Waiting for response
+                if (!snapshot.hasData) {
+                  return AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: SkeletonLoader(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  );
+                }
+
+                // No articles returned
+                if (snapshot.data == null) throw Exception('TODO');
+
+                // Articles were returned
+
+                // TODO: Second parameter is fishy
+                return PromotedArticle(article: snapshot.data!.first, articleModels: snapshot.data!);
+              },
+              // itemBuilder: (c, i) => PromotedArticle(
+              //   article: articleModels[i],
+              //   articleModels: articleModels,
+              // ),
             ),
           ),
           Text(
@@ -58,13 +75,29 @@ class HomePage extends ScrollablePage {
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 111 * 2,
-            child: ListView.builder(
-              itemCount: 2,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (c, i) => EventCard(
-                model: eventModels[i],
-              ),
+            child: FutureBuilder(
+              future: Client.getEvents(pages: [1]),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Column(
+                    children: [
+                      EventCard.skeleton(),
+                      EventCard.skeleton(),
+                    ],
+                  );
+                }
+
+                if (snapshot.data == null) throw Exception('TODO');
+
+                return ListView.builder(
+                  itemCount: 2,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (c, i) => EventCard(
+                    model: snapshot.data![i],
+                  ),
+                );
+              },
             ),
           ),
           AnimatedButton(
@@ -93,7 +126,7 @@ class HomePage extends ScrollablePage {
             },
           ),
           const SizedBox(height: 10),
-          Bedpress(models: eventModels),
+          // Bedpress(models: eventModels), TODO: Re-add this somehow..
           SizedBox(height: Navbar.height(context) + 24),
         ],
       ),

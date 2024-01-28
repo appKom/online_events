@@ -1,4 +1,5 @@
-final DEFAULT_ATTENDEE_MODEL = AttendeeInfoModel.withDefaults();
+//TODO: This is fishy. Investigate
+final defaultAttendeeModel = AttendeeInfoModel.withDefaults();
 
 class AttendeeInfoModel {
   final int id;
@@ -33,8 +34,8 @@ class AttendeeInfoModel {
       waitlist: false,
       guestAttendance: false,
       registrationStart: DateTime.now(),
-      registrationEnd: DateTime.now().add(Duration(days: 30)), // Default end date 30 days from now
-      unattendDeadline: DateTime.now().add(Duration(days: 10)), // Default deadline 10 days from now
+      registrationEnd: DateTime.now().add(const Duration(days: 30)), // Default end date 30 days from now
+      unattendDeadline: DateTime.now().add(const Duration(days: 10)), // Default deadline 10 days from now
       automaticallySetMarks: false,
       ruleBundles: [],
       numberOnWaitlist: 0,
@@ -88,19 +89,12 @@ class AttendeeInfoModel {
       maxCapacity: json['max_capacity'] ?? 0,
       waitlist: json['waitlist'] ?? false,
       guestAttendance: json['guest_attendance'] ?? false,
-      registrationStart: json['registration_start'] != null
-          ? DateTime.parse(json['registration_start'])
-          : DateTime.now(),
-      registrationEnd: json['registration_end'] != null
-          ? DateTime.parse(json['registration_end'])
-          : DateTime.now(),
-      unattendDeadline: json['unattend_deadline'] != null
-          ? DateTime.parse(json['unattend_deadline'])
-          : DateTime.now(),
+      registrationStart:
+          json['registration_start'] != null ? DateTime.parse(json['registration_start']) : DateTime.now(),
+      registrationEnd: json['registration_end'] != null ? DateTime.parse(json['registration_end']) : DateTime.now(),
+      unattendDeadline: json['unattend_deadline'] != null ? DateTime.parse(json['unattend_deadline']) : DateTime.now(),
       automaticallySetMarks: json['automatically_set_marks'] ?? false,
-      ruleBundles: json['rule_bundles'] != null
-          ? List<int>.from(json['rule_bundles'])
-          : [],
+      ruleBundles: json['rule_bundles'] != null ? List<int>.from(json['rule_bundles']) : [],
       numberOnWaitlist: json['number_on_waitlist'] ?? 0,
       numberOfSeatsTaken: json['number_of_seats_taken'] ?? 0,
       hasFeedback: json['has_feedback'] ?? false,
@@ -112,8 +106,7 @@ class AttendeeInfoModel {
       hasPostponedRegistration: json['has_postponed_registration'] ?? false,
       isMarked: json['is_marked'] ?? false,
       isSuspended: json['is_suspended'] ?? false,
-      isEligibleForSignup:
-          Eligibility.fromJson(json['is_eligible_for_signup'] ?? {}),
+      isEligibleForSignup: Eligibility.fromJson(json['is_eligible_for_signup'] ?? {}),
       isAttendee: json['is_attendee'] ?? false,
       isOnWaitlist: json['is_on_waitlist'] ?? false,
       whatPlaceIsUserOnWaitList: json['what_place_is_user_on_wait_list'] ?? 0,

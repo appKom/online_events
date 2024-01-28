@@ -6,7 +6,7 @@ import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
-import '/core/models/attendees-list.dart';
+import '../../core/models/attendees_list.dart';
 import '/core/models/event_model.dart';
 import '/core/models/waitlist.dart';
 import '/pages/event/event_page.dart';
