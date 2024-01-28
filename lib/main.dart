@@ -58,21 +58,23 @@ Future main() async {
 
   PageNavigator.navigateTo(const HomePage());
 
-  Future.wait([
-    Client.getEvents(pages: [1]),
-    Client.fetchArticles(),
-  ]).then((responses) {
-    final events = responses[0] as List<EventModel>?;
-    final articles = responses[1] as List<ArticleModel>?;
+  await Future.delayed(const Duration(seconds: 5));
 
-    if (events != null) {
-      eventModels.addAll(events);
-    }
+  Client.getEvents(pages: [1]);
+  Client.fetchArticles();
 
-    if (articles != null) {
-      articleModels.addAll(articles);
-    }
-  });
+  // Future.wait([]).then((responses) {
+  //   final events = responses[0] as List<EventModel>?;
+  //   final articles = responses[1] as List<ArticleModel>?;
+
+  //   if (events != null) {
+  //     eventModels.addAll(events);
+  //   }
+
+  //   if (articles != null) {
+  //     articleModels.addAll(articles);
+  //   }
+  // });
 }
 
 final List<EventModel> eventModels = [];

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:online_events/core/models/article_model.dart';
 import 'package:online_events/core/models/attended_events.dart';
@@ -66,10 +67,12 @@ abstract class Client {
     return DateTime.now().isAfter(_tokenSetTime!);
   }
 
-  static Future<List<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
+  static ValueNotifier<Set<EventModel>> eventsCache = ValueNotifier({});
+
+  static Future<Set<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
     await Future.delayed(const Duration(seconds: 5));
 
-    List<EventModel> allEvents = [];
+    Set<EventModel> allEvents = {};
 
     for (int page in pages) {
       String url = page == 1 ? '$endpoint/api/v1/event/events/' : '$endpoint/api/v1/event/events/?page=$page';
@@ -84,6 +87,11 @@ abstract class Client {
       } else {
         print('Failed to fetch events from $url');
       }
+    }
+
+    // Add any new events fetched
+    if (allEvents.isNotEmpty) {
+      eventsCache.value = Set.from(eventsCache.value)..addAll(allEvents);
     }
 
     return allEvents;
@@ -271,9 +279,18 @@ abstract class Client {
     }
   }
 
+  static ValueNotifier<Set<ArticleModel>> articlesCache = ValueNotifier({});
+
   static Future<List<ArticleModel>?> fetchArticles() async {
     await Future.delayed(const Duration(seconds: 5));
-    return await fetch('$endpoint/api/v1/articles/', ArticleModel.fromJson);
+    final articles = await fetch('$endpoint/api/v1/articles/', ArticleModel.fromJson);
+
+    // Add any new articles fetched
+    if (articles != null) {
+      articlesCache.value = Set.from(articlesCache.value)..addAll(articles);
+    }
+
+    return articles;
   }
 
   static Future<List<T>?> fetch<T>(String url, T Function(Map<String, dynamic> json) jsonReviver) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online_events/components/skeleton_loader.dart';
 import '/components/animated_button.dart';
 import '/core/models/event_model.dart';
 import '/pages/event/event_page.dart';
@@ -14,7 +15,37 @@ class Bedpress extends StatelessWidget {
     required this.models,
   });
 
-  final List<EventModel> models;
+  final Set<EventModel> models;
+
+  static Widget skeleton() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 24),
+        Text(
+          'Bedriftpresentasjoner og Kurs',
+          style: OnlineTheme.textStyle(size: 20, weight: 7),
+        ),
+        const SizedBox(height: 24),
+        SizedBox(
+          height: 236,
+          child: ListView.builder(
+            itemCount: 2,
+            itemBuilder: (c, i) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 24),
+                child: SkeletonLoader(
+                  borderRadius: BorderRadius.circular(12),
+                  width: 222,
+                ),
+              );
+            },
+            scrollDirection: Axis.horizontal,
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +66,7 @@ class Bedpress extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         SizedBox(
-          height: 333,
+          height: 255,
           child: ListView.builder(
             itemCount: filteredModels.length,
             itemBuilder: (c, i) {
@@ -112,9 +143,11 @@ class BedpressCard extends StatelessWidget {
             child: Stack(
               children: [
                 // Use first image from images list, with a fallback
-                Positioned.fill(
-                  //model.images.first.md
-                  bottom: 111,
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  height: 125,
                   child: model.images.isNotEmpty
                       ? Image.network(
                           model.images.first.md,
@@ -124,10 +157,6 @@ class BedpressCard extends StatelessWidget {
                           'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
                           fit: BoxFit.cover,
                         ),
-                  // child: Image.network(
-                  //   model.images.isNotEmpty ? model.images.first.md : 'assets/svg/online_hvit_o.svg',
-                  //   fit: BoxFit.cover,
-                  // ),
                 ),
                 // ... other widget components, use properties from EventModel
                 Positioned(
@@ -143,7 +172,7 @@ class BedpressCard extends StatelessWidget {
                 ),
                 Positioned(
                   right: 10,
-                  top: 222 + 10,
+                  top: 125 + 10,
                   left: 15,
                   child: Text(
                     truncateWithEllipsis(model.title, 35), // Use title from EventModel
@@ -162,7 +191,7 @@ class BedpressCard extends StatelessWidget {
                       gradient: model.eventType == 3
                           ? OnlineTheme.blueGradient
                           : (model.eventType == 2 ? OnlineTheme.redGradient : null),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
                       getEventTypeDisplay(),

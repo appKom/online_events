@@ -4,6 +4,7 @@ import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
 import 'package:online_events/components/skeleton_loader.dart';
 import 'package:online_events/core/client/client.dart';
+import 'package:online_events/pages/home/bedpress.dart';
 import 'package:online_events/pages/home/event_card.dart';
 
 import '../../components/online_scaffold.dart';
@@ -60,18 +61,15 @@ class HomePage extends ScrollablePage {
                 // TODO: Second parameter is fishy
                 return PromotedArticle(article: snapshot.data!.first, articleModels: snapshot.data!);
               },
-              // itemBuilder: (c, i) => PromotedArticle(
-              //   article: articleModels[i],
-              //   articleModels: articleModels,
-              // ),
             ),
           ),
-          Text(
-            'Kommende Arrangementer',
-            style: OnlineTheme.textStyle(weight: 7),
-            textAlign: TextAlign.center,
+          Padding(
+            padding: const EdgeInsets.only(top: 24 + 10, bottom: 12),
+            child: Text(
+              'Kommende Arrangementer',
+              style: OnlineTheme.textStyle(size: 20, weight: 7),
+            ),
           ),
-          const SizedBox(height: 12),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 111 * 2,
@@ -94,39 +92,59 @@ class HomePage extends ScrollablePage {
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (c, i) => EventCard(
-                    model: snapshot.data![i],
+                    model: snapshot.data!.elementAt(i),
                   ),
                 );
               },
             ),
           ),
-          AnimatedButton(
-            onTap: () => PageNavigator.navigateTo(const EventsPageDisplay()),
-            behavior: HitTestBehavior.opaque,
-            childBuilder: (context, hover, pointerDown) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'MER',
-                    style: OnlineTheme.textStyle(weight: 4),
-                  ),
-                  const SizedBox(width: 2),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 4),
-                    child: Icon(
-                      Icons.navigate_next,
-                      color: OnlineTheme.gray9,
-                      size: 15,
+          ValueListenableBuilder(
+              valueListenable: Client.eventsCache,
+              builder: (context, events, child) {
+                if (events.isEmpty) {
+                  return Center(
+                    child: SkeletonLoader(
+                      borderRadius: BorderRadius.circular(5),
+                      width: 50,
+                      height: 25,
                     ),
-                  ),
-                ],
-              );
+                  );
+                }
+
+                return AnimatedButton(
+                  onTap: () => PageNavigator.navigateTo(const EventsPageDisplay()),
+                  behavior: HitTestBehavior.opaque,
+                  childBuilder: (context, hover, pointerDown) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'MER',
+                          style: OnlineTheme.textStyle(weight: 4),
+                        ),
+                        const SizedBox(width: 2),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 4),
+                          child: Icon(
+                            Icons.navigate_next,
+                            color: OnlineTheme.gray9,
+                            size: 15,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }),
+          const SizedBox(height: 10),
+          ValueListenableBuilder(
+            valueListenable: Client.eventsCache,
+            builder: (context, events, child) {
+              if (events.isEmpty) return Bedpress.skeleton();
+              return Bedpress(models: events);
             },
           ),
-          const SizedBox(height: 10),
-          // Bedpress(models: eventModels), TODO: Re-add this somehow..
           SizedBox(height: Navbar.height(context) + 24),
         ],
       ),
