@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.onlineEvents</string>
+	<string>ntnu.online.app</string>
 	<key>PROJECT_ID</key>
 	<string>online-appen</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:358865722949:ios:b81d5584227bbe00a84d2c</string>
+	<string>1:358865722949:ios:d590b9206894df90a84d2c</string>
 </dict>
 </plist>

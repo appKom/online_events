@@ -47,7 +47,7 @@ class DrinkingGamesPage extends ScrollablePage {
             ),
             const SizedBox(height: 24),
             GameCard(
-              name: 'SpineLine',
+              name: 'SpinLine',
               imageSource: 'assets/images/SpinLine.png',
               onTap: () {
                 PageNavigator.navigateTo(const SpinLinePage());
@@ -63,14 +63,14 @@ class DrinkingGamesPage extends ScrollablePage {
                 PageNavigator.navigateTo(const BitsHomePage());
               },
             ),
-            const SizedBox(height: 24),
-            GameCard(
-              name: 'Bytes',
-              imageSource: 'assets/images/bytes.png',
-              onTap: () {
-                PageNavigator.navigateTo(const BytesHomePage());
-              },
-            ),
+            // const SizedBox(height: 24),
+            // GameCard(
+            //   name: 'Bytes',
+            //   imageSource: 'assets/images/bytes.png',
+            //   onTap: () {
+            //     PageNavigator.navigateTo(const BytesHomePage());
+            //   },
+            // ),
             SizedBox(height: Navbar.height(context) + 24),
           ],
         ),

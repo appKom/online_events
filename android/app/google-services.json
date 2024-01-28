@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:358865722949:android:309587c4b5a45b7da84d2c",
+        "mobilesdk_app_id": "1:358865722949:android:bbfb0a03f93a5690a84d2c",
         "android_client_info": {
-          "package_name": "no.ntnu.online.app"
+          "package_name": "ntnu.online.app"
         }
       },
       "oauth_client": [],
