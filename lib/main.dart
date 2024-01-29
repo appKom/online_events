@@ -59,10 +59,10 @@ Future main() async {
 
   PageNavigator.navigateTo(const HomePage());
 
-  await FirebaseMessaging.instance.getToken();
-
   Client.getEvents(pages: [1]);
   Client.fetchArticles();
+
+  await FirebaseMessaging.instance.getToken();
 }
 
 // final List<EventModel> eventModels = [];

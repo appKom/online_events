@@ -58,72 +58,67 @@ class _EventPageState extends State<EventPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: OnlineTheme.background,
-      body: RefreshIndicator(
-        onRefresh: refreshAttendance,
-        child: ListView(
-          children: [
-            SizedBox(height: OnlineHeader.height(context) - 8),
-            widget.model.images.isNotEmpty
-                ? Image.network(
-                    widget.model.images.first.original,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return SvgPicture.asset(
-                        'assets/svg/online_hvit_o.svg',
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )
-                : SvgPicture.asset(
-                    'assets/svg/online_hvit_o.svg',
-                    fit: BoxFit.cover,
-                  ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 24),
-                  Text(
-                    widget.model.title,
-                    style: OnlineTheme.textStyle(size: 20, weight: 7),
-                  ),
-                  const SizedBox(height: 24),
-                  AttendanceCard(model: widget.model),
-                  const SizedBox(height: 24),
-                  EventDescriptionCard(
-                    description: widget.model.description,
-                    organizer: eventOrganizers[widget.model.organizer] ?? '',
-                  ),
-                  const SizedBox(height: 24),
-                  RegistrationCard(
-                    model: widget.model,
-                    attendeeInfoModel: attendeeInfoModel,
-                    onUnregisterSuccess: onUnregisterSuccess,
-                  ),
-                  const SizedBox(height: 24),
-                ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(height: OnlineHeader.height(context)),
+        widget.model.images.isNotEmpty
+            ? AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Image.network(
+                  widget.model.images.first.original,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return SvgPicture.asset(
+                      'assets/svg/online_hvit_o.svg',
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
+              )
+            : SvgPicture.asset(
+                'assets/svg/online_hvit_o.svg',
+                fit: BoxFit.cover,
               ),
-            ),
-            SizedBox(height: Navbar.height(context) + 24),
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 24),
+              Text(
+                widget.model.title,
+                style: OnlineTheme.header(),
+              ),
+              const SizedBox(height: 24),
+              AttendanceCard(model: widget.model),
+              const SizedBox(height: 24),
+              EventDescriptionCard(
+                description: widget.model.description,
+                organizer: eventOrganizers[widget.model.organizer] ?? '',
+              ),
+              const SizedBox(height: 24),
+              RegistrationCard(
+                model: widget.model,
+                attendeeInfoModel: attendeeInfoModel,
+                onUnregisterSuccess: onUnregisterSuccess,
+              ),
+            ],
+          ),
         ),
-      ),
+        SizedBox(height: Navbar.height(context) + 24),
+      ],
     );
   }
 }
@@ -167,7 +162,7 @@ Widget header(int statusCode) {
       children: [
         Text(
           'Påmelding',
-          style: OnlineTheme.eventHeader.copyWith(height: 1, fontWeight: FontWeight.w600),
+          style: OnlineTheme.header(),
         ),
         CardBadge(
           border: gradient.colors.last.lighten(100),
@@ -179,11 +174,10 @@ Widget header(int statusCode) {
   );
 }
 
-class EventPageDisplay extends StaticPage {
+class EventPageDisplay extends ScrollablePage {
   const EventPageDisplay({super.key, required this.model});
   final EventModel model;
 
-  @override
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
@@ -213,7 +207,7 @@ class EventPageDisplay extends StaticPage {
               child: AnimatedButton(
                 onTap: () {
                   AppNavigator.navigateToRoute(
-                    QRCode(name: 'Fredrik Hansteen'),
+                    QRCode(),
                     additive: true,
                   );
                 },

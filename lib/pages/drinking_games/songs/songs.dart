@@ -15,12 +15,11 @@ class DrikkeSanger extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 24),
-        const Text(
+        Text(
           'Sanger',
-          style: OnlineTheme.eventHeader,
+          style: OnlineTheme.header(),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 10),
         SizedBox(
           height: 250,
           child: SingleChildScrollView(

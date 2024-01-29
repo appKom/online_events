@@ -159,6 +159,8 @@ abstract class Client {
     return true;
   }
 
+  static ValueNotifier<UserModel?> userCache = ValueNotifier(null);
+
   static Future<UserModel?> getUserProfile() async {
     if (!await fetchRefreshToken()) return null;
 
@@ -174,11 +176,11 @@ abstract class Client {
     if (response.statusCode == 200) {
       final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
-      return UserModel.fromJson(jsonResponse);
-    } else {
-      print('Failed to fetch user profile');
-      return null;
+      userCache.value = UserModel.fromJson(jsonResponse);
+      return userCache.value;
     }
+
+    return null;
   }
 
   static Future<List<AttendedEvents>?> getAttendedEvents(int userId) async {

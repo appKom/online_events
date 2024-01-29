@@ -29,9 +29,9 @@ class SettingsOverviewPage extends StaticPage {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: OnlineHeader.height(context) + 24),
-          Text('Instillinger', style: OnlineTheme.header()),
+          Text('Innstillinger', style: OnlineTheme.header()),
           pageLink('Profil', _onProfileTapped),
-          pageLink('Instillinger', _onSettingsTapped),
+          pageLink('Innstillinger', _onSettingsTapped),
         ],
       ),
     );

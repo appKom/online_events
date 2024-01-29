@@ -29,12 +29,12 @@ class DrinkingGamesPage extends ScrollablePage {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: OnlineHeader.height(context) + 5),
+            SizedBox(height: OnlineHeader.height(context) + 24),
             const DrikkeSanger(),
-            const SizedBox(height: 25),
-            const Text(
+            const SizedBox(height: 24),
+            Text(
               'Drikkeleker',
-              style: OnlineTheme.eventHeader,
+              style: OnlineTheme.header(),
             ),
             const SizedBox(height: 24),
             GameCard(
