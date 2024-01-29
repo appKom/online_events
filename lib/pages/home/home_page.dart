@@ -34,7 +34,7 @@ class HomePage extends ScrollablePage {
           SizedBox(height: OnlineHeader.height(context) + 24),
           Text(
             'Kommende Arrangementer',
-            style: OnlineTheme.textStyle(size: 20, weight: 7),
+            style: OnlineTheme.header(),
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),

@@ -13,7 +13,6 @@ import '/main.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/event_card.dart';
 import '/pages/loading/loading_display_page.dart';
-import '/pages/profile/profile_page.dart';
 import '/theme/theme.dart';
 
 List<AttendedEvents> attendedEvents = [];
@@ -57,43 +56,21 @@ class MyEventsPageState extends State<MyEventsPage> {
   }
 
   Future<void> fetchMoreEvents() async {
-    int nextPage1 = currentPage + 1;
-    int nextPage2 = currentPage + 2;
-    int nextPage3 = currentPage + 3;
+    final moreEventsPage1 = await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
 
-    try {
-      var moreEventsPage1 = await Client.getEvents(pages: [nextPage1]);
-      var moreEventsPage2 = await Client.getEvents(pages: [nextPage2]);
-      var moreEventsPage3 = await Client.getEvents(pages: [nextPage3]);
+    final events = Client.eventsCache.value;
 
-      if (mounted) {
-        setState(() {
-          if (moreEventsPage1 != null) {
-            for (var event in moreEventsPage1) {
-              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
-                eventModels.add(event);
-              }
+    if (mounted) {
+      setState(() {
+        if (moreEventsPage1 != null) {
+          for (var event in moreEventsPage1) {
+            if (!events.any((existingEvent) => existingEvent.id == event.id)) {
+              events.add(event);
             }
           }
-          if (moreEventsPage2 != null) {
-            for (var event in moreEventsPage2) {
-              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
-                eventModels.add(event);
-              }
-            }
-          }
-          if (moreEventsPage3 != null) {
-            for (var event in moreEventsPage3) {
-              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
-                eventModels.add(event);
-              }
-            }
-          }
-          currentPage += 2;
-        });
-      }
-    } catch (e) {
-      print('Error fetching events: $e');
+        }
+        currentPage += 3;
+      });
     }
   }
 
@@ -178,14 +155,14 @@ class MyEventsPageState extends State<MyEventsPage> {
     if (loggedIn) {
       final now = DateTime.now();
 
-      final upcomingEvents = eventModels
+      final upcomingEvents = Client.eventsCache.value
           .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isAfter(now);
       }).toList();
 
-      final pastEvents = eventModels
+      final pastEvents = Client.eventsCache.value
           .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
