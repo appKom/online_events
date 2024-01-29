@@ -98,7 +98,7 @@ abstract class Client {
   static ValueNotifier<Set<EventModel>> eventsCache = ValueNotifier({});
 
   static Future<Set<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
-    await Future.delayed(const Duration(seconds: 5));
+    // await Future.delayed(const Duration(seconds: 5));
 
     Set<EventModel> allEvents = {};
 
@@ -310,7 +310,7 @@ abstract class Client {
   static ValueNotifier<Set<ArticleModel>> articlesCache = ValueNotifier({});
 
   static Future<List<ArticleModel>?> fetchArticles() async {
-    await Future.delayed(const Duration(seconds: 5));
+    // await Future.delayed(const Duration(seconds: 5));
     final articles = await fetch('$endpoint/api/v1/articles/', ArticleModel.fromJson);
 
     // Add any new articles fetched
