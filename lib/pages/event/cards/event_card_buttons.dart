@@ -4,6 +4,7 @@ import 'package:online_events/core/models/event_model.dart';
 import 'package:online_events/pages/event/cards/recaptcha.dart';
 import 'package:online_events/pages/event/event_page.dart';
 
+import '../../../error/error_handling.dart';
 import '/components/animated_button.dart';
 import '/main.dart';
 import '/pages/event/show_participants.dart';
@@ -57,14 +58,14 @@ class _EventCardButtonsState extends State<EventCardButtons> {
       if (response.statusCode == 201) {
         // Handle successful registration
         
-        print("Successfully registered for the event");
+        ErrorHandling.showErrorTop("Du er registrert");
       } else {
         // Handle error
-        print("Failed to register for the event: ${response.body}");
+        ErrorHandling.showErrorTop("Greide ikke å registrere: ${response.body}");
       }
     } catch (e) {
       // Handle any exceptions
-      print("Error occurred: $e");
+      ErrorHandling.showErrorTop("En error har skjedd: $e");
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:online_events/pages/pixel/pixel.dart';
 import 'package:online_events/pages/profile/profile_page.dart';
 
+import '../main.dart';
 import '/pages/drinking_games/drinking_games_page.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/home/home_page.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../main.dart';
 import '../../profile/profile_page.dart';
 import '../pixel.dart';
 import '/components/animated_button.dart';

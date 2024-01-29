@@ -10,10 +10,13 @@ import '/services/env.dart';
 import '/services/secure_storage.dart';
 import 'core/client/client.dart';
 import 'core/models/event_model.dart';
+import 'core/models/user_model.dart';
 import 'firebase_options.dart';
 import 'theme/theme.dart';
 
 bool loggedIn = false;
+UserModel? userProfile;
+int userId = 0;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +29,7 @@ Future main() async {
   if (!Client.tokenExpired()) {
     loggedIn = true;
     await Client.getUserProfile();
+
   } else if (await Client.fetchRefreshToken()) {
     loggedIn = true;
   }

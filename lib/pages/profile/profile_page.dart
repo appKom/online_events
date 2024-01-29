@@ -22,8 +22,6 @@ import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import '/theme/themed_icon_button.dart';
 
-int userId = 0;
-UserModel? userProfile;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -11,6 +11,7 @@ import 'package:online_events/pages/pixel/pixel.dart';
 import '../../components/navbar.dart';
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
+import '../../main.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
 import '../home/profile_button.dart';

@@ -10,6 +10,7 @@ import 'package:online_events/pages/profile/profile_page.dart';
 import '../../components/animated_button.dart';
 import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
+import '../../main.dart';
 import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
 import '../home/profile_button.dart';
