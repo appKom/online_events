@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
-import 'package:online_events/services/app_navigator.dart';
-import 'package:online_events/theme/themed_icon.dart';
+import '/components/animated_button.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/separator.dart';
+import '/pages/profile/profile_page.dart';
+import '/services/app_navigator.dart';
 
 import '../../main.dart';
 import '../login/login_page.dart';
