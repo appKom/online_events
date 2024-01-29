@@ -21,6 +21,14 @@ Future main() async {
   await Env.initialize();
 
   SecureStorage.initialize();
+  await Client.loadTokensFromSecureStorage();
+
+  if (!Client.tokenExpired()) {
+    loggedIn = true;
+    await Client.getUserProfile();
+  } else if (await Client.fetchRefreshToken()) {
+    loggedIn = true;
+  }
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

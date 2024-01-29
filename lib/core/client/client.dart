@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:online_events/core/models/article_model.dart';
 import 'package:online_events/core/models/attended_events.dart';
@@ -18,19 +19,46 @@ abstract class Client {
   static int? expiresIn;
   static DateTime? _tokenSetTime;
 
+  static const _storage = FlutterSecureStorage();
+
+  static Future<void> saveTokensToSecureStorage() async {
+    await _storage.write(key: 'accessToken', value: accessToken);
+    await _storage.write(key: 'refreshToken', value: refreshToken);
+    await _storage.write(key: 'expiresIn', value: expiresIn.toString());
+    await _storage.write(key: 'tokenSetTime', value: _tokenSetTime?.toIso8601String());
+    print('Tokens saved to secure storage successfully.');
+  }
+
+  static Future<void> loadTokensFromSecureStorage() async {
+    try {
+      accessToken = await _storage.read(key: 'accessToken');
+      refreshToken = await _storage.read(key: 'refreshToken');
+      final expiresInStr = await _storage.read(key: 'expiresIn');
+      expiresIn = expiresInStr != null ? int.tryParse(expiresInStr) : null;
+      final tokenSetTimeStr = await _storage.read(key: 'tokenSetTime');
+      _tokenSetTime = tokenSetTimeStr != null ? DateTime.tryParse(tokenSetTimeStr) : null;
+      print('Tokens loaded from secure storage successfully.');
+    } catch (e) {
+      print('Error loading tokens from secure storage: $e');
+    }
+  }
+
   static void setAccessToken(String token) {
     accessToken = token;
     _tokenSetTime = DateTime.now();
+    saveTokensToSecureStorage();
   }
 
   static void setExpiresIn(int expiresIn) {
     if (_tokenSetTime != null) {
       _tokenSetTime = _tokenSetTime!.add(Duration(seconds: expiresIn));
+      saveTokensToSecureStorage();
     }
   }
 
   static void setRefreshToken(String token) {
     refreshToken = token;
+    saveTokensToSecureStorage();
   }
 
   static Future<bool> _refreshToken() async {
@@ -62,7 +90,7 @@ abstract class Client {
     }
   }
 
-  static bool _tokenExpired() {
+  static bool tokenExpired() {
     if (_tokenSetTime == null) return true;
     return DateTime.now().isAfter(_tokenSetTime!);
   }
@@ -127,7 +155,7 @@ abstract class Client {
   }
 
   static Future<bool> fetchRefreshToken() async {
-    if (_tokenExpired()) return await _refreshToken();
+    if (tokenExpired()) return await _refreshToken();
     return true;
   }
 
@@ -252,7 +280,7 @@ abstract class Client {
   }
 
   static Future<List<Waitlist>> getEventWaitlists(int eventId) async {
-    if (_tokenExpired()) {
+    if (tokenExpired()) {
       bool refreshed = await _refreshToken();
       if (!refreshed) {
         print('Token refresh failed, cannot fetch event attendees');
