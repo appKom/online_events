@@ -55,11 +55,11 @@ class DefaultFirebaseOptions {
 
   static FirebaseOptions ios = FirebaseOptions(
     apiKey: Env.get('IOS_API_KEY'),
-    appId: '1:358865722949:ios:b81d5584227bbe00a84d2c',
+    appId: '1:358865722949:ios:d590b9206894df90a84d2c',
     messagingSenderId: '358865722949',
     projectId: 'online-appen',
     storageBucket: 'online-appen.appspot.com',
-    iosBundleId: 'com.example.onlineEvents',
+    iosBundleId: 'ntnu.online.app',
   );
 
   static FirebaseOptions macos = FirebaseOptions(
