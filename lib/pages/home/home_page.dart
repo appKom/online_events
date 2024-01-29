@@ -1,29 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/skeleton_loader.dart';
-import 'package:online_events/core/client/client.dart';
-import 'package:online_events/pages/home/bedpress.dart';
-import 'package:online_events/pages/home/event_card.dart';
 
-import '../../components/online_scaffold.dart';
-import '../../services/page_navigator.dart';
-import '../../theme/theme.dart';
 import '../events/events_page.dart';
+import '/components/animated_button.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/components/skeleton_loader.dart';
+import '/core/client/client.dart';
+import '/pages/home/bedpress.dart';
+import '/pages/home/event_card.dart';
 import '/pages/home/promoted_article.dart';
-import 'profile_button.dart';
+import '/services/page_navigator.dart';
+import '/theme/theme.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+    return OnlineHeader();
   }
 
   @override
@@ -106,7 +101,7 @@ class HomePage extends ScrollablePage {
                   },
                 );
               }),
-          const SizedBox(height: 10),
+          const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
             builder: (context, events, child) {
@@ -114,13 +109,10 @@ class HomePage extends ScrollablePage {
               return Bedpress(models: events);
             },
           ),
-          const SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.only(top: 24, bottom: 12),
-            child: Text(
-              'Noe å lese på?',
-              style: OnlineTheme.textStyle(size: 20, weight: 7),
-            ),
+          const SizedBox(height: 24 + 24),
+          Text(
+            'Noe å lese på?',
+            style: OnlineTheme.header(),
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),

@@ -77,9 +77,9 @@ sealed class OnlineTheme {
     colors: [
       const Color.fromARGB(255, 245, 98, 98),
       Colors.red[800]!,
-      ],
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
+    ],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
   );
 
   // Fonts
@@ -136,7 +136,10 @@ sealed class OnlineTheme {
     }
   }
 
-  static textStyle({
+  static TextStyle header() => textStyle(size: 20, weight: 7);
+  static TextStyle subHeader() => textStyle(size: 15, weight: 5);
+
+  static TextStyle textStyle({
     Color color = white,
     int weight = 4,
     double size = 16,

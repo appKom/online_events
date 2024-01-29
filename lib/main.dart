@@ -48,15 +48,9 @@ Future main() async {
     print('User declined or has not accepted permission');
   }
 
-  await FirebaseMessaging.instance.getToken();
-  // if (token != null) {
-  //   print("FCM Registration Token: $token");
-  //   // You can now use this token to send push notifications to this device
-  // } else {
-  //   print("Failed to get FCM token");
-  // }
-
   PageNavigator.navigateTo(const HomePage());
+
+  await FirebaseMessaging.instance.getToken();
 
   await Future.delayed(const Duration(seconds: 5));
 

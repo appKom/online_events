@@ -147,23 +147,6 @@ class EventCard extends StatelessWidget {
                       height: 20,
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    // Text(
-                    //   'INFO',
-                    //   style: OnlineTheme.textStyle(
-                    //     color: OnlineTheme.gray9,
-                    //     weight: 5,
-                    //     size: 14,
-                    //   ),
-                    // ),
-                    // const SizedBox(width: 2),
-                    // const Padding(
-                    //   padding: EdgeInsets.only(top: 4),
-                    //   child: Icon(
-                    //     Icons.navigate_next,
-                    //     color: OnlineTheme.gray9,
-                    //     size: 15,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

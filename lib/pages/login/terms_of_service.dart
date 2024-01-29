@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_scaffold.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/pages/home/home_page.dart';
-import '/pages/home/profile_button.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'auth_web_view_page.dart';
@@ -18,11 +17,7 @@ class TermsOfServicePage extends ScrollablePage {
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+    return OnlineHeader();
   }
 
   @override

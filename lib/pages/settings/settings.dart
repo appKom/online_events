@@ -2,11 +2,95 @@ import 'package:flutter/material.dart';
 import 'package:online_events/components/animated_button.dart';
 import 'package:online_events/components/navbar.dart';
 import 'package:online_events/components/online_header.dart';
+import 'package:online_events/components/separator.dart';
+import 'package:online_events/pages/profile/profile_page.dart';
+import 'package:online_events/services/app_navigator.dart';
+import 'package:online_events/theme/themed_icon.dart';
 
+import '../../main.dart';
+import '../login/login_page.dart';
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
 
-class SettingsPage extends OnlinePage {
+class SettingsOverviewPage extends StaticPage {
+  const SettingsOverviewPage({super.key});
+
+  @override
+  Widget? header(BuildContext context) {
+    return OnlineHeader();
+  }
+
+  @override
+  Widget content(BuildContext context) {
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    return Padding(
+      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: OnlineHeader.height(context) + 24),
+          Text('Instillinger', style: OnlineTheme.header()),
+          pageLink('Profil', _onProfileTapped),
+          pageLink('Instillinger', _onSettingsTapped),
+        ],
+      ),
+    );
+  }
+
+  void _onProfileTapped() {
+    if (loggedIn) {
+      PageNavigator.navigateTo(const ProfilePageDisplay());
+    } else {
+      PageNavigator.navigateTo(const LoginPage());
+    }
+  }
+
+  void _onSettingsTapped() {
+    PageNavigator.navigateTo(const SettingsPage());
+  }
+
+  Widget pageLink(String title, void Function() onTap) {
+    return SizedBox(
+      height: 60,
+      child: AnimatedButton(
+        onTap: onTap,
+        scale: 0.95,
+        behavior: HitTestBehavior.opaque,
+        childBuilder: (context, hover, pointerDown) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: OnlineTheme.subHeader(),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 4),
+                      child: Icon(
+                        Icons.navigate_next,
+                        color: OnlineTheme.gray9,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Separator(),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class SettingsPage extends StaticPage {
   const SettingsPage({super.key});
 
   @override
@@ -25,8 +109,6 @@ class SettingsPage extends OnlinePage {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
-            
             Expanded(
               child: SingleChildScrollView(
                 child: content(context),
@@ -51,9 +133,9 @@ class _SettingsContent extends StatefulWidget {
 }
 
 Map<String, bool> confirmations = {
-    'Bekreftelse for påmelding': false,
-    'Bekreftelse for avmelding': true,
-  };
+  'Bekreftelse for påmelding': false,
+  'Bekreftelse for avmelding': true,
+};
 
 class __SettingsContentState extends State<_SettingsContent> {
   bool isPressed = false; // Track if the button is pressed
@@ -78,32 +160,15 @@ class __SettingsContentState extends State<_SettingsContent> {
       ),
       child: Column(
         children: [
-          SizedBox(height: Navbar.height(context) + 40),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Innstillinger',
-              style: OnlineTheme.eventHeader,
-            ),
-          ),
-          const SizedBox(height: 30),
+          SizedBox(height: Navbar.height(context) + 24),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
               'Varslinger',
-              style: OnlineTheme.eventHeader.copyWith(
-                fontSize: 20,
-              ),
+              style: OnlineTheme.header(),
             ),
           ),
           const SizedBox(height: 10),
-          Text(
-            'Huk av de kategoriene du ønsker varslinger for',
-            style: OnlineTheme.textStyle(
-              color: OnlineTheme.gray9,
-            ),
-          ),
-          const SizedBox(height: 15),
           Column(
             children: eventCategories.keys.map((String key) {
               return Card(
@@ -112,7 +177,7 @@ class __SettingsContentState extends State<_SettingsContent> {
                 ),
                 color: OnlineTheme.gray14,
                 child: CheckboxListTile(
-                  title: Text(key, style: OnlineTheme.eventListHeader),
+                  title: Text(key, style: OnlineTheme.subHeader()),
                   value: eventCategories[key],
                   activeColor: Colors.green,
                   checkColor: Colors.white,
@@ -125,27 +190,24 @@ class __SettingsContentState extends State<_SettingsContent> {
               );
             }).toList(),
           ),
-          
-          const SizedBox(height: 30),
+          const SizedBox(height: 24),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
               'Bekreftelser',
-              style: OnlineTheme.eventHeader.copyWith(
-                fontSize: 20,
-              ),
+              style: OnlineTheme.header(),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Column(
             children: confirmations.keys.map((String key) {
               return Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
                 color: OnlineTheme.gray14,
                 child: CheckboxListTile(
-                  title: Text(key, style: OnlineTheme.eventListHeader),
+                  title: Text(key, style: OnlineTheme.subHeader()),
                   value: confirmations[key],
                   activeColor: Colors.green,
                   checkColor: Colors.white,

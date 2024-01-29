@@ -39,11 +39,11 @@ class NavbarState extends State<Navbar> {
           onPressed: () => PageNavigator.navigateTo(const MyEventsPageDisplay()),
         ),
         if (userProfile != null && userProfile!.isMember)
-        NavbarButton(
-          icon: IconType.pixel,
-          activeIcon: IconType.pixelFilled,
-          onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
-        ),
+          NavbarButton(
+            icon: IconType.pixel,
+            activeIcon: IconType.pixelFilled,
+            onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
+          ),
         NavbarButton(
           icon: IconType.beer,
           activeIcon: IconType.beerFilled,
@@ -52,7 +52,7 @@ class NavbarState extends State<Navbar> {
         NavbarButton(
           icon: IconType.settings,
           activeIcon: IconType.settingsFilled,
-          onPressed: () => PageNavigator.navigateTo(const SettingsPage()),
+          onPressed: () => PageNavigator.navigateTo(const SettingsOverviewPage()),
         ),
       ];
 

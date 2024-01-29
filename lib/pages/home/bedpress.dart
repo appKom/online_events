@@ -26,7 +26,6 @@ class Bedpress extends StatelessWidget {
           'Bedriftpresentasjoner og Kurs',
           style: OnlineTheme.textStyle(size: 20, weight: 7),
         ),
-        const SizedBox(height: 24),
         SizedBox(
           height: 236,
           child: ListView.builder(
