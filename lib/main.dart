@@ -32,17 +32,23 @@ Future main() async {
     loggedIn = true;
   }
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   runApp(const MainApp());
 
   PageNavigator.navigateTo(const HomePage());
 
-  final messaging = FirebaseMessaging.instance;
+  Client.getEvents(pages: [1]);
+  Client.fetchArticles();
 
-  NotificationSettings settings = await messaging.requestPermission(
+  await _configureFirebase();
+}
+
+Future _configureFirebase() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  final messaging = FirebaseMessaging.instance;
+  await messaging.requestPermission(
     alert: true,
     announcement: false,
     badge: true,
@@ -51,17 +57,6 @@ Future main() async {
     provisional: false,
     sound: true,
   );
-
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('User granted permission');
-  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    print('User granted provisional permission');
-  } else {
-    print('User declined or has not accepted permission');
-  }
-
-  Client.getEvents(pages: [1]);
-  Client.fetchArticles();
 
   await FirebaseMessaging.instance.getToken();
 }

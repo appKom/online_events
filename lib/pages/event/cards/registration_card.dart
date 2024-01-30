@@ -102,9 +102,6 @@ class RegistrationCard extends StatelessWidget {
                 style: OnlineTheme.textStyle(),
               ),
             ),
-          const SizedBox(
-            height: 10,
-          ),
           EventCardButtons(
             model: model,
             attendeeInfoModel: attendeeInfoModel,

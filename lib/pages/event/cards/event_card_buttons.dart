@@ -165,6 +165,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(
+          margin: const EdgeInsets.only(top: 10),
           height: 40,
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -195,6 +196,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           : null,
       childBuilder: (context, hover, pointerDown) {
         return Container(
+          margin: const EdgeInsets.only(top: 10),
           height: 40,
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -221,6 +223,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(
+          margin: const EdgeInsets.only(top: 10),
           height: 40,
           alignment: Alignment.center,
           decoration: BoxDecoration(

@@ -1,16 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/core/models/attended_events.dart';
-import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/core/models/attendees_list.dart';
-import 'package:online_events/core/models/user_model.dart';
-import 'package:online_events/core/models/waitlist.dart';
 
 import '../models/event_model.dart';
+import '/core/models/article_model.dart';
+import '/core/models/attended_events.dart';
+import '/core/models/attendee_info_model.dart';
+import '/core/models/attendees_list.dart';
+import '/core/models/user_model.dart';
+import '/services/secure_storage.dart';
 
 abstract class Client {
   static const endpoint = 'https://old.online.ntnu.no';
@@ -19,23 +18,20 @@ abstract class Client {
   static int? expiresIn;
   static DateTime? _tokenSetTime;
 
-  static const _storage = FlutterSecureStorage();
-
   static Future<void> saveTokensToSecureStorage() async {
-    await _storage.write(key: 'accessToken', value: accessToken);
-    await _storage.write(key: 'refreshToken', value: refreshToken);
-    await _storage.write(key: 'expiresIn', value: expiresIn.toString());
-    await _storage.write(key: 'tokenSetTime', value: _tokenSetTime?.toIso8601String());
-    print('Tokens saved to secure storage successfully.');
+    await SecureStorage.write('accessToken', accessToken ?? '');
+    await SecureStorage.write('refreshToken', refreshToken ?? '');
+    await SecureStorage.write('expiresIn', (expiresIn?.toString()) ?? '');
+    await SecureStorage.write('tokenSetTime', (_tokenSetTime?.toIso8601String()) ?? '');
   }
 
   static Future<void> loadTokensFromSecureStorage() async {
     try {
-      accessToken = await _storage.read(key: 'accessToken');
-      refreshToken = await _storage.read(key: 'refreshToken');
-      final expiresInStr = await _storage.read(key: 'expiresIn');
+      accessToken = await SecureStorage.read('accessToken');
+      refreshToken = await SecureStorage.read('refreshToken');
+      final expiresInStr = await SecureStorage.read('expiresIn');
       expiresIn = expiresInStr != null ? int.tryParse(expiresInStr) : null;
-      final tokenSetTimeStr = await _storage.read(key: 'tokenSetTime');
+      final tokenSetTimeStr = await SecureStorage.read('tokenSetTime');
       _tokenSetTime = tokenSetTimeStr != null ? DateTime.tryParse(tokenSetTimeStr) : null;
       print('Tokens loaded from secure storage successfully.');
     } catch (e) {
