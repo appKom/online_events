@@ -4,7 +4,6 @@ import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
 import '/pages/event/cards/event_card.dart';
 import '/pages/event/cards/event_card_buttons.dart';
-import '/pages/event/cards/event_card_countdown.dart';
 import '/pages/event/cards/event_participants.dart';
 import '/theme/theme.dart';
 import 'card_badge.dart';

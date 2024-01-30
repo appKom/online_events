@@ -85,15 +85,14 @@ class HomePage extends ScrollablePage {
                       children: [
                         Text(
                           'MER',
-                          style: OnlineTheme.textStyle(weight: 4),
+                          style: OnlineTheme.textStyle(weight: 5),
                         ),
-                        const SizedBox(width: 2),
                         const Padding(
-                          padding: EdgeInsets.only(top: 4),
+                          padding: EdgeInsets.only(top: 2),
                           child: Icon(
                             Icons.navigate_next,
-                            color: OnlineTheme.gray9,
-                            size: 15,
+                            color: OnlineTheme.white,
+                            size: 20,
                           ),
                         ),
                       ],

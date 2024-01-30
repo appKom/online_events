@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/components/skeleton_loader.dart';
+import '/components/skeleton_loader.dart';
+
+import '/theme/theme.dart';
 import '/components/animated_button.dart';
 import '/core/models/event_model.dart';
 import '/pages/event/event_page.dart';
-
-import '../../theme/theme.dart';
 import '/services/page_navigator.dart';
-import '/theme/themed_icon.dart';
 
 class Bedpress extends StatelessWidget {
   const Bedpress({
@@ -126,7 +125,35 @@ class BedpressCard extends StatelessWidget {
 
   String getEventTypeDisplay() {
     // Check if the eventTypeDisplay is 'Bedriftspresentasjon'
-    return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpres' : model.eventTypeDisplay;
+    return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpress' : model.eventTypeDisplay;
+  }
+
+  BoxDecoration? badgeDecoration(int eventType) {
+    // Kurs
+    if (eventType == 3) {
+      return BoxDecoration(
+        color: OnlineTheme.green.darken(20).withOpacity(0.4),
+        borderRadius: OnlineTheme.buttonRadius,
+        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
+      );
+    }
+
+    // Bedpress
+    if (eventType == 2) {
+      return BoxDecoration(
+        color: OnlineTheme.red.darken(20).withOpacity(0.4),
+        borderRadius: OnlineTheme.buttonRadius,
+        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+      );
+    }
+
+    return null;
+  }
+
+  Color getColor(int eventType) {
+    if (eventType == 3) return OnlineTheme.green;
+    if (eventType == 2) return OnlineTheme.red;
+    return OnlineTheme.white;
   }
 
   @override
@@ -186,15 +213,10 @@ class BedpressCard extends StatelessWidget {
                   bottom: 15,
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
-                    decoration: BoxDecoration(
-                      gradient: model.eventType == 3
-                          ? OnlineTheme.blueGradient
-                          : (model.eventType == 2 ? OnlineTheme.redGradient : null),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+                    decoration: badgeDecoration(model.eventType),
                     child: Text(
                       getEventTypeDisplay(),
-                      style: OnlineTheme.textStyle(weight: 5, size: 14),
+                      style: OnlineTheme.textStyle(weight: 5, size: 14, color: getColor(model.eventType)),
                     ),
                   ),
                 ),
@@ -203,12 +225,12 @@ class BedpressCard extends StatelessWidget {
                   right: 12,
                   child: Row(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 2),
-                        child: ThemedIcon(
-                          icon: IconType.people,
-                          size: 16,
-                          color: OnlineTheme.green1,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Icon(
+                          Icons.people,
+                          size: 20,
+                          color: getColor(model.eventType),
                         ),
                       ),
                       const SizedBox(width: 6),

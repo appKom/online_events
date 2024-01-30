@@ -247,7 +247,7 @@ class UploadPageState extends State<UploadPage> {
                             height: 50,
                             decoration: const BoxDecoration(
                               gradient: OnlineTheme.purpleGradient,
-                              borderRadius: OnlineTheme.eventButtonRadius,
+                              borderRadius: OnlineTheme.buttonRadius,
                             ),
                             child: Center(
                               child: Text(
@@ -273,7 +273,7 @@ class UploadPageState extends State<UploadPage> {
                           height: 50,
                           decoration: BoxDecoration(
                             gradient: OnlineTheme.greenGradient,
-                            borderRadius: OnlineTheme.eventButtonRadius,
+                            borderRadius: OnlineTheme.buttonRadius,
                           ),
                           child: Center(
                             child: Text(

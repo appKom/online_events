@@ -41,15 +41,15 @@ class LoginPage extends StaticPage {
               childBuilder: (context, hover, pointerDown) {
                 return Container(
                   height: OnlineTheme.buttonHeight,
+                  alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    gradient: OnlineTheme.greenGradient,
-                    borderRadius: OnlineTheme.buttonRadius,
+                    color: OnlineTheme.green.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(5),
+                    border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
                   ),
-                  child: Center(
-                    child: Text(
-                      'Logg Inn',
-                      style: OnlineTheme.textStyle(),
-                    ),
+                  child: Text(
+                    'Logg Inn',
+                    style: OnlineTheme.textStyle(color: OnlineTheme.green, weight: 5),
                   ),
                 );
               },

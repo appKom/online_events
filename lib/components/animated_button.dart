@@ -11,7 +11,7 @@ class AnimatedButton extends StatefulWidget {
     this.onEnter,
     this.onExit,
     this.behavior = HitTestBehavior.deferToChild,
-    this.scale = 0.9,
+    this.scale = 0.95,
     required this.childBuilder,
   });
 

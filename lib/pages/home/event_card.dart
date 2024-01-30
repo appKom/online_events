@@ -136,20 +136,6 @@ class EventCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
-                right: 0,
-                bottom: 15,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SkeletonLoader(
-                      width: 50,
-                      height: 20,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
           // Bottom Separator
@@ -163,6 +149,8 @@ class EventCard extends StatelessWidget {
       ),
     );
   }
+
+  // static final gray = OnlineTheme.white;
 
   @override
   Widget build(BuildContext context) {
@@ -228,42 +216,16 @@ class EventCard extends StatelessWidget {
                           child: Text(
                             shortenName(),
                             style: OnlineTheme.textStyle(
-                              color: OnlineTheme.gray11,
+                              color: OnlineTheme.white,
                               weight: 7,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        subHeader(Icons.calendar_month_outlined, formatDateSpan(model.startDate, model.endDate)),
+                        subHeader(Icons.calendar_month, formatDateSpan(model.startDate, model.endDate)),
                         subHeader(
-                          Icons.people_outline,
+                          Icons.people,
                           peopleToString(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    bottom: 15,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'INFO',
-                          style: OnlineTheme.textStyle(
-                            color: OnlineTheme.gray9,
-                            weight: 5,
-                            size: 14,
-                          ),
-                        ),
-                        const SizedBox(width: 2),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 4),
-                          child: Icon(
-                            Icons.navigate_next,
-                            color: OnlineTheme.gray9,
-                            size: 15,
-                          ),
                         ),
                       ],
                     ),
@@ -290,21 +252,18 @@ class EventCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Icon(
-              icon,
-              color: OnlineTheme.gray9,
-              size: 14,
-            ),
+          Icon(
+            icon,
+            color: OnlineTheme.white,
+            size: 18,
           ),
           const SizedBox(width: 5),
           Text(
             text,
             style: OnlineTheme.textStyle(
               size: 14,
-              weight: 5,
-              color: OnlineTheme.gray9,
+              weight: 4,
+              color: OnlineTheme.white,
             ),
             overflow: TextOverflow.ellipsis,
           ),

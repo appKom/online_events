@@ -116,7 +116,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     // No waitlist to register to
     if (!widget.attendeeInfoModel.waitlist) return false;
 
-    //If user is already signed up
+    // If user is already signed up
     if (widget.attendeeInfoModel.isAttendee) return false;
 
     // Still available spots - no waitlist yet
