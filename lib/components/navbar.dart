@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/pages/pixel/pixel.dart';
 
-import '../main.dart';
 import '/pages/drinking_games/drinking_games_page.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/home/home_page.dart';
@@ -38,12 +36,12 @@ class NavbarState extends State<Navbar> {
           activeIcon: IconType.calendarClockFilled,
           onPressed: () => PageNavigator.navigateTo(const MyEventsPageDisplay()),
         ),
-        if (userProfile != null && userProfile!.isMember)
-          NavbarButton(
-            icon: IconType.pixel,
-            activeIcon: IconType.pixelFilled,
-            onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
-          ),
+        // if (userProfile != null && userProfile!.isMember)
+        //   NavbarButton(
+        //     icon: IconType.pixel,
+        //     activeIcon: IconType.pixelFilled,
+        //     onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
+        //   ),
         NavbarButton(
           icon: IconType.beer,
           activeIcon: IconType.beerFilled,
@@ -95,7 +93,7 @@ class NavbarState extends State<Navbar> {
     return Container(
       decoration: BoxDecoration(
         color: OnlineTheme.background.withOpacity(0.9),
-        border: const Border(top: BorderSide(width: 1, color: OnlineTheme.gray14)),
+        border: const Border(top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

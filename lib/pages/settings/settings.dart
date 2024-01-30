@@ -174,7 +174,7 @@ class __SettingsContentState extends State<_SettingsContent> {
                 shape: const RoundedRectangleBorder(
                   borderRadius: OnlineTheme.buttonRadius,
                 ),
-                color: OnlineTheme.gray14,
+                color: OnlineTheme.grayBorder,
                 child: CheckboxListTile(
                   title: Text(key, style: OnlineTheme.subHeader()),
                   value: eventCategories[key],
@@ -204,7 +204,7 @@ class __SettingsContentState extends State<_SettingsContent> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                color: OnlineTheme.gray14,
+                color: OnlineTheme.grayBorder,
                 child: CheckboxListTile(
                   title: Text(key, style: OnlineTheme.subHeader()),
                   value: confirmations[key],

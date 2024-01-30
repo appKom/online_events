@@ -2,13 +2,13 @@ import 'package:intl/intl.dart';
 
 class EventDateFormatter {
   static final daysNorwegian = {
-    'Monday': 'Mandag',
-    'Tuesday': 'Tirsdag',
-    'Wednesday': 'Onsdag',
-    'Thursday': 'Torsdag',
-    'Friday': 'Fredag',
-    'Saturday': 'Lørdag',
-    'Sunday': 'Søndag',
+    'Monday': 'Man.',
+    'Tuesday': 'Tir.',
+    'Wednesday': 'Ons.',
+    'Thursday': 'Tor.',
+    'Friday': 'Fre.',
+    'Saturday': 'Lør.',
+    'Sunday': 'Søn.',
   };
 
   static final monthsNorwegian = {
@@ -45,7 +45,7 @@ class EventDateFormatter {
       String formattedStartTime = outputTimeFormat.format(startDateTime);
       String formattedEndTime = outputTimeFormat.format(endDateTime);
 
-      return "$dayName, $dayOfMonth. $monthName, $formattedStartTime-$formattedEndTime";
+      return "$dayName $dayOfMonth. $monthName, $formattedStartTime-$formattedEndTime";
     } else {
       String startDayOfMonth = outputDayOfMonthFormat.format(startDateTime);
       String endDayOfMonth = outputDayOfMonthFormat.format(endDateTime);

@@ -53,6 +53,11 @@ sealed class OnlineTheme {
   static const green4 = Color(0xFF1E3822);
   static const green5 = Color(0xFF09AA09);
 
+  // static const red = Color(0xFFFF4C3C);
+  static const red = Color.fromRGBO(220, 50, 80, 1);
+  static const green = Color.fromRGBO(50, 200, 80, 1);
+// const yellow = Color.fromRGBO(207, 145, 10, 1); // 220, 182, 10
+
   static const red1 = Color(0xFFF43145);
 
   static const pink1 = Color(0xFF5E0231);
@@ -69,7 +74,7 @@ sealed class OnlineTheme {
   static const gray11 = Color(0xFFDBDDE1);
   static const gray12 = Color(0xFFEDEEF0);
   static const gray13 = Color(0xFF131315);
-  static const gray14 = Color(0xFF22272F);
+  static const grayBorder = Color(0xFF22272F);
   static const gray15 = Color(0xFF4C566A);
   static const gray16 = Color(0xFF797979);
 

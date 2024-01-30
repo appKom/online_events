@@ -22,7 +22,6 @@ import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import '/theme/themed_icon_button.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -313,7 +312,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           padding: const EdgeInsets.symmetric(vertical: 30),
                           child: Container(
                             decoration: const BoxDecoration(
-                              color: OnlineTheme.gray14,
+                              color: OnlineTheme.grayBorder,
                               borderRadius: OnlineTheme.buttonRadius,
                             ),
                             child: Center(
@@ -334,7 +333,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.symmetric(vertical: 30),
                         child: Container(
                           decoration: const BoxDecoration(
-                            color: OnlineTheme.gray14,
+                            color: OnlineTheme.grayBorder,
                             borderRadius: OnlineTheme.buttonRadius,
                           ),
                           child: Center(
@@ -494,7 +493,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Container(
               padding: const EdgeInsets.only(left: 10),
               decoration: BoxDecoration(
-                color: OnlineTheme.gray14,
+                color: OnlineTheme.grayBorder,
                 borderRadius: BorderRadius.circular(3),
               ),
               child: Stack(children: [

@@ -27,7 +27,7 @@ class OnlineHeader extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: OnlineTheme.background.withOpacity(0.9),
-        border: const Border(bottom: BorderSide(width: 1, color: OnlineTheme.gray14)),
+        border: const Border(bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
       ),
       child: SizedBox(
         height: 40,

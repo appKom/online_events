@@ -16,8 +16,7 @@ import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'cards/attendance_card.dart';
-import 'cards/card_badge.dart';
-import 'cards/event_description_card.dart';
+import 'cards/description_card.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -121,57 +120,6 @@ class _EventPageState extends State<EventPage> {
       ],
     );
   }
-}
-
-Widget header(int statusCode) {
-  String badgeText;
-  LinearGradient gradient;
-
-  switch (statusCode) {
-    case 502:
-      badgeText = 'Stengt';
-      gradient = OnlineTheme.redGradient;
-      break;
-    case 404:
-      badgeText = 'Påmeldt';
-      gradient = OnlineTheme.greenGradient;
-      break;
-    case 200 || 201 || 210 || 211 || 212 || 213:
-      badgeText = 'Åpen';
-      gradient = OnlineTheme.greenGradient;
-      break;
-    case 420 || 421 || 422 || 423 || 401 || 402:
-      badgeText = 'Utsatt';
-      gradient = OnlineTheme.blueGradient;
-      break;
-    case 411 || 410 || 412 || 413 || 400 || 400 || 403 || 405:
-      badgeText = 'Umulig';
-      gradient = OnlineTheme.blueGradient;
-      break;
-    default:
-      badgeText = 'Ikke åpen';
-      gradient = OnlineTheme.purpleGradient;
-  }
-
-  return SizedBox(
-    height: 32,
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(
-          'Påmelding',
-          style: OnlineTheme.header(),
-        ),
-        CardBadge(
-          border: gradient.colors.last.lighten(100),
-          gradient: gradient,
-          text: badgeText,
-        ),
-      ],
-    ),
-  );
 }
 
 class EventPageDisplay extends ScrollablePage {

@@ -37,6 +37,8 @@ Future main() async {
 
   runApp(const MainApp());
 
+  PageNavigator.navigateTo(const HomePage());
+
   final messaging = FirebaseMessaging.instance;
 
   NotificationSettings settings = await messaging.requestPermission(
@@ -56,8 +58,6 @@ Future main() async {
   } else {
     print('User declined or has not accepted permission');
   }
-
-  PageNavigator.navigateTo(const HomePage());
 
   Client.getEvents(pages: [1]);
   Client.fetchArticles();

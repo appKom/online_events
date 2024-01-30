@@ -6,8 +6,7 @@ class ErrorHandling {
   static OverlayEntry? _overlayEntry;
 
   static void showErrorTop(String message) {
-    final BuildContext context =
-        AppNavigator.navigator.currentState!.overlay!.context;
+    final BuildContext context = AppNavigator.navigator.currentState!.overlay!.context;
 
     _overlayEntry?.remove();
     _overlayEntry = OverlayEntry(
@@ -33,7 +32,7 @@ class ErrorHandling {
       ),
     );
 
-    Overlay.of(context)!.insert(_overlayEntry!);
+    Overlay.of(context).insert(_overlayEntry!);
 
     Future.delayed(const Duration(seconds: 3), () {
       _overlayEntry?.remove();

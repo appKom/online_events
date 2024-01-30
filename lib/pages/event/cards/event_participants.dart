@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_events/components/separator.dart';
 
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
@@ -24,8 +25,24 @@ class EventParticipants extends StatelessWidget {
     }
   }
 
+  Color trafficLight() {
+    // Yellow if you are on waitlist
+    if (attendeeInfoModel.isOnWaitlist) return OnlineTheme.yellow;
+
+    // Green if infinite capacity
+    if (model.maxCapacity == null) return OnlineTheme.green;
+
+    // Green if more seats available
+    if (model.numberOfSeatsTaken! < model.maxCapacity!) return OnlineTheme.green;
+
+    // Red otherwise
+    return OnlineTheme.red;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final statusColor = trafficLight();
+
     return Container(
       height: 60,
       decoration: const BoxDecoration(
@@ -43,14 +60,15 @@ class EventParticipants extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  gradient: OnlineTheme.purpleGradient,
-                  borderRadius: BorderRadius.circular(8),
+                  color: statusColor.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.fromBorderSide(BorderSide(color: statusColor, width: 2)),
                 ),
-                child: const Center(
+                child: Center(
                   child: Icon(
-                    Icons.people_alt_outlined,
-                    size: 20, // Adjust the size of the icon as needed
-                    color: OnlineTheme.white, // White icon color
+                    Icons.people_alt,
+                    size: 20,
+                    color: statusColor,
                   ),
                 ),
               ),
@@ -62,25 +80,17 @@ class EventParticipants extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center, // Align children in the center vertically
                 children: [
                   Text(
-                    'Venteliste',
-                    style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 4),
-                    overflow: TextOverflow.visible,
+                    'Påmeldte',
+                    style: OnlineTheme.textStyle(size: 14),
                   ),
-                  Center(
-                    child: Text(
-                      waitlistInfo(),
-                      style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
-                    ),
+                  Text(
+                    peopleToString(),
+                    style: OnlineTheme.textStyle(size: 14),
                   ),
                 ],
               ),
             ),
-            Container(
-              width: 1,
-              height: 20,
-              color: OnlineTheme.gray8,
-              margin: const EdgeInsets.symmetric(horizontal: 14),
-            ),
+            const Separator(axis: Axis.vertical, length: 40, margin: 10),
             const SizedBox(
               width: 10,
             ),
@@ -91,12 +101,15 @@ class EventParticipants extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center, // Align children in the center vertically
                 children: [
                   Text(
-                    'Påmeldte',
-                    style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 4),
+                    'Venteliste',
+                    style: OnlineTheme.textStyle(size: 14),
+                    overflow: TextOverflow.visible,
                   ),
-                  Text(
-                    peopleToString(),
-                    style: OnlineTheme.textStyle(size: 14, height: 1.5, color: OnlineTheme.gray11, weight: 5),
+                  Center(
+                    child: Text(
+                      waitlistInfo(),
+                      style: OnlineTheme.textStyle(size: 14),
+                    ),
                   ),
                 ],
               ),

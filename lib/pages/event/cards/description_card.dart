@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/components/animated_button.dart';
 import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
 
@@ -23,26 +22,23 @@ class DescriptionCardState extends State<EventDescriptionCard> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedButton(
+    return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         setState(() {
           _isExpanded = !_isExpanded;
         });
       },
-      scale: 0.95,
-      childBuilder: (context, hover, pointerDown) {
-        return OnlineCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(),
-              const SizedBox(height: 16),
-              content(),
-            ],
-          ),
-        );
-      },
+      child: OnlineCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header(),
+            const SizedBox(height: 16),
+            content(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -55,7 +51,7 @@ class DescriptionCardState extends State<EventDescriptionCard> {
         style: OnlineTheme.textStyle(
           size: 20,
           weight: 7,
-          color: OnlineTheme.yellow,
+          color: OnlineTheme.white,
         ),
       ),
     );

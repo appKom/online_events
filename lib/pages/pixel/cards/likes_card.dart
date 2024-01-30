@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../main.dart';
-import '../../profile/profile_page.dart';
+import '/main.dart';
 import '../pixel.dart';
 import '/components/animated_button.dart';
 import '/pages/pixel/liked_by_page.dart';
@@ -15,9 +14,13 @@ class LikesCard extends StatefulWidget {
   final Function(String, UserPostModel, String) onLikePost;
   final Function(String) onDeletePost;
 
-  const LikesCard(
-      {Key? key, required this.post, required this.onUnlikePost, required this.onLikePost, required this.onDeletePost})
-      : super(key: key);
+  const LikesCard({
+    super.key,
+    required this.post,
+    required this.onUnlikePost,
+    required this.onLikePost,
+    required this.onDeletePost,
+  });
 
   @override
   LikesCardState createState() => LikesCardState();
@@ -37,7 +40,7 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
 
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)
