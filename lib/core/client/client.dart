@@ -281,7 +281,7 @@ abstract class Client {
     }
   }
 
-  static Future<List<Waitlist>> getEventWaitlists(int eventId) async {
+  static Future<List<AttendeesList>> getEventWaitlists(int eventId) async {
     if (tokenExpired()) {
       bool refreshed = await _refreshToken();
       if (!refreshed) {
@@ -302,7 +302,7 @@ abstract class Client {
       final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody) as List;
 
-      return jsonResponse.map<Waitlist>((json) => Waitlist.fromJson(json)).toList();
+      return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
     } else {
       print('Failed to fetch event waitlist from $url');
       return [];

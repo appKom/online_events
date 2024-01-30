@@ -128,6 +128,8 @@ sealed class OnlineTheme {
 
   static const buttonHeight = 40.0;
   static const buttonRadius = BorderRadius.all(Radius.circular(5));
+
+  // TODO: Why is this not in event folder, and why is this used in Pixel??
   static const eventButtonRadius = BorderRadius.all(Radius.circular(10));
 
   @Deprecated('Use OnlineTheme.textStyle() instead.')

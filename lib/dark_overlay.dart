@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import 'package:online_events/services/app_navigator.dart';
+import '/services/app_navigator.dart';
 
 abstract class DarkOverlay extends ModalRoute<void> {
   Widget content(BuildContext context, Animation<double> animation);

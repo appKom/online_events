@@ -107,15 +107,15 @@ class RegistrationCard extends StatelessWidget {
               attendeeInfoModel: attendeeInfoModel,
             ),
           const SizedBox(height: 10),
-          if ((loggedIn == true && attendeeInfoModel.isEligibleForSignup.status == false) ||
-              (loggedIn == false && attendeeInfoModel.isEligibleForSignup.statusCode == 6969))
-            if (attendeeInfoModel.isOnWaitlist == false)
-              Center(
-                child: Text(
-                  attendeeInfoModel.isEligibleForSignup.message,
-                  style: OnlineTheme.textStyle(),
-                ),
-              ),
+          // if ((loggedIn == true && attendeeInfoModel.isEligibleForSignup.status == false) ||
+          //     (loggedIn == false && attendeeInfoModel.isEligibleForSignup.statusCode == 6969))
+          //   if (attendeeInfoModel.isOnWaitlist == false)
+          //     Center(
+          //       child: Text(
+          //         attendeeInfoModel.isEligibleForSignup.message,
+          //         style: OnlineTheme.textStyle(),
+          //       ),
+          //     ),
           if (attendeeInfoModel.isOnWaitlist == true)
             Center(
               child: Text(
@@ -131,10 +131,10 @@ class RegistrationCard extends StatelessWidget {
             attendeeInfoModel: attendeeInfoModel,
             onUnregisterSuccess: onUnregisterSuccess,
           ),
-          if (loggedIn && attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            const SizedBox(
-              height: 16,
-            ),
+          // if (loggedIn && attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
+          //   const SizedBox(
+          //     height: 16,
+          //   ),
           if (attendeeInfoModel.isEligibleForSignup.statusCode == 501) EventCardCountdown(eventTime: eventDateTime),
           if (attendeeInfoModel.isEligibleForSignup.statusCode == 501)
             Column(
@@ -144,7 +144,7 @@ class RegistrationCard extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    'Til til arrangementet starter',
+                    'Tid til arrangementet starter',
                     style: OnlineTheme.textStyle(weight: 5),
                   ),
                 ),
@@ -158,10 +158,11 @@ class RegistrationCard extends StatelessWidget {
             ),
           if (attendeeInfoModel.id == -1 && eventDateTime.isAfter(DateTime.now()))
             Center(
-                child: Text(
-              'Til til arrangementet starter',
-              style: OnlineTheme.textStyle(weight: 5),
-            )),
+              child: Text(
+                'Tid til arrangementet starter',
+                style: OnlineTheme.textStyle(weight: 5),
+              ),
+            ),
         ],
       ),
     );
