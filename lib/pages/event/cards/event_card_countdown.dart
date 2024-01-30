@@ -36,27 +36,32 @@ class EventCardCountdownState extends State<EventCardCountdown> {
 
   @override
   Widget build(BuildContext context) {
+    final days = timeLeft.inDays;
+    final hours = timeLeft.inHours % 24;
+    final minutes = timeLeft.inMinutes % 60;
+    final seconds = timeLeft.inSeconds % 60;
+
     return SizedBox(
       height: 45,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          numberColumn(timeLeft.inDays.toString(), "Dager"),
-          numberColumn((timeLeft.inHours % 24).toString(), "Timer"),
-          numberColumn((timeLeft.inMinutes % 60).toString(), "Minutter"),
-          numberColumn((timeLeft.inSeconds % 60).toString(), "Sekunder"),
+          numberColumn(days, days == 1 ? 'Dag' : 'Dager'),
+          numberColumn(hours, hours == 1 ? 'Time' : 'Timer'),
+          numberColumn(minutes, minutes == 1 ? 'Minutt' : 'Minutter'),
+          numberColumn(seconds, seconds == 1 ? 'Sekund' : 'Sekunder'),
         ],
       ),
     );
   }
 
-  Widget numberColumn(String number, String label) {
+  Widget numberColumn(int number, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          number,
+          number.toString(),
           style: OnlineTheme.textStyle(
             height: 1,
             weight: 7,

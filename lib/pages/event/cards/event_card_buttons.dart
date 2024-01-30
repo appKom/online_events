@@ -106,7 +106,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
     if (canWaitlist()) return waitlistButton();
     if (canRegister()) return registerButton();
-    if (canUnregister()) return unregisterButton();
+    if (canUnregister()) return unregisterButton(true);
 
     return Container();
     // if (widget.model.maxCapacity == null || widget.model.)
@@ -121,7 +121,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     // No waitlist to register to
     if (!widget.attendeeInfoModel.waitlist) return false;
 
-    // Still available spots
+    // Still available spots - no waitlist yet
     if (widget.attendeeInfoModel.numberOfSeatsTaken < widget.attendeeInfoModel.maxCapacity) return false;
 
     // Registration has ended
@@ -184,14 +184,13 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     );
   }
 
-  Widget unregisterButton() {
-    final canUnregister = widget.attendeeInfoModel.unattendDeadline.isAfter(DateTime.now());
-
-    final fill = canUnregister ? OnlineTheme.red.withOpacity(0.4) : Colors.transparent;
-    final border = canUnregister ? OnlineTheme.red : OnlineTheme.grayBorder;
+  // TODO: At the moment, there are no cases where button will be shown when disabled, but maybe one day
+  Widget unregisterButton(bool enabled) {
+    final fill = enabled ? OnlineTheme.red.withOpacity(0.4) : Colors.transparent;
+    final border = enabled ? OnlineTheme.red : OnlineTheme.grayBorder;
 
     return AnimatedButton(
-      onTap: canUnregister
+      onTap: enabled
           ? () {
               unregisterForEvent(widget.model.id.toString());
             }
