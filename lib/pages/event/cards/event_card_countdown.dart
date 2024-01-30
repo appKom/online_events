@@ -56,26 +56,28 @@ class EventCardCountdownState extends State<EventCardCountdown> {
   }
 
   Widget numberColumn(int number, String label) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          number.toString(),
-          style: OnlineTheme.textStyle(
-            height: 1,
-            weight: 7,
-            size: 20,
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            number.toString(),
+            style: OnlineTheme.textStyle(
+              height: 1,
+              weight: 7,
+              size: 20,
+            ),
           ),
-        ),
-        Text(
-          label,
-          style: OnlineTheme.textStyle(
-            height: 1,
-            size: 14,
+          Text(
+            label,
+            style: OnlineTheme.textStyle(
+              height: 1,
+              size: 14,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

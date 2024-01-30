@@ -75,57 +75,6 @@ class RegistrationCard extends StatelessWidget {
     );
   }
 
-  bool showCountdownToEventRegistrationStart() {
-    // Registration has startet - no need for a countdown
-    if (DateTime.now().isAfter(attendeeInfoModel.registrationStart)) return false;
-
-    return true;
-  }
-
-  Widget countdownToRegistrationStart() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Text(
-            'Påmelding åpner om..',
-            style: OnlineTheme.textStyle(weight: 5),
-          ),
-        ),
-        EventCardCountdown(eventTime: attendeeInfoModel.registrationStart),
-      ],
-    );
-  }
-
-  bool showCountdownToEventStart() {
-    final eventDateTime = DateTime.parse(model.startDate);
-
-    // Registration is still open - don't show countdown yet
-    if (attendeeInfoModel.registrationEnd.isAfter((DateTime.now()))) return false;
-
-    // Event has already started
-    if (DateTime.now().isAfter(eventDateTime)) return false;
-
-    return true;
-  }
-
-  Widget countdownToEventStart() {
-    final eventDateTime = DateTime.parse(model.startDate);
-
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Text(
-            'Arrangementet starter om..',
-            style: OnlineTheme.textStyle(weight: 5),
-          ),
-        ),
-        EventCardCountdown(eventTime: eventDateTime),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return OnlineCard(
@@ -161,9 +110,6 @@ class RegistrationCard extends StatelessWidget {
             attendeeInfoModel: attendeeInfoModel,
             onUnregisterSuccess: onUnregisterSuccess,
           ),
-          // TODO: Have these as their own card at the top?
-          if (showCountdownToEventRegistrationStart()) countdownToRegistrationStart(),
-          if (showCountdownToEventStart()) countdownToEventStart(),
         ],
       ),
     );

@@ -2,13 +2,13 @@ import 'package:intl/intl.dart';
 
 class EventDateFormatter {
   static final daysNorwegian = {
-    'Monday': 'Man.',
-    'Tuesday': 'Tir.',
-    'Wednesday': 'Ons.',
-    'Thursday': 'Tor.',
-    'Friday': 'Fre.',
-    'Saturday': 'Lør.',
-    'Sunday': 'Søn.',
+    'Monday': 'Man',
+    'Tuesday': 'Tir',
+    'Wednesday': 'Ons',
+    'Thursday': 'Tor',
+    'Friday': 'Fre',
+    'Saturday': 'Lør',
+    'Sunday': 'Søn',
   };
 
   static final monthsNorwegian = {

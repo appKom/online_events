@@ -101,7 +101,7 @@ class _EventPageState extends State<EventPage> {
                 style: OnlineTheme.header(),
               ),
               const SizedBox(height: 24),
-              AttendanceCard(model: widget.model),
+              AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
               const SizedBox(height: 24),
               EventDescriptionCard(
                 description: widget.model.description,

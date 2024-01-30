@@ -101,16 +101,11 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
   /// Select appropriate button.
   Widget selectButton() {
-    // if (!widget.attendeeInfoModel.isEligibleForSignup.status) return Container();
-    // if (!loggedIn) return Container();
-
     if (canWaitlist()) return waitlistButton();
     if (canRegister()) return registerButton();
     if (canUnregister()) return unregisterButton(true);
 
     return Container();
-    // if (widget.model.maxCapacity == null || widget.model.)
-    // if (widget.model.) return waitlistButton();
   }
 
   /// Can the user sign up for waitlist?
@@ -244,139 +239,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
   @override
   Widget build(BuildContext context) {
-    const height = 40.0;
-    final radius = BorderRadius.circular(5.0);
-
     return selectButton();
-
-    return SizedBox(
-      height: height,
-      child: Row(
-        children: [
-          if (widget.attendeeInfoModel.isEligibleForSignup.status == true && loggedIn == true)
-            Flexible(
-              child: AnimatedButton(
-                onTap: () {
-                  // TODO Midlertidig fiks, burde fikse reCaptcha inne i appen
-                  PageNavigator.navigateTo(ReCaptchaDisplay(
-                    model: widget.model,
-                  ));
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: height,
-                    decoration: BoxDecoration(
-                      // gradient: OnlineTheme.greenGradient,
-                      color: OnlineTheme.green.withOpacity(0.4),
-                      borderRadius: radius,
-                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
-                    ),
-                    child: Text(
-                      'Meld På',
-                      style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
-                    ),
-                  );
-                },
-              ),
-            ),
-          if (widget.attendeeInfoModel.isAttendee &&
-              widget.attendeeInfoModel.unattendDeadline.isAfter(DateTime.now()) &&
-              loggedIn)
-            Flexible(
-              child: AnimatedButton(
-                onTap: () {
-                  unregisterForEvent(widget.model.id.toString());
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: height,
-                    decoration: BoxDecoration(
-                      // gradient: OnlineTheme.redGradient,
-                      borderRadius: radius,
-                      color: OnlineTheme.red.withOpacity(0.4),
-                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
-                    ),
-                    child: Text(
-                      'Meld Av',
-                      style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
-                    ),
-                  );
-                },
-              ),
-            ),
-          if (widget.attendeeInfoModel.isEligibleForSignup.statusCode == 503 && loggedIn)
-            Flexible(
-              child: AnimatedButton(
-                onTap: () {
-                  registerForEvent(widget.model.id.toString());
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: OnlineTheme.yellow.withOpacity(0.4),
-                      borderRadius: radius,
-                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
-                    ),
-                    child: Text('Meld På Venteliste', style: OnlineTheme.textStyle()),
-                  );
-                },
-              ),
-            ),
-          // const SizedBox(
-          //   width: 10,
-          // ),
-          // if (widget.attendeeInfoModel.isEligibleForSignup.statusCode == 501)
-          //   Flexible(
-          //     child: AnimatedButton(
-          //       onTap: () {
-          //         //TODO Noe skal skje her
-          //       },
-          //       childBuilder: (context, hover, pointerDown) {
-          //         return Container(
-          //           alignment: Alignment.center,
-          //           height: height,
-          //           decoration: BoxDecoration(
-          //             gradient: OnlineTheme.purpleGradient,
-          //             borderRadius: radius,
-          //           ),
-          //           child: Text('Varsle meg', style: OnlineTheme.textStyle()),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // const SizedBox(
-          //   width: 10,
-          // ),
-          // if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now()) &&
-          //     loggedIn == true &&
-          //     widget.attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-          //   Flexible(
-          //     child: AnimatedButton(
-          //       onTap: () {
-          //         // Navigate to ShowParticipants regardless of isRegistered state
-          //         PageNavigator.navigateTo(
-          //           ShowParticipants(model: widget.model, attendeeInfoModel: widget.attendeeInfoModel),
-          //         );
-          //       },
-          //       childBuilder: (context, hover, pointerDown) {
-          //         return Container(
-          //           alignment: Alignment.center,
-          //           height: height,
-          //           decoration: const BoxDecoration(
-          //             gradient: OnlineTheme.blueGradient,
-          //             borderRadius: OnlineTheme.eventButtonRadius,
-          //           ),
-          //           child: Text('Se Påmeldte', style: OnlineTheme.textStyle()),
-          //         );
-          //       },
-          //     ),
-          //   ),
-        ],
-      ),
-    );
   }
 }
