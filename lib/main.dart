@@ -27,6 +27,7 @@ Future main() async {
   if (!Client.tokenExpired()) {
     loggedIn = true;
     await Client.getUserProfile();
+    
   } else if (await Client.fetchRefreshToken()) {
     loggedIn = true;
   }
