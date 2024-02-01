@@ -13,7 +13,6 @@ import '/main.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/event_card.dart';
 import '/pages/loading/loading_display_page.dart';
-import '/pages/profile/profile_page.dart';
 import '/theme/theme.dart';
 
 List<AttendedEvents> attendedEvents = [];
@@ -57,48 +56,26 @@ class MyEventsPageState extends State<MyEventsPage> {
   }
 
   Future<void> fetchMoreEvents() async {
-    int nextPage1 = currentPage + 1;
-    int nextPage2 = currentPage + 2;
-    int nextPage3 = currentPage + 3;
+    final moreEventsPage1 = await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
 
-    try {
-      var moreEventsPage1 = await Client.getEvents(pages: [nextPage1]);
-      var moreEventsPage2 = await Client.getEvents(pages: [nextPage2]);
-      var moreEventsPage3 = await Client.getEvents(pages: [nextPage3]);
+    final events = Client.eventsCache.value;
 
-      if (mounted) {
-        setState(() {
-          if (moreEventsPage1 != null) {
-            for (var event in moreEventsPage1) {
-              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
-                eventModels.add(event);
-              }
+    if (mounted) {
+      setState(() {
+        if (moreEventsPage1 != null) {
+          for (var event in moreEventsPage1) {
+            if (!events.any((existingEvent) => existingEvent.id == event.id)) {
+              events.add(event);
             }
           }
-          if (moreEventsPage2 != null) {
-            for (var event in moreEventsPage2) {
-              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
-                eventModels.add(event);
-              }
-            }
-          }
-          if (moreEventsPage3 != null) {
-            for (var event in moreEventsPage3) {
-              if (!eventModels.any((existingEvent) => existingEvent.id == event.id)) {
-                eventModels.add(event);
-              }
-            }
-          }
-          currentPage += 2;
-        });
-      }
-    } catch (e) {
-      print('Error fetching events: $e');
+        }
+        currentPage += 3;
+      });
     }
   }
 
   Future<void> fetchAttendeeInfo() async {
-    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userId) ?? [];
+    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userProfile!.id) ?? [];
     if (mounted) {
       setState(() {
         attendedEvents = allAttendees;
@@ -174,18 +151,17 @@ class MyEventsPageState extends State<MyEventsPage> {
     }
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
-    final style = OnlineTheme.textStyle(size: 20, weight: 7);
     if (loggedIn) {
       final now = DateTime.now();
 
-      final upcomingEvents = eventModels
+      final upcomingEvents = Client.eventsCache.value
           .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
         return eventDate.isAfter(now);
       }).toList();
 
-      final pastEvents = eventModels
+      final pastEvents = Client.eventsCache.value
           .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
           .where((model) {
         final eventDate = DateTime.parse(model.startDate);
@@ -215,14 +191,16 @@ class MyEventsPageState extends State<MyEventsPage> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: _norwegianWeekDays
-              .map((day) => Expanded(
-                    child: Center(
-                      child: Text(
-                        day,
-                        style: OnlineTheme.textStyle(), // Your desired style
-                      ),
+              .map(
+                (day) => Expanded(
+                  child: Center(
+                    child: Text(
+                      day,
+                      style: OnlineTheme.textStyle(), // Your desired style
                     ),
-                  ))
+                  ),
+                ),
+              )
               .toList(),
         );
       }
@@ -233,10 +211,9 @@ class MyEventsPageState extends State<MyEventsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: OnlineHeader.height(context) + 20),
-              Center(
-                child: Text('Mine Arrangementer', style: style),
-              ),
+              SizedBox(height: OnlineHeader.height(context) + 24),
+              Text('Mine Arrangementer', style: OnlineTheme.header()),
+              const SizedBox(height: 10),
               _customHeaderWidget(
                 focusedDay: _focusedDay,
                 onLeftArrowTap: () {
@@ -279,8 +256,33 @@ class MyEventsPageState extends State<MyEventsPage> {
                 },
                 eventLoader: (day) => getEventsForDay(day),
                 calendarBuilders: CalendarBuilders(
+                  selectedBuilder: (context, date, focusedDay) {
+                    final eventful = getEventsForDay(date).isNotEmpty;
+                    return Container(
+                      margin: const EdgeInsets.all(2.0),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: eventful ? OnlineTheme.green5 : OnlineTheme.gray13,
+                        shape: BoxShape.rectangle,
+                        border: Border.fromBorderSide(
+                          BorderSide(
+                            color: eventful ? OnlineTheme.green5.lighten(50) : Colors.white,
+                            width: 2,
+                          ),
+                        ),
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: Text(
+                        date.day.toString(),
+                        style: OnlineTheme.textStyle(),
+                      ),
+                    );
+                  },
                   defaultBuilder: (context, date, _) {
-                    var events = getEventsForDay(date);
+                    final events = getEventsForDay(date);
+
+                    // TODO: Kurs = Blå, Bedpress = Rød, Andre = Grønn
+
                     if (events.isNotEmpty) {
                       return Container(
                         margin: const EdgeInsets.all(4.0),
@@ -288,6 +290,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                         decoration: const BoxDecoration(
                           color: OnlineTheme.green5,
                           shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                         child: Text(
                           date.day.toString(),
@@ -298,7 +301,11 @@ class MyEventsPageState extends State<MyEventsPage> {
                       return Container(
                         margin: const EdgeInsets.all(4.0),
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(color: OnlineTheme.gray0, shape: BoxShape.rectangle),
+                        decoration: const BoxDecoration(
+                          color: OnlineTheme.gray13,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
                         child: Text(
                           date.day.toString(),
                           style: OnlineTheme.textStyle(),
@@ -307,26 +314,26 @@ class MyEventsPageState extends State<MyEventsPage> {
                     }
                   },
                 ),
-                calendarStyle: CalendarStyle(
-                  defaultDecoration: const BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: OnlineTheme.gray16,
-                  ),
-                  weekendDecoration: const BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: OnlineTheme.gray16,
-                  ),
-                  selectedDecoration: const BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: OnlineTheme.gray10,
-                  ),
+                calendarStyle: const CalendarStyle(
                   todayDecoration: BoxDecoration(
                     shape: BoxShape.rectangle,
-                    color: Colors.grey.shade700,
+                    // color: Colors.grey.shade700,
+                    color: OnlineTheme.gray0,
+                    border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray0, width: 2)),
+                    // border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray9, width: 2)),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
-                  markerDecoration: const BoxDecoration(
+                  markerDecoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: OnlineTheme.green5,
+                    // color: OnlineTheme.green5,
+                    color: Colors.transparent,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    // color: Colors.grey.shade700,
+                    // color: Colors.transparent,
+                    border: Border.fromBorderSide(BorderSide(color: OnlineTheme.white, width: 2)),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                 ),
                 headerStyle: const HeaderStyle(
@@ -348,9 +355,9 @@ class MyEventsPageState extends State<MyEventsPage> {
                 margin: 5,
               ),
               _buildEventList(upcomingEvents),
-              const SizedBox(height: 15),
+              const SizedBox(height: 24),
               Center(
-                child: Text('Tidligere Arrangementer', style: style),
+                child: Text('Tidligere Arrangementer', style: OnlineTheme.header()),
               ),
               _buildEventList(pastEvents),
               const SizedBox(

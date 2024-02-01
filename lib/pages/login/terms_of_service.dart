@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_scaffold.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/pages/home/home_page.dart';
-import '/pages/home/profile_button.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'auth_web_view_page.dart';
@@ -18,11 +17,7 @@ class TermsOfServicePage extends ScrollablePage {
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+    return OnlineHeader();
   }
 
   @override
@@ -264,50 +259,9 @@ class TermsOfServicePage extends ScrollablePage {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                 child: Row(children: [
-                  Flexible(
-                    child: AnimatedButton(onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const LoginWebView(),
-                      ));
-                    }, childBuilder: (context, hover, pointerDown) {
-                      return Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          gradient: OnlineTheme.greenGradient,
-                          borderRadius: OnlineTheme.eventButtonRadius,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Godta',
-                            style: OnlineTheme.textStyle(),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                  // const Spacer(),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Flexible(
-                    child: AnimatedButton(onTap: () {
-                      PageNavigator.navigateTo(const HomePage());
-                    }, childBuilder: (context, hover, pointerDown) {
-                      return Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          gradient: OnlineTheme.redGradient,
-                          borderRadius: OnlineTheme.eventButtonRadius,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Ikke godta',
-                            style: OnlineTheme.textStyle(),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
+                  declineButton(),
+                  const SizedBox(width: 10),
+                  acceptButton(context),
                 ]),
               ),
               SizedBox(height: Navbar.height(context) + 40),
@@ -315,6 +269,52 @@ class TermsOfServicePage extends ScrollablePage {
           ),
         ),
       ],
+    );
+  }
+
+  Widget acceptButton(BuildContext context) {
+    return Flexible(
+      child: AnimatedButton(onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const LoginWebView(),
+        ));
+      }, childBuilder: (context, hover, pointerDown) {
+        return Container(
+          height: OnlineTheme.buttonHeight,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: OnlineTheme.green.withOpacity(0.4),
+            borderRadius: OnlineTheme.buttonRadius,
+            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
+          ),
+          child: Text(
+            'Godta',
+            style: OnlineTheme.textStyle(color: OnlineTheme.green, weight: 5),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget declineButton() {
+    return Flexible(
+      child: AnimatedButton(onTap: () {
+        PageNavigator.navigateTo(const HomePage());
+      }, childBuilder: (context, hover, pointerDown) {
+        return Container(
+          height: OnlineTheme.buttonHeight,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: OnlineTheme.red.withOpacity(0.4),
+            borderRadius: OnlineTheme.buttonRadius,
+            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+          ),
+          child: Text(
+            'Avslå',
+            style: OnlineTheme.textStyle(color: OnlineTheme.red, weight: 5),
+          ),
+        );
+      }),
     );
   }
 }

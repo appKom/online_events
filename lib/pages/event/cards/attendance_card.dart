@@ -1,44 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:online_events/core/models/event_model.dart';
+import 'package:online_events/components/separator.dart';
+import 'package:online_events/core/models/attendee_info_model.dart';
 
+import '/core/models/event_model.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'event_card.dart';
+import 'event_card_countdown.dart';
 import 'event_date_formater.dart';
 
 class AttendanceCard extends StatelessWidget {
-  const AttendanceCard({super.key, required this.model});
+  const AttendanceCard({super.key, required this.event, required this.attendeeInfo});
 
-  final EventModel model;
+  final EventModel event;
+  final AttendeeInfoModel attendeeInfo;
 
-  String formatEventDates(String startDate, String endDate) {
-    DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
-    DateFormat outputDateFormat = DateFormat("d. MMMM");
-    DateFormat outputTimeFormat = DateFormat("HH:mm"); // Corrected format string
-    DateFormat outputDayFormat = DateFormat("EEEE");
+  bool showCountdownToEventRegistrationStart() {
+    // Registration has startet - no need for a countdown
+    if (DateTime.now().isAfter(attendeeInfo.registrationStart)) return false;
 
-    DateTime startDateTime = inputFormat.parse(startDate, true); // Removed .toLocal()
-    DateTime endDateTime = inputFormat.parse(endDate, true); // Removed .toLocal()
+    return true;
+  }
 
-    if (startDateTime.year == endDateTime.year &&
-        startDateTime.month == endDateTime.month &&
-        startDateTime.day == endDateTime.day) {
-      // Same day
-      String formattedDate = outputDayFormat.format(startDateTime);
-      String formattedStartTime = outputTimeFormat.format(startDateTime);
-      String formattedEndTime = outputTimeFormat.format(endDateTime);
+  Widget countdownToRegistrationStart() {
+    return Column(
+      children: [
+        const Separator(margin: 24),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Text(
+            'Påmelding åpner om',
+            style: OnlineTheme.textStyle(weight: 5),
+          ),
+        ),
+        EventCardCountdown(eventTime: attendeeInfo.registrationStart),
+      ],
+    );
+  }
 
-      return "$formattedDate ${outputDateFormat.format(startDateTime)}, $formattedStartTime-$formattedEndTime";
-    } else {
-      // Different days
-      String formattedStartDate = outputDateFormat.format(startDateTime);
-      String formattedEndDate = outputDateFormat.format(endDateTime);
-      String formattedStartTime = outputTimeFormat.format(startDateTime);
-      String formattedEndTime = outputTimeFormat.format(endDateTime);
+  bool showCountdownToEventStart() {
+    final eventDateTime = DateTime.parse(event.startDate);
 
-      return "$formattedStartDate $formattedStartTime - $formattedEndDate $formattedEndTime";
-    }
+    // Registration is still open - don't show countdown yet
+    if (attendeeInfo.registrationEnd.isAfter((DateTime.now()))) return false;
+
+    // Event has already started
+    if (DateTime.now().isAfter(eventDateTime)) return false;
+
+    return true;
+  }
+
+  Widget countdownToEventStart() {
+    final eventDateTime = DateTime.parse(event.startDate);
+
+    return Column(
+      children: [
+        const Separator(margin: 24),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Text(
+            'Arrangementet starter om',
+            style: OnlineTheme.textStyle(weight: 5),
+          ),
+        ),
+        EventCardCountdown(eventTime: eventDateTime),
+      ],
+    );
   }
 
   @override
@@ -47,49 +74,34 @@ class AttendanceCard extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            // height: 20,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const ThemedIcon(icon: IconType.dateTime, size: 20),
                 const SizedBox(width: 8),
-                Padding(
-                  padding: const EdgeInsets.only(top: 3),
-                  child: Text(
-                    EventDateFormatter.formatEventDates(
-                        model.startDate, model.endDate),
-                    style: const TextStyle(
-                      color: OnlineTheme.white,
-                      fontSize: 14,
-                      fontFamily: OnlineTheme.font,
-                    ),
-                  ),
+                Text(
+                  EventDateFormatter.formatEventDates(event.startDate, event.endDate),
+                  style: OnlineTheme.textStyle(),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 16),
           SizedBox(
-            // height: 20,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const ThemedIcon(icon: IconType.location, size: 20),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        model.location,
-                        style: OnlineTheme.textStyle(height: 1, size: 14),
-                      ),
-                    ],
-                  ),
+                Text(
+                  event.location,
+                  style: OnlineTheme.textStyle(),
                 ),
-                const SizedBox(width: 16),
               ],
             ),
           ),
+          if (showCountdownToEventRegistrationStart()) countdownToRegistrationStart(),
+          if (showCountdownToEventStart()) countdownToEventStart(),
         ],
       ),
     );

@@ -297,7 +297,7 @@ class PixelPageState extends State<PixelPage> {
                       height: 50,
                       decoration: const BoxDecoration(
                         gradient: OnlineTheme.purpleGradient,
-                        borderRadius: OnlineTheme.eventButtonRadius,
+                        borderRadius: OnlineTheme.buttonRadius,
                       ),
                       child: Center(
                         child: Text(

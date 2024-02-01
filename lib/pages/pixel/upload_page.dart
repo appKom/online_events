@@ -3,18 +3,19 @@ import 'dart:io';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/pages/pixel/pixel.dart';
-import '../../components/navbar.dart';
-import '../../components/online_header.dart';
-import '../../components/online_scaffold.dart';
-import '../../services/app_navigator.dart';
-import '../../theme/theme.dart';
+import '/components/animated_button.dart';
+import '/pages/pixel/pixel.dart';
+
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/main.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 import '../home/profile_button.dart';
-import '../profile/profile_page.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key});
@@ -33,9 +34,7 @@ class UploadPageState extends State<UploadPage> {
   @override
   void initState() {
     super.initState();
-    final client = Client()
-        .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject(dotenv.env['PROJECT_ID']);
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
     storage = Storage(client);
     database = Databases(client);
   }
@@ -101,8 +100,7 @@ class UploadPageState extends State<UploadPage> {
       //Should probaly handle
     }
 
-    String imageIdBeNotPoppin =
-        '${userProfile!.username}${formatDateTime(DateTime.now())}';
+    String imageIdBeNotPoppin = '${userProfile!.username}${formatDateTime(DateTime.now())}';
 
     try {
       final file = await storage.createFile(
@@ -126,8 +124,7 @@ class UploadPageState extends State<UploadPage> {
   }
 
   String formatDateTime(DateTime dateTime) {
-    String formattedDate =
-        '${dateTime.day}_${dateTime.month}_${dateTime.year}_${dateTime.second}';
+    String formattedDate = '${dateTime.day}_${dateTime.month}_${dateTime.year}_${dateTime.second}';
     return formattedDate;
   }
 
@@ -172,8 +169,7 @@ class UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
     return Scaffold(
       backgroundColor: OnlineTheme.background,
       body: SingleChildScrollView(
@@ -190,8 +186,7 @@ class UploadPageState extends State<UploadPage> {
                       color: Colors.white,
                       size: 40,
                     ),
-                    onPressed: () =>
-                        PageNavigator.navigateTo(const PixelPageDisplay()),
+                    onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
                   ),
                   const SizedBox(
                     width: 18,
@@ -219,10 +214,9 @@ class UploadPageState extends State<UploadPage> {
                   ),
                 ),
                 maxLength: 500,
-                maxLines: null, 
-                keyboardType:
-                    TextInputType.multiline, 
-                minLines: 1, 
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                minLines: 1,
                 onChanged: (_) => checkIfButtonShouldBeEnabled(),
               ),
               const SizedBox(
@@ -242,10 +236,8 @@ class UploadPageState extends State<UploadPage> {
                     ),
                   ],
                 ),
-              
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                 child: Row(children: [
                   Flexible(
                     child: AnimatedButton(
@@ -255,7 +247,7 @@ class UploadPageState extends State<UploadPage> {
                             height: 50,
                             decoration: const BoxDecoration(
                               gradient: OnlineTheme.purpleGradient,
-                              borderRadius: OnlineTheme.eventButtonRadius,
+                              borderRadius: OnlineTheme.buttonRadius,
                             ),
                             child: Center(
                               child: Text(
@@ -281,7 +273,7 @@ class UploadPageState extends State<UploadPage> {
                           height: 50,
                           decoration: BoxDecoration(
                             gradient: OnlineTheme.greenGradient,
-                            borderRadius: OnlineTheme.eventButtonRadius,
+                            borderRadius: OnlineTheme.buttonRadius,
                           ),
                           child: Center(
                             child: Text(

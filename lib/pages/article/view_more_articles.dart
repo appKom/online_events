@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/core/models/article_model.dart';
-import 'package:online_events/main.dart';
-import 'package:online_events/pages/article/article_page.dart';
 
+import '../../core/client/client.dart';
+import '/components/animated_button.dart';
+import '/core/models/article_model.dart';
+import '/pages/article/article_page.dart';
 import '/services/page_navigator.dart';
-
-import '../../theme/theme.dart';
+import '/theme/theme.dart';
 
 class ViewMoreArticles extends StatelessWidget {
-  final List<ArticleModel> articleModels; // Change to use EventModel
   final ScrollController scrollController;
   const ViewMoreArticles({
     super.key,
-    required this.articleModels,
     required this.scrollController,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Filter models where eventType is 2 and 3
-    final modelsToShow = articleModels.skip(1).toList();
+    final modelsToShow = Client.articlesCache.value.skip(1).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -110,7 +106,6 @@ class MoreArticleCard extends StatelessWidget {
   void showInfo() {
     PageNavigator.navigateTo(ArticlePage(
       article: articleModel,
-      articleModels: articleModels,
     ));
   }
 
@@ -126,6 +121,34 @@ class MoreArticleCard extends StatelessWidget {
       final part2 = heading.substring(splitIndex + 1);
       return [part1, part2];
     }
+  }
+
+  Widget imageOrDefault(String? source) {
+    if (source == null) return SvgPicture.asset('assets/svg/online_hvit_o.svg', fit: BoxFit.cover);
+
+    return Image.network(
+      source,
+      fit: BoxFit.cover,
+      alignment: Alignment.bottomCenter,
+      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return Center(
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                : null,
+          ),
+        );
+      },
+      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return SvgPicture.asset(
+          'assets/svg/online_hvit_o.svg',
+          fit: BoxFit.cover,
+        );
+      },
+    );
   }
 
   @override
@@ -159,41 +182,7 @@ class MoreArticleCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Stack(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: (articleModel.image?.original != null)
-                          ? Image.network(
-                              articleModel.image!.original,
-                              fit: BoxFit.cover,
-                              alignment: Alignment.bottomCenter,
-                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              },
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                return SvgPicture.asset(
-                                  'assets/svg/online_hvit_o.svg',
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            )
-                          : SvgPicture.asset(
-                              'assets/svg/online_hvit_o.svg',
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                  ],
-                ),
+                imageOrDefault(articleModel.image?.original),
                 Expanded(
                   flex: 1,
                   child: Stack(
@@ -223,7 +212,7 @@ class MoreArticleCard extends StatelessWidget {
                         left: 20,
                         bottom: 35,
                         child: Text(
-                          'Skrevet av: $formattedAuthors', // Modify this line
+                          formattedAuthors, // Modify this line
                           style: OnlineTheme.textStyle(weight: 4, size: 14),
                         ),
                       ),

@@ -2,17 +2,17 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
-import 'package:online_events/pages/pixel/pixel.dart';
-import 'package:online_events/pages/pixel/models/user_post.dart';
-import 'package:online_events/pages/pixel/view_pixel_user.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
 
-import '../../components/animated_button.dart';
-import '../../components/online_header.dart';
-import '../../components/online_scaffold.dart';
-import '../../services/app_navigator.dart';
-import '../../theme/theme.dart';
 import '../home/profile_button.dart';
+import '/components/animated_button.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/main.dart';
+import '/pages/pixel/models/user_post.dart';
+import '/pages/pixel/pixel.dart';
+import '/pages/pixel/view_pixel_user.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage({super.key, required this.post});
@@ -31,9 +31,7 @@ class CommentPageState extends State<CommentPage> {
   @override
   void initState() {
     super.initState();
-    final client = Client()
-        .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject(dotenv.env['PROJECT_ID']);
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
     database = Databases(client);
   }
 
@@ -51,8 +49,7 @@ class CommentPageState extends State<CommentPage> {
         );
         List<dynamic> latestComments = latestPost.data['comments'];
 
-        String newComment =
-            '[$userName, ${_titleController.text}, ${DateTime.now()}]';
+        String newComment = '[$userName, ${_titleController.text}, ${DateTime.now()}]';
         latestComments.add(newComment);
 
         await database.updateDocument(
@@ -174,8 +171,7 @@ class CommentPageState extends State<CommentPage> {
                             color: Colors.white,
                             size: 40,
                           ),
-                          onPressed: () => PageNavigator.navigateTo(
-                              const PixelPageDisplay()),
+                          onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
                         ),
                         const SizedBox(
                           width: 60,
@@ -205,30 +201,23 @@ class CommentPageState extends State<CommentPage> {
                         int firstCommaIndex = comment.indexOf(',');
                         int lastCommaIndex = comment.lastIndexOf(',');
 
-                        String username =
-                            comment.substring(0, firstCommaIndex).trim();
-                        String commentText = comment
-                            .substring(firstCommaIndex + 1, lastCommaIndex)
-                            .trim();
-                        String timeAgoString =
-                            comment.substring(lastCommaIndex + 1).trim();
+                        String username = comment.substring(0, firstCommaIndex).trim();
+                        String commentText = comment.substring(firstCommaIndex + 1, lastCommaIndex).trim();
+                        String timeAgoString = comment.substring(lastCommaIndex + 1).trim();
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   AnimatedButton(onTap: () {
-                                    PageNavigator.navigateTo(
-                                        ViewPixelUserDisplay(
+                                    PageNavigator.navigateTo(ViewPixelUserDisplay(
                                       userName: username,
                                     ));
-                                  }, childBuilder:
-                                      (context, hover, pointerDown) {
+                                  }, childBuilder: (context, hover, pointerDown) {
                                     return ClipOval(
                                       child: SizedBox(
                                         width: 50,
@@ -237,8 +226,7 @@ class CommentPageState extends State<CommentPage> {
                                           'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/$username/preview?width=75&height=75&project=${dotenv.env['PROJECT_ID']}&mode=public',
                                           fit: BoxFit.cover,
                                           height: 50,
-                                          errorBuilder:
-                                              (context, exception, stackTrace) {
+                                          errorBuilder: (context, exception, stackTrace) {
                                             return Image.asset(
                                               'assets/images/default_profile_picture.png',
                                               fit: BoxFit.cover,
@@ -252,39 +240,33 @@ class CommentPageState extends State<CommentPage> {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
                                               '$username:',
-                                              style: OnlineTheme.textStyle(
-                                                  size: 16, weight: 5),
+                                              style: OnlineTheme.textStyle(size: 16, weight: 5),
                                             ),
                                             const SizedBox(
                                               width: 5,
                                             ),
                                             Text(
                                               timeAgo(timeAgoString),
-                                              style: OnlineTheme.textStyle(
-                                                  size: 14,
-                                                  color: OnlineTheme.gray8),
+                                              style: OnlineTheme.textStyle(size: 14, color: OnlineTheme.gray8),
                                             ),
                                           ],
                                         ),
                                         Text(
                                           commentText,
-                                          style:
-                                              OnlineTheme.textStyle(size: 14),
+                                          style: OnlineTheme.textStyle(size: 14),
                                         ),
                                       ],
                                     ),
                                   ),
                                   if (userProfile!.ntnuUsername == username)
                                     IconButton(
-                                      icon: const Icon(Icons.delete,
-                                          color: OnlineTheme.white),
+                                      icon: const Icon(Icons.delete, color: OnlineTheme.white),
                                       onPressed: () async {
                                         await deleteComment(index);
                                       },
@@ -323,10 +305,8 @@ class CommentPageState extends State<CommentPage> {
                   ),
                 ),
                 maxLength: 350,
-                
                 onFieldSubmitted: (value) {
-                  postComment(
-                      widget.post.id, widget.post, userProfile!.username);
+                  postComment(widget.post.id, widget.post, userProfile!.username);
                 },
               ),
             ),

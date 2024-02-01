@@ -7,8 +7,7 @@ import '/theme/theme.dart';
 
 class PromotedArticle extends StatelessWidget {
   final ArticleModel article;
-  final List<ArticleModel> articleModels;
-  const PromotedArticle({super.key, required this.article, required this.articleModels});
+  const PromotedArticle({super.key, required this.article});
 
   static const months = [
     'Januar',
@@ -27,14 +26,13 @@ class PromotedArticle extends StatelessWidget {
 
   int calculateReadingTime(String heading, String ingress) {
     int wordCount = countWords(heading) + countWords(ingress);
-    return ((wordCount / 238)+1).ceil(); // Dividing by 238 and rounding up
+    return ((wordCount / 238) + 1).ceil(); // Dividing by 238 and rounding up
   }
 
   int countWords(String text) {
     // Counts the number of words in a given string
     return text.split(' ').where((word) => word.isNotEmpty).length;
   }
-
 
   String dateToString() {
     final date = DateTime.parse(article.createdDate);
@@ -51,14 +49,12 @@ class PromotedArticle extends StatelessWidget {
     return '$dayString. $monthString';
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     final timeToRead = calculateReadingTime(article.content, article.ingress);
     final readingTimeText = "$timeToRead min å lese";
     return AnimatedButton(
-      onTap: () => PageNavigator.navigateTo(ArticlePage(article: article, articleModels: articleModels)),
+      onTap: () => PageNavigator.navigateTo(ArticlePage(article: article)),
       scale: 0.95,
       childBuilder: (context, hover, pointerDown) {
         return SizedBox(

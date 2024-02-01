@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:online_events/components/skeleton_loader.dart';
 
 import '/components/animated_button.dart';
 import '/components/separator.dart';
@@ -41,8 +42,7 @@ class EventCard extends StatelessWidget {
     DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
 
     String translateMonth(String month) {
-      return monthsNorwegian[month] ??
-          month; 
+      return monthsNorwegian[month] ?? month;
     }
 
     String startDay = outputDayFormat.format(startDateTime);
@@ -50,8 +50,7 @@ class EventCard extends StatelessWidget {
     String startMonth = translateMonth(outputMonthFormat.format(startDateTime));
     String endMonth = translateMonth(outputMonthFormat.format(endDateTime));
 
-    if (startDateTime.year == endDateTime.year &&
-        startDateTime.month == endDateTime.month) {
+    if (startDateTime.year == endDateTime.year && startDateTime.month == endDateTime.month) {
       if (startDateTime.day == endDateTime.day) {
         return '$startDay. $startMonth';
       } else {
@@ -83,6 +82,76 @@ class EventCard extends StatelessWidget {
     return '${model.numberOfSeatsTaken}/${model.maxCapacity}';
   }
 
+  static Widget skeleton() {
+    return SizedBox(
+      height: 111,
+      child: Stack(
+        children: [
+          Stack(
+            children: [
+              // Event Icon
+              Positioned(
+                left: 0,
+                top: 10,
+                width: 84,
+                height: 84,
+                child: SkeletonLoader(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              // Headers
+              Positioned(
+                left: 100,
+                top: 10,
+                right: 0,
+                height: 70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Event Name
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 3),
+                      child: SkeletonLoader(
+                        height: 18,
+                        width: 150,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: SkeletonLoader(
+                        height: 16,
+                        width: 80,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: SkeletonLoader(
+                        height: 16,
+                        width: 40,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          // Bottom Separator
+          const Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Separator(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // static final gray = OnlineTheme.white;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -107,25 +176,19 @@ class EventCard extends StatelessWidget {
                           ? Image.network(
                               model.images.first.md,
                               fit: BoxFit.cover,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
+                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                                 if (loadingProgress == null) {
                                   return child;
                                 }
                                 return Center(
                                   child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                                         : null,
                                   ),
                                 );
                               },
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
+                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                 return SvgPicture.asset(
                                   'assets/svg/online_hvit_o.svg',
                                   fit: BoxFit.cover,
@@ -153,43 +216,16 @@ class EventCard extends StatelessWidget {
                           child: Text(
                             shortenName(),
                             style: OnlineTheme.textStyle(
-                              color: OnlineTheme.gray11,
+                              color: OnlineTheme.white,
                               weight: 7,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        subHeader(Icons.calendar_month_outlined,
-                            formatDateSpan(model.startDate, model.endDate)),
+                        subHeader(Icons.calendar_month, formatDateSpan(model.startDate, model.endDate)),
                         subHeader(
-                          Icons.people_outline,
+                          Icons.people,
                           peopleToString(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    bottom: 15,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'INFO',
-                          style: OnlineTheme.textStyle(
-                            color: OnlineTheme.gray9,
-                            weight: 5,
-                            size: 14,
-                          ),
-                        ),
-                        const SizedBox(width: 2),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 4),
-                          child: Icon(
-                            Icons.navigate_next,
-                            color: OnlineTheme.gray9,
-                            size: 15,
-                          ),
                         ),
                       ],
                     ),
@@ -216,21 +252,18 @@ class EventCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Icon(
-              icon,
-              color: OnlineTheme.gray9,
-              size: 14,
-            ),
+          Icon(
+            icon,
+            color: OnlineTheme.white,
+            size: 18,
           ),
           const SizedBox(width: 5),
           Text(
             text,
             style: OnlineTheme.textStyle(
               size: 14,
-              weight: 5,
-              color: OnlineTheme.gray9,
+              weight: 4,
+              color: OnlineTheme.white,
             ),
             overflow: TextOverflow.ellipsis,
           ),

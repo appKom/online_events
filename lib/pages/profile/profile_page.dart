@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:online_events/components/skeleton_loader.dart';
 
 import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
@@ -19,11 +19,6 @@ import '/pages/home/home_page.dart';
 import '/pages/loading/loading_display_page.dart';
 import '/services/page_navigator.dart';
 import '/theme/theme.dart';
-import '/theme/themed_icon.dart';
-import '/theme/themed_icon_button.dart';
-
-int userId = 0;
-UserModel? userProfile;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -192,9 +187,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    const aboveBelowPadding = EdgeInsets.only(top: 16, bottom: 16);
-    // String biographyText = pixelUserData?.biography ?? '';
-    final headerStyle = OnlineTheme.textStyle(size: 20, weight: 7);
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     if (userProfile != null) {
@@ -279,109 +271,71 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    controller: _titleController,
-                    style: OnlineTheme.textStyle(color: OnlineTheme.white),
-                    decoration: InputDecoration(
-                      labelText: 'Skriv om deg selv:',
-                      labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                      hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: OnlineTheme.white),
-                      ),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: OnlineTheme.white),
-                      ),
+                TextFormField(
+                  controller: _titleController,
+                  style: OnlineTheme.textStyle(color: OnlineTheme.white),
+                  decoration: InputDecoration(
+                    labelText: 'Skriv om deg selv:',
+                    labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                    hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.white),
                     ),
-                    onFieldSubmitted: (value) {
-                      saveBiography();
-                    },
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.white),
+                    ),
                   ),
+                  onFieldSubmitted: (value) {
+                    saveBiography();
+                  },
                 ),
                 const SizedBox(
                   height: 12,
                 ),
                 Text(
                   'Biografi',
-                  style: headerStyle,
+                  style: OnlineTheme.header(),
                 ),
                 FutureBuilder<PixelUserClass?>(
-                    future: fetchPixelUserInfo(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 30),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: OnlineTheme.gray14,
-                              borderRadius: OnlineTheme.buttonRadius,
-                            ),
-                            child: Center(
-                              child: Text(
-                                '',
-                                style: OnlineTheme.textStyle(weight: 5),
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-
-                      if (snapshot.hasError) {
-                        return Text("Error: ${snapshot.error}");
-                      }
-                      String biographyText = snapshot.data?.biography ?? '';
+                  future: fetchPixelUserInfo(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 30),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: OnlineTheme.gray14,
-                            borderRadius: OnlineTheme.buttonRadius,
-                          ),
-                          child: Center(
-                            child: Text(
-                              biographyText,
-                              style: OnlineTheme.textStyle(weight: 5),
-                            ),
-                          ),
-                        ),
+                        padding: const EdgeInsets.only(top: 10),
+                        child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
                       );
-                    }),
-                const Separator(margin: 5),
-                Text(
-                  'Kontakt',
-                  style: headerStyle,
-                ),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: aboveBelowPadding,
-                  child: constValueTextInput('NTNU-brukernavn', userProfile!.ntnuUsername),
-                ),
-                // const Separator(),
-                Padding(
-                  padding: aboveBelowPadding,
-                  child: constValueTextInput('Telefon', userProfile!.phoneNumber),
-                ),
-                // const Separator(),
-                Padding(
-                  padding: aboveBelowPadding,
-                  child: constValueTextInput('E-post', userProfile!.email),
+                    }
+
+                    if (snapshot.hasError) {
+                      return Text("Error: ${snapshot.error}");
+                    }
+                    String biographyText = snapshot.data?.biography ?? '';
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        biographyText,
+                        style: OnlineTheme.textStyle(weight: 5),
+                      ),
+                    );
+                  },
                 ),
                 const Separator(margin: 40),
                 Text(
+                  'Kontakt',
+                  style: OnlineTheme.header(),
+                ),
+                const SizedBox(height: 10),
+                constValueTextInput('Brukernavn', userProfile!.ntnuUsername),
+                constValueTextInput('Telefon', userProfile!.phoneNumber),
+                constValueTextInput('E-post', userProfile!.email),
+                const Separator(margin: 40),
+                Text(
                   'Studie',
-                  style: headerStyle,
+                  style: OnlineTheme.header(),
                 ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: aboveBelowPadding,
-                  child: constValueTextInput('Klassetrinn', userProfile!.year.toString()),
-                ),
-                Padding(
-                  padding: aboveBelowPadding,
-                  child: constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
-                ),
+                const SizedBox(height: 10),
+                constValueTextInput('Klassetrinn', userProfile!.year.toString()),
+                constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
                 const SizedBox(height: 16),
                 SizedBox(
                   height: 40,
@@ -392,7 +346,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Center(
                           child: Text(
                             'Bachelor',
-                            style: OnlineTheme.textStyle(),
+                            style: OnlineTheme.subHeader(),
                           ),
                         ),
                       ),
@@ -401,16 +355,17 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Center(
                           child: Text(
                             'Master',
-                            style: OnlineTheme.textStyle(),
+                            style: OnlineTheme.subHeader(),
                           ),
                         ),
                       ),
+                      const SizedBox(width: 25),
                       Expanded(
                         flex: 1,
                         child: Center(
                           child: Text(
                             'PhD',
-                            style: OnlineTheme.textStyle(),
+                            style: OnlineTheme.subHeader(),
                           ),
                         ),
                       ),
@@ -425,52 +380,29 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const Separator(margin: 40),
-                Text(
-                  'Eksterne sider',
-                  style: headerStyle,
-                ),
-                Padding(
-                  padding: aboveBelowPadding,
-                  child: constValueTextInput('Github', userProfile!.github ?? ''),
-                ),
-                Padding(
-                  padding: aboveBelowPadding,
-                  child: constValueTextInput('Linkedin', userProfile!.linkedin ?? ''),
-                ),
-                Padding(
-                    padding: aboveBelowPadding, child: constValueTextInput('Hjemmeside', userProfile!.website ?? '')),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40),
-                  child: AnimatedButton(
-                    onTap: () {
-                      loggedIn = false;
-                      PageNavigator.navigateTo(const HomePage());
-                    },
-                    childBuilder: (context, hover, pointerDown) {
-                      return Container(
-                        height: OnlineTheme.buttonHeight,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              OnlineTheme.red1, // Start color
-                              Color.fromARGB(255, 255, 132, 95), // End color
-                            ],
-                          ),
-                          borderRadius: OnlineTheme.buttonRadius,
+                AnimatedButton(
+                  onTap: () {
+                    loggedIn = false;
+                    PageNavigator.navigateTo(const HomePage());
+                  },
+                  childBuilder: (context, hover, pointerDown) {
+                    return Container(
+                      height: OnlineTheme.buttonHeight,
+                      decoration: BoxDecoration(
+                        color: OnlineTheme.red.withOpacity(0.4),
+                        borderRadius: OnlineTheme.buttonRadius,
+                        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Logg Ut',
+                          style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
                         ),
-                        child: Center(
-                          child: Text(
-                            'Logg Ut',
-                            style: OnlineTheme.textStyle(weight: 5),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
-                SizedBox(height: Navbar.height(context)),
+                SizedBox(height: Navbar.height(context) + 24),
               ],
             ),
           ),
@@ -487,47 +419,22 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Row(
         children: [
           Expanded(
+            flex: 1,
             child: Text(
               label,
               style: OnlineTheme.textStyle(),
             ),
           ),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.only(left: 10),
-              decoration: BoxDecoration(
-                color: OnlineTheme.gray14,
-                borderRadius: BorderRadius.circular(3),
+            flex: 2,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                value,
+                style: OnlineTheme.textStyle(
+                  height: 1,
+                ),
               ),
-              child: Stack(children: [
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      value,
-                      style: OnlineTheme.textStyle(
-                        height: 1,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: 40,
-                  child: ThemedIconButton(
-                    onPressed: () {
-                      HapticFeedback.mediumImpact();
-                      Clipboard.setData(ClipboardData(text: value));
-                    },
-                    size: 16,
-                    icon: IconType.copy,
-                    color: const Color(0xFF4C566A),
-                    hoverColor: OnlineTheme.white,
-                  ),
-                ),
-              ]),
             ),
           ),
         ],
@@ -535,49 +442,46 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget textInput(String label, String placeholder) {
-    return SizedBox(
-      height: 40,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              style: OnlineTheme.textStyle(color: OnlineTheme.gray11),
-            ),
-          ),
-          Expanded(
-            child: TextField(
-              cursorColor: OnlineTheme.gray8,
-              decoration: InputDecoration(
-                hintText: placeholder,
-                hintStyle: OnlineTheme.textStyle(
-                  color: const Color(0xFF4C566A),
-                  height: 1,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(3),
-                  borderSide: const BorderSide(color: Color(0xFF4C566A)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(3),
-                  borderSide: const BorderSide(color: OnlineTheme.white),
-                ),
-                filled: true,
-                fillColor: OnlineTheme.gray0,
-              ),
-              style: OnlineTheme.textStyle(
-                color: OnlineTheme.white,
-                height: 1.5,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget textInput(String label, String placeholder) {
+  //   return SizedBox(
+  //     height: 40,
+  //     child: Row(
+  //       mainAxisSize: MainAxisSize.max,
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Expanded(
+  //           child: Text(
+  //             label,
+  //             style: OnlineTheme.textStyle(color: OnlineTheme.gray11),
+  //           ),
+  //         ),
+  //         Expanded(
+  //           child: TextField(
+  //             cursorColor: OnlineTheme.gray8,
+  //             decoration: InputDecoration(
+  //               hintText: placeholder,
+  //               hintStyle: OnlineTheme.textStyle(
+  //                 color: const Color(0xFF4C566A),
+  //                 height: 1,
+  //               ),
+  //               enabledBorder: OutlineInputBorder(
+  //                 borderRadius: BorderRadius.circular(3),
+  //                 borderSide: const BorderSide(color: Color(0xFF4C566A)),
+  //               ),
+  //               focusedBorder: OutlineInputBorder(
+  //                 borderRadius: BorderRadius.circular(3),
+  //                 borderSide: const BorderSide(color: OnlineTheme.white),
+  //               ),
+  //               filled: true,
+  //               fillColor: OnlineTheme.gray0,
+  //             ),
+  //             style: OnlineTheme.textStyle(),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 
 class StudyCoursePainter extends CustomPainter {
@@ -634,8 +538,8 @@ class StudyCoursePainter extends CustomPainter {
   }
 
   // static const gray = Color(0xFF153E75);
-  static const gray = OnlineTheme.gray0;
-  static const green = Color(0xFF36B37E);
+  static const gray = OnlineTheme.grayBorder;
+  static const green = OnlineTheme.yellow;
 
   void circle(bool active, Offset c, Canvas canvas, Paint paint) {
     final color = active ? green : gray;
