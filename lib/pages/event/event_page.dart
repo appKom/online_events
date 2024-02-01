@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -17,6 +19,8 @@ import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'cards/attendance_card.dart';
 import 'cards/description_card.dart';
+import 'qr_code_scanner.dart';
+import 'package:http/http.dart' as http;
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -66,19 +70,22 @@ class _EventPageState extends State<EventPage> {
                 aspectRatio: 16 / 9,
                 child: Image.network(
                   widget.model.images.first.original,
-                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
                     if (loadingProgress == null) {
                       return child;
                     }
                     return Center(
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
                             : null,
                       ),
                     );
                   },
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
                     return SvgPicture.asset(
                       'assets/svg/online_hvit_o.svg',
                       fit: BoxFit.cover,
@@ -101,7 +108,8 @@ class _EventPageState extends State<EventPage> {
                 style: OnlineTheme.header(),
               ),
               const SizedBox(height: 24),
-              AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
+              AttendanceCard(
+                  event: widget.model, attendeeInfo: attendeeInfoModel),
               const SizedBox(height: 24),
               EventDescriptionCard(
                 description: widget.model.description,
@@ -135,8 +143,15 @@ class EventPageDisplay extends ScrollablePage {
             dimension: 40,
             child: Center(
               child: AnimatedButton(
-                onTap: () {
-                  print('📸');
+                onTap: () async {
+                  final qrResult = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const QrCodeScannerDisplay()),
+                  );
+                  if (qrResult != null) {
+                    registerAttendance(qrResult);
+                  }
                 },
                 childBuilder: (context, hover, pointerDown) {
                   return const ThemedIcon(
@@ -155,7 +170,7 @@ class EventPageDisplay extends ScrollablePage {
               child: AnimatedButton(
                 onTap: () {
                   AppNavigator.navigateToRoute(
-                    QRCode(),
+                    QRCode(model: model),
                     additive: true,
                   );
                 },
@@ -171,6 +186,37 @@ class EventPageDisplay extends ScrollablePage {
           ),
       ],
     );
+  }
+
+  void registerAttendance(String qrData) async {
+    final parts = qrData.split(',');
+    final rfid = parts[0];
+    final username = parts[1];
+    final event = int.tryParse(parts[2]) ?? 0;
+    final approved = parts[3].toLowerCase() == 'true';
+
+    const url =
+        'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
+
+    final body = {
+      'rfid': rfid,
+      'username': username,
+      'event': event,
+      'approved': approved,
+    };
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 201) {
+      print('Attendance registered successfully!');
+    } else {
+      print(
+          'Failed to register attendance. Status code: ${response.statusCode}');
+    }
   }
 
   @override

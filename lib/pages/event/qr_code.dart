@@ -1,15 +1,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../core/client/client.dart';
+import '../../core/models/event_model.dart';
+import '../../main.dart';
 import '/components/animated_button.dart';
 import '/dark_overlay.dart';
 import '/theme/theme.dart';
 
 class QRCode extends DarkOverlay {
-  QRCode();
+  QRCode({required this.model});
+  final EventModel model;
 
   @override
   Widget content(BuildContext context, Animation<double> animation) {
@@ -25,22 +28,31 @@ class QRCode extends DarkOverlay {
               valueListenable: Client.userCache,
               builder: (context, user, child) {
                 if (user == null) return const Text('');
-                return Text(
-                  '${user.firstName} ${user.lastName}',
-                  style: OnlineTheme.textStyle(size: 25, weight: 7),
+                String qrData =
+                    '${userProfile!.rfid},${userProfile!.username},${model.id},true';
+                return Column(
+                  children: [
+                    Text(
+                      '${user.firstName} ${user.lastName}',
+                      style: OnlineTheme.textStyle(size: 25, weight: 7),
+                    ),
+                    const SizedBox(height: 40),
+                    SizedBox.square(
+                      dimension: maxSize - padding.horizontal - 50,
+                      child: AnimatedButton(
+                        childBuilder: (context, hover, pointerDown) {
+                          return QrImageView(
+                            backgroundColor: OnlineTheme.white,
+                            data: qrData,
+                            version: QrVersions.auto,
+                            size: maxSize - padding.horizontal - 50,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 );
               }),
-          const SizedBox(height: 40),
-          SizedBox.square(
-            dimension: maxSize - padding.horizontal - 50,
-            child: AnimatedButton(
-              childBuilder: (context, hover, pointerDown) {
-                return SvgPicture.asset(
-                  'assets/svg/qr_code.svg',
-                );
-              },
-            ),
-          ),
         ],
       );
     });
