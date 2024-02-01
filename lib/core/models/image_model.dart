@@ -1,4 +1,4 @@
-import 'package:online_events/core/models/json_model.dart';
+import '/core/models/json_model.dart';
 
 class ImageModel implements JsonModel {
   final int id;

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:online_events/pages/pixel/models/user_post.dart';
-import '../../../components/animated_button.dart';
-import '../../../services/page_navigator.dart';
+
 import '../view_pixel_user.dart';
+import '/components/animated_button.dart';
+import '/pages/pixel/models/user_post.dart';
+import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
 class WhoPostedCard extends StatelessWidget {
@@ -40,22 +41,19 @@ class WhoPostedCard extends StatelessWidget {
                 'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${post.username}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                 fit: BoxFit.cover,
                 height: 50,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
+                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                   if (loadingProgress == null) {
                     return child;
                   }
                   return Center(
                     child: CircularProgressIndicator(
                       value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
+                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                           : null,
                     ),
                   );
                 },
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace? stackTrace) {
+                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                   return Image.asset(
                     'assets/images/default_profile_picture.png',
                     fit: BoxFit.cover,

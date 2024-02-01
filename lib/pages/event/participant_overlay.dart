@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:online_events/dark_overlay.dart';
+import '/dark_overlay.dart';
 
 import '/components/separator.dart';
 import '/core/client/client.dart';

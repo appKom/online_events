@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:online_events/components/skeleton_loader.dart';
 
 import '/components/animated_button.dart';
 import '/components/separator.dart';
+import '/components/skeleton_loader.dart';
 import '/core/models/event_model.dart';
 import '/pages/event/event_page.dart';
 import '/services/page_navigator.dart';

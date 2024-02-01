@@ -1,20 +1,23 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:online_events/pages/pixel/models/user_post.dart';
 
-import '../../components/animated_button.dart';
-import '../../components/online_header.dart';
-import '../../components/online_scaffold.dart';
-import '../../services/page_navigator.dart';
-import '../../theme/theme.dart';
 import '../home/profile_button.dart';
-import 'pixel.dart';
+import '/components/animated_button.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/pages/pixel/models/user_post.dart';
+import '/services/page_navigator.dart';
+import '/theme/theme.dart';
 import 'models/pixel_user_class.dart';
+import 'pixel.dart';
 import 'view_pixel_user.dart';
 
 class LikeByPage extends StatefulWidget {
-  const LikeByPage({super.key, required this.post,});
+  const LikeByPage({
+    super.key,
+    required this.post,
+  });
 
   final UserPostModel post;
 
@@ -29,9 +32,7 @@ class LikedByPageState extends State<LikeByPage> {
   @override
   void initState() {
     super.initState();
-    final client = Client()
-        .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject(dotenv.env['PROJECT_ID']);
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
     database = Databases(client);
 
     fetchLikedByUsers();
@@ -65,8 +66,7 @@ class LikedByPageState extends State<LikeByPage> {
                   color: Colors.white,
                   size: 40,
                 ),
-                onPressed: () =>
-                    PageNavigator.navigateTo(const PixelPageDisplay()),
+                onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
               ),
               const SizedBox(
                 width: 5,
@@ -108,8 +108,7 @@ class LikedByPageState extends State<LikeByPage> {
                                   'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${users[index].userName}/preview?width=75&height=75&project=${dotenv.env['PROJECT_ID']}&mode=public',
                                   fit: BoxFit.cover,
                                   height: 50,
-                                  errorBuilder:
-                                      (context, exception, stackTrace) {
+                                  errorBuilder: (context, exception, stackTrace) {
                                     return Image.asset(
                                       'assets/images/default_profile_picture.png',
                                       fit: BoxFit.cover,
@@ -127,8 +126,7 @@ class LikedByPageState extends State<LikeByPage> {
                               children: [
                                 Text(
                                   '${users[index].userName}',
-                                  style: OnlineTheme.textStyle(
-                                      size: 16, weight: 5),
+                                  style: OnlineTheme.textStyle(size: 16, weight: 5),
                                 ),
                                 Text(
                                   '${users[index].firstName} ${users[index].lastName}',
@@ -153,19 +151,26 @@ class LikedByPageState extends State<LikeByPage> {
 }
 
 class LikedByPageDisplay extends StaticPage {
-  const LikedByPageDisplay({super.key, required this.post,});
+  const LikedByPageDisplay({
+    super.key,
+    required this.post,
+  });
 
   final UserPostModel post;
 
   @override
   Widget? header(BuildContext context) {
-    return OnlineHeader(buttons: const [
+    return OnlineHeader(
+      buttons: const [
         ProfileButton(),
-      ],);
+      ],
+    );
   }
 
   @override
   Widget content(BuildContext context) {
-    return LikeByPage(post: post,);
+    return LikeByPage(
+      post: post,
+    );
   }
 }

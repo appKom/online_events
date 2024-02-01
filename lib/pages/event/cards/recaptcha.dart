@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:online_events/core/models/event_model.dart';
+
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
+import '/core/models/event_model.dart';
 
 class ReCaptcha extends StatefulWidget {
   const ReCaptcha({super.key, required this.model});

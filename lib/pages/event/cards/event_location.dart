@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/theme/theme.dart';
+
+import '/theme/theme.dart';
 
 class EventLocation extends StatelessWidget {
   const EventLocation({super.key});

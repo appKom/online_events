@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/main.dart';
+import '/main.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '/core/client/client.dart';

@@ -225,20 +225,17 @@ class BedpressCard extends StatelessWidget {
                   right: 12,
                   child: Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Icon(
-                          Icons.people,
-                          size: 20,
-                          color: getColor(model.eventType),
-                        ),
+                      const Icon(
+                        Icons.people,
+                        size: 20,
+                        color: OnlineTheme.white,
                       ),
                       const SizedBox(width: 6),
                       Text(
                         model.numberOfSeatsTaken == null && model.maxCapacity == null
                             ? '∞'
                             : '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}',
-                        style: OnlineTheme.textStyle(size: 16),
+                        style: OnlineTheme.textStyle(weight: 5, size: 14),
                       ),
                     ],
                   ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/pages/profile/profile_page.dart';
-import '../../main.dart';
+
+import '/components/animated_button.dart';
+import '/main.dart';
 import '/pages/login/login_page.dart';
-import '../../services/page_navigator.dart';
+import '/pages/profile/profile_page.dart';
+import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
 class ProfileButton extends StatelessWidget {
@@ -39,22 +40,19 @@ class ProfileButton extends StatelessWidget {
             fit: BoxFit.cover,
             height: 40,
             width: 40,
-            loadingBuilder: (BuildContext context, Widget child,
-                ImageChunkEvent? loadingProgress) {
+            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
               if (loadingProgress == null) {
                 return child;
               }
               return Center(
                 child: CircularProgressIndicator(
                   value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
+                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                       : null,
                 ),
               );
             },
-            errorBuilder: (BuildContext context, Object exception,
-                StackTrace? stackTrace) {
+            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
               return const Icon(
                 Icons.person,
                 color: Colors.white,

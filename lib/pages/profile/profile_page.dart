@@ -4,7 +4,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:online_events/components/skeleton_loader.dart';
 
 import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
@@ -12,6 +11,7 @@ import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
+import '/components/skeleton_loader.dart';
 import '/core/client/client.dart' as io;
 import '/core/models/user_model.dart';
 import '/main.dart';
