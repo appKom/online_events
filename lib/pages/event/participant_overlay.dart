@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:online/theme/themed_icon.dart';
 import '/dark_overlay.dart';
 
 import '/components/separator.dart';
@@ -9,6 +10,12 @@ import '/core/models/attendee_info_model.dart';
 import '/core/models/attendees_list.dart';
 import '/core/models/event_model.dart';
 import '/theme/theme.dart';
+
+enum Role {
+  none,
+  verified,
+  dev,
+}
 
 class ParticipantOverlay extends DarkOverlay {
   ParticipantOverlay({required this.model, required this.attendeeInfoModel});
@@ -36,7 +43,7 @@ class ParticipantOverlay extends DarkOverlay {
   @override
   Widget content(BuildContext context, Animation<double> animation) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -63,81 +70,131 @@ class ParticipantOverlay extends DarkOverlay {
     return input;
   }
 
+  Role getRole(AttendeesList attendee) {
+    final name = attendee.fullName;
+
+    if (name == 'Mads Hermansen') return Role.verified;
+    if (name == 'Erlend Løvoll Strøm') return Role.dev;
+    if (name == 'Fredrik Carsten Hansteen') return Role.dev;
+
+    return Role.none;
+  }
+
+  Color getColor(Role role) {
+    switch (role) {
+      case Role.none:
+        return OnlineTheme.white;
+      case Role.verified:
+        return OnlineTheme.blue2;
+      case Role.dev:
+        return OnlineTheme.red;
+    }
+  }
+
+  int getWeight(Role role) {
+    return role == Role.none ? 4 : 5;
+  }
+
+  Widget indexLabel(int index, Color color) {
+    final indexStr = (index + 1).toString();
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: SizedBox(
+        width: 35,
+        child: Text(
+          indexStr,
+          style: OnlineTheme.textStyle(
+            color: color,
+            weight: 7,
+            size: 15,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Widget progressIndicator() {
+    return const Center(
+      child: SizedBox.square(
+        dimension: 25,
+        child: CircularProgressIndicator(
+          color: OnlineTheme.white,
+          strokeWidth: 2,
+        ),
+      ),
+    );
+  }
+
   Widget buildList<T>(String header, Future<List<AttendeesList>?> listFuture) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 24, bottom: 8),
+          padding: const EdgeInsets.symmetric(vertical: 24),
           child: Text(
             header,
             style: OnlineTheme.header(),
             textAlign: TextAlign.center,
           ),
         ),
-        const Separator(
-          margin: 5,
-        ),
         FutureBuilder(
           future: listFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return progressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}', style: OnlineTheme.textStyle());
             } else {
               final sortedAttendees = snapshot.data!;
               return ListView.separated(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: sortedAttendees.length,
                 separatorBuilder: (context, index) => const Separator(),
                 itemBuilder: (context, index) {
                   final attendee = sortedAttendees[index];
-                  final bool isVerified = attendee.fullName == "Mads Hermansen";
 
-                  final String indexStr = (index + 1).toString().padLeft(3, '0');
+                  final role = getRole(attendee);
+                  final color = getColor(role);
+                  final weight = getWeight(role);
+
                   return SizedBox(
                     height: 40,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: Text(
-                            '$indexStr. ',
-                            style: OnlineTheme.textStyle(
-                              size: 16,
-                              color: isVerified ? OnlineTheme.green : OnlineTheme.white,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
+                        indexLabel(index, color),
                         Expanded(
                           child: Row(
                             children: [
                               Flexible(
                                 child: Text(
                                   attendee.fullName,
-                                  style:
-                                      OnlineTheme.textStyle(size: 16, color: isVerified ? Colors.green : Colors.white),
+                                  style: OnlineTheme.textStyle(
+                                    color: color,
+                                    weight: weight,
+                                    size: 15,
+                                  ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              if (isVerified)
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                              if (isVerified) const Icon(Icons.check_circle_sharp, color: OnlineTheme.blue2, size: 16),
+                              if (role == Role.verified) const SizedBox(width: 5),
+                              if (role == Role.verified) ThemedIcon(icon: IconType.badgeCheck, color: color, size: 16),
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 5),
+                        SizedBox(
+                          width: 70,
                           child: Text(
-                            '${attendee.yearOfStudy}. klasse',
-                            style: OnlineTheme.textStyle(size: 16, color: isVerified ? Colors.green : Colors.white),
+                            '${attendee.yearOfStudy}. klasse', // Takes less space than 'klasse'
+                            style: OnlineTheme.textStyle(
+                              color: color,
+                              weight: weight,
+                              size: 15,
+                            ),
                             textAlign: TextAlign.right,
                           ),
                         ),
