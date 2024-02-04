@@ -23,6 +23,13 @@ class ParticipantOverlay extends DarkOverlay {
     waitlistFuture = Client.getEventWaitlists(model.id).then(sortAttendees);
   }
 
+  @override
+  void hide() {
+    attendeesFuture.ignore();
+    waitlistFuture.ignore();
+    super.hide();
+  }
+
   late Future<List<AttendeesList>?> attendeesFuture;
   late Future<List<AttendeesList>?> waitlistFuture;
 

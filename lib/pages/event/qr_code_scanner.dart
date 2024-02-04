@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import '../../components/online_header.dart';
 import '../../components/online_scaffold.dart';
 
 class QRCodeScanner extends StatefulWidget {
@@ -38,8 +37,8 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      controller.pauseCamera(); 
-      Navigator.pop(context, scanData.code); 
+      controller.pauseCamera();
+      Navigator.pop(context, scanData.code);
     });
   }
 

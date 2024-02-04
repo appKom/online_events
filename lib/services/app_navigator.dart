@@ -13,45 +13,13 @@ abstract class AppNavigator {
   static const Duration transitionDuration = Duration(milliseconds: 0); // 250
   static const Duration reverseDuration = Duration(milliseconds: 0); // 250
 
-  /// Navigates to target widget.
-  // static void navigateTo(Widget target, {required bool additive}) {
-  //   final route = PageRouteBuilder(
-  //     transitionDuration: transitionDuration,
-  //     reverseTransitionDuration: reverseDuration,
-  //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-  //       // Animation is for animating to
-  //       // Secondary animation is for animating from
-  //       return FadeTransition(
-  //         opacity: animation,
-  //         child: child,
-  //       );
-  //     },
-  //     pageBuilder: ((context, animation, secondaryAnimation) {
-  //       return target;
-  //     }),
-  //   );
-
-  //   navigateToRoute(route, additive: additive);
-  // }
-
   static void navigateToRoute(Route route, {required bool additive}) {
-    navigator.currentState!.push(route).then((value) {
-      if (!additive) navigator.currentState!.pushAndRemoveUntil(route, (route) => false);
-    });
+    if (additive) {
+      navigator.currentState!.push(route);
+    } else {
+      navigator.currentState!.pushReplacement(route);
+    }
   }
-
-  // static void iosNavigateTo(Widget target) {
-  //   AppNavigator.navigateToRoute(
-  //     CupertinoPageRoute(
-  //       builder: (context) {
-  //         return target;
-  //       },
-  //       maintainState: false,
-  //       fullscreenDialog: false,
-  //     ),
-  //     additive: true,
-  //   );
-  // }
 
   static void pop() {
     navigator.currentState!.pop();
