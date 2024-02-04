@@ -46,6 +46,10 @@ class QRCode extends DarkOverlay {
                             data: qrData,
                             version: QrVersions.auto,
                             size: maxSize - padding.horizontal - 50,
+                            // embeddedImage: const AssetImage('assets/images/online_hvit_o.png'), 
+                            // embeddedImageStyle: QrEmbeddedImageStyle(
+                            //   size: Size(100, 100), 
+                            // ),
                           );
                         },
                       ),

@@ -39,7 +39,7 @@ class OnlineHeader extends StatelessWidget {
               'assets/svg/online_logo.svg',
               height: 36,
             ),
-            Spacer(),
+            const Spacer(),
             SvgPicture.asset(
               'assets/svg/bekk.svg',
               height: 36,
