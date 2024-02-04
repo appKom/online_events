@@ -1,6 +1,3 @@
-//TODO: This is fishy. Investigate
-final defaultAttendeeModel = AttendeeInfoModel.withDefaults();
-
 class AttendeeInfoModel {
   final int id;
   final int maxCapacity;

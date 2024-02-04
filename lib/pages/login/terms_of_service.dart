@@ -299,7 +299,7 @@ class TermsOfServicePage extends ScrollablePage {
   Widget declineButton() {
     return Flexible(
       child: AnimatedButton(onTap: () {
-        PageNavigator.navigateTo(const HomePage());
+        AppNavigator.replaceWithPage(const HomePage());
       }, childBuilder: (context, hover, pointerDown) {
         return Container(
           height: OnlineTheme.buttonHeight,

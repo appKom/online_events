@@ -3,14 +3,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '/components/online_scaffold.dart';
-import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';
 import '/services/env.dart';
 import '/services/secure_storage.dart';
 import 'core/client/client.dart';
 import 'core/models/user_model.dart';
 import 'firebase_options.dart';
-import 'theme/theme.dart';
 
 bool loggedIn = false;
 UserModel? userProfile;
@@ -27,14 +25,11 @@ Future main() async {
   if (!Client.tokenExpired()) {
     loggedIn = true;
     await Client.getUserProfile();
-    
   } else if (await Client.fetchRefreshToken()) {
     loggedIn = true;
   }
 
-  runApp(const MainApp());
-
-  PageNavigator.navigateTo(const HomePage());
+  runApp(const OnlineApp());
 
   Client.getEvents(pages: [1]);
   Client.fetchArticles();
@@ -64,16 +59,15 @@ Future _configureFirebase() async {
 // final List<EventModel> eventModels = [];
 // final List<ArticleModel> articleModels = [];
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class OnlineApp extends StatelessWidget {
+  const OnlineApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: AppNavigator.navigator,
+      navigatorKey: AppNavigator.globalNavigator,
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
-      color: OnlineTheme.background,
       home: const OnlineScaffold(),
     );
   }

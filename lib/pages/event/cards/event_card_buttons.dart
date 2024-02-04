@@ -159,7 +159,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     return AnimatedButton(
       onTap: () {
         // TODO Midlertidig fiks, burde fikse reCaptcha inne i appen
-        PageNavigator.navigateTo(ReCaptchaDisplay(
+        AppNavigator.navigateToPage(ReCaptchaDisplay(
           model: widget.model,
         ));
       },

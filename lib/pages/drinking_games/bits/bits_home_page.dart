@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online/services/app_navigator.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
@@ -58,7 +59,7 @@ class BitsHomePage extends ScrollablePage {
               const SizedBox(height: 120),
               AnimatedButton(
                 onTap: () {
-                  PageNavigator.navigateTo(const BitsGame());
+                  AppNavigator.navigateToPage(const BitsGame());
                 },
                 childBuilder: (context, hover, pointerDown) {
                   return Container(

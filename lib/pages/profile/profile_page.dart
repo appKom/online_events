@@ -4,10 +4,10 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:online/services/app_navigator.dart';
 
 import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
-import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
@@ -17,7 +17,6 @@ import '/core/models/user_model.dart';
 import '/main.dart';
 import '/pages/home/home_page.dart';
 import '/pages/loading/loading_display_page.dart';
-import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -179,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         //hei
       });
-      PageNavigator.navigateTo(const DummyDisplay());
+      AppNavigator.replaceWithPage(const ProfilePage());
     } catch (e) {
       print("Error uploading image: $e");
     }
@@ -194,217 +193,214 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     if (userProfile != null) {
-      return Scaffold(
-        backgroundColor: OnlineTheme.background,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(left: padding.left, right: padding.right),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: OnlineHeader.height(context) + 40),
-                Center(
-                  child: Text(
-                    '${userProfile!.firstName} ${userProfile!.lastName}',
-                    style: OnlineTheme.textStyle(
-                      size: 20,
-                      weight: 7,
-                    ),
+      return SingleChildScrollView(
+        child: Padding(
+          padding: padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 24),
+              Center(
+                child: Text(
+                  '${userProfile!.firstName} ${userProfile!.lastName}',
+                  style: OnlineTheme.textStyle(
+                    size: 20,
+                    weight: 7,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30),
-                  child: Center(
-                    child: AnimatedButton(
-                      onTap: () async {
-                        await pickImage(ImageSource.gallery);
-                        if (_imageFile != null) {
-                          await uploadImage();
-                        }
-                      },
-                      childBuilder: (context, hover, pointerDown) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ClipOval(
-                              child: SizedBox(
-                                width: 125,
-                                height: 125,
-                                child: _imageFile != null
-                                    ? Image.file(
-                                        _imageFile!,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.network(
-                                        'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
-                                        fit: BoxFit.cover,
-                                        height: 240,
-                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                                            if (!showInfoAboutPicture) {
-                                              setState(() {
-                                                showInfoAboutPicture = true;
-                                              });
-                                            }
-                                          });
-                                          return Image.asset(
-                                            'assets/images/default_profile_picture.png',
-                                            fit: BoxFit.cover,
-                                            height: 240,
-                                          );
-                                        },
-                                      ),
-                              ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: Center(
+                  child: AnimatedButton(
+                    onTap: () async {
+                      await pickImage(ImageSource.gallery);
+                      if (_imageFile != null) {
+                        await uploadImage();
+                      }
+                    },
+                    childBuilder: (context, hover, pointerDown) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ClipOval(
+                            child: SizedBox(
+                              width: 125,
+                              height: 125,
+                              child: _imageFile != null
+                                  ? Image.file(
+                                      _imageFile!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+                                      fit: BoxFit.cover,
+                                      height: 240,
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                                          if (!showInfoAboutPicture) {
+                                            setState(() {
+                                              showInfoAboutPicture = true;
+                                            });
+                                          }
+                                        });
+                                        return Image.asset(
+                                          'assets/images/default_profile_picture.png',
+                                          fit: BoxFit.cover,
+                                          height: 240,
+                                        );
+                                      },
+                                    ),
                             ),
-                            if (showInfoAboutPicture)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Text('Trykk for å laste opp profil bilde',
-                                    style: OnlineTheme.textStyle(color: OnlineTheme.blue2)),
-                              ),
-                            const SizedBox(
-                              height: 5,
+                          ),
+                          if (showInfoAboutPicture)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text('Trykk for å laste opp profil bilde',
+                                  style: OnlineTheme.textStyle(color: OnlineTheme.blue2)),
                             ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  controller: _titleController,
-                  style: OnlineTheme.textStyle(color: OnlineTheme.white),
-                  decoration: InputDecoration(
-                    labelText: 'Skriv om deg selv:',
-                    labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                    hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                    enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: OnlineTheme.white),
-                    ),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: OnlineTheme.white),
-                    ),
-                  ),
-                  onFieldSubmitted: (value) {
-                    saveBiography();
-                  },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  'Biografi',
-                  style: OnlineTheme.header(),
-                ),
-                FutureBuilder<PixelUserClass?>(
-                  future: fetchPixelUserInfo(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        ],
                       );
-                    }
-
-                    if (snapshot.hasError) {
-                      return Text("Error: ${snapshot.error}");
-                    }
-                    String biographyText = snapshot.data?.biography ?? '';
+                    },
+                  ),
+                ),
+              ),
+              TextFormField(
+                controller: _titleController,
+                style: OnlineTheme.textStyle(color: OnlineTheme.white),
+                decoration: InputDecoration(
+                  labelText: 'Skriv om deg selv:',
+                  labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                  hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: OnlineTheme.white),
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: OnlineTheme.white),
+                  ),
+                ),
+                onFieldSubmitted: (value) {
+                  saveBiography();
+                },
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                'Biografi',
+                style: OnlineTheme.header(),
+              ),
+              FutureBuilder<PixelUserClass?>(
+                future: fetchPixelUserInfo(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        biographyText,
-                        style: OnlineTheme.textStyle(weight: 5),
-                      ),
+                      child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
                     );
-                  },
-                ),
-                const Separator(margin: 40),
-                Text(
-                  'Kontakt',
-                  style: OnlineTheme.header(),
-                ),
-                const SizedBox(height: 10),
-                constValueTextInput('Brukernavn', userProfile!.ntnuUsername),
-                constValueTextInput('Telefon', userProfile!.phoneNumber),
-                constValueTextInput('E-post', userProfile!.email),
-                const Separator(margin: 40),
-                Text(
-                  'Studie',
-                  style: OnlineTheme.header(),
-                ),
-                const SizedBox(height: 10),
-                constValueTextInput('Klassetrinn', userProfile!.year.toString()),
-                constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Center(
-                          child: Text(
-                            'Bachelor',
-                            style: OnlineTheme.subHeader(),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Center(
-                          child: Text(
-                            'Master',
-                            style: OnlineTheme.subHeader(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 25),
-                      Expanded(
-                        flex: 1,
-                        child: Center(
-                          child: Text(
-                            'PhD',
-                            style: OnlineTheme.subHeader(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 40,
-                  child: CustomPaint(
-                    painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
-                  ),
-                ),
-                const Separator(margin: 40),
-                AnimatedButton(
-                  onTap: () {
-                    loggedIn = false;
-                    PageNavigator.navigateTo(const HomePage());
-                  },
-                  childBuilder: (context, hover, pointerDown) {
-                    return Container(
-                      height: OnlineTheme.buttonHeight,
-                      decoration: BoxDecoration(
-                        color: OnlineTheme.red.withOpacity(0.4),
-                        borderRadius: OnlineTheme.buttonRadius,
-                        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
-                      ),
+                  }
+
+                  if (snapshot.hasError) {
+                    return Text("Error: ${snapshot.error}");
+                  }
+                  String biographyText = snapshot.data?.biography ?? '';
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      biographyText,
+                      style: OnlineTheme.textStyle(weight: 5),
+                    ),
+                  );
+                },
+              ),
+              const Separator(margin: 40),
+              Text(
+                'Kontakt',
+                style: OnlineTheme.header(),
+              ),
+              const SizedBox(height: 10),
+              constValueTextInput('Brukernavn', userProfile!.ntnuUsername),
+              constValueTextInput('Telefon', userProfile!.phoneNumber),
+              constValueTextInput('E-post', userProfile!.email),
+              const Separator(margin: 40),
+              Text(
+                'Studie',
+                style: OnlineTheme.header(),
+              ),
+              const SizedBox(height: 10),
+              constValueTextInput('Klassetrinn', userProfile!.year.toString()),
+              constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 40,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
                       child: Center(
                         child: Text(
-                          'Logg Ut',
-                          style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+                          'Bachelor',
+                          style: OnlineTheme.subHeader(),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: Text(
+                          'Master',
+                          style: OnlineTheme.subHeader(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 25),
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          'PhD',
+                          style: OnlineTheme.subHeader(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: Navbar.height(context) + 24),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 40,
+                child: CustomPaint(
+                  painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
+                ),
+              ),
+              const Separator(margin: 40),
+              AnimatedButton(
+                onTap: () {
+                  loggedIn = false;
+                  AppNavigator.replaceWithPage(const HomePage());
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return Container(
+                    height: OnlineTheme.buttonHeight,
+                    decoration: BoxDecoration(
+                      color: OnlineTheme.red.withOpacity(0.4),
+                      borderRadius: OnlineTheme.buttonRadius,
+                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Logg Ut',
+                        style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
       );
@@ -441,47 +437,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
-  // Widget textInput(String label, String placeholder) {
-  //   return SizedBox(
-  //     height: 40,
-  //     child: Row(
-  //       mainAxisSize: MainAxisSize.max,
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Expanded(
-  //           child: Text(
-  //             label,
-  //             style: OnlineTheme.textStyle(color: OnlineTheme.gray11),
-  //           ),
-  //         ),
-  //         Expanded(
-  //           child: TextField(
-  //             cursorColor: OnlineTheme.gray8,
-  //             decoration: InputDecoration(
-  //               hintText: placeholder,
-  //               hintStyle: OnlineTheme.textStyle(
-  //                 color: const Color(0xFF4C566A),
-  //                 height: 1,
-  //               ),
-  //               enabledBorder: OutlineInputBorder(
-  //                 borderRadius: BorderRadius.circular(3),
-  //                 borderSide: const BorderSide(color: Color(0xFF4C566A)),
-  //               ),
-  //               focusedBorder: OutlineInputBorder(
-  //                 borderRadius: BorderRadius.circular(3),
-  //                 borderSide: const BorderSide(color: OnlineTheme.white),
-  //               ),
-  //               filled: true,
-  //               fillColor: OnlineTheme.gray0,
-  //             ),
-  //             style: OnlineTheme.textStyle(),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
 
 class StudyCoursePainter extends CustomPainter {
@@ -561,21 +516,8 @@ class StudyCoursePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class ProfilePageDisplay extends StaticPage {
+class ProfilePageDisplay extends ScrollablePage {
   const ProfilePageDisplay({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
-
-  @override
-  Widget content(BuildContext context) {
-    return const ProfilePage();
-  }
-}
-
-class DummyDisplay extends StaticPage {
-  const DummyDisplay({super.key});
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader();

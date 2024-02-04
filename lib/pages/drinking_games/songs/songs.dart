@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:online/services/app_navigator.dart';
 
-import 'fader_abraham.dart';
 import '/components/animated_button.dart';
-import '/services/page_navigator.dart';
 import '/theme/theme.dart';
+import 'fader_abraham.dart';
 import 'lambo.dart';
 import 'nu_klinger.dart';
 
@@ -29,21 +29,21 @@ class DrikkeSanger extends StatelessWidget {
                 SongCard(
                   name: 'Lambo',
                   imageSource: 'assets/images/lambo.jpg',
-                  onTap: () => PageNavigator.navigateTo(
+                  onTap: () => AppNavigator.navigateToPage(
                     const LamboPage(),
                   ),
                 ),
                 SongCard(
                   name: 'Nu Klinger',
                   imageSource: 'assets/images/nu_klinger.jpg',
-                  onTap: () => PageNavigator.navigateTo(
+                  onTap: () => AppNavigator.navigateToPage(
                     const NuKlingerPage(),
                   ),
                 ),
                 SongCard(
                   name: 'Fader Abraham',
                   imageSource: 'assets/images/faderabraham.png',
-                  onTap: () => PageNavigator.navigateTo(
+                  onTap: () => AppNavigator.navigateToPage(
                     const FaderAbrahamPage(),
                   ),
                 ),

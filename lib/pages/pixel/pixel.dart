@@ -2,7 +2,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../home/profile_button.dart';
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
@@ -150,7 +149,7 @@ class PixelPageState extends State<PixelPage> {
       if (mounted) {
         setState(() {});
       }
-      PageNavigator.navigateTo(const DummyDisplay2());
+      AppNavigator.navigateToPage(const DummyDisplay2());
     } catch (e) {
       showErrorTop("Error: $e");
     }
@@ -267,7 +266,7 @@ class PixelPageState extends State<PixelPage> {
                             children: [
                               const Spacer(),
                               AnimatedButton(
-                                onTap: () => PageNavigator.navigateTo(CommentPageDisplay(post: post)),
+                                onTap: () => AppNavigator.navigateToPage(CommentPageDisplay(post: post)),
                                 childBuilder: (context, hover, pointerDown) {
                                   return Text(
                                     'Vis kommentarer',
@@ -290,7 +289,7 @@ class PixelPageState extends State<PixelPage> {
                     horizontal: 25, vertical: 20), // Add padding at the bottom for the button
                 child: AnimatedButton(
                   onTap: () {
-                    PageNavigator.navigateTo(const UploadPageDisplay());
+                    AppNavigator.navigateToPage(const UploadPageDisplay());
                   },
                   childBuilder: (context, hover, pointerDown) {
                     return Container(
@@ -325,10 +324,10 @@ class PixelPageDisplay extends StaticPage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override
@@ -342,10 +341,10 @@ class DummyDisplay2 extends StaticPage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override

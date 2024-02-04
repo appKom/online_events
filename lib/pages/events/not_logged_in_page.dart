@@ -12,7 +12,7 @@ class NotLoggedInPage extends StatelessWidget {
   });
 
   void onTap() {
-    PageNavigator.navigateTo(const TermsOfServicePage());
+    AppNavigator.navigateToPage(const TermsOfServicePage());
   }
 
   @override

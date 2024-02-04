@@ -1,13 +1,12 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:online/services/app_navigator.dart';
 
-import '../home/profile_button.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/pixel/models/user_post.dart';
-import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 import 'models/pixel_user_class.dart';
 import 'pixel.dart';
@@ -66,7 +65,7 @@ class LikedByPageState extends State<LikeByPage> {
                   color: Colors.white,
                   size: 40,
                 ),
-                onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
+                onPressed: () => AppNavigator.navigateToPage(const PixelPageDisplay()),
               ),
               const SizedBox(
                 width: 5,
@@ -96,7 +95,7 @@ class LikedByPageState extends State<LikeByPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AnimatedButton(onTap: () {
-                            PageNavigator.navigateTo(ViewPixelUserDisplay(
+                            AppNavigator.navigateToPage(ViewPixelUserDisplay(
                               userName: users[index].userName,
                             ));
                           }, childBuilder: (context, hover, pointerDown) {
@@ -161,10 +160,10 @@ class LikedByPageDisplay extends StaticPage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override

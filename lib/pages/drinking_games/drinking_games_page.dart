@@ -20,16 +20,16 @@ class DrinkingGamesPage extends ScrollablePage {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
-      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      padding: padding,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: OnlineHeader.height(context) + 24),
+            const SizedBox(height: 24),
             const DrikkeSanger(),
             const SizedBox(height: 24),
             Text(
@@ -41,7 +41,7 @@ class DrinkingGamesPage extends ScrollablePage {
               name: 'Terning',
               imageSource: 'assets/images/diceHeader.jpg',
               onTap: () {
-                PageNavigator.navigateTo(const DicePage());
+                AppNavigator.navigateToPage(const DicePage());
               },
             ),
             const SizedBox(height: 24),
@@ -49,7 +49,7 @@ class DrinkingGamesPage extends ScrollablePage {
               name: 'SpinLine',
               imageSource: 'assets/images/SpinLine.png',
               onTap: () {
-                PageNavigator.navigateTo(const SpinLinePage());
+                AppNavigator.navigateToPage(const SpinLinePage());
               },
             ),
             const SizedBox(
@@ -59,27 +59,14 @@ class DrinkingGamesPage extends ScrollablePage {
               name: 'Bits',
               imageSource: 'assets/images/bits.png',
               onTap: () {
-                PageNavigator.navigateTo(const BitsHomePage());
+                AppNavigator.navigateToPage(const BitsHomePage());
               },
             ),
-            // const SizedBox(height: 24),
-            // GameCard(
-            //   name: 'Bytes',
-            //   imageSource: 'assets/images/bytes.png',
-            //   onTap: () {
-            //     PageNavigator.navigateTo(const BytesHomePage());
-            //   },
-            // ),
-            SizedBox(height: Navbar.height(context) + 24),
+            const SizedBox(height: 24),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  Widget content(BuildContext context) {
-    return Container();
   }
 }
 

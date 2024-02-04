@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online/services/app_navigator.dart';
 
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
@@ -10,7 +11,6 @@ import '/core/client/client.dart';
 import '/pages/home/bedpress.dart';
 import '/pages/home/event_card.dart';
 import '/pages/home/promoted_article.dart';
-import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
 class HomePage extends ScrollablePage {
@@ -27,11 +27,11 @@ class HomePage extends ScrollablePage {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
-      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      padding: EdgeInsets.only(top: padding.top, left: padding.left, right: padding.right),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: OnlineHeader.height(context) + 24),
+          const SizedBox(height: 24),
           Text(
             'Kommende Arrangementer',
             style: OnlineTheme.header(),
@@ -76,7 +76,7 @@ class HomePage extends ScrollablePage {
                 }
 
                 return AnimatedButton(
-                  onTap: () => PageNavigator.navigateTo(const EventsPageDisplay()),
+                  onTap: () => AppNavigator.navigateToPage(const EventsPageDisplay()),
                   behavior: HitTestBehavior.opaque,
                   childBuilder: (context, hover, pointerDown) {
                     return Row(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online/services/app_navigator.dart';
 
 import '../../core/client/client.dart';
 import '/components/animated_button.dart';
@@ -104,7 +105,7 @@ class MoreArticleCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(ArticlePage(
+    AppNavigator.navigateToPage(ArticlePage(
       article: articleModel,
     ));
   }

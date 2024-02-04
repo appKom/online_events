@@ -1,27 +1,51 @@
 import 'package:flutter/cupertino.dart';
-import '/components/online_scaffold.dart';
+import 'package:flutter/material.dart';
 
-abstract class PageNavigator {
-  /// Replace scaffold content with widget
-  static void navigateTo(OnlinePage page) => OnlineScaffold.page.value = page;
+class NoAnimationPageRoute<T> extends MaterialPageRoute<T> {
+  NoAnimationPageRoute({required super.builder, super.settings});
+
+  @override
+  Widget buildTransitions(
+      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+    // No animation; the child is simply returned as is
+    return child;
+  }
 }
 
 // This class is a service provider. Helping the user navigate the app is the service it provides.
 abstract class AppNavigator {
-  static GlobalKey<NavigatorState> navigator = GlobalKey<NavigatorState>();
+  static GlobalKey<NavigatorState> globalNavigator = GlobalKey<NavigatorState>();
+  static GlobalKey<NavigatorState> onlineNavigator = GlobalKey<NavigatorState>();
 
   static const Duration transitionDuration = Duration(milliseconds: 0); // 250
   static const Duration reverseDuration = Duration(milliseconds: 0); // 250
 
+  static void replaceWithPage(Widget page) {
+    // onlineNavigator.currentState!.pushReplacement(Ma)
+    Route route = NoAnimationPageRoute(
+      builder: (context) => page,
+    );
+
+    onlineNavigator.currentState!.pushAndRemoveUntil(route, (route) => false);
+  }
+
+  static void navigateToPage(Widget page) {
+    Route route = CupertinoPageRoute(
+      builder: (context) => page,
+    );
+
+    onlineNavigator.currentState!.push(route);
+  }
+
   static void navigateToRoute(Route route, {required bool additive}) {
     if (additive) {
-      navigator.currentState!.push(route);
+      globalNavigator.currentState!.push(route);
     } else {
-      navigator.currentState!.pushReplacement(route);
+      globalNavigator.currentState!.pushReplacement(route);
     }
   }
 
   static void pop() {
-    navigator.currentState!.pop();
+    globalNavigator.currentState!.pop();
   }
 }

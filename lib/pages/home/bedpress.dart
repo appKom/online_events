@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online/services/app_navigator.dart';
 
 import '/components/animated_button.dart';
 import '/components/skeleton_loader.dart';
 import '/core/models/event_model.dart';
 import '/pages/event/event_page.dart';
-import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
 class Bedpress extends StatelessWidget {
@@ -118,7 +118,7 @@ class BedpressCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(EventPageDisplay(
+    AppNavigator.navigateToPage(EventPageDisplay(
       model: model,
     ));
   }

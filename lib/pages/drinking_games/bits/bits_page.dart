@@ -118,7 +118,7 @@ class BitsState extends State<Bits> {
 
   void previous() {
     if (index == 0) {
-      PageNavigator.navigateTo(const BitsHomePage());
+      AppNavigator.navigateToPage(const BitsHomePage());
     }
     setState(() {
       index--;

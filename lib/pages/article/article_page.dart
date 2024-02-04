@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '/components/online_scaffold.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/core/models/article_model.dart';
 import '/pages/article/view_more_articles.dart';
-import '/pages/home/profile_button.dart';
 import '/theme/theme.dart';
 
 class ArticlePage extends ScrollablePage {
@@ -72,10 +71,10 @@ class ArticlePage extends ScrollablePage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override

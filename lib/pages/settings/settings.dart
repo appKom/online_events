@@ -24,11 +24,11 @@ class SettingsOverviewPage extends StaticPage {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
-      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: OnlineHeader.height(context) + 24),
+          const SizedBox(height: 24),
           Text('Innstillinger', style: OnlineTheme.header()),
           pageLink('Profil', _onProfileTapped),
           pageLink('Innstillinger', _onSettingsTapped),
@@ -39,14 +39,14 @@ class SettingsOverviewPage extends StaticPage {
 
   void _onProfileTapped() {
     if (loggedIn) {
-      PageNavigator.navigateTo(const ProfilePageDisplay());
+      AppNavigator.navigateToPage(const ProfilePageDisplay());
     } else {
-      PageNavigator.navigateTo(const LoginPage());
+      AppNavigator.navigateToPage(const LoginPage());
     }
   }
 
   void _onSettingsTapped() {
-    PageNavigator.navigateTo(const SettingsPage());
+    AppNavigator.navigateToPage(const SettingsPage());
   }
 
   Widget pageLink(String title, void Function() onTap) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:online/services/app_navigator.dart';
 
 import '../view_pixel_user.dart';
 import '/components/animated_button.dart';
 import '/pages/pixel/models/user_post.dart';
-import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
 class WhoPostedCard extends StatelessWidget {
@@ -29,7 +29,7 @@ class WhoPostedCard extends StatelessWidget {
           width: 10,
         ),
         AnimatedButton(onTap: () {
-          PageNavigator.navigateTo(ViewPixelUserDisplay(
+          AppNavigator.navigateToPage(ViewPixelUserDisplay(
             userName: nameBeforeComma,
           ));
         }, childBuilder: (context, hover, pointerDown) {
@@ -68,7 +68,7 @@ class WhoPostedCard extends StatelessWidget {
           width: 10,
         ),
         AnimatedButton(onTap: () {
-          PageNavigator.navigateTo(ViewPixelUserDisplay(
+          AppNavigator.navigateToPage(ViewPixelUserDisplay(
             userName: nameBeforeComma,
           ));
         }, childBuilder: (context, hover, pointerDown) {

@@ -14,7 +14,7 @@ class NotLoggedInCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onPressed() {
-      PageNavigator.navigateTo(TermsOfServicePage());
+      AppNavigator.navigateToPage(const TermsOfServicePage());
     }
 
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
