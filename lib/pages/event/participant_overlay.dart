@@ -148,6 +148,15 @@ class ParticipantOverlay extends DarkOverlay {
               return Text('Error: ${snapshot.error}', style: OnlineTheme.textStyle());
             } else {
               final sortedAttendees = snapshot.data!;
+
+              if (sortedAttendees.isEmpty) {
+                return Text(
+                  'Ingen',
+                  style: OnlineTheme.textStyle(size: 15),
+                  textAlign: TextAlign.center,
+                );
+              }
+
               return ListView.separated(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
