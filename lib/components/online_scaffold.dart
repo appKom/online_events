@@ -138,7 +138,7 @@ class OnlineScaffold extends StatelessWidget {
         initialRoute: '/',
         onGenerateInitialRoutes: (NavigatorState navigator, String initialRouteName) {
           return [
-            MaterialPageRoute(builder: (context) => const LoadingPageDisplay()),
+            MaterialPageRoute(builder: (context) => const HomePage()),
           ];
         },
       ),
