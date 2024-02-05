@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online/main.dart';
+import 'package:online/pages/events/not_logged_in_page.dart';
 import 'package:online/services/app_navigator.dart';
 
 import '/pages/drinking_games/drinking_games_page.dart';
@@ -34,7 +36,13 @@ class NavbarState extends State<Navbar> {
         NavbarButton(
           icon: IconType.calendarClock,
           activeIcon: IconType.calendarClockFilled,
-          onPressed: () => AppNavigator.replaceWithPage(const MyEventsPageDisplay()),
+          onPressed: () {
+            if (loggedIn) {
+              AppNavigator.replaceWithPage(const MyEventsPageDisplay());
+            } else {
+              AppNavigator.replaceWithPage(const NotLoggedInPage());
+            }
+          },
         ),
         // if (userProfile != null && userProfile!.isMember)
         //   NavbarButton(

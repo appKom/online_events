@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '/theme/theme.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
+import '/theme/theme.dart';
 
 class DicePage extends StaticPage {
   const DicePage({super.key});
@@ -31,7 +31,6 @@ class DiceHomePage extends StatefulWidget {
 class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderStateMixin {
   int diceRoll = 1;
   late AnimationController _animationController;
-  late Animation<double> _animation;
   final _random = Random();
 
   int _step = 0;

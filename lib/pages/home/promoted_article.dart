@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:online/services/app_navigator.dart';
 
 import '/components/animated_button.dart';
 import '/core/models/article_model.dart';
 import '/pages/article/article_page.dart';
-import '/services/page_navigator.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class PromotedArticle extends StatelessWidget {

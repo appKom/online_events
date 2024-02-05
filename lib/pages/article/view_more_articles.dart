@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online/services/app_navigator.dart';
 
-import '../../core/client/client.dart';
+import '/core/client/client.dart';
 import '/components/animated_button.dart';
 import '/core/models/article_model.dart';
 import '/pages/article/article_page.dart';
-import '/services/page_navigator.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class ViewMoreArticles extends StatelessWidget {

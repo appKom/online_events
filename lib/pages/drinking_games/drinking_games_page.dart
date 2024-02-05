@@ -33,11 +33,12 @@ class DrinkingGamesPage extends ScrollablePage {
               padding: EdgeInsets.symmetric(vertical: 24),
               child: DrikkeSanger(),
             ),
+            const SizedBox(height: 24),
             Text(
               'Drikkeleker',
               style: OnlineTheme.header(),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
             CarouselSlider(
               items: [
                 GameCard(
@@ -68,32 +69,6 @@ class DrinkingGamesPage extends ScrollablePage {
                 enlargeCenterPage: true,
               ),
             ),
-            // GameCard(
-            //   name: 'Terning',
-            //   imageSource: 'assets/images/diceHeader.jpg',
-            //   onTap: () {
-            //     AppNavigator.navigateToPage(const DicePage());
-            //   },
-            // ),
-            // const SizedBox(height: 24),
-            // GameCard(
-            //   name: 'SpinLine',
-            //   imageSource: 'assets/images/SpinLine.png',
-            //   onTap: () {
-            //     AppNavigator.navigateToPage(const SpinLinePage());
-            //   },
-            // ),
-            // const SizedBox(
-            //   height: 24,
-            // ),
-            // GameCard(
-            //   name: 'Bits',
-            //   imageSource: 'assets/images/bits.png',
-            //   onTap: () {
-            //     AppNavigator.navigateToPage(const BitsHomePage());
-            //   },
-            // ),
-            // const SizedBox(height: 24),
           ],
         ),
       ),

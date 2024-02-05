@@ -23,7 +23,6 @@ class HomePage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    // final style = OnlineTheme.textStyle(weight: 5);
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
