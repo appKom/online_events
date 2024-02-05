@@ -34,7 +34,7 @@ class FaderAbrahamPage extends ScrollablePage {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 Text(
                   'Fader Abraham',
                   style: OnlineTheme.textStyle(size: 40, weight: 7),

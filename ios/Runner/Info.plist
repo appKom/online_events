@@ -26,6 +26,11 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app requires access to your location even when closed or not in use for sharing your location with other users.</string>
+    
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app requires access to your location only when in use for sharing your location with other users.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Need camera access to take pictures</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

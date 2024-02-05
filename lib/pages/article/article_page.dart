@@ -64,7 +64,10 @@ class ArticlePage extends ScrollablePage {
     final month = date.month - 1;
     final monthString = months[month];
 
-    return '$dayString. $monthString';
+    final year = date.year;
+    final yearString = year.toString();
+
+    return '$dayString. $monthString - $yearString';
   }
 
   @override
