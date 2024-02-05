@@ -80,11 +80,12 @@ class ArticlePage extends ScrollablePage {
   @override
   Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final topPadding = MediaQuery.of(context).padding;
     List<dynamic> contentSegments = extractAndSplitContent(article.content);
-    return Column(
+    return Padding(padding: topPadding, child:  
+    Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: OnlineHeader.height(context)),
         article.image?.original != null
             ? Image.network(
                 article.image!.original,
@@ -180,11 +181,12 @@ class ArticlePage extends ScrollablePage {
                 scrollController: scrollController,
               ),
               // ... other content based on the article data ...
-              SizedBox(height: Navbar.height(context) + 40),
+              const SizedBox(height: 20),
             ],
           ),
         ),
       ],
+    ),
     );
   }
 }

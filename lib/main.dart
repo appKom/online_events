@@ -14,6 +14,8 @@ bool loggedIn = false;
 UserModel? userProfile;
 int userId = 0;
 
+
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -22,9 +24,12 @@ Future main() async {
   SecureStorage.initialize();
   await Client.loadTokensFromSecureStorage();
 
+  
+
   if (!Client.tokenExpired()) {
     loggedIn = true;
-    await Client.getUserProfile();
+    userProfile = await Client.getUserProfile();
+    userId = userProfile?.id ?? 0;
   } else if (await Client.fetchRefreshToken()) {
     loggedIn = true;
   }

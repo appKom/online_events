@@ -254,6 +254,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.0"
+  flutter_firebase_recaptcha:
+    dependency: "direct main"
+    description:
+      name: flutter_firebase_recaptcha
+      sha256: "4ea76360f8584d4a9429b23247cca006277c769f8b33381c77648d99dc009175"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
+  flutter_inappwebview:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview
+      sha256: d198297060d116b94048301ee6749cd2e7d03c1f2689783f52d210a6b7aba350
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.8.0"
   flutter_lints:
     dependency: "direct dev"
     description:

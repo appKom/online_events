@@ -21,8 +21,11 @@ import 'cards/attendance_card.dart';
 import 'cards/description_card.dart';
 import 'qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+String recaptchaToken = '';
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key, required this.model});
@@ -37,10 +40,28 @@ class _EventPageState extends State<EventPage> {
 
   _EventPageState() : attendeeInfoModel = AttendeeInfoModel.withDefaults();
 
+  late FirebaseRecaptchaVerifierModal recaptchaVerifier;
+
   @override
   void initState() {
     super.initState();
     refreshAttendance();
+    recaptchaVerifier = FirebaseRecaptchaVerifierModal(
+      firebaseConfig: {
+        'apiKey': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+        'authDomain': 'online-appen.firebaseapp.com',
+        'projectId': 'online-appen',
+        'storageBucket': 'online-appen.appspot.com',
+        'messagingSenderId': 'XXXXXXXXXXXXXXXXXXXX',
+        'appId': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+      },
+      onVerify: (token) {
+        setState(() {
+          recaptchaToken = token; 
+        });
+        print('reCAPTCHA token: ' + token);
+      },
+    );
   }
 
   Future<void> refreshAttendance() async {
@@ -73,19 +94,22 @@ class _EventPageState extends State<EventPage> {
                   aspectRatio: 16 / 9,
                   child: Image.network(
                     widget.model.images.first.original,
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
                       if (loadingProgress == null) {
                         return child;
                       }
                       return Center(
                         child: CircularProgressIndicator(
                           value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
                               : null,
                         ),
                       );
                     },
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
                       return SvgPicture.asset(
                         'assets/svg/online_hvit_o.svg',
                         fit: BoxFit.cover,
@@ -103,12 +127,26 @@ class _EventPageState extends State<EventPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 24),
-                Text(
-                  widget.model.title,
-                  style: OnlineTheme.header(),
+                GestureDetector(
+                  onTap: () async {
+                    try {
+                      // recaptchaToken = await recaptchaVerifier.verify();
+                      print('reCAPTCHA token: ' + recaptchaToken);
+                      // You can now use the recaptchaToken for your backend verification
+                    } catch (e) {
+                      // Handle the error or cancellation of reCAPTCHA
+                      print('reCAPTCHA error: $e');
+                    }
+                  },
+                  child: Text(
+                    widget.model.title,
+                    style: OnlineTheme.header(),
+                  ),
                 ),
                 const SizedBox(height: 24),
-                AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
+                // FirebaseRecaptchaVerifierModal,
+                AttendanceCard(
+                    event: widget.model, attendeeInfo: attendeeInfoModel),
                 const SizedBox(height: 24),
                 EventDescriptionCard(
                   description: widget.model.description,
@@ -146,7 +184,8 @@ class EventPageDisplay extends ScrollablePage {
                 onTap: () async {
                   final qrResult = await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const QrCodeScannerDisplay()),
+                    MaterialPageRoute(
+                        builder: (context) => const QrCodeScannerDisplay()),
                   );
                   if (qrResult != null) {
                     registerAttendance(qrResult);
@@ -194,7 +233,8 @@ class EventPageDisplay extends ScrollablePage {
     final event = int.tryParse(parts[2]) ?? 0;
     final approved = parts[3].toLowerCase() == 'true';
 
-    const url = 'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
+    const url =
+        'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
 
     final body = {
       'rfid': rfid,
@@ -212,7 +252,8 @@ class EventPageDisplay extends ScrollablePage {
     if (response.statusCode == 201) {
       print('Attendance registered successfully!');
     } else {
-      print('Failed to register attendance. Status code: ${response.statusCode}');
+      print(
+          'Failed to register attendance. Status code: ${response.statusCode}');
     }
   }
 
