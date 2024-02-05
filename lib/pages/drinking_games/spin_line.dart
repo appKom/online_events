@@ -21,6 +21,8 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
   double endRotation = 0;
   double rotation = 0;
 
+  Curve randomCurve = Curves.decelerate;
+
   @override
   void initState() {
     super.initState();
@@ -32,18 +34,29 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
     controller.addListener(() {
       final t = controller.value;
 
-      final transformed = Curves.decelerate.transform(t);
+      final transformed = randomCurve.transform(t);
 
       rotation = lerpDouble(startRotation, endRotation, transformed)!;
     });
   }
 
-  void spin() {
-    final randomDuration = 1000 + random.nextInt(1500);
+  final curves = [
+    Curves.bounceOut,
+    Curves.elasticOut,
+    Curves.decelerate,
+    // Curves.decelerate,
+    Curves.linear,
+    Curves.slowMiddle,
+  ];
 
+  void spin() {
+    final randomDuration = 1000 + random.nextInt(2500);
+
+    randomCurve = curves[random.nextInt(curves.length)];
     startRotation = rotation;
 
-    endRotation = startRotation + 8 * pi * random.nextDouble();
+    // Has to rotate at least half a rotation, and can rotate 5 times at max
+    endRotation = startRotation + pi + (9 * pi * random.nextDouble());
 
     controller.duration = Duration(milliseconds: randomDuration);
 
@@ -64,7 +77,10 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
           }, childBuilder: (context, hover, pointerDown) {
             return Transform.rotate(
               angle: rotation,
-              child: SvgPicture.asset('assets/svg/online_hvit_o.svg', height: 300),
+              child: SvgPicture.asset(
+                'assets/svg/online_hvit_o.svg',
+                height: 300,
+              ),
             );
           });
         },
