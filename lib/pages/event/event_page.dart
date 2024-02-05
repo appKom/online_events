@@ -21,7 +21,6 @@ import 'cards/attendance_card.dart';
 import 'cards/description_card.dart';
 import 'qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -40,28 +39,10 @@ class _EventPageState extends State<EventPage> {
 
   _EventPageState() : attendeeInfoModel = AttendeeInfoModel.withDefaults();
 
-  late FirebaseRecaptchaVerifierModal recaptchaVerifier;
-
   @override
   void initState() {
     super.initState();
     refreshAttendance();
-    recaptchaVerifier = FirebaseRecaptchaVerifierModal(
-      firebaseConfig: {
-        'apiKey': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-        'authDomain': 'online-appen.firebaseapp.com',
-        'projectId': 'online-appen',
-        'storageBucket': 'online-appen.appspot.com',
-        'messagingSenderId': 'XXXXXXXXXXXXXXXXXXXX',
-        'appId': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-      },
-      onVerify: (token) {
-        setState(() {
-          recaptchaToken = token; 
-        });
-        print('reCAPTCHA token: ' + token);
-      },
-    );
   }
 
   Future<void> refreshAttendance() async {
@@ -127,24 +108,11 @@ class _EventPageState extends State<EventPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 24),
-                GestureDetector(
-                  onTap: () async {
-                    try {
-                      // recaptchaToken = await recaptchaVerifier.verify();
-                      print('reCAPTCHA token: ' + recaptchaToken);
-                      // You can now use the recaptchaToken for your backend verification
-                    } catch (e) {
-                      // Handle the error or cancellation of reCAPTCHA
-                      print('reCAPTCHA error: $e');
-                    }
-                  },
-                  child: Text(
-                    widget.model.title,
-                    style: OnlineTheme.header(),
-                  ),
+                Text(
+                  widget.model.title,
+                  style: OnlineTheme.header(),
                 ),
                 const SizedBox(height: 24),
-                // FirebaseRecaptchaVerifierModal,
                 AttendanceCard(
                     event: widget.model, attendeeInfo: attendeeInfoModel),
                 const SizedBox(height: 24),
