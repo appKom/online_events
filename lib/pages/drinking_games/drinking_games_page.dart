@@ -1,7 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/drinking_games/spin_line_page.dart';
@@ -29,40 +29,71 @@ class DrinkingGamesPage extends ScrollablePage {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 24),
-            const DrikkeSanger(),
-            const SizedBox(height: 24),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: DrikkeSanger(),
+            ),
             Text(
               'Drikkeleker',
               style: OnlineTheme.header(),
             ),
             const SizedBox(height: 24),
-            GameCard(
-              name: 'Terning',
-              imageSource: 'assets/images/diceHeader.jpg',
-              onTap: () {
-                AppNavigator.navigateToPage(const DicePage());
-              },
+            CarouselSlider(
+              items: [
+                GameCard(
+                  name: 'Terning',
+                  imageSource: 'assets/images/diceHeader.jpg',
+                  onTap: () {
+                    AppNavigator.navigateToPage(const DicePage());
+                  },
+                ),
+                GameCard(
+                  name: 'SpinLine',
+                  imageSource: 'assets/images/SpinLine.png',
+                  onTap: () {
+                    AppNavigator.navigateToPage(const SpinLinePage());
+                  },
+                ),
+                GameCard(
+                  name: 'Bits',
+                  imageSource: 'assets/images/bits.png',
+                  onTap: () {
+                    AppNavigator.navigateToPage(const BitsHomePage());
+                  },
+                ),
+              ],
+              options: CarouselOptions(
+                enableInfiniteScroll: true,
+                padEnds: true,
+                enlargeCenterPage: true,
+              ),
             ),
-            const SizedBox(height: 24),
-            GameCard(
-              name: 'SpinLine',
-              imageSource: 'assets/images/SpinLine.png',
-              onTap: () {
-                AppNavigator.navigateToPage(const SpinLinePage());
-              },
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            GameCard(
-              name: 'Bits',
-              imageSource: 'assets/images/bits.png',
-              onTap: () {
-                AppNavigator.navigateToPage(const BitsHomePage());
-              },
-            ),
-            const SizedBox(height: 24),
+            // GameCard(
+            //   name: 'Terning',
+            //   imageSource: 'assets/images/diceHeader.jpg',
+            //   onTap: () {
+            //     AppNavigator.navigateToPage(const DicePage());
+            //   },
+            // ),
+            // const SizedBox(height: 24),
+            // GameCard(
+            //   name: 'SpinLine',
+            //   imageSource: 'assets/images/SpinLine.png',
+            //   onTap: () {
+            //     AppNavigator.navigateToPage(const SpinLinePage());
+            //   },
+            // ),
+            // const SizedBox(
+            //   height: 24,
+            // ),
+            // GameCard(
+            //   name: 'Bits',
+            //   imageSource: 'assets/images/bits.png',
+            //   onTap: () {
+            //     AppNavigator.navigateToPage(const BitsHomePage());
+            //   },
+            // ),
+            // const SizedBox(height: 24),
           ],
         ),
       ),
