@@ -58,12 +58,12 @@ class EventsPageState extends State<EventsPage> {
     }).toList();
 
     return Padding(
-      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      padding: EdgeInsets.only(left: padding.left, right: padding.right, top: padding.top),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: OnlineHeader.height(context) + 24),
+            const SizedBox(height: 24,),
             Text(
               'Kommende Arrangementer',
               style: OnlineTheme.header(),

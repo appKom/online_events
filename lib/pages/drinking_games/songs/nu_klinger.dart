@@ -17,11 +17,12 @@ class NuKlingerPage extends ScrollablePage {
   @override
   Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final topPadding = MediaQuery.of(context).padding;
 
-    return Column(
+    return Padding(padding: topPadding, child: 
+    Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: OnlineHeader.height(context)),
         SizedBox(
           height: 267,
           child: Image.asset(
@@ -120,6 +121,7 @@ class NuKlingerPage extends ScrollablePage {
           ),
         ),
       ],
+    ),
     );
   }
 }

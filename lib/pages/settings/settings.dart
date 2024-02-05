@@ -21,7 +21,8 @@ class SettingsOverviewPage extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: padding,
@@ -99,12 +100,14 @@ class SettingsPage extends StaticPage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
+    final topPadding = MediaQuery.of(context).padding;
 
-    return Material(
-      color: OnlineTheme.background,
-      child: Padding(
-        padding: padding,
+    return Padding(
+      padding: padding,
+      child: Material(
+        color: OnlineTheme.background,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -159,7 +162,9 @@ class __SettingsContentState extends State<_SettingsContent> {
       ),
       child: Column(
         children: [
-          SizedBox(height: Navbar.height(context) + 24),
+          const SizedBox(
+            height: 24,
+          ),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
