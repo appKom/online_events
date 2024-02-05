@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:online/services/app_navigator.dart';
 
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
-import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
@@ -11,6 +9,7 @@ import '/core/client/client.dart';
 import '/pages/home/bedpress.dart';
 import '/pages/home/event_card.dart';
 import '/pages/home/promoted_article.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class HomePage extends ScrollablePage {
@@ -131,7 +130,7 @@ class HomePage extends ScrollablePage {
               },
             ),
           ),
-          SizedBox(height: Navbar.height(context) + 24),
+          const SizedBox(height: 24),
         ],
       ),
     );

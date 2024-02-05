@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-import '/components/online_scaffold.dart';
+import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';
 import '/services/env.dart';
 import '/services/secure_storage.dart';
@@ -14,8 +14,6 @@ bool loggedIn = false;
 UserModel? userProfile;
 int userId = 0;
 
-
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -23,8 +21,6 @@ Future main() async {
 
   SecureStorage.initialize();
   await Client.loadTokensFromSecureStorage();
-
-  
 
   if (!Client.tokenExpired()) {
     loggedIn = true;
@@ -61,9 +57,6 @@ Future _configureFirebase() async {
   await FirebaseMessaging.instance.getToken();
 }
 
-// final List<EventModel> eventModels = [];
-// final List<ArticleModel> articleModels = [];
-
 class OnlineApp extends StatelessWidget {
   const OnlineApp({super.key});
 
@@ -73,7 +66,7 @@ class OnlineApp extends StatelessWidget {
       navigatorKey: AppNavigator.globalNavigator,
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
-      home: const OnlineScaffold(),
+      home: const HomePage(),
     );
   }
 }

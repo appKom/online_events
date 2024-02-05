@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online/pages/home/home_page.dart';
+import 'package:online/pages/loading/loading_page.dart';
 import 'package:online/services/app_navigator.dart';
 
 import '../theme/theme.dart';
@@ -137,7 +138,7 @@ class OnlineScaffold extends StatelessWidget {
         initialRoute: '/',
         onGenerateInitialRoutes: (NavigatorState navigator, String initialRouteName) {
           return [
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(builder: (context) => const LoadingPageDisplay()),
           ];
         },
       ),

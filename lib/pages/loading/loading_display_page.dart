@@ -8,6 +8,11 @@ class LoadingPageDisplay extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    return const LoadingPage();
+    final padding = MediaQuery.of(context).padding;
+
+    return Padding(
+      padding: padding,
+      child: const LoadingPage(),
+    );
   }
 }
