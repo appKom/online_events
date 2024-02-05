@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:online/components/online_scaffold.dart';
 
 import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';
@@ -66,7 +67,7 @@ class OnlineApp extends StatelessWidget {
       navigatorKey: AppNavigator.globalNavigator,
       title: 'Online Events',
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const OnlineScaffold(),
     );
   }
 }
