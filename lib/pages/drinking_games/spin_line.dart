@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -16,46 +17,74 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
   late Animation<double> animation;
   final random = Random();
 
+  double startRotation = 0;
+  double endRotation = 0;
+  double rotation = 0;
+
+  Curve randomCurve = Curves.decelerate;
+
   @override
   void initState() {
     super.initState();
 
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 0),
     );
 
-    animation = Tween<double>(begin: 0, end: 2 * pi).animate(controller)
-      ..addListener(() {
-        setState(() {});
-      });
+    controller.addListener(() {
+      final t = controller.value;
+
+      final transformed = randomCurve.transform(t);
+
+      rotation = lerpDouble(startRotation, endRotation, transformed)!;
+    });
   }
 
-  void startSpinning() {
-    int randomDuration = 5 + random.nextInt(6);
-    double randomEndRotation = 2 * pi * (5 + random.nextDouble());
+  final curves = [
+    Curves.bounceOut,
+    Curves.elasticOut,
+    Curves.decelerate,
+    // Curves.decelerate,
+    Curves.linear,
+    Curves.slowMiddle,
+  ];
 
-    controller.duration = Duration(seconds: randomDuration);
-    animation = Tween<double>(begin: controller.value * 2 * pi, end: randomEndRotation).animate(controller)
-      ..addListener(() {
-        setState(() {});
-      });
-    controller.forward(from: 0);
+  void spin() {
+    final randomDuration = 1000 + random.nextInt(2500);
+
+    randomCurve = curves[random.nextInt(curves.length)];
+    startRotation = rotation;
+
+    // Has to rotate at least half a rotation, and can rotate 5 times at max
+    endRotation = startRotation + pi + (9 * pi * random.nextDouble());
+
+    controller.duration = Duration(milliseconds: randomDuration);
+
+    controller.reset();
+    controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: AnimatedButton(onTap: () {
-        if (!controller.isAnimating) {
-          startSpinning();
-        }
-      }, childBuilder: (context, hover, pointerDown) {
-        return Transform.rotate(
-          angle: animation.value,
-          child: SvgPicture.asset('assets/svg/online_hvit_o.svg', height: 300),
-        );
-      }),
+      child: AnimatedBuilder(
+        animation: controller,
+        builder: (context, child) {
+          return AnimatedButton(onTap: () {
+            if (!controller.isAnimating) {
+              spin();
+            }
+          }, childBuilder: (context, hover, pointerDown) {
+            return Transform.rotate(
+              angle: rotation,
+              child: SvgPicture.asset(
+                'assets/svg/online_hvit_o.svg',
+                height: 300,
+              ),
+            );
+          });
+        },
+      ),
     );
   }
 
