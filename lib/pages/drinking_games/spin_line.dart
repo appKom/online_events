@@ -44,19 +44,21 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
     Curves.bounceOut,
     Curves.elasticOut,
     Curves.decelerate,
-    // Curves.decelerate,
+    Curves.decelerate,
+    Curves.decelerate,
     Curves.linear,
     Curves.slowMiddle,
+    Curves.easeInOutBack,
   ];
 
   void spin() {
-    final randomDuration = 1000 + random.nextInt(2500);
+    final randomDuration = 2500 + random.nextInt(2500);
 
     randomCurve = curves[random.nextInt(curves.length)];
     startRotation = rotation;
 
-    // Has to rotate at least half a rotation, and can rotate 5 times at max
-    endRotation = startRotation + pi + (9 * pi * random.nextDouble());
+    // Has to rotate at least half a rotation and can rotate up to 5 times
+    endRotation = startRotation + pi + (8 * pi * random.nextDouble());
 
     controller.duration = Duration(milliseconds: randomDuration);
 
