@@ -34,7 +34,7 @@ Future main() async {
   runApp(const OnlineApp());
 
   Client.getEvents(pages: [1]);
-  Client.fetchArticles();
+  Client.fetchArticles(1);
 
   await _configureFirebase();
 }
