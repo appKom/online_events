@@ -130,7 +130,7 @@ class HomePage extends ScrollablePage {
               },
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 70),
         ],
       ),
     );
