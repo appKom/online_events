@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
@@ -25,8 +24,7 @@ class _RecaptchaState extends State<ReCaptcha> {
   late InAppWebViewController webViewController;
 
   Future<void> registerForEvent(String eventId, String reCaptchaToken) async {
-    const String verifyCaptchaUrl =
-        'https://recaptcha-verify-steel.vercel.app/api/verify-recaptcha';
+    const String verifyCaptchaUrl = 'https://recaptcha-verify-steel.vercel.app/api/verify-recaptcha';
 
     try {
       final verifyResponse = await http.post(
@@ -40,8 +38,7 @@ class _RecaptchaState extends State<ReCaptcha> {
       final verifyData = json.decode(verifyResponse.body);
       print('verifyData: $verifyData');
       if (verifyData['verified'] == true) {
-        final String apiUrl =
-            'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
+        final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
         final Map<String, dynamic> requestBody = {
           "recaptcha": 'true',
           "allow_pictures": true,
@@ -82,8 +79,7 @@ class _RecaptchaState extends State<ReCaptcha> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height - 150,
         child: InAppWebView(
-          initialUrlRequest:
-              URLRequest(url: Uri.parse("https://hansteen.dev/recaptcha")),
+          initialUrlRequest: URLRequest(url: Uri.parse("https://hansteen.dev/recaptcha")),
           onWebViewCreated: (controller) {
             webViewController = controller;
           },
