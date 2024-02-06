@@ -2,15 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:online/pages/event/event_page.dart';
+import 'package:http/http.dart' as http;
 
-import '../../../core/client/client.dart';
-import '../../../services/app_navigator.dart';
-import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
+import '/core/client/client.dart';
 import '/core/models/event_model.dart';
-import 'package:http/http.dart' as http;
+import '/pages/event/event_page.dart';
+import '/services/app_navigator.dart';
 
 class ReCaptcha extends StatefulWidget {
   const ReCaptcha({super.key, required this.model});
@@ -25,8 +24,7 @@ class _RecaptchaState extends State<ReCaptcha> {
   late InAppWebViewController webViewController;
 
   Future<void> registerForEvent(String eventId, String reCaptchaToken) async {
-    final String apiUrl =
-        'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
+    final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
 
     // Your request body
     final Map<String, dynamic> requestBody = {
@@ -58,44 +56,32 @@ class _RecaptchaState extends State<ReCaptcha> {
 
   @override
   Widget build(BuildContext context) {
-    const horizontalPadding = EdgeInsets.symmetric(horizontal: 0);
+    final padding = MediaQuery.of(context).padding;
     String captchaToken = "";
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: OnlineHeader.height(context)),
-          SizedBox(
-            height: Navbar.height(context) - 60,
-          ),
-          Padding(
-            padding: horizontalPadding,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height - 150,
-              child: InAppWebView(
-                initialUrlRequest: URLRequest(
-                    url: Uri.parse("https://hansteen.dev/recaptcha")),
-                onWebViewCreated: (controller) {
-                  webViewController = controller;
-                },
-                onLoadStop: (controller, url) async {
-                  controller.addJavaScriptHandler(
-                      handlerName: 'handlerCaptcha',
-                      callback: (args) {
-                        captchaToken = args[0];
-                        print("Received token: $captchaToken");
-                        recaptchaToken = captchaToken;
-                        registerForEvent(widget.model.id.toString(), captchaToken);
-                        AppNavigator.navigateToPage(EventPageDisplay(
-                          model: widget.model,
-                        ));
-                      });
-                },
-              ),
-            ),
-          ),
-        ],
+    return Padding(
+      padding: padding,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height - 150,
+        child: InAppWebView(
+          initialUrlRequest: URLRequest(url: Uri.parse("https://hansteen.dev/recaptcha")),
+          onWebViewCreated: (controller) {
+            webViewController = controller;
+          },
+          onLoadStop: (controller, url) async {
+            controller.addJavaScriptHandler(
+                handlerName: 'handlerCaptcha',
+                callback: (args) {
+                  captchaToken = args[0];
+                  print("Received token: $captchaToken");
+                  recaptchaToken = captchaToken;
+                  registerForEvent(widget.model.id.toString(), captchaToken);
+                  AppNavigator.navigateToPage(EventPageDisplay(
+                    model: widget.model,
+                  ));
+                });
+          },
+        ),
       ),
     );
   }

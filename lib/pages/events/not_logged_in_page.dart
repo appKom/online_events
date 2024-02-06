@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:online/components/online_scaffold.dart';
 
 import '/components/animated_button.dart';
+import '/components/online_scaffold.dart';
 import '/pages/login/terms_of_service.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';

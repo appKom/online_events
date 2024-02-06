@@ -146,12 +146,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> uploadImage() async {
+    if (userProfile == null) return;
+
     if (_imageFile == null) {
       print("No image selected");
       return;
     }
 
-    String fileName = userProfile?.ntnuUsername ?? 'default' + '.jpg';
+    String fileName = userProfile!.ntnuUsername;
 
     try {
       await storage.getFile(
@@ -209,72 +211,74 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Center(
-                  child: AnimatedButton(
-                    onTap: () async {
-                      await pickImage(ImageSource.gallery);
-                      if (_imageFile != null) {
-                        await uploadImage();
-                      }
-                    },
-                    childBuilder: (context, hover, pointerDown) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ClipOval(
-                            child: SizedBox(
-                              width: 125,
-                              height: 125,
-                              child: _imageFile != null
-                                  ? Image.file(
-                                      _imageFile!,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.network(
-                                      'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
-                                      fit: BoxFit.cover,
-                                      height: 240,
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                                          if (!showInfoAboutPicture) {
-                                            setState(() {
-                                              showInfoAboutPicture = true;
-                                            });
-                                          }
-                                        });
-                                        return Image.asset(
-                                          'assets/images/default_profile_picture.png',
-                                          fit: BoxFit.cover,
-                                          height: 240,
-                                        );
-                                      },
-                                    ),
+              const SizedBox(height: 24),
+              Center(
+                child: AnimatedButton(
+                  onTap: () async {
+                    await pickImage(ImageSource.gallery);
+                    if (_imageFile != null) {
+                      await uploadImage();
+                    }
+                  },
+                  childBuilder: (context, hover, pointerDown) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ClipOval(
+                          child: SizedBox(
+                            width: 125,
+                            height: 125,
+                            child: _imageFile != null
+                                ? Image.file(
+                                    _imageFile!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+                                    fit: BoxFit.cover,
+                                    height: 240,
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                                        if (!showInfoAboutPicture) {
+                                          setState(() {
+                                            showInfoAboutPicture = true;
+                                          });
+                                        }
+                                      });
+                                      return Image.asset(
+                                        'assets/images/default_profile_picture.png',
+                                        fit: BoxFit.cover,
+                                        height: 240,
+                                      );
+                                    },
+                                  ),
+                          ),
+                        ),
+                        if (showInfoAboutPicture)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              'Trykk for å laste opp profil bilde',
+                              style: OnlineTheme.textStyle(
+                                color: OnlineTheme.blue2,
+                              ),
                             ),
                           ),
-                          if (showInfoAboutPicture)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text('Trykk for å laste opp profil bilde',
-                                  style: OnlineTheme.textStyle(color: OnlineTheme.blue2)),
-                            ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
               TextFormField(
                 controller: _titleController,
-                style: OnlineTheme.textStyle(color: OnlineTheme.white),
+                style: OnlineTheme.textStyle(),
                 decoration: InputDecoration(
                   labelText: 'Skriv om deg selv:',
-                  labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                  hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
+                  labelStyle: OnlineTheme.textStyle(),
+                  hintStyle: OnlineTheme.textStyle(),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: OnlineTheme.white),
                   ),
@@ -516,12 +520,8 @@ class StudyCoursePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class ProfilePageDisplay extends ScrollablePage {
+class ProfilePageDisplay extends StaticPage {
   const ProfilePageDisplay({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {
