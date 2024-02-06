@@ -24,15 +24,6 @@ class _RecaptchaState extends State<ReCaptcha> {
   late InAppWebViewController webViewController;
 
   Future<void> registerForEvent(String eventId, String reCaptchaToken) async {
-    final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
-
-    // Your request body
-    final Map<String, dynamic> requestBody = {
-      "recaptcha": reCaptchaToken,
-      "allow_pictures": true,
-      "show_as_attending_event": true,
-      "note": "Online app supremacy"
-    };
     const String verifyCaptchaUrl = 'https://recaptcha-verify-steel.vercel.app/api/verify-recaptcha';
 
     try {
