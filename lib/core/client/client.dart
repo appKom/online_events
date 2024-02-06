@@ -309,7 +309,7 @@ abstract class Client {
 
   static Future<List<ArticleModel>?> fetchArticles(int pageNumber) async {
     // await Future.delayed(const Duration(seconds: 5));
-    final articles = await fetch('$endpoint/api/v1/articles/?page=$pageNumber', ArticleModel.fromJson);
+    final articles = await fetch('$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber', ArticleModel.fromJson);
 
     // Add any new articles fetched
     if (articles != null) {

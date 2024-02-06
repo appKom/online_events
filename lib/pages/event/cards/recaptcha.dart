@@ -25,18 +25,29 @@ class _RecaptchaState extends State<ReCaptcha> {
   late InAppWebViewController webViewController;
 
   Future<void> registerForEvent(String eventId, String reCaptchaToken) async {
-    final String apiUrl =
-        'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
+  const String verifyCaptchaUrl = 'https://recaptcha-verify-steel.vercel.app/api/verify-recaptcha';
 
-    // Your request body
-    final Map<String, dynamic> requestBody = {
-      "recaptcha": reCaptchaToken,
-      "allow_pictures": true,
-      "show_as_attending_event": true,
-      "note": "Online app supremacy"
-    };
+  try {
+    final verifyResponse = await http.post(
+      Uri.parse(verifyCaptchaUrl),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: json.encode({"token": reCaptchaToken}),
+    );
 
-    try {
+    final verifyData = json.decode(verifyResponse.body);
+    print('verifyData: $verifyData');
+    if (verifyData['verified'] == true) {
+      final String apiUrl =
+          'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
+      final Map<String, dynamic> requestBody = {
+        "recaptcha": 'true',
+        "allow_pictures": true,
+        "show_as_attending_event": true,
+        "note": "Online app supremacy"
+      };
+
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -47,32 +58,33 @@ class _RecaptchaState extends State<ReCaptcha> {
       );
 
       if (response.statusCode == 201) {
-        print("You are not registered $reCaptchaToken");
+        print("You are now registered $reCaptchaToken");
       } else {
         print("Could not register: ${response.body} $reCaptchaToken");
       }
-    } catch (e) {
-      print("An error has occured: $reCaptchaToken: $e");
+    } else {
+      // reCAPTCHA token is invalid, handle accordingly
+      print("Invalid reCAPTCHA token: ${verifyData['details']}");
     }
+  } catch (e) {
+    print("An error has occurred: $e");
   }
+}
 
   @override
   Widget build(BuildContext context) {
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 0);
+    final topPadding = MediaQuery.of(context).padding;
     String captchaToken = "";
 
     return SingleChildScrollView(
-      child: Column(
+      child: 
+      Padding(padding: topPadding,child: 
+      Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: OnlineHeader.height(context)),
-          SizedBox(
-            height: Navbar.height(context) - 60,
-          ),
-          Padding(
-            padding: horizontalPadding,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height - 150,
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
               child: InAppWebView(
                 initialUrlRequest: URLRequest(
                     url: Uri.parse("https://hansteen.dev/recaptcha")),
@@ -94,8 +106,9 @@ class _RecaptchaState extends State<ReCaptcha> {
                 },
               ),
             ),
-          ),
+    
         ],
+      ),
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:online/main.dart';
 import 'package:online/pages/events/not_logged_in_page.dart';
 import 'package:online/services/app_navigator.dart';
 
-import '/pages/drinking_games/drinking_games_page.dart';
+import '../pages/games/games_page.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/home/home_page.dart';
 import '/pages/settings/settings.dart';
@@ -53,7 +53,7 @@ class NavbarState extends State<Navbar> {
         NavbarButton(
           icon: IconType.beer,
           activeIcon: IconType.beerFilled,
-          onPressed: () => AppNavigator.replaceWithPage(const DrinkingGamesPage()),
+          onPressed: () => AppNavigator.replaceWithPage(const GamesPage()),
         ),
         NavbarButton(
           icon: IconType.settings,

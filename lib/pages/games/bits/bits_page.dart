@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/pages/drinking_games/bits/bits_home_page.dart';
+import '/pages/games/bits/bits_home_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'bits_model.dart';
@@ -68,7 +68,7 @@ class BitsState extends State<Bits> {
           Expanded(
             flex: 8,
             child: Padding(
-              padding: EdgeInsets.only(left: padding.left, right: padding.right),
+              padding: EdgeInsets.only(left: padding.left, right: padding.right,),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -94,8 +94,6 @@ class BitsState extends State<Bits> {
               ),
             ),
           ),
-
-          // Right GestureDetector
           Expanded(
             child: GestureDetector(
               onTap: next,

@@ -4,7 +4,7 @@ import 'package:online/services/app_navigator.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/pages/drinking_games/bits/bits_page.dart';
+import '/pages/games/bits/bits_page.dart';
 import '/theme/theme.dart';
 
 class BitsHomePage extends ScrollablePage {

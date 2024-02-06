@@ -35,8 +35,6 @@ class EventCardButtons extends StatefulWidget {
 }
 
 class _EventCardButtonsState extends State<EventCardButtons> {
-  
-
 
   Future<void> unregisterForEvent(String eventId) async {
     final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/unregister/';
@@ -188,7 +186,9 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   Widget waitlistButton() {
     return AnimatedButton(
       onTap: () {
-        // registerForEvent(widget.model.id.toString());
+        AppNavigator.navigateToPage(ReCaptchaDisplay(
+          model: widget.model,
+        ));
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(

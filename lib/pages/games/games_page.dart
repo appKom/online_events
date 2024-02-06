@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/pages/drinking_games/spin_line_page.dart';
+import '/pages/games/spin_line_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'bits/bits_home_page.dart';
 import 'dice.dart';
 import 'songs/songs.dart';
 
-class DrinkingGamesPage extends ScrollablePage {
-  const DrinkingGamesPage({super.key});
+class GamesPage extends ScrollablePage {
+  const GamesPage({super.key});
 
   @override
   Widget? header(BuildContext context) {
@@ -35,7 +35,7 @@ class DrinkingGamesPage extends ScrollablePage {
             ),
             const SizedBox(height: 24),
             Text(
-              'Drikkeleker',
+              'Spill',
               style: OnlineTheme.header(),
             ),
             const SizedBox(height: 10),
