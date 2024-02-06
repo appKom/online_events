@@ -25,7 +25,8 @@ class _RecaptchaState extends State<ReCaptcha> {
   late InAppWebViewController webViewController;
 
   Future<void> registerForEvent(String eventId, String reCaptchaToken) async {
-    final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
+    final String apiUrl =
+        'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
 
     // Your request body
     final Map<String, dynamic> requestBody = {
@@ -34,94 +35,84 @@ class _RecaptchaState extends State<ReCaptcha> {
       "show_as_attending_event": true,
       "note": "Online app supremacy"
     };
-  const String verifyCaptchaUrl = 'https://recaptcha-verify-steel.vercel.app/api/verify-recaptcha';
+    const String verifyCaptchaUrl =
+        'https://recaptcha-verify-steel.vercel.app/api/verify-recaptcha';
 
-  try {
-    final verifyResponse = await http.post(
-      Uri.parse(verifyCaptchaUrl),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: json.encode({"token": reCaptchaToken}),
-    );
-
-    final verifyData = json.decode(verifyResponse.body);
-    print('verifyData: $verifyData');
-    if (verifyData['verified'] == true) {
-      final String apiUrl =
-          'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
-      final Map<String, dynamic> requestBody = {
-        "recaptcha": 'true',
-        "allow_pictures": true,
-        "show_as_attending_event": true,
-        "note": "Online app supremacy"
-      };
-
-      final response = await http.post(
-        Uri.parse(apiUrl),
+    try {
+      final verifyResponse = await http.post(
+        Uri.parse(verifyCaptchaUrl),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": 'Bearer ${Client.accessToken}',
         },
-        body: json.encode(requestBody),
+        body: json.encode({"token": reCaptchaToken}),
       );
 
-      if (response.statusCode == 201) {
-        print("You are now registered $reCaptchaToken");
+      final verifyData = json.decode(verifyResponse.body);
+      print('verifyData: $verifyData');
+      if (verifyData['verified'] == true) {
+        final String apiUrl =
+            'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
+        final Map<String, dynamic> requestBody = {
+          "recaptcha": 'true',
+          "allow_pictures": true,
+          "show_as_attending_event": true,
+          "note": "Online app supremacy"
+        };
+
+        final response = await http.post(
+          Uri.parse(apiUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer ${Client.accessToken}',
+          },
+          body: json.encode(requestBody),
+        );
+
+        if (response.statusCode == 201) {
+          print("You are now registered $reCaptchaToken");
+        } else {
+          print("Could not register: ${response.body} $reCaptchaToken");
+        }
       } else {
-        print("Could not register: ${response.body} $reCaptchaToken");
+        // reCAPTCHA token is invalid, handle accordingly
+        print("Invalid reCAPTCHA token: ${verifyData['details']}");
       }
-    } else {
-      // reCAPTCHA token is invalid, handle accordingly
-      print("Invalid reCAPTCHA token: ${verifyData['details']}");
+    } catch (e) {
+      print("An error has occurred: $e");
     }
-  } catch (e) {
-    print("An error has occurred: $e");
   }
-}
 
   @override
   Widget build(BuildContext context) {
-    const horizontalPadding = EdgeInsets.symmetric(horizontal: 0);
+    final padding = MediaQuery.of(context).padding;
     String captchaToken = "";
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: OnlineHeader.height(context)),
-          SizedBox(
-            height: Navbar.height(context) - 60,
-          ),
-          Padding(
-            padding: horizontalPadding,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height - 150,
-              child: InAppWebView(
-                initialUrlRequest: URLRequest(
-                    url: Uri.parse("https://hansteen.dev/recaptcha")),
-                onWebViewCreated: (controller) {
-                  webViewController = controller;
-                },
-                onLoadStop: (controller, url) async {
-                  controller.addJavaScriptHandler(
-                      handlerName: 'handlerCaptcha',
-                      callback: (args) {
-                        captchaToken = args[0];
-                        print("Received token: $captchaToken");
-                        recaptchaToken = captchaToken;
-                        registerForEvent(widget.model.id.toString(), captchaToken);
-                        AppNavigator.navigateToPage(EventPageDisplay(
-                          model: widget.model,
-                        ));
-                      });
-                },
-              ),
-            ),
-          ),
-        ],
+    return Padding(
+      padding: padding,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height - 150,
+        child: InAppWebView(
+          initialUrlRequest:
+              URLRequest(url: Uri.parse("https://hansteen.dev/recaptcha")),
+          onWebViewCreated: (controller) {
+            webViewController = controller;
+          },
+          onLoadStop: (controller, url) async {
+            controller.addJavaScriptHandler(
+                handlerName: 'handlerCaptcha',
+                callback: (args) {
+                  captchaToken = args[0];
+                  print("Received token: $captchaToken");
+                  recaptchaToken = captchaToken;
+                  registerForEvent(widget.model.id.toString(), captchaToken);
+                  AppNavigator.navigateToPage(EventPageDisplay(
+                    model: widget.model,
+                  ));
+                });
+          },
+        ),
       ),
-      );
+    );
   }
 }
 
