@@ -407,9 +407,6 @@ class MyEventsPageState extends State<MyEventsPage> {
             const SizedBox(
               height: 10,
             ),
-            const Separator(
-              margin: 5,
-            ),
             _buildEventList(upcomingEvents),
             const SizedBox(height: 24),
             Text('Tidligere Arrangementer', style: OnlineTheme.header()),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online/pages/home/home_page.dart';
-import 'package:online/pages/loading/loading_page.dart';
-import 'package:online/services/app_navigator.dart';
 
 import '../theme/theme.dart';
+import '/pages/home/home_page.dart';
 import '/pages/loading/loading_display_page.dart';
+import '/services/app_navigator.dart';
 import 'navbar.dart';
 
 abstract class ScrollablePage extends OnlinePage {
@@ -145,37 +144,5 @@ class OnlineScaffold extends StatelessWidget {
       extendBody: true,
       bottomNavigationBar: const Navbar(),
     );
-    // return Material(
-    //   color: OnlineTheme.background,
-    //   child: Stack(
-    //     children: [
-    //       Positioned.fill(
-    //         child: ValueListenableBuilder(
-    //           valueListenable: page,
-    //           builder: (context, page, child) {
-    //             return page;
-    //           },
-    //         ),
-    //       ),
-    //       Positioned(
-    //         left: 0,
-    //         right: 0,
-    //         top: 0,
-    //         child: ValueListenableBuilder(
-    //           valueListenable: page,
-    //           builder: (context, page, child) {
-    //             return page.header(context) ?? Container();
-    //           },
-    //         ),
-    //       ),
-    //       const Positioned(
-    //         left: 0,
-    //         right: 0,
-    //         bottom: 0,
-    //         child: Navbar(),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

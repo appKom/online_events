@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:online/main.dart';
-import 'package:online/pages/events/not_logged_in_page.dart';
-import 'package:online/services/app_navigator.dart';
 
+import '/main.dart';
 import '../pages/games/games_page.dart';
 import '/pages/events/my_events_page.dart';
+import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
 import '/pages/settings/settings.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'animated_button.dart';
