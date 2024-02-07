@@ -237,87 +237,8 @@ class EventPageDisplay extends ScrollablePage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: [
-        // if (loggedIn)
-        //   SizedBox.square(
-        //     dimension: 40,
-        //     child: Center(
-        //       child: AnimatedButton(
-        //         onTap: () async {
-        //           final qrResult = await Navigator.push(
-        //             context,
-        //             MaterialPageRoute(
-        //                 builder: (context) => const QrCodeScannerDisplay()),
-        //           );
-        //           if (qrResult != null) {
-        //             registerAttendance(qrResult);
-        //           }
-        //         },
-        //         childBuilder: (context, hover, pointerDown) {
-        //           return const ThemedIcon(
-        //             icon: IconType.camScan,
-        //             size: 24,
-        //             color: OnlineTheme.white,
-        //           );
-        //         },
-        //       ),
-        //     ),
-        //   ),
-        // if (loggedIn)
-        //   SizedBox.square(
-        //     dimension: 40,
-        //     child: Center(
-        //       child: AnimatedButton(
-        //         onTap: () {
-        //           AppNavigator.navigateToRoute(
-        //             QRCode(model: model),
-        //             additive: true,
-        //           );
-        //         },
-        //         childBuilder: (context, hover, pointerDown) {
-        //           return const ThemedIcon(
-        //             icon: IconType.qr,
-        //             size: 24,
-        //             color: OnlineTheme.white,
-        //           );
-        //         },
-        //       ),
-        //     ),
-        //   ),
-      ],
     );
   }
-
-  // void registerAttendance(String qrData) async {
-  //   final parts = qrData.split(',');
-  //   final rfid = parts[0];
-  //   final username = parts[1];
-  //   final event = int.tryParse(parts[2]) ?? 0;
-  //   final approved = parts[3].toLowerCase() == 'true';
-
-  //   const url =
-  //       'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
-
-  //   final body = {
-  //     'rfid': rfid,
-  //     'username': username,
-  //     'event': event,
-  //     'approved': approved,
-  //   };
-
-  //   final response = await http.post(
-  //     Uri.parse(url),
-  //     headers: {"Content-Type": "application/json"},
-  //     body: json.encode(body),
-  //   );
-
-  //   if (response.statusCode == 201) {
-  //     print('Attendance registered successfully!');
-  //   } else {
-  //     print(
-  //         'Failed to register attendance. Status code: ${response.statusCode}');
-  //   }
-  // }
 
   @override
   Widget content(BuildContext context) {

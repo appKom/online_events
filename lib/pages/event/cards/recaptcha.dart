@@ -42,7 +42,7 @@ class _RecaptchaState extends State<ReCaptcha> {
         final String apiUrl =
             'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
         final Map<String, dynamic> requestBody = {
-          "recaptcha": 'true',
+          "recaptcha": recaptchaToken,
           "allow_pictures": true,
           "show_as_attending_event": true,
           "note": "Online app supremacy"
