@@ -307,9 +307,9 @@ abstract class Client {
 
   static ValueNotifier<Set<ArticleModel>> articlesCache = ValueNotifier({});
 
-  static Future<List<ArticleModel>?> fetchArticles() async {
+  static Future<List<ArticleModel>?> fetchArticles(int pageNumber) async {
     // await Future.delayed(const Duration(seconds: 5));
-    final articles = await fetch('$endpoint/api/v1/articles/', ArticleModel.fromJson);
+    final articles = await fetch('$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber', ArticleModel.fromJson);
 
     // Add any new articles fetched
     if (articles != null) {

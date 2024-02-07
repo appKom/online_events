@@ -1,22 +1,21 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:online_events/components/navbar.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/main.dart';
+
+import '/components/animated_button.dart';
+import '/components/navbar.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/main.dart';
 import '/pages/pixel/cards/description_card.dart';
 import '/pages/pixel/cards/likes_card.dart';
 import '/pages/pixel/cards/not_logged_in_card.dart';
 import '/pages/pixel/cards/who_posted_card.dart';
 import '/pages/pixel/comments.page.dart';
 import '/pages/pixel/info_page_pixel.dart';
-
-import '/components/animated_button.dart';
-import '/components/online_scaffold.dart';
-import '/components/separator.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
-import '../home/profile_button.dart';
 import 'models/user_post.dart';
 import 'upload_page.dart';
 
@@ -150,7 +149,7 @@ class PixelPageState extends State<PixelPage> {
       if (mounted) {
         setState(() {});
       }
-      PageNavigator.navigateTo(const DummyDisplay2());
+      AppNavigator.navigateToPage(const DummyDisplay2());
     } catch (e) {
       showErrorTop("Error: $e");
     }
@@ -267,7 +266,7 @@ class PixelPageState extends State<PixelPage> {
                             children: [
                               const Spacer(),
                               AnimatedButton(
-                                onTap: () => PageNavigator.navigateTo(CommentPageDisplay(post: post)),
+                                onTap: () => AppNavigator.navigateToPage(CommentPageDisplay(post: post)),
                                 childBuilder: (context, hover, pointerDown) {
                                   return Text(
                                     'Vis kommentarer',
@@ -290,7 +289,7 @@ class PixelPageState extends State<PixelPage> {
                     horizontal: 25, vertical: 20), // Add padding at the bottom for the button
                 child: AnimatedButton(
                   onTap: () {
-                    PageNavigator.navigateTo(const UploadPageDisplay());
+                    AppNavigator.navigateToPage(const UploadPageDisplay());
                   },
                   childBuilder: (context, hover, pointerDown) {
                     return Container(
@@ -325,10 +324,10 @@ class PixelPageDisplay extends StaticPage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override
@@ -342,10 +341,10 @@ class DummyDisplay2 extends StaticPage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override

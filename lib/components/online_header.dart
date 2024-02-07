@@ -39,6 +39,12 @@ class OnlineHeader extends StatelessWidget {
               'assets/svg/online_logo.svg',
               height: 36,
             ),
+            const Spacer(),
+            SvgPicture.asset(
+              'assets/svg/bekk.svg',
+              height: 36,
+              colorFilter: const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
+            ),
             Row(children: buttons),
           ],
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/separator.dart';
-import 'package:online_events/core/models/attendee_info_model.dart';
 
+import '/components/separator.dart';
+import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';

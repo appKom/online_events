@@ -6,16 +6,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import '/components/animated_button.dart';
-import '/pages/pixel/pixel.dart';
 
+import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/main.dart';
+import '/pages/pixel/pixel.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
-import '../home/profile_button.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key});
@@ -117,7 +116,7 @@ class UploadPageState extends State<UploadPage> {
         //hei
       });
       savePostToDataBase(imageIdBeNotPoppin);
-      PageNavigator.navigateTo(const DummyDisplay2());
+      AppNavigator.navigateToPage(const DummyDisplay2());
     } catch (e) {
       print("Error uploading image: $e");
     }
@@ -186,7 +185,7 @@ class UploadPageState extends State<UploadPage> {
                       color: Colors.white,
                       size: 40,
                     ),
-                    onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
+                    onPressed: () => AppNavigator.navigateToPage(const PixelPageDisplay()),
                   ),
                   const SizedBox(
                     width: 18,
@@ -300,10 +299,10 @@ class UploadPageDisplay extends StaticPage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '/components/skeleton_loader.dart';
+import 'package:online/services/app_navigator.dart';
 
-import '/theme/theme.dart';
 import '/components/animated_button.dart';
+import '/components/skeleton_loader.dart';
 import '/core/models/event_model.dart';
 import '/pages/event/event_page.dart';
-import '/services/page_navigator.dart';
+import '/theme/theme.dart';
 
 class Bedpress extends StatelessWidget {
   const Bedpress({
@@ -118,7 +118,7 @@ class BedpressCard extends StatelessWidget {
   }
 
   void showInfo() {
-    PageNavigator.navigateTo(EventPageDisplay(
+    AppNavigator.navigateToPage(EventPageDisplay(
       model: model,
     ));
   }
@@ -225,20 +225,17 @@ class BedpressCard extends StatelessWidget {
                   right: 12,
                   child: Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Icon(
-                          Icons.people,
-                          size: 20,
-                          color: getColor(model.eventType),
-                        ),
+                      const Icon(
+                        Icons.people,
+                        size: 20,
+                        color: OnlineTheme.white,
                       ),
                       const SizedBox(width: 6),
                       Text(
                         model.numberOfSeatsTaken == null && model.maxCapacity == null
                             ? '∞'
                             : '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}',
-                        style: OnlineTheme.textStyle(size: 16),
+                        style: OnlineTheme.textStyle(weight: 5, size: 14),
                       ),
                     ],
                   ),

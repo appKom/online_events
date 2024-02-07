@@ -2,7 +2,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../home/profile_button.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
@@ -124,10 +123,10 @@ class ViewPixelUserDisplay extends StaticPage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override

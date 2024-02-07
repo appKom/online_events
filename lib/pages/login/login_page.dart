@@ -36,7 +36,7 @@ class LoginPage extends StaticPage {
             const SizedBox(height: 24),
             AnimatedButton(
               onTap: () {
-                PageNavigator.navigateTo(const TermsOfServicePage());
+                AppNavigator.navigateToPage(const TermsOfServicePage());
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(

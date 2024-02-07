@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/pages/drinking_games/spin_line.dart';
+
+import '/components/online_scaffold.dart';
+import '/pages/games/spin_line.dart';
 
 class SpinLinePage extends StaticPage {
   const SpinLinePage({super.key});

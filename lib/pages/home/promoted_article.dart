@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:online_events/core/models/article_model.dart';
+
 import '/components/animated_button.dart';
+import '/core/models/article_model.dart';
 import '/pages/article/article_page.dart';
-import '/services/page_navigator.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class PromotedArticle extends StatelessWidget {
@@ -54,7 +55,7 @@ class PromotedArticle extends StatelessWidget {
     final timeToRead = calculateReadingTime(article.content, article.ingress);
     final readingTimeText = "$timeToRead min å lese";
     return AnimatedButton(
-      onTap: () => PageNavigator.navigateTo(ArticlePage(article: article)),
+      onTap: () => AppNavigator.navigateToPage(ArticlePage(article: article)),
       scale: 0.95,
       childBuilder: (context, hover, pointerDown) {
         return SizedBox(

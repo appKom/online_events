@@ -1,5 +1,5 @@
-import 'package:online_events/core/models/attendee_info_model.dart';
-import 'package:online_events/core/models/event_model.dart';
+import '/core/models/attendee_info_model.dart';
+import '/core/models/event_model.dart';
 
 class CombinedEventModel {
   final EventModel? eventModel;

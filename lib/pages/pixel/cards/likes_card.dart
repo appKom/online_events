@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:online/services/app_navigator.dart';
 
-import '/main.dart';
 import '../pixel.dart';
 import '/components/animated_button.dart';
+import '/main.dart';
 import '/pages/pixel/liked_by_page.dart';
 import '/pages/pixel/models/user_post.dart';
-import '/services/page_navigator.dart';
 import '/theme/theme.dart';
 
 class LikesCard extends StatefulWidget {
@@ -135,7 +135,7 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
                           try {
                             widget.onDeletePost(widget.post.id);
                             print('Image deleted successfully');
-                            PageNavigator.navigateTo(const DummyDisplay2());
+                            AppNavigator.navigateToPage(const DummyDisplay2());
                           } catch (e) {
                             print("Error deleting image: $e");
                           }
@@ -157,7 +157,7 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
             children: [
               AnimatedButton(
                 onTap: () {
-                  PageNavigator.navigateTo(LikedByPageDisplay(
+                  AppNavigator.navigateToPage(LikedByPageDisplay(
                     post: widget.post,
                   ));
                 },

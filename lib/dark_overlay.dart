@@ -16,7 +16,7 @@ abstract class DarkOverlay extends ModalRoute<void> {
   String? get barrierLabel => null;
 
   void show(BuildContext context) {
-    AppNavigator.navigateToRoute(this, additive: false);
+    AppNavigator.navigateToRoute(this, additive: true);
   }
 
   void hide() {

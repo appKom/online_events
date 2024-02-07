@@ -1,4 +1,4 @@
-import 'package:online_events/models/list_event.dart';
+import '/models/list_event.dart';
 
 class CardEventModel extends ListEventModel {
   final EventCategory category;

@@ -1,20 +1,18 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/pages/drinking_games/bytes/bytes_home_page.dart';
-import '/pages/drinking_games/roulette_page.dart';
-import '/pages/drinking_games/spin_line_page.dart';
+import '/pages/games/spin_line_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'bits/bits_home_page.dart';
 import 'dice.dart';
 import 'songs/songs.dart';
 
-class DrinkingGamesPage extends ScrollablePage {
-  const DrinkingGamesPage({super.key});
+class GamesPage extends ScrollablePage {
+  const GamesPage({super.key});
 
   @override
   Widget? header(BuildContext context) {
@@ -22,74 +20,59 @@ class DrinkingGamesPage extends ScrollablePage {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
-      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      padding: padding,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: OnlineHeader.height(context) + 24),
-            const DrikkeSanger(),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: DrikkeSanger(),
+            ),
             const SizedBox(height: 24),
             Text(
-              'Drikkeleker',
+              'Spill',
               style: OnlineTheme.header(),
             ),
-            const SizedBox(height: 24),
-            GameCard(
-              name: 'Terning',
-              imageSource: 'assets/images/diceHeader.jpg',
-              onTap: () {
-                PageNavigator.navigateTo(const DicePage());
-              },
+            const SizedBox(height: 10),
+            CarouselSlider(
+              items: [
+                GameCard(
+                  name: 'Terning',
+                  imageSource: 'assets/images/diceHeader.jpg',
+                  onTap: () {
+                    AppNavigator.navigateToPage(const DicePage());
+                  },
+                ),
+                GameCard(
+                  name: 'SpinLine',
+                  imageSource: 'assets/images/SpinLine.png',
+                  onTap: () {
+                    AppNavigator.navigateToPage(const SpinLinePage());
+                  },
+                ),
+                GameCard(
+                  name: 'Bits',
+                  imageSource: 'assets/images/bits.png',
+                  onTap: () {
+                    AppNavigator.navigateToPage(const BitsHomePage());
+                  },
+                ),
+              ],
+              options: CarouselOptions(
+                enableInfiniteScroll: true,
+                padEnds: true,
+                enlargeCenterPage: true,
+              ),
             ),
-            const SizedBox(height: 24),
-            GameCard(
-              name: 'SpinLine',
-              imageSource: 'assets/images/SpinLine.png',
-              onTap: () {
-                PageNavigator.navigateTo(const SpinLinePage());
-              },
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            GameCard(
-              name: 'Bits',
-              imageSource: 'assets/images/bits.png',
-              onTap: () {
-                PageNavigator.navigateTo(const BitsHomePage());
-              },
-            ),
-            const SizedBox(height: 24),
-            GameCard(
-              name: 'Roulette',
-              imageSource: 'assets/images/SpinLine.png',
-              onTap: () {
-                PageNavigator.navigateTo(const RoulettePage());
-              },
-            ),
-            // const SizedBox(height: 24),
-            // GameCard(
-            //   name: 'Bytes',
-            //   imageSource: 'assets/images/bytes.phe argument type 'RoulettePage' can't be assigned to the parameter type 'OnlinePage'ng',
-            //   onTap: () {
-            //     PageNavigator.navigateTo(const BytesHomePage());
-            //   },
-            // ),
-            SizedBox(height: Navbar.height(context) + 24),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  Widget content(BuildContext context) {
-    return Container();
   }
 }
 

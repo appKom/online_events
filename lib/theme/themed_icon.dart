@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'theme.dart';
 
 enum IconType {
+  badgeCheck,
   dateTime,
   location,
   people,

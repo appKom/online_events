@@ -6,7 +6,7 @@ class ErrorHandling {
   static OverlayEntry? _overlayEntry;
 
   static void showErrorTop(String message) {
-    final BuildContext context = AppNavigator.navigator.currentState!.overlay!.context;
+    final BuildContext context = AppNavigator.globalNavigator.currentState!.overlay!.context;
 
     _overlayEntry?.remove();
     _overlayEntry = OverlayEntry(

@@ -35,40 +35,6 @@ class EventCardButtons extends StatefulWidget {
 }
 
 class _EventCardButtonsState extends State<EventCardButtons> {
-  Future<void> registerForEvent(String eventId) async {
-    final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
-
-    // Your request body
-    final Map<String, dynamic> requestBody = {
-      "recaptcha": "onlineweb4.fields.recaptcha.validate_recaptcha", // You might need to handle recaptcha
-      "allow_pictures": true,
-      "show_as_attending_event": true,
-      "note": "" // Any additional note if required
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": 'Bearer ${Client.accessToken}',
-        },
-        body: json.encode(requestBody),
-      );
-
-      if (response.statusCode == 201) {
-        // Handle successful registration
-
-        ErrorHandling.showErrorTop("Du er registrert");
-      } else {
-        // Handle error
-        ErrorHandling.showErrorTop("Greide ikke å registrere: ${response.body}");
-      }
-    } catch (e) {
-      // Handle any exceptions
-      ErrorHandling.showErrorTop("En error har skjedd: $e");
-    }
-  }
 
   Future<void> unregisterForEvent(String eventId) async {
     final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/unregister/';
@@ -159,9 +125,10 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     return AnimatedButton(
       onTap: () {
         // TODO Midlertidig fiks, burde fikse reCaptcha inne i appen
-        PageNavigator.navigateTo(ReCaptchaDisplay(
+        AppNavigator.navigateToPage(ReCaptchaDisplay(
           model: widget.model,
         ));
+        // registerForEvent(widget.model.id.toString());
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(
@@ -219,7 +186,9 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   Widget waitlistButton() {
     return AnimatedButton(
       onTap: () {
-        registerForEvent(widget.model.id.toString());
+        AppNavigator.navigateToPage(ReCaptchaDisplay(
+          model: widget.model,
+        ));
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(

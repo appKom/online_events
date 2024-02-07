@@ -19,8 +19,10 @@ class EventsPageState extends State<EventsPage> {
   int currentPage = 1;
 
   Future<void> fetchMoreEvents() async {
-    final moreEventsPage1 = await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
-    final events = Client.eventsCache.value;
+    final moreEventsPage1 =
+        await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
+    final events =
+        Client.eventsCache.value.toList(); 
 
     if (mounted) {
       setState(() {
@@ -30,6 +32,12 @@ class EventsPageState extends State<EventsPage> {
               events.add(event);
             }
           }
+          events.sort((a, b) {
+            final aStartDate = DateTime.parse(a.startDate);
+            final bStartDate = DateTime.parse(b.startDate);
+            return aStartDate.compareTo(bStartDate);
+          });
+          Client.eventsCache.value = Set.from(events); 
         }
 
         currentPage += 2;
@@ -39,7 +47,8 @@ class EventsPageState extends State<EventsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
     final now = DateTime.now();
 
     // Filter eventModels to include only future events
@@ -49,12 +58,12 @@ class EventsPageState extends State<EventsPage> {
     }).toList();
 
     return Padding(
-      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      padding: EdgeInsets.only(left: padding.left, right: padding.right, top: padding.top),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: OnlineHeader.height(context) + 24),
+            const SizedBox(height: 24,),
             Text(
               'Kommende Arrangementer',
               style: OnlineTheme.header(),

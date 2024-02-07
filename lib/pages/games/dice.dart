@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '/theme/theme.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
+import '/theme/theme.dart';
 
 class DicePage extends StaticPage {
   const DicePage({super.key});
@@ -31,23 +31,30 @@ class DiceHomePage extends StatefulWidget {
 class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderStateMixin {
   int diceRoll = 1;
   late AnimationController _animationController;
-  late Animation _animation;
   final _random = Random();
+
+  int _step = 0;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    _animation = IntTween(begin: 1, end: 6).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-    )..addListener(() {
+
+    _animationController.addListener(() {
+      final t = Curves.easeOut.transform(_animationController.value);
+
+      final i = (t * 5).floor();
+
+      if (i > _step) {
         setState(() {
+          _step = i;
           diceRoll = _random.nextInt(6) + 1;
         });
-      });
+      }
+    });
   }
 
   @override
@@ -58,6 +65,8 @@ class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderSt
 
   void rollDice() {
     _animationController.reset();
+    _step = 0;
+    _animationController.duration = Duration(milliseconds: 250 + Random().nextInt(750));
     _animationController.forward();
   }
 
@@ -66,19 +75,38 @@ class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderSt
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: OnlineHeader.height(context)),
         Center(
-          child: AnimatedButton(
-            onTap: rollDice,
-            childBuilder: (context, hover, pointerDown) {
-              return CustomPaint(
-                painter: DicePainter(repaint: _animation, dice: diceRoll),
-                size: const Size.square(300),
-              );
-            },
+          child: SizedBox.square(
+            dimension: 200,
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Transform.rotate(
+                  angle: pi * 2 * Curves.decelerate.transform(_animationController.value),
+                  child: AnimatedButton(
+                    scale: 0.8,
+                    onTap: rollDice,
+                    childBuilder: (context, hover, pointerDown) {
+                      return CustomPaint(
+                        painter: DicePainter(repaint: _animationController, dice: diceRoll),
+                        size: const Size.square(200),
+                      );
+                    },
+                  ),
+                );
+              },
+              // child: AnimatedButton(
+              //   onTap: rollDice,
+              //   childBuilder: (context, hover, pointerDown) {
+              //     return CustomPaint(
+              //       painter: DicePainter(repaint: _animation, dice: diceRoll),
+              //       size: const Size.square(200),
+              //     );
+              //   },
+              // ),
+            ),
           ),
         ),
-        const SizedBox(height: 24),
       ],
     );
   }

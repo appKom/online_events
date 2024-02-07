@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
-import '../home/profile_button.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
@@ -171,7 +170,7 @@ class CommentPageState extends State<CommentPage> {
                             color: Colors.white,
                             size: 40,
                           ),
-                          onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
+                          onPressed: () => AppNavigator.navigateToPage(const PixelPageDisplay()),
                         ),
                         const SizedBox(
                           width: 60,
@@ -214,7 +213,7 @@ class CommentPageState extends State<CommentPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   AnimatedButton(onTap: () {
-                                    PageNavigator.navigateTo(ViewPixelUserDisplay(
+                                    AppNavigator.navigateToPage(ViewPixelUserDisplay(
                                       userName: username,
                                     ));
                                   }, childBuilder: (context, hover, pointerDown) {
@@ -325,10 +324,10 @@ class CommentPageDisplay extends StaticPage {
   @override
   Widget? header(BuildContext context) {
     return OnlineHeader(
-      buttons: const [
-        ProfileButton(),
-      ],
-    );
+        // buttons: const [
+        //   ProfileButton(),
+        // ],
+        );
   }
 
   @override

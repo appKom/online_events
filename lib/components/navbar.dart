@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '/pages/drinking_games/drinking_games_page.dart';
+import '/main.dart';
+import '../pages/games/games_page.dart';
 import '/pages/events/my_events_page.dart';
+import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
 import '/pages/settings/settings.dart';
-import '/services/page_navigator.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'animated_button.dart';
@@ -29,12 +31,18 @@ class NavbarState extends State<Navbar> {
         NavbarButton(
           icon: IconType.home,
           activeIcon: IconType.homeFilled,
-          onPressed: () => PageNavigator.navigateTo(const HomePage()), // Use global loggedIn
+          onPressed: () => AppNavigator.replaceWithPage(const HomePage()), // Use global loggedIn
         ),
         NavbarButton(
           icon: IconType.calendarClock,
           activeIcon: IconType.calendarClockFilled,
-          onPressed: () => PageNavigator.navigateTo(const MyEventsPageDisplay()),
+          onPressed: () {
+            if (loggedIn) {
+              AppNavigator.replaceWithPage(const MyEventsPageDisplay());
+            } else {
+              AppNavigator.replaceWithPage(const NotLoggedInPage());
+            }
+          },
         ),
         // if (userProfile != null && userProfile!.isMember)
         //   NavbarButton(
@@ -45,12 +53,12 @@ class NavbarState extends State<Navbar> {
         NavbarButton(
           icon: IconType.beer,
           activeIcon: IconType.beerFilled,
-          onPressed: () => PageNavigator.navigateTo(const DrinkingGamesPage()),
+          onPressed: () => AppNavigator.replaceWithPage(const GamesPage()),
         ),
         NavbarButton(
           icon: IconType.settings,
           activeIcon: IconType.settingsFilled,
-          onPressed: () => PageNavigator.navigateTo(const SettingsOverviewPage()),
+          onPressed: () => AppNavigator.replaceWithPage(const SettingsOverviewPage()),
         ),
       ];
 

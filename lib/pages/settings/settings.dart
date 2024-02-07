@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import '/components/animated_button.dart';
-import '/components/navbar.dart';
-import '/components/online_header.dart';
-import '/components/separator.dart';
-import '/pages/profile/profile_page.dart';
-import '/services/app_navigator.dart';
 
 import '../../main.dart';
 import '../login/login_page.dart';
+import '/components/animated_button.dart';
+import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
+import '/components/separator.dart';
+import '/pages/profile/profile_page.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class SettingsOverviewPage extends StaticPage {
@@ -24,11 +23,11 @@ class SettingsOverviewPage extends StaticPage {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
-      padding: EdgeInsets.only(left: padding.left, right: padding.right),
+      padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: OnlineHeader.height(context) + 24),
+          const SizedBox(height: 24),
           Text('Innstillinger', style: OnlineTheme.header()),
           pageLink('Profil', _onProfileTapped),
           pageLink('Innstillinger', _onSettingsTapped),
@@ -39,14 +38,14 @@ class SettingsOverviewPage extends StaticPage {
 
   void _onProfileTapped() {
     if (loggedIn) {
-      PageNavigator.navigateTo(const ProfilePageDisplay());
+      AppNavigator.navigateToPage(const ProfilePageDisplay());
     } else {
-      PageNavigator.navigateTo(const LoginPage());
+      AppNavigator.navigateToPage(const LoginPage());
     }
   }
 
   void _onSettingsTapped() {
-    PageNavigator.navigateTo(const SettingsPage());
+    AppNavigator.navigateToPage(const SettingsPage());
   }
 
   Widget pageLink(String title, void Function() onTap) {
@@ -89,7 +88,7 @@ class SettingsOverviewPage extends StaticPage {
   }
 }
 
-class SettingsPage extends StaticPage {
+class SettingsPage extends ScrollablePage {
   const SettingsPage({super.key});
 
   @override
@@ -98,31 +97,13 @@ class SettingsPage extends StaticPage {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
-    return Material(
-      color: OnlineTheme.background,
-      child: Padding(
-        padding: padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: content(context),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return Padding(
+      padding: padding,
+      child: _SettingsContent(),
     );
-  }
-
-  @override
-  Widget content(BuildContext context) {
-    // We use a StatefulWidget to manage the state of the checkboxes
-    return _SettingsContent();
   }
 }
 
@@ -132,8 +113,8 @@ class _SettingsContent extends StatefulWidget {
 }
 
 Map<String, bool> confirmations = {
-  'Bekreftelse for påmelding': false,
-  'Bekreftelse for avmelding': true,
+  'Påmelding': false,
+  'Avmelding': true,
 };
 
 class __SettingsContentState extends State<_SettingsContent> {
@@ -159,7 +140,9 @@ class __SettingsContentState extends State<_SettingsContent> {
       ),
       child: Column(
         children: [
-          SizedBox(height: Navbar.height(context) + 24),
+          const SizedBox(
+            height: 24,
+          ),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -228,15 +211,17 @@ class __SettingsContentState extends State<_SettingsContent> {
                 child: AnimatedButton(
                   childBuilder: (context, hover, pointerDown) {
                     return Container(
-                      height: 40,
+                      height: OnlineTheme.buttonHeight,
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        gradient: OnlineTheme.greenGradient,
-                        borderRadius: BorderRadius.circular(5),
+                        color: OnlineTheme.green.withOpacity(0.4),
+                        borderRadius: OnlineTheme.buttonRadius,
+                        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
                       ),
                       child: Center(
                         child: Text(
                           'Lagre',
-                          style: OnlineTheme.textStyle(weight: 5),
+                          style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
                         ),
                       ),
                     );
@@ -245,7 +230,7 @@ class __SettingsContentState extends State<_SettingsContent> {
               )
             ],
           ),
-          SizedBox(height: Navbar.height(context) + 20),
+          const SizedBox(height: 24),
         ],
       ),
     );

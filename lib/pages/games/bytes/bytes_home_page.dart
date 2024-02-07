@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:online_events/components/animated_button.dart';
-import 'package:online_events/components/online_header.dart';
-import 'package:online_events/components/online_scaffold.dart';
-import 'package:online_events/theme/theme.dart';
+
+import '/components/animated_button.dart';
+import '/components/online_header.dart';
+import '/components/online_scaffold.dart';
+import '/theme/theme.dart';
 
 class BytesHomePage extends ScrollablePage {
   const BytesHomePage({super.key});

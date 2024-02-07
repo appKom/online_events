@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import '/pages/loading/loading_display_page.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../theme/theme.dart';
+import '/pages/home/home_page.dart';
+import '/pages/loading/loading_display_page.dart';
+import '/services/app_navigator.dart';
 import 'navbar.dart';
 
 abstract class ScrollablePage extends OnlinePage {
@@ -9,21 +12,8 @@ abstract class ScrollablePage extends OnlinePage {
 
   @override
   Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (bounds) {
-        return const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0x00FFFFFF),
-            Color(0xFFFFFFFF),
-          ],
-          stops: [
-            0.0,
-            0.05,
-          ],
-        ).createShader(bounds);
-      },
+    return Material(
+      color: OnlineTheme.background,
       child: SingleChildScrollView(
         padding: EdgeInsets.zero,
         child: Column(
@@ -33,6 +23,31 @@ abstract class ScrollablePage extends OnlinePage {
           ],
         ),
       ),
+      // child: ShaderMask(
+      //   shaderCallback: (bounds) {
+      //     return const LinearGradient(
+      //       begin: Alignment.topCenter,
+      //       end: Alignment.bottomCenter,
+      //       colors: [
+      //         Color(0x00FFFFFF),
+      //         Color(0xFFFFFFFF),
+      //       ],
+      //       stops: [
+      //         0.0,
+      //         0.05,
+      //       ],
+      //     ).createShader(bounds);
+      //   },
+      //   child: SingleChildScrollView(
+      //     padding: EdgeInsets.zero,
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.stretch,
+      //       children: [
+      //         content(context),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
@@ -42,7 +57,10 @@ abstract class StaticPage extends OnlinePage {
 
   @override
   Widget build(BuildContext context) {
-    return content(context);
+    return Material(
+      color: OnlineTheme.background,
+      child: content(context),
+    );
   }
 }
 
@@ -59,39 +77,72 @@ class OnlineScaffold extends StatelessWidget {
 
   static ValueNotifier<OnlinePage> page = ValueNotifier(const LoadingPageDisplay());
 
+  PreferredSize onlineHeader(BuildContext context) {
+    final padding = MediaQuery.of(context).padding;
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(75),
+      child: AppBar(
+        shape: const Border(bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        backgroundColor: OnlineTheme.background.withOpacity(0.9),
+        elevation: 0,
+        flexibleSpace: Container(
+          padding: EdgeInsets.only(
+            left: padding.left + 25,
+            right: padding.right + 25,
+            top: padding.top + 10,
+            bottom: 25,
+          ),
+          child: SizedBox(
+            height: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/svg/online_logo.svg',
+                  height: 36,
+                ),
+                const Spacer(),
+                SvgPicture.asset(
+                  'assets/svg/bekk.svg',
+                  height: 36,
+                  colorFilter: const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
+                ),
+                // TODO: Flexible way to set these per page
+                // Row(children: buttons),
+              ],
+            ),
+          ),
+        ),
+        // leading: SizedBox(
+        //   height: 40,
+        //   child: SvgPicture.asset(
+        //     'assets/svg/online_logo.svg',
+        //     height: 36,
+        //   ),
+        // ),
+        // bottom: Container(child: ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: OnlineTheme.background,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: ValueListenableBuilder(
-              valueListenable: page,
-              builder: (context, page, child) {
-                return page;
-              },
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 0,
-            child: ValueListenableBuilder(
-              valueListenable: page,
-              builder: (context, page, child) {
-                return page.header(context) ?? Container();
-              },
-            ),
-          ),
-          const Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Navbar(),
-          ),
-        ],
+    return Scaffold(
+      appBar: onlineHeader(context),
+      backgroundColor: OnlineTheme.background,
+      extendBodyBehindAppBar: true,
+      body: Navigator(
+        key: AppNavigator.onlineNavigator,
+        initialRoute: '/',
+        onGenerateInitialRoutes: (NavigatorState navigator, String initialRouteName) {
+          return [
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          ];
+        },
       ),
+      extendBody: true,
+      bottomNavigationBar: const Navbar(),
     );
   }
 }
