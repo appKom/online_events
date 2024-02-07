@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:online_events/components/online_scaffold.dart';
+import '/components/online_scaffold.dart';
 
 class RoulettePage extends OnlinePage {
   const RoulettePage({super.key});
