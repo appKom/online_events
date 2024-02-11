@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/pages/home/home_page.dart';
@@ -13,11 +12,6 @@ class TermsOfServicePage extends ScrollablePage {
   const TermsOfServicePage({
     super.key,
   });
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

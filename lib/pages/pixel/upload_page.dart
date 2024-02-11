@@ -296,14 +296,6 @@ class UploadPageState extends State<UploadPage> {
 
 class UploadPageDisplay extends StaticPage {
   const UploadPageDisplay({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader(
-        // buttons: const [
-        //   ProfileButton(),
-        // ],
-        );
-  }
 
   @override
   Widget content(BuildContext context) {

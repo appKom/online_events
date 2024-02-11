@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '/error/error_handling.dart';
 import '/components/animated_button.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
@@ -35,7 +32,6 @@ class EventCardButtons extends StatefulWidget {
 }
 
 class _EventCardButtonsState extends State<EventCardButtons> {
-
   Future<void> unregisterForEvent(String eventId) async {
     final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/unregister/';
 

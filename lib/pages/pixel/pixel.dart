@@ -321,14 +321,6 @@ class PixelPageState extends State<PixelPage> {
 
 class PixelPageDisplay extends StaticPage {
   const PixelPageDisplay({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader(
-        // buttons: const [
-        //   ProfileButton(),
-        // ],
-        );
-  }
 
   @override
   Widget content(BuildContext context) {
@@ -338,14 +330,6 @@ class PixelPageDisplay extends StaticPage {
 
 class DummyDisplay2 extends StaticPage {
   const DummyDisplay2({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader(
-        // buttons: const [
-        //   ProfileButton(),
-        // ],
-        );
-  }
 
   @override
   Widget content(BuildContext context) {

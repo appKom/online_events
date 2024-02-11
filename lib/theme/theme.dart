@@ -140,16 +140,16 @@ sealed class OnlineTheme {
     decoration: TextDecoration.none,
   );
 
-  @Deprecated('Use OnlineTheme.textStyle() instead.')
-  static const eventHeader = TextStyle(
-    fontFamily: font,
-    color: white,
-    fontWeight: FontWeight.w700,
-    fontSize: 24,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
+  // @Deprecated('Use OnlineTheme.textStyle() instead.')
+  // static const eventHeader = TextStyle(
+  //   fontFamily: font,
+  //   color: white,
+  //   fontWeight: FontWeight.w700,
+  //   fontSize: 24,
+  //   height: 1.5,
+  //   fontStyle: FontStyle.normal,
+  //   decoration: TextDecoration.none,
+  // );
 
   static FontWeight _translateWeight(int weight) {
     switch (weight) {
@@ -172,7 +172,7 @@ sealed class OnlineTheme {
       case == 1:
         return FontWeight.w100;
       default:
-        throw Exception('Unsupported fontWeight. Must be in the range 1-9.');
+        throw Exception('Font weight must be in the range 1-9.');
     }
   }
 

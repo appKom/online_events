@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../main.dart';
 import '../login/login_page.dart';
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/pages/profile/profile_page.dart';
@@ -12,11 +11,6 @@ import '/theme/theme.dart';
 
 class SettingsOverviewPage extends StaticPage {
   const SettingsOverviewPage({super.key});
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {
@@ -90,11 +84,6 @@ class SettingsOverviewPage extends StaticPage {
 
 class SettingsPage extends ScrollablePage {
   const SettingsPage({super.key});
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

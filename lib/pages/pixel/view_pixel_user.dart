@@ -121,15 +121,6 @@ class ViewPixelUserDisplay extends StaticPage {
   final String userName;
 
   @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader(
-        // buttons: const [
-        //   ProfileButton(),
-        // ],
-        );
-  }
-
-  @override
   Widget content(BuildContext context) {
     return ViewPixelUser(
       userName: userName,

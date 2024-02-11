@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
@@ -70,8 +69,7 @@ class _EventPageState extends State<EventPage> {
     final event = int.tryParse(parts[2]) ?? 0;
     final approved = parts[3].toLowerCase() == 'true';
 
-    const url =
-        'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
+    const url = 'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
 
     final body = {
       'rfid': rfid,
@@ -89,8 +87,7 @@ class _EventPageState extends State<EventPage> {
     if (response.statusCode == 201) {
       print('Attendance registered successfully!');
     } else {
-      print(
-          'Failed to register attendance. Status code: ${response.statusCode}');
+      print('Failed to register attendance. Status code: ${response.statusCode}');
     }
   }
 
@@ -108,22 +105,19 @@ class _EventPageState extends State<EventPage> {
                   aspectRatio: 16 / 9,
                   child: Image.network(
                     widget.model.images.first.original,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                       if (loadingProgress == null) {
                         return child;
                       }
                       return Center(
                         child: CircularProgressIndicator(
                           value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
+                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                               : null,
                         ),
                       );
                     },
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
+                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                       return SvgPicture.asset(
                         'assets/svg/online_hvit_o.svg',
                         fit: BoxFit.cover,
@@ -136,8 +130,7 @@ class _EventPageState extends State<EventPage> {
                   fit: BoxFit.cover,
                 ),
           Padding(
-            padding:
-                EdgeInsets.only(left: 25, right: 25, bottom: padding.bottom),
+            padding: EdgeInsets.only(left: 25, right: 25, bottom: padding.bottom),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -183,9 +176,7 @@ class _EventPageState extends State<EventPage> {
                               onTap: () async {
                                 final qrResult = await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const QrCodeScannerDisplay()),
+                                  MaterialPageRoute(builder: (context) => const QrCodeScannerDisplay()),
                                 );
                                 if (qrResult != null) {
                                   registerAttendance(qrResult);
@@ -207,8 +198,7 @@ class _EventPageState extends State<EventPage> {
                 ),
                 const SizedBox(height: 24),
                 // FirebaseRecaptchaVerifierModal,
-                AttendanceCard(
-                    event: widget.model, attendeeInfo: attendeeInfoModel),
+                AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
                 const SizedBox(height: 24),
                 EventDescriptionCard(
                   description: widget.model.description,
@@ -233,12 +223,6 @@ class _EventPageState extends State<EventPage> {
 class EventPageDisplay extends ScrollablePage {
   const EventPageDisplay({super.key, required this.model});
   final EventModel model;
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader(
-    );
-  }
 
   @override
   Widget content(BuildContext context) {

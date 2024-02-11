@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/games/spin_line_page.dart';
 import '/services/app_navigator.dart';
@@ -13,11 +12,6 @@ import 'songs/songs.dart';
 
 class GamesPage extends ScrollablePage {
   const GamesPage({super.key});
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http/http.dart' as http;
 
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
 import '/core/models/event_model.dart';
@@ -109,11 +108,6 @@ class ReCaptchaDisplay extends StaticPage {
   const ReCaptchaDisplay({super.key, required this.model});
 
   final EventModel model;
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

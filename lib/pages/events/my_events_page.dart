@@ -3,9 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/components/separator.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/core/models/attended_events.dart';
@@ -467,10 +465,6 @@ class MyEventsPageState extends State<MyEventsPage> {
 
 class MyEventsPageDisplay extends ScrollablePage {
   const MyEventsPageDisplay({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

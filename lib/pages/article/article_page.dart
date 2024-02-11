@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/core/models/article_model.dart';
@@ -68,15 +67,6 @@ class ArticlePage extends ScrollablePage {
     final yearString = year.toString();
 
     return '$dayString. $monthString - $yearString';
-  }
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader(
-        // buttons: const [
-        //   ProfileButton(),
-        // ],
-        );
   }
 
   @override

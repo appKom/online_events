@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
@@ -14,11 +13,6 @@ import '/theme/theme.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {
