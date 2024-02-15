@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import '/components/online_scaffold.dart';
+import 'package:overlay_support/overlay_support.dart';
 
+import '/components/online_scaffold.dart';
 import '/services/app_navigator.dart';
 import '/services/env.dart';
 import '/services/secure_storage.dart';
@@ -62,11 +63,13 @@ class OnlineApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: AppNavigator.globalNavigator,
-      title: 'Online Events',
-      debugShowCheckedModeBanner: false,
-      home: const OnlineScaffold(),
+    return OverlaySupport.global(
+      child: MaterialApp(
+        navigatorKey: AppNavigator.globalNavigator,
+        title: 'Online',
+        debugShowCheckedModeBanner: false,
+        home: const OnlineScaffold(),
+      ),
     );
   }
 }

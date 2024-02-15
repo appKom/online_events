@@ -33,7 +33,6 @@ abstract class Client {
       expiresIn = expiresInStr != null ? int.tryParse(expiresInStr) : null;
       final tokenSetTimeStr = await SecureStorage.read('tokenSetTime');
       _tokenSetTime = tokenSetTimeStr != null ? DateTime.tryParse(tokenSetTimeStr) : null;
-      print('Tokens loaded from secure storage successfully.');
     } catch (e) {
       print('Error loading tokens from secure storage: $e');
     }

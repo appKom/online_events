@@ -82,8 +82,6 @@ class OnlineScaffold extends StatelessWidget {
                   height: 36,
                   colorFilter: const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
                 ),
-                // TODO: Flexible way to set these per page
-                // Row(children: buttons),
               ],
             ),
           ),
