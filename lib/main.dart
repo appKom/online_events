@@ -3,6 +3,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
 import '/components/online_scaffold.dart';
 import '/services/app_navigator.dart';
 import '/services/env.dart';
@@ -10,10 +13,40 @@ import '/services/secure_storage.dart';
 import 'core/client/client.dart';
 import 'core/models/user_model.dart';
 import 'firebase_options.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 
 bool loggedIn = false;
 UserModel? userProfile;
 int userId = 0;
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+Future<void> checkAndRequestPermission(BuildContext context) async {
+  final AndroidFlutterLocalNotificationsPlugin? androidPlatform =
+      flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+  final bool? hasPermission = await androidPlatform?.requestExactAlarmsPermission();
+
+  if (hasPermission == null || !hasPermission) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Exact alarm permission is required for reminders. Please enable it in settings.'),
+        action: SnackBarAction(
+          label: 'Open Settings',
+          onPressed: () => openAppSettings(),
+        ),
+      ),
+    );
+  }
+}
+
+void openAppSettings() {
+  final AndroidIntent intent = AndroidIntent(
+    action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
+  );
+  intent.launch();
+}
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +54,26 @@ Future main() async {
   await Env.initialize();
 
   SecureStorage.initialize();
+  tz.initializeTimeZones();
+
+  // Initialization settings for Android
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  // Initialization settings for iOS
+  const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+  );
+
+  // Combined initialization settings
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsIOS,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   await Client.loadTokensFromSecureStorage();
 
   if (!Client.tokenExpired()) {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:online/services/online_toast.dart';
 
 import '/components/animated_button.dart';
 import '/core/client/client.dart';
@@ -10,6 +12,8 @@ import '/pages/event/cards/recaptcha.dart';
 import '/pages/event/event_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 bool isRegistered = false;
 
@@ -66,6 +70,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     if (canWaitlist()) return waitlistButton();
     if (canRegister()) return registerButton();
     if (canUnregister()) return unregisterButton(true);
+    if (canNotify()) return notifyButton();
 
     return Container();
   }
@@ -113,6 +118,14 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
     // May still want to show the unregister button, just grayed out
     if (widget.attendeeInfoModel.unattendDeadline.isBefore(DateTime.now())) return false;
+
+    return true;
+  }
+
+  bool canNotify() {
+
+    // If registration has not started
+    if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now())) return false;
 
     return true;
   }
@@ -201,6 +214,65 @@ class _EventCardButtonsState extends State<EventCardButtons> {
             style: OnlineTheme.textStyle(
               weight: 5,
               color: OnlineTheme.yellow,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget notifyButton() {
+    return AnimatedButton(
+      onTap: () async{
+        final DateTime scheduleNotificationDateTime = widget.attendeeInfoModel.registrationStart.subtract(const Duration(minutes: 15));
+      const int notificationId = 0;
+      const String channelId = "your_channel_id";
+      const String channelName = "Notification Channel";
+      const String channelDescription = "Channel for event registration reminder";
+
+      var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+        channelId,
+        channelName,
+        channelDescription: channelDescription,
+        importance: Importance.max,
+        priority: Priority.high,
+        showWhen: true,
+      );
+      var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
+      var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics,
+      );
+
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        notificationId,
+        'Påmelding starter snart!',
+        'Påmelding til starter om 15 minutter.',
+        tz.TZDateTime.from(scheduleNotificationDateTime, tz.local),
+        platformChannelSpecifics,
+        androidAllowWhileIdle: true, 
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time, 
+      );
+
+      OnlineToast.show("Du vil bli varslet 15 minutter før påmelding starter");
+    },
+      
+      childBuilder: (context, hover, pointerDown) {
+        return Container(
+          margin: const EdgeInsets.only(top: 10),
+          height: 40,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: OnlineTheme.purple1.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(5.0),
+            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.purple1, width: 2)),
+          ),
+          child: Text(
+            'Varsle meg',
+            style: OnlineTheme.textStyle(
+              weight: 5,
+              color: OnlineTheme.white,
             ),
           ),
         );
