@@ -133,7 +133,7 @@ class ArticlePage extends ScrollablePage {
     );
   }
 
-  Widget incressCard() {
+  Widget ingressCard() {
     return OnlineCard(
       child: Text(
         article.ingress,
@@ -159,15 +159,11 @@ class ArticlePage extends ScrollablePage {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 24),
-                Text(
-                  article.heading,
-                  style: OnlineTheme.header(),
-                  textAlign: TextAlign.center,
-                ),
+                Text(article.heading, style: OnlineTheme.header()),
                 const SizedBox(height: 14),
                 authorsAndDateCard(),
                 const SizedBox(height: 24),
-                incressCard(),
+                ingressCard(),
                 const SizedBox(height: 24),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

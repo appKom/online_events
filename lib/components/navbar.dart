@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../pages/games/games_page.dart';
+import '../pages/login/login_page.dart';
+import '../pages/profile/profile_page.dart';
 import '/main.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
-import '/pages/settings/settings.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
@@ -44,12 +45,6 @@ class NavbarState extends State<Navbar> {
             }
           },
         ),
-        // if (userProfile != null && userProfile!.isMember)
-        //   NavbarButton(
-        //     icon: IconType.pixel,
-        //     activeIcon: IconType.pixelFilled,
-        //     onPressed: () => PageNavigator.navigateTo(const PixelPageDisplay()),
-        //   ),
         NavbarButton(
           icon: IconType.beer,
           activeIcon: IconType.beerFilled,
@@ -58,7 +53,13 @@ class NavbarState extends State<Navbar> {
         NavbarButton(
           icon: IconType.settings,
           activeIcon: IconType.settingsFilled,
-          onPressed: () => AppNavigator.replaceWithPage(const SettingsOverviewPage()),
+          onPressed: () {
+            if (loggedIn) {
+              AppNavigator.replaceWithPage(const ProfilePageDisplay());
+            } else {
+              AppNavigator.replaceWithPage(const LoginPage());
+            }
+          },
         ),
       ];
 
