@@ -26,9 +26,9 @@ class BytesHomePage extends ScrollablePage {
                 style: OnlineTheme.header(),
               ),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'Get ready to rumble',
-                style: OnlineTheme.eventListHeader,
+                style: OnlineTheme.header(),
               ),
               const ClipRRect(child: SizedBox(height: 120)),
               Row(

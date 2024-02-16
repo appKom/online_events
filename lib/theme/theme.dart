@@ -129,28 +129,6 @@ sealed class OnlineTheme {
   static const buttonHeight = 40.0;
   static const buttonRadius = BorderRadius.all(Radius.circular(5));
 
-  @Deprecated('Use OnlineTheme.textStyle() instead.')
-  static const eventListHeader = TextStyle(
-    fontFamily: font,
-    color: gray11,
-    fontWeight: FontWeight.w500,
-    fontSize: 16,
-    height: 1.5,
-    fontStyle: FontStyle.normal,
-    decoration: TextDecoration.none,
-  );
-
-  // @Deprecated('Use OnlineTheme.textStyle() instead.')
-  // static const eventHeader = TextStyle(
-  //   fontFamily: font,
-  //   color: white,
-  //   fontWeight: FontWeight.w700,
-  //   fontSize: 24,
-  //   height: 1.5,
-  //   fontStyle: FontStyle.normal,
-  //   decoration: TextDecoration.none,
-  // );
-
   static FontWeight _translateWeight(int weight) {
     switch (weight) {
       case == 9:

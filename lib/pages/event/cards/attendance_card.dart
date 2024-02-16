@@ -15,7 +15,7 @@ class AttendanceCard extends StatelessWidget {
   final EventModel event;
   final AttendeeInfoModel attendeeInfo;
 
-  bool showCountdownToEventRegistrationStart() {
+  bool showCountdownToRegistrationStart() {
     // Registration has startet - no need for a countdown
     if (DateTime.now().isAfter(attendeeInfo.registrationStart)) return false;
 
@@ -100,7 +100,7 @@ class AttendanceCard extends StatelessWidget {
               ],
             ),
           ),
-          if (showCountdownToEventRegistrationStart()) countdownToRegistrationStart(),
+          if (showCountdownToRegistrationStart()) countdownToRegistrationStart(),
           if (showCountdownToEventStart()) countdownToEventStart(),
         ],
       ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online/components/skeleton_loader.dart';
+import 'package:online/pages/event/cards/event_card.dart';
+import 'package:online/theme/themed_icon.dart';
 
 import '/components/online_scaffold.dart';
-import '/components/separator.dart';
 import '/core/models/article_model.dart';
 import '/pages/article/view_more_articles.dart';
 import '/theme/theme.dart';
@@ -66,72 +68,107 @@ class ArticlePage extends ScrollablePage {
     final year = date.year;
     final yearString = year.toString();
 
-    return '$dayString. $monthString - $yearString';
+    return '$dayString. $monthString, $yearString';
+  }
+
+  Widget coverImage() {
+    // No cover image
+    if (article.image?.original == null) {
+      return SvgPicture.asset(
+        'assets/svg/online_hvit_o.svg',
+        fit: BoxFit.cover,
+        height: 240,
+      );
+    }
+
+    // Load cover image
+    return Image.network(
+      article.image!.original,
+      fit: BoxFit.cover,
+      height: 240,
+      loadingBuilder: (context, child, evt) {
+        if (evt == null) return child;
+
+        return const SkeletonLoader(height: 240);
+      },
+      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return SvgPicture.asset(
+          'assets/svg/online_hvit_o.svg',
+          fit: BoxFit.cover,
+          height: 240,
+        );
+      },
+    );
+  }
+
+  Widget authorsAndDateCard() {
+    return OnlineCard(
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const ThemedIcon(icon: IconType.script, size: 18),
+              const SizedBox(width: 8),
+              Text(
+                article.authors,
+                style: OnlineTheme.textStyle(),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const ThemedIcon(icon: IconType.dateTime, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                dateToString(),
+                style: OnlineTheme.textStyle(),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget incressCard() {
+    return OnlineCard(
+      child: Text(
+        article.ingress,
+        style: OnlineTheme.textStyle(),
+      ),
+    );
   }
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
-    final topPadding = MediaQuery.of(context).padding;
+    final padding = MediaQuery.of(context).padding;
+
     List<dynamic> contentSegments = extractAndSplitContent(article.content);
     return Padding(
-      padding: topPadding,
+      padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          article.image?.original != null
-              ? Image.network(
-                  article.image!.original,
-                  fit: BoxFit.cover,
-                  height: 240,
-                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-                  },
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return SvgPicture.asset(
-                      'assets/svg/online_hvit_o.svg',
-                      fit: BoxFit.cover,
-                      height: 240,
-                    );
-                  },
-                )
-              : SvgPicture.asset(
-                  'assets/svg/online_hvit_o.svg',
-                  fit: BoxFit.cover,
-                  height: 240,
-                ),
+          coverImage(),
           Padding(
-            padding: EdgeInsets.only(left: padding.left, right: padding.right),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 30),
+                const SizedBox(height: 24),
                 Text(
                   article.heading,
-                  style: OnlineTheme.textStyle(size: 20, weight: 7),
+                  style: OnlineTheme.header(),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 14),
-                Text(
-                  'Skrevet av: ${article.authors},   ${dateToString()}',
-                  style: OnlineTheme.textStyle(),
-                ),
-                const Separator(margin: 20),
-                Text(
-                  article.ingress,
-                  style: OnlineTheme.textStyle(weight: 6),
-                ),
-                const Separator(
-                  margin: 15,
-                ),
+                authorsAndDateCard(),
+                const SizedBox(height: 24),
+                incressCard(),
+                const SizedBox(height: 24),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: contentSegments.map((segment) {
@@ -166,15 +203,12 @@ class ArticlePage extends ScrollablePage {
                     }
                   }).toList(),
                 ),
-
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 24),
                 ViewMoreArticles(
                   scrollController: scrollController,
                 ),
                 // ... other content based on the article data ...
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
               ],
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:online/components/skeleton_loader.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
@@ -91,6 +92,36 @@ class _EventPageState extends State<EventPage> {
     }
   }
 
+  Widget coverImage() {
+    if (widget.model.images.isEmpty) {
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: SvgPicture.asset(
+          'assets/svg/online_hvit_o.svg',
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: Image.network(
+        widget.model.images.first.original,
+        loadingBuilder: (context, child, evt) {
+          if (evt == null) return child;
+
+          return const SkeletonLoader();
+        },
+        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+          return SvgPicture.asset(
+            'assets/svg/online_hvit_o.svg',
+            fit: BoxFit.cover,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
@@ -99,105 +130,69 @@ class _EventPageState extends State<EventPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // SizedBox(height: OnlineHeader.height(context)),
-          widget.model.images.isNotEmpty
-              ? AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Image.network(
-                    widget.model.images.first.original,
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return SvgPicture.asset(
-                        'assets/svg/online_hvit_o.svg',
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
-                )
-              : SvgPicture.asset(
-                  'assets/svg/online_hvit_o.svg',
-                  fit: BoxFit.cover,
-                ),
+          coverImage(),
           Padding(
             padding: EdgeInsets.only(left: 25, right: 25, bottom: padding.bottom),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 24),
-                Column(
+                Text(
+                  widget.model.title,
+                  style: OnlineTheme.header(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      widget.model.title,
-                      style: OnlineTheme.header(),
+                    SizedBox.square(
+                      dimension: 40,
+                      child: Center(
+                        child: AnimatedButton(
+                          onTap: () {
+                            AppNavigator.navigateToRoute(
+                              QRCode(model: widget.model),
+                              additive: true,
+                            );
+                          },
+                          childBuilder: (context, hover, pointerDown) {
+                            return const ThemedIcon(
+                              icon: IconType.qr,
+                              size: 24,
+                              color: OnlineTheme.white,
+                            );
+                          },
+                        ),
+                      ),
                     ),
-
-                    // if (attendeeInfoModel.isAttendee)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox.square(
-                          dimension: 40,
-                          child: Center(
-                            child: AnimatedButton(
-                              onTap: () {
-                                AppNavigator.navigateToRoute(
-                                  QRCode(model: widget.model),
-                                  additive: true,
-                                );
-                              },
-                              childBuilder: (context, hover, pointerDown) {
-                                return const ThemedIcon(
-                                  icon: IconType.qr,
-                                  size: 24,
-                                  color: OnlineTheme.white,
-                                );
-                              },
-                            ),
-                          ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox.square(
+                      dimension: 40,
+                      child: Center(
+                        child: AnimatedButton(
+                          onTap: () async {
+                            final qrResult = await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const QrCodeScannerDisplay()),
+                            );
+                            if (qrResult != null) {
+                              registerAttendance(qrResult);
+                            }
+                          },
+                          childBuilder: (context, hover, pointerDown) {
+                            return const ThemedIcon(
+                              icon: IconType.camScan,
+                              size: 24,
+                              color: OnlineTheme.white,
+                            );
+                          },
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        SizedBox.square(
-                          dimension: 40,
-                          child: Center(
-                            child: AnimatedButton(
-                              onTap: () async {
-                                final qrResult = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const QrCodeScannerDisplay()),
-                                );
-                                if (qrResult != null) {
-                                  registerAttendance(qrResult);
-                                }
-                              },
-                              childBuilder: (context, hover, pointerDown) {
-                                return const ThemedIcon(
-                                  icon: IconType.camScan,
-                                  size: 24,
-                                  color: OnlineTheme.white,
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 24),
-                // FirebaseRecaptchaVerifierModal,
                 AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
                 const SizedBox(height: 24),
                 EventDescriptionCard(

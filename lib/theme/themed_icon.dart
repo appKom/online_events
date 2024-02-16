@@ -21,6 +21,7 @@ enum IconType {
   qr,
   pixel,
   pixelFilled,
+  script,
 }
 
 class ThemedIcon extends StatelessWidget {
