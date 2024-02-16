@@ -197,6 +197,7 @@ class _EventPageState extends State<EventPage> {
                 const SizedBox(height: 24),
                 EventDescriptionCard(
                   description: widget.model.description,
+                  ingress: widget.model.ingress,
                   organizer: eventOrganizers[widget.model.organizer] ?? '',
                 ),
                 const SizedBox(height: 24),

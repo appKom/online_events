@@ -8,10 +8,12 @@ class EventDescriptionCard extends StatefulWidget {
     super.key,
     required this.description,
     required this.organizer,
+    required this.ingress,
   });
 
   final String description;
   final String organizer;
+  final String ingress;
 
   @override
   DescriptionCardState createState() => DescriptionCardState();
@@ -57,11 +59,15 @@ class DescriptionCardState extends State<EventDescriptionCard> {
     );
   }
 
-  String _getText() {
-    if (_isExpanded) return widget.description;
-    if (widget.description.length <= 100) return widget.description;
+  String descriptionContent(){
+    return widget.ingress + '\n' + '\n' + widget.description;
+  }
 
-    return '${widget.description.substring(0, 100)}...';
+  String _getText() {
+    if (_isExpanded) return descriptionContent();
+    if (descriptionContent().length <= 100) return descriptionContent();
+
+    return '${descriptionContent().substring(0, 100)}...';
   }
 
   /// Card Content

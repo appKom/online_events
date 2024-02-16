@@ -247,7 +247,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
       await flutterLocalNotificationsPlugin.zonedSchedule(
         notificationId,
         'Påmelding starter snart!',
-        'Påmelding til starter om 15 minutter.',
+        'Påmelding til ${widget.model.title} starter om 15 minutter.',
         tz.TZDateTime.from(scheduleNotificationDateTime, tz.local),
         platformChannelSpecifics,
         androidAllowWhileIdle: true, 
