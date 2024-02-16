@@ -270,7 +270,7 @@ class PixelPageState extends State<PixelPage> {
                                 childBuilder: (context, hover, pointerDown) {
                                   return Text(
                                     'Vis kommentarer',
-                                    style: OnlineTheme.textStyle(color: OnlineTheme.gray10),
+                                    style: OnlineTheme.textStyle(color: OnlineTheme.gray9),
                                   );
                                 },
                               ),

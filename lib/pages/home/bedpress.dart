@@ -203,7 +203,7 @@ class BedpressCard extends StatelessWidget {
                   child: Text(
                     truncateWithEllipsis(model.title, 35), // Use title from EventModel
                     style: OnlineTheme.textStyle(
-                      color: OnlineTheme.gray11,
+                      color: OnlineTheme.gray9,
                       weight: 7,
                     ),
                   ),
