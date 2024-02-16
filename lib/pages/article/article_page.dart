@@ -111,8 +111,9 @@ class ArticlePage extends ScrollablePage {
               const ThemedIcon(icon: IconType.script, size: 18),
               const SizedBox(width: 8),
               Text(
-                article.authors,
+                article.authors.replaceAll(', ', ',\n'),
                 style: OnlineTheme.textStyle(),
+                overflow: TextOverflow.visible,
               ),
             ],
           ),
@@ -133,11 +134,60 @@ class ArticlePage extends ScrollablePage {
     );
   }
 
+  /// Card header
+  Widget cardHeader(String text) {
+    return SizedBox(
+      height: 32,
+      child: Text(
+        text,
+        style: OnlineTheme.header(),
+      ),
+    );
+  }
+
   Widget ingressCard() {
     return OnlineCard(
-      child: Text(
-        article.ingress,
-        style: OnlineTheme.textStyle(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          cardHeader('Intro'),
+          Text(
+            article.ingress,
+            style: OnlineTheme.textStyle(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget bodyCard() {
+    List<dynamic> contentSegments = extractAndSplitContent(article.content);
+
+    return OnlineCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: contentSegments.map((segment) {
+          if (segment is Uri) {
+            return Image.network(
+              segment.toString(),
+              fit: BoxFit.cover,
+              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return const SkeletonLoader(height: 200);
+              },
+              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                return SvgPicture.asset(
+                  'assets/svg/online_hvit_o.svg',
+                  fit: BoxFit.cover,
+                );
+              },
+            );
+          }
+
+          return Text(segment, style: OnlineTheme.textStyle());
+        }).toList(),
       ),
     );
   }
@@ -146,7 +196,6 @@ class ArticlePage extends ScrollablePage {
   Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
 
-    List<dynamic> contentSegments = extractAndSplitContent(article.content);
     return Padding(
       padding: padding,
       child: Column(
@@ -165,45 +214,9 @@ class ArticlePage extends ScrollablePage {
                 const SizedBox(height: 24),
                 ingressCard(),
                 const SizedBox(height: 24),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: contentSegments.map((segment) {
-                    if (segment is Uri) {
-                      return Image.network(
-                        segment.toString(),
-                        fit: BoxFit.cover,
-                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                          return SvgPicture.asset(
-                            'assets/svg/online_hvit_o.svg',
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      );
-                    } else {
-                      return Text(
-                        segment,
-                        style: OnlineTheme.textStyle(),
-                      );
-                    }
-                  }).toList(),
-                ),
+                bodyCard(),
                 const SizedBox(height: 24),
-                ViewMoreArticles(
-                  scrollController: scrollController,
-                ),
-                // ... other content based on the article data ...
+                ViewMoreArticles(scrollController: scrollController),
                 const SizedBox(height: 24),
               ],
             ),
