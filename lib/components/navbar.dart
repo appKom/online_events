@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../services/online_toast.dart';
-import '/main.dart';
 import '../pages/games/games_page.dart';
+import '/main.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
@@ -73,8 +72,6 @@ class NavbarState extends State<Navbar> {
           behavior: HitTestBehavior.opaque,
           onTap: () {
             buttons[i].onPressed?.call();
-
-            OnlineToast.show('Navigerer til side $i', type: ToastType.negative);
 
             setState(() {
               selected = i;

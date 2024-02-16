@@ -28,6 +28,7 @@ class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderSta
   final _random = Random();
 
   int _step = 0;
+  int _direction = 1;
 
   @override
   void initState() {
@@ -60,9 +61,12 @@ class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderSta
   }
 
   void rollDice() {
+    if (_animationController.isAnimating) return;
+
     _animationController.reset();
     _step = 0;
-    _animationController.duration = Duration(milliseconds: 250 + Random().nextInt(750));
+    _animationController.duration = Duration(milliseconds: 300 + Random().nextInt(700));
+    _direction = Random().nextBool() ? 1 : -1;
     _animationController.forward();
   }
 
@@ -78,7 +82,7 @@ class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderSta
               animation: _animationController,
               builder: (context, child) {
                 return Transform.rotate(
-                  angle: pi * 2 * Curves.decelerate.transform(_animationController.value),
+                  angle: _direction * pi * 2 * Curves.decelerate.transform(_animationController.value),
                   child: AnimatedButton(
                     scale: 0.8,
                     onTap: rollDice,

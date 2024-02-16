@@ -19,7 +19,7 @@ class HomePage extends ScrollablePage {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
-      padding: EdgeInsets.only(top: padding.top, left: padding.left, right: padding.right),
+      padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -30,7 +30,7 @@ class HomePage extends ScrollablePage {
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
-            height: 111 * 2,
+            height: 111 * 3,
             child: ValueListenableBuilder(
               valueListenable: Client.eventsCache,
               builder: (context, events, child) {
@@ -39,12 +39,13 @@ class HomePage extends ScrollablePage {
                     children: [
                       EventCard.skeleton(),
                       EventCard.skeleton(),
+                      EventCard.skeleton(),
                     ],
                   );
                 }
 
                 return ListView.builder(
-                  itemCount: 2,
+                  itemCount: 3,
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (c, i) => EventCard(
@@ -55,43 +56,44 @@ class HomePage extends ScrollablePage {
             ),
           ),
           ValueListenableBuilder(
-              valueListenable: Client.eventsCache,
-              builder: (context, events, child) {
-                if (events.isEmpty) {
-                  return Center(
-                    child: SkeletonLoader(
-                      borderRadius: BorderRadius.circular(5),
-                      width: 50,
-                      height: 25,
-                    ),
-                  );
-                }
-
-                return AnimatedButton(
-                  onTap: () => AppNavigator.navigateToPage(const EventsPageDisplay()),
-                  behavior: HitTestBehavior.opaque,
-                  childBuilder: (context, hover, pointerDown) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'MER',
-                          style: OnlineTheme.textStyle(weight: 5),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 2),
-                          child: Icon(
-                            Icons.navigate_next,
-                            color: OnlineTheme.white,
-                            size: 20,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+            valueListenable: Client.eventsCache,
+            builder: (context, events, child) {
+              if (events.isEmpty) {
+                return Center(
+                  child: SkeletonLoader(
+                    borderRadius: BorderRadius.circular(5),
+                    width: 50,
+                    height: 25,
+                  ),
                 );
-              }),
+              }
+
+              return AnimatedButton(
+                onTap: () => AppNavigator.navigateToPage(const EventsPageDisplay()),
+                behavior: HitTestBehavior.opaque,
+                childBuilder: (context, hover, pointerDown) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'MER',
+                        style: OnlineTheme.textStyle(weight: 5),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: Icon(
+                          Icons.navigate_next,
+                          color: OnlineTheme.white,
+                          size: 20,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
           const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
@@ -124,7 +126,7 @@ class HomePage extends ScrollablePage {
               },
             ),
           ),
-          const SizedBox(height: 70),
+          const SizedBox(height: 24),
         ],
       ),
     );
