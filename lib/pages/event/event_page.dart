@@ -103,21 +103,28 @@ class _EventPageState extends State<EventPage> {
       );
     }
 
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: Image.network(
-        widget.model.images.first.original,
-        loadingBuilder: (context, child, evt) {
-          if (evt == null) return child;
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+        ),
+      ),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Image.network(
+          widget.model.images.first.original,
+          loadingBuilder: (context, child, evt) {
+            if (evt == null) return child;
 
-          return const SkeletonLoader();
-        },
-        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-          return SvgPicture.asset(
-            'assets/svg/online_hvit_o.svg',
-            fit: BoxFit.cover,
-          );
-        },
+            return const SkeletonLoader();
+          },
+          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+            return SvgPicture.asset(
+              'assets/svg/online_hvit_o.svg',
+              fit: BoxFit.cover,
+            );
+          },
+        ),
       ),
     );
   }
@@ -126,13 +133,13 @@ class _EventPageState extends State<EventPage> {
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
     return Padding(
-      padding: EdgeInsets.only(top: padding.top),
+      padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           coverImage(),
           Padding(
-            padding: EdgeInsets.only(left: 25, right: 25, bottom: padding.bottom),
+            padding: OnlineTheme.horizontalPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -206,10 +213,10 @@ class _EventPageState extends State<EventPage> {
                   attendeeInfoModel: attendeeInfoModel,
                   onUnregisterSuccess: onUnregisterSuccess,
                 ),
+                const SizedBox(height: 24),
               ],
             ),
           ),
-          const SizedBox(height: 24),
         ],
       ),
     );

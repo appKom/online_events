@@ -15,7 +15,7 @@ class GamesPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -33,34 +33,45 @@ class GamesPage extends ScrollablePage {
               style: OnlineTheme.header(),
             ),
             const SizedBox(height: 10),
-            CarouselSlider(
-              items: [
-                GameCard(
-                  name: 'Terning',
-                  imageSource: 'assets/images/diceHeader.jpg',
-                  onTap: () {
-                    AppNavigator.navigateToPage(const DicePage());
-                  },
+            ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return const LinearGradient(
+                  colors: [Colors.transparent, Colors.white, Colors.white, Colors.transparent],
+                  stops: [0.0, 0.1, 0.9, 1.0], // Adjust these stops to control the fade effect
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ).createShader(bounds);
+              },
+              child: CarouselSlider(
+                items: [
+                  GameCard(
+                    name: 'Terning',
+                    imageSource: 'assets/images/diceHeader.jpg',
+                    onTap: () {
+                      AppNavigator.navigateToPage(const DicePage());
+                    },
+                  ),
+                  GameCard(
+                    name: 'SpinLine',
+                    imageSource: 'assets/images/SpinLine.png',
+                    onTap: () {
+                      AppNavigator.navigateToPage(const SpinLinePage());
+                    },
+                  ),
+                  GameCard(
+                    name: 'Bits',
+                    imageSource: 'assets/images/bits.png',
+                    onTap: () {
+                      AppNavigator.navigateToPage(const BitsHomePage());
+                    },
+                  ),
+                ],
+                options: CarouselOptions(
+                  enableInfiniteScroll: true,
+                  padEnds: true,
+                  enlargeCenterPage: true,
+                  viewportFraction: 0.7,
                 ),
-                GameCard(
-                  name: 'SpinLine',
-                  imageSource: 'assets/images/SpinLine.png',
-                  onTap: () {
-                    AppNavigator.navigateToPage(const SpinLinePage());
-                  },
-                ),
-                GameCard(
-                  name: 'Bits',
-                  imageSource: 'assets/images/bits.png',
-                  onTap: () {
-                    AppNavigator.navigateToPage(const BitsHomePage());
-                  },
-                ),
-              ],
-              options: CarouselOptions(
-                enableInfiniteScroll: true,
-                padEnds: true,
-                enlargeCenterPage: true,
               ),
             ),
           ],

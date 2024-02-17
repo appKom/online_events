@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online/services/app_navigator.dart';
@@ -54,28 +55,33 @@ class Bedpress extends StatelessWidget {
 
     final filteredModels = futureEvents.where((model) => model.eventType == 2 || model.eventType == 3).toList();
 
+    final options = CarouselOptions(
+      height: 320,
+      enableInfiniteScroll: true,
+      padEnds: true,
+      enlargeCenterPage: true,
+      viewportFraction: 0.75,
+      enlargeFactor: 0.2,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 24),
         Text(
-          'Bedriftpresentasjoner og Kurs',
-          style: OnlineTheme.textStyle(size: 20, weight: 7),
+          'Bedpresser & Kurs',
+          style: OnlineTheme.header(),
         ),
         const SizedBox(height: 24),
-        SizedBox(
-          height: 255,
-          child: ListView.builder(
-            itemCount: filteredModels.length,
-            itemBuilder: (c, i) {
-              return Padding(
-                padding: EdgeInsets.only(right: i < filteredModels.length - 1 ? 24 : 0),
-                child: BedpressCard(
-                  model: filteredModels[i],
-                ),
+        CarouselSlider(
+          options: options,
+          items: List.generate(
+            filteredModels.length,
+            (i) {
+              return BedpressCard(
+                model: filteredModels[i],
               );
             },
-            scrollDirection: Axis.horizontal,
           ),
         ),
       ],
@@ -130,30 +136,44 @@ class BedpressCard extends StatelessWidget {
 
   BoxDecoration? badgeDecoration(int eventType) {
     // Kurs
-    if (eventType == 3) {
-      return BoxDecoration(
-        color: OnlineTheme.green.darken(20).withOpacity(0.4),
-        borderRadius: OnlineTheme.buttonRadius,
-        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
-      );
-    }
+    // if (eventType == 3) {
+    //   return BoxDecoration(
+    //     color: OnlineTheme.green.darken(20).withOpacity(0.4),
+    //     borderRadius: OnlineTheme.buttonRadius,
+    //     border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
+    //   );
+    // }
 
+    return BoxDecoration(
+        color: OnlineTheme.yellow.darken(40),
+        borderRadius: OnlineTheme.buttonRadius,
+        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)));
     // Bedpress
-    if (eventType == 2) {
-      return BoxDecoration(
-        color: OnlineTheme.red.darken(20).withOpacity(0.4),
-        borderRadius: OnlineTheme.buttonRadius,
-        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
-      );
-    }
+    // if (eventType == 2) {
+    // }
 
-    return null;
+    // return null;
   }
 
   Color getColor(int eventType) {
-    if (eventType == 3) return OnlineTheme.green;
-    if (eventType == 2) return OnlineTheme.red;
-    return OnlineTheme.white;
+    return OnlineTheme.yellow;
+    // if (eventType == 3) return OnlineTheme.green;
+    // if (eventType == 2) return OnlineTheme.yellow;
+    // return OnlineTheme.white;
+  }
+
+  Widget typeBadge() {
+    return Container(
+      height: 30,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: badgeDecoration(model.eventType),
+      child: Center(
+        child: Text(
+          getEventTypeDisplay(),
+          style: OnlineTheme.textStyle(weight: 5, size: 14, color: getColor(model.eventType)),
+        ),
+      ),
+    );
   }
 
   @override
@@ -161,88 +181,102 @@ class BedpressCard extends StatelessWidget {
     return AnimatedButton(
       onTap: showInfo,
       childBuilder: (context, hover, pointerDown) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            width: 222,
-            color: OnlineTheme.gray13,
-            child: Stack(
-              children: [
-                // Use first image from images list, with a fallback
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  height: 125,
-                  child: model.images.isNotEmpty
-                      ? Image.network(
-                          model.images.first.md,
-                          fit: BoxFit.cover,
-                        )
-                      : SvgPicture.asset(
-                          'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
-                          fit: BoxFit.cover,
+        return Stack(
+          children: [
+            Container(
+              width: 250,
+              height: 300,
+              decoration: const BoxDecoration(
+                border: Border.fromBorderSide(
+                  BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
                         ),
-                ),
-                // ... other widget components, use properties from EventModel
-                Positioned(
-                  right: 15,
-                  bottom: 40,
-                  child: Text(
-                    formatDate(), // Use formatted date
-                    style: OnlineTheme.textStyle(
-                      size: 15,
-                      weight: 7,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 10,
-                  top: 125 + 10,
-                  left: 15,
-                  child: Text(
-                    truncateWithEllipsis(model.title, 35), // Use title from EventModel
-                    style: OnlineTheme.textStyle(
-                      color: OnlineTheme.gray9,
-                      weight: 7,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 15,
-                  bottom: 15,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
-                    decoration: badgeDecoration(model.eventType),
-                    child: Text(
-                      getEventTypeDisplay(),
-                      style: OnlineTheme.textStyle(weight: 5, size: 14, color: getColor(model.eventType)),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 15,
-                  right: 12,
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.people,
-                        size: 20,
-                        color: OnlineTheme.white,
                       ),
-                      const SizedBox(width: 6),
-                      Text(
-                        model.numberOfSeatsTaken == null && model.maxCapacity == null
-                            ? '∞'
-                            : '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}',
-                        style: OnlineTheme.textStyle(weight: 5, size: 14),
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: model.images.isNotEmpty
+                            ? Image.network(
+                                model.images.first.md,
+                                fit: BoxFit.cover,
+                              )
+                            : SvgPicture.asset(
+                                'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
+                                fit: BoxFit.cover,
+                              ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        truncateWithEllipsis(model.title, 35),
+                        style: OnlineTheme.textStyle(
+                          color: OnlineTheme.gray9,
+                          weight: 7,
+                        ),
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            formatDate(), // Use formatted date
+                            style: OnlineTheme.textStyle(
+                              size: 15,
+                              weight: 7,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.people,
+                                size: 20,
+                                color: OnlineTheme.white,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                model.numberOfSeatsTaken == null && model.maxCapacity == null
+                                    ? '∞'
+                                    : '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}',
+                                style: OnlineTheme.textStyle(weight: 5, size: 14),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            Positioned(
+              bottom: 10,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  typeBadge(),
+                ],
+              ),
+            ),
+          ],
         );
       },
     );

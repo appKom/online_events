@@ -38,6 +38,8 @@ sealed class OnlineTheme {
 
   static const grayBorder = Color(0xFF22272F);
 
+  static const horizontalPadding = EdgeInsets.symmetric(horizontal: 20);
+
   static const purpleGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -114,8 +116,8 @@ sealed class OnlineTheme {
     }
   }
 
-  static TextStyle header() => textStyle(size: 20, weight: 7);
-  static TextStyle subHeader() => textStyle(size: 16, weight: 7);
+  static TextStyle header() => textStyle(size: 20, weight: 6);
+  static TextStyle subHeader() => textStyle(size: 16, weight: 6);
 
   static TextStyle textStyle({
     Color color = white,

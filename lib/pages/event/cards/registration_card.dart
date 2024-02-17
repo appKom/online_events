@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
 import '/pages/event/cards/event_card.dart';
-import '/pages/event/cards/event_card_buttons.dart';
 import '/pages/event/cards/event_participants.dart';
 import '/theme/theme.dart';
 import 'card_badge.dart';
@@ -101,11 +100,11 @@ class RegistrationCard extends StatelessWidget {
                 style: OnlineTheme.textStyle(),
               ),
             ),
-          EventCardButtons(
-            model: model,
-            attendeeInfoModel: attendeeInfoModel,
-            onUnregisterSuccess: onUnregisterSuccess,
-          ),
+          // EventCardButtons(
+          //   model: model,
+          //   attendeeInfoModel: attendeeInfoModel,
+          //   onUnregisterSuccess: onUnregisterSuccess,
+          // ),
         ],
       ),
     );

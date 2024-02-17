@@ -50,17 +50,13 @@ class DescriptionCardState extends State<EventDescriptionCard> {
       height: 32,
       child: Text(
         'Beskrivelse',
-        style: OnlineTheme.textStyle(
-          size: 20,
-          weight: 7,
-          color: OnlineTheme.white,
-        ),
+        style: OnlineTheme.header(),
       ),
     );
   }
 
-  String descriptionContent(){
-    return widget.ingress + '\n' + '\n' + widget.description;
+  String descriptionContent() {
+    return '${widget.ingress}\n\n${widget.description}';
   }
 
   String _getText() {
@@ -78,6 +74,7 @@ class DescriptionCardState extends State<EventDescriptionCard> {
           _getText(),
           style: OnlineTheme.textStyle(),
         ),
+        const SizedBox(height: 10),
         Text(
           _isExpanded ? 'Vis mindre' : 'Vis mer',
           style: OnlineTheme.textStyle(color: OnlineTheme.yellow),

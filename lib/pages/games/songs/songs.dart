@@ -17,7 +17,7 @@ class DrikkeSanger extends StatelessWidget {
       enableInfiniteScroll: true,
       enlargeCenterPage: true,
       padEnds: true,
-      viewportFraction: 0.8,
+      viewportFraction: 0.7,
     );
 
     return Column(
@@ -28,31 +28,41 @@ class DrikkeSanger extends StatelessWidget {
           style: OnlineTheme.header(),
         ),
         const SizedBox(height: 10),
-        CarouselSlider(
-          options: options,
-          items: [
-            SongCard(
-              name: 'Lambo',
-              imageSource: 'assets/images/lambo.jpg',
-              onTap: () => AppNavigator.navigateToPage(
-                const LamboPage(),
+        ShaderMask(
+          shaderCallback: (Rect bounds) {
+            return const LinearGradient(
+              colors: [Colors.transparent, Colors.white, Colors.white, Colors.transparent],
+              stops: [0.0, 0.1, 0.9, 1.0], // Adjust these stops to control the fade effect
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ).createShader(bounds);
+          },
+          child: CarouselSlider(
+            options: options,
+            items: [
+              SongCard(
+                name: 'Lambo',
+                imageSource: 'assets/images/lambo.jpg',
+                onTap: () => AppNavigator.navigateToPage(
+                  const LamboPage(),
+                ),
               ),
-            ),
-            SongCard(
-              name: 'Nu Klinger',
-              imageSource: 'assets/images/nu_klinger.jpg',
-              onTap: () => AppNavigator.navigateToPage(
-                const NuKlingerPage(),
+              SongCard(
+                name: 'Nu Klinger',
+                imageSource: 'assets/images/nu_klinger.jpg',
+                onTap: () => AppNavigator.navigateToPage(
+                  const NuKlingerPage(),
+                ),
               ),
-            ),
-            SongCard(
-              name: 'Fader Abraham',
-              imageSource: 'assets/images/faderabraham.png',
-              onTap: () => AppNavigator.navigateToPage(
-                const FaderAbrahamPage(),
+              SongCard(
+                name: 'Fader Abraham',
+                imageSource: 'assets/images/faderabraham.png',
+                onTap: () => AppNavigator.navigateToPage(
+                  const FaderAbrahamPage(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

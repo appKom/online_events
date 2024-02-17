@@ -6,8 +6,9 @@ import 'app_navigator.dart';
 
 enum ToastType {
   neutral,
-  positive,
-  negative,
+  green,
+  yellow,
+  red,
 }
 
 abstract class OnlineToast {
@@ -15,9 +16,11 @@ abstract class OnlineToast {
     switch (type) {
       case ToastType.neutral:
         return (border: OnlineTheme.grayBorder, fill: OnlineTheme.background.withOpacity(0.8));
-      case ToastType.positive:
+      case ToastType.green:
         return (border: OnlineTheme.green, fill: OnlineTheme.green.darken(50).withOpacity(0.8));
-      case ToastType.negative:
+      case ToastType.yellow:
+        return (border: OnlineTheme.yellow, fill: OnlineTheme.yellow.darken(50).withOpacity(0.8));
+      case ToastType.red:
         return (border: OnlineTheme.red, fill: OnlineTheme.red.darken(50).withOpacity(0.8));
     }
   }
@@ -38,7 +41,7 @@ abstract class OnlineToast {
     showOverlayNotification(
       duration: duration,
       (context) => Container(
-        margin: query.padding + const EdgeInsets.symmetric(horizontal: 25),
+        margin: query.padding + OnlineTheme.horizontalPadding,
         child: Container(
           height: 36,
           decoration: BoxDecoration(boxShadow: [

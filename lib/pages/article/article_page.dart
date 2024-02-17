@@ -134,60 +134,46 @@ class ArticlePage extends ScrollablePage {
     );
   }
 
-  /// Card header
-  Widget cardHeader(String text) {
-    return SizedBox(
-      height: 32,
-      child: Text(
-        text,
-        style: OnlineTheme.header(),
-      ),
-    );
-  }
-
-  Widget ingressCard() {
-    return OnlineCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          cardHeader('Intro'),
-          Text(
-            article.ingress,
-            style: OnlineTheme.textStyle(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget bodyCard() {
+  Widget articleCard() {
     List<dynamic> contentSegments = extractAndSplitContent(article.content);
 
     return OnlineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: contentSegments.map((segment) {
-          if (segment is Uri) {
-            return Image.network(
-              segment.toString(),
-              fit: BoxFit.cover,
-              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return const SkeletonLoader(height: 200);
-              },
-              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                return SvgPicture.asset(
-                  'assets/svg/online_hvit_o.svg',
+        children: [
+          Text(
+            '${article.ingress}\n',
+            style: OnlineTheme.textStyle(),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: contentSegments.map((segment) {
+              if (segment is Uri) {
+                return Image.network(
+                  segment.toString(),
                   fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return const SkeletonLoader(height: 200);
+                  },
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return SvgPicture.asset(
+                      'assets/svg/online_hvit_o.svg',
+                      fit: BoxFit.cover,
+                    );
+                  },
                 );
-              },
-            );
-          }
+              }
 
-          return Text(segment, style: OnlineTheme.textStyle());
-        }).toList(),
+              return Text(
+                segment,
+                style: OnlineTheme.textStyle(),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
@@ -203,18 +189,18 @@ class ArticlePage extends ScrollablePage {
         children: [
           coverImage(),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: OnlineTheme.horizontalPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 24),
                 Text(article.heading, style: OnlineTheme.header()),
-                const SizedBox(height: 14),
+                const SizedBox(height: 24),
                 authorsAndDateCard(),
                 const SizedBox(height: 24),
-                ingressCard(),
-                const SizedBox(height: 24),
-                bodyCard(),
+                // ingressCard(),
+                // const SizedBox(height: 24),
+                articleCard(),
                 const SizedBox(height: 24),
                 ViewMoreArticles(scrollController: scrollController),
                 const SizedBox(height: 24),

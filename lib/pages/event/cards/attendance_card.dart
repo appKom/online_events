@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:online/main.dart';
+import 'package:timezone/timezone.dart' as tz;
 
+import '/components/animated_button.dart';
+import '/services/online_toast.dart';
 import '/components/separator.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
@@ -8,6 +13,41 @@ import '/theme/themed_icon.dart';
 import 'event_card.dart';
 import 'event_card_countdown.dart';
 import 'event_date_formater.dart';
+
+class NotificationModel {
+  static const channelId = "online_events";
+  static const channelName = "Online Events";
+  static const channelDescription = "Reminders about event registrations and event starts.";
+
+  static const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    channelId,
+    channelName,
+    channelDescription: channelDescription,
+    importance: Importance.max,
+    priority: Priority.high,
+    showWhen: true,
+  );
+  static const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+  static const platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    iOS: iOSPlatformChannelSpecifics,
+  );
+
+  final DateTime time;
+  final String header;
+  final String body;
+
+  late final int id;
+
+  NotificationModel({required this.time, required this.header, required this.body}) {
+    id = time.hashCode;
+  }
+
+  /// Notification time in correct time zone
+  tz.TZDateTime zonedTime() {
+    return tz.TZDateTime.from(time, tz.local);
+  }
+}
 
 class AttendanceCard extends StatelessWidget {
   const AttendanceCard({super.key, required this.event, required this.attendeeInfo});
@@ -34,6 +74,8 @@ class AttendanceCard extends StatelessWidget {
           ),
         ),
         EventCardCountdown(eventTime: attendeeInfo.registrationStart),
+        const SizedBox(height: 10),
+        notifyEventRegistration(),
       ],
     );
   }
@@ -65,6 +107,50 @@ class AttendanceCard extends StatelessWidget {
         ),
         EventCardCountdown(eventTime: eventDateTime),
       ],
+    );
+  }
+
+  Widget notifyEventRegistration() {
+    return AnimatedButton(
+      onTap: () async {
+        final scheduleNotificationDateTime = attendeeInfo.registrationStart.subtract(const Duration(minutes: 15));
+
+        final notification = NotificationModel(
+          time: scheduleNotificationDateTime,
+          header: 'Påmelding Snart!',
+          body: 'Påmelding til ${event.title} starter om 15 minutter.',
+        );
+
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+          notification.id,
+          notification.header,
+          notification.body,
+          notification.zonedTime(),
+          NotificationModel.platformChannelSpecifics,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
+          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.time,
+        );
+
+        OnlineToast.show("Du vil bli varslet 15 minutter før påmelding starter.");
+      },
+      childBuilder: (context, hover, pointerDown) {
+        return Container(
+          height: OnlineTheme.buttonHeight,
+          decoration: BoxDecoration(
+            color: OnlineTheme.yellow.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(5.0),
+            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+          ),
+          child: Text(
+            'Varsle Meg',
+            style: OnlineTheme.textStyle(
+              weight: 5,
+              color: OnlineTheme.yellow,
+            ),
+          ),
+        );
+      },
     );
   }
 

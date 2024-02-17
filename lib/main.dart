@@ -1,9 +1,9 @@
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:overlay_support/overlay_support.dart';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import '/components/online_scaffold.dart';
@@ -13,9 +13,6 @@ import '/services/secure_storage.dart';
 import 'core/client/client.dart';
 import 'core/models/user_model.dart';
 import 'firebase_options.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:android_intent_plus/android_intent.dart';
-import 'package:android_intent_plus/flag.dart';
 
 bool loggedIn = false;
 UserModel? userProfile;
@@ -42,7 +39,7 @@ Future<void> checkAndRequestPermission(BuildContext context) async {
 }
 
 void openAppSettings() {
-  final AndroidIntent intent = AndroidIntent(
+  const AndroidIntent intent = AndroidIntent(
     action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
   );
   intent.launch();

@@ -34,7 +34,7 @@ class MyEventsPage extends StatefulWidget {
   const MyEventsPage({super.key});
 
   static Widget skeletonLoader(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     final time = DateTime.now();
     String monthName = norwegianMonths[time.month - 1];

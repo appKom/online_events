@@ -14,7 +14,6 @@ import '/theme/theme.dart';
 enum Role {
   none,
   verified,
-  dev,
 }
 
 class ParticipantOverlay extends DarkOverlay {
@@ -74,8 +73,6 @@ class ParticipantOverlay extends DarkOverlay {
     final name = attendee.fullName;
 
     if (name == 'Mads Hermansen') return Role.verified;
-    if (name == 'Erlend Løvoll Strøm') return Role.dev;
-    if (name == 'Fredrik Carsten Hansteen') return Role.dev;
 
     return Role.none;
   }
@@ -86,8 +83,6 @@ class ParticipantOverlay extends DarkOverlay {
         return OnlineTheme.white;
       case Role.verified:
         return OnlineTheme.blue2;
-      case Role.dev:
-        return OnlineTheme.red;
     }
   }
 
