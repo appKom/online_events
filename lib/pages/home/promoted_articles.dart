@@ -1,13 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:online/components/icon_label.dart';
+import 'package:online/components/skeleton_loader.dart';
 
-import '../../theme/themed_icon.dart';
 import '/components/animated_button.dart';
+import '/components/icon_label.dart';
 import '/core/models/article_model.dart';
 import '/pages/article/article_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
 
 class PromotedArticles extends StatelessWidget {
   final List<ArticleModel> articles;
@@ -51,6 +52,13 @@ class PromotedArticles extends StatelessWidget {
     // TODO: If start and end month is different, shorten to 28. Jan - 03. Feb
 
     return '$dayString. $monthString';
+  }
+
+  static Widget skeleton() {
+    return CarouselSlider(
+      items: List.generate(3, (i) => const SkeletonLoader()),
+      options: _carouselOptions,
+    );
   }
 
   Widget articleCard(ArticleModel article) {
@@ -103,6 +111,7 @@ class PromotedArticles extends StatelessWidget {
                           icon: IconType.script,
                           label: article.authors.replaceAll(', ', ',\n'),
                           fontSize: 15,
+                          iconSize: 18,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,19 +140,19 @@ class PromotedArticles extends StatelessWidget {
     );
   }
 
+  static final _carouselOptions = CarouselOptions(
+    height: 350,
+    enableInfiniteScroll: true,
+    padEnds: true,
+    enlargeCenterPage: true,
+    viewportFraction: 0.8,
+    enlargeFactor: 0.2,
+  );
+
   @override
   Widget build(BuildContext context) {
-    final options = CarouselOptions(
-      height: 350,
-      enableInfiniteScroll: true,
-      padEnds: true,
-      enlargeCenterPage: true,
-      viewportFraction: 0.8,
-      enlargeFactor: 0.2,
-    );
-
     return CarouselSlider(
-      options: options,
+      options: _carouselOptions,
       items: List.generate(
         articles.length,
         (i) {

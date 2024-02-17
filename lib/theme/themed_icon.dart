@@ -23,6 +23,8 @@ enum IconType {
   pixel,
   pixelFilled,
   script,
+  users,
+  usersFilled,
 }
 
 class ThemedIcon extends StatelessWidget {

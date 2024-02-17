@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online/components/icon_label.dart';
 import 'package:online/services/app_navigator.dart';
 
+import '../../theme/themed_icon.dart';
 import '/components/animated_button.dart';
 import '/components/skeleton_loader.dart';
 import '/core/models/event_model.dart';
@@ -160,6 +162,12 @@ class BedpressCard extends StatelessWidget {
     );
   }
 
+  String participants() {
+    if (model.numberOfSeatsTaken == null && model.maxCapacity == null) return '∞';
+
+    return '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
@@ -216,28 +224,8 @@ class BedpressCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            formatDate(),
-                            style: OnlineTheme.textStyle(
-                              size: 15,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.people,
-                                size: 20,
-                                color: OnlineTheme.white,
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                model.numberOfSeatsTaken == null && model.maxCapacity == null
-                                    ? '∞'
-                                    : '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}',
-                                style: OnlineTheme.textStyle(weight: 5, size: 14),
-                              ),
-                            ],
-                          ),
+                          IconLabel(icon: IconType.dateTime, label: formatDate()),
+                          IconLabel(icon: IconType.usersFilled, label: participants(), iconSize: 16),
                         ],
                       ),
                     ),

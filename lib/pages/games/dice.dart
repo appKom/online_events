@@ -77,7 +77,7 @@ class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderSta
       children: [
         Center(
           child: SizedBox.square(
-            dimension: 200,
+            dimension: 250,
             child: AnimatedBuilder(
               animation: _animationController,
               builder: (context, child) {

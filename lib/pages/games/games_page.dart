@@ -19,63 +19,51 @@ class GamesPage extends ScrollablePage {
 
     return Padding(
       padding: padding,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
-              child: DrikkeSanger(),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Spill',
-              style: OnlineTheme.header(),
-            ),
-            const SizedBox(height: 10),
-            ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return const LinearGradient(
-                  colors: [Colors.transparent, Colors.white, Colors.white, Colors.transparent],
-                  stops: [0.0, 0.1, 0.9, 1.0], // Adjust these stops to control the fade effect
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ).createShader(bounds);
-              },
-              child: CarouselSlider(
-                items: [
-                  GameCard(
-                    name: 'Terning',
-                    imageSource: 'assets/images/diceHeader.jpg',
-                    onTap: () {
-                      AppNavigator.navigateToPage(const DicePage());
-                    },
-                  ),
-                  GameCard(
-                    name: 'SpinLine',
-                    imageSource: 'assets/images/SpinLine.png',
-                    onTap: () {
-                      AppNavigator.navigateToPage(const SpinLinePage());
-                    },
-                  ),
-                  GameCard(
-                    name: 'Bits',
-                    imageSource: 'assets/images/bits.png',
-                    onTap: () {
-                      AppNavigator.navigateToPage(const BitsHomePage());
-                    },
-                  ),
-                ],
-                options: CarouselOptions(
-                  enableInfiniteScroll: true,
-                  padEnds: true,
-                  enlargeCenterPage: true,
-                  viewportFraction: 0.7,
-                ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: DrikkeSanger(),
+          ),
+          const SizedBox(height: 24 + 24),
+          Text('Spill', style: OnlineTheme.header()),
+          const SizedBox(height: 24),
+          CarouselSlider(
+            items: [
+              GameCard(
+                name: 'Terning',
+                imageSource: 'assets/images/diceHeader.jpg',
+                onTap: () {
+                  AppNavigator.navigateToPage(const DicePage());
+                },
               ),
+              GameCard(
+                name: 'SpinLine',
+                imageSource: 'assets/images/SpinLine.png',
+                onTap: () {
+                  AppNavigator.navigateToPage(const SpinLinePage());
+                },
+              ),
+              GameCard(
+                name: 'Bits',
+                imageSource: 'assets/images/bits.png',
+                onTap: () {
+                  AppNavigator.navigateToPage(const BitsHomePage());
+                },
+              ),
+            ],
+            options: CarouselOptions(
+              height: 200,
+              enableInfiniteScroll: true,
+              padEnds: true,
+              enlargeCenterPage: true,
+              viewportFraction: 0.7,
+              enlargeFactor: 0.2,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24),
+        ],
       ),
     );
   }
@@ -99,29 +87,38 @@ class GameCard extends StatelessWidget {
     return AnimatedButton(
       onTap: onTap,
       childBuilder: (context, hover, pointerDown) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: SizedBox(
-            width: double.infinity,
-            height: 222,
-            child: Stack(
+        return Container(
+          decoration: const BoxDecoration(
+            border: Border.fromBorderSide(
+              BorderSide(width: 2, color: OnlineTheme.grayBorder),
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Positioned.fill(
-                  child: Image.asset(
-                    imageSource,
-                    fit: BoxFit.cover,
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                    ),
+                  ),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Image.asset(
+                      imageSource,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    color: Colors.black.withOpacity(0.5),
-                    child: Text(
-                      name,
-                      style: OnlineTheme.textStyle(weight: 7, size: 20),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(name, style: OnlineTheme.subHeader()),
                     ),
                   ),
                 ),

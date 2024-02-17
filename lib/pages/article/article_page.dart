@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online/components/skeleton_loader.dart';
-import 'package:online/pages/event/cards/event_card.dart';
-import 'package:online/theme/themed_icon.dart';
 
+import '/components/icon_label.dart';
 import '/components/online_scaffold.dart';
+import '/components/skeleton_loader.dart';
 import '/core/models/article_model.dart';
 import '/pages/article/view_more_articles.dart';
+import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
 
 class ArticlePage extends ScrollablePage {
   final ArticleModel article;
@@ -105,30 +106,9 @@ class ArticlePage extends ScrollablePage {
     return OnlineCard(
       child: Column(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const ThemedIcon(icon: IconType.script, size: 18),
-              const SizedBox(width: 8),
-              Text(
-                article.authors.replaceAll(', ', ',\n'),
-                style: OnlineTheme.textStyle(),
-                overflow: TextOverflow.visible,
-              ),
-            ],
-          ),
+          IconLabel(icon: IconType.script, iconSize: 18, label: article.authors.replaceAll(', ', ',\n')),
           const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const ThemedIcon(icon: IconType.dateTime, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                dateToString(),
-                style: OnlineTheme.textStyle(),
-              ),
-            ],
-          ),
+          IconLabel(icon: IconType.dateTime, label: dateToString()),
         ],
       ),
     );

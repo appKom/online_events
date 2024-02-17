@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../events/events_page.dart';
@@ -8,9 +7,9 @@ import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/pages/home/bedpress.dart';
 import '/pages/home/event_card.dart';
-import '/pages/home/promoted_article.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
+import 'promoted_articles.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
@@ -104,28 +103,14 @@ class HomePage extends ScrollablePage {
             },
           ),
           const SizedBox(height: 24 + 24),
-          Text(
-            'Noe å lese på?',
-            style: OnlineTheme.header(),
-          ),
+          Text('Noe å lese på?', style: OnlineTheme.header()),
           const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.articlesCache,
             builder: (context, articles, child) {
-              if (articles.isEmpty) {
-                return AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: SkeletonLoader(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                );
-              }
+              if (articles.isEmpty) return Center(child: PromotedArticles.skeleton());
 
-              return Center(
-                child: PromotedArticles(
-                  articles: articles.take(3).toList(),
-                ),
-              );
+              return Center(child: PromotedArticles(articles: articles.take(3).toList()));
             },
           ),
           const SizedBox(height: 24),

@@ -16,7 +16,7 @@ class IconLabel extends StatelessWidget {
     required this.label,
     this.color = OnlineTheme.white,
     this.fontSize = 16,
-    this.iconSize = 18,
+    this.iconSize = 20,
   });
 
   @override
