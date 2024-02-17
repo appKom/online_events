@@ -117,7 +117,7 @@ sealed class OnlineTheme {
   }
 
   static TextStyle header() => textStyle(size: 20, weight: 6);
-  static TextStyle subHeader() => textStyle(size: 16, weight: 6);
+  static TextStyle subHeader([Color? color]) => textStyle(size: 16, weight: 7, color: color ?? white);
 
   static TextStyle textStyle({
     Color color = white,

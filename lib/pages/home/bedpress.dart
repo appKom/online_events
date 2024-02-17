@@ -181,6 +181,7 @@ class BedpressCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
                       decoration: const BoxDecoration(
@@ -206,10 +207,7 @@ class BedpressCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
                         truncateWithEllipsis(model.title, 35),
-                        style: OnlineTheme.textStyle(
-                          color: OnlineTheme.gray9,
-                          weight: 7,
-                        ),
+                        style: OnlineTheme.subHeader(),
                       ),
                     ),
                     Expanded(child: Container()),
@@ -219,7 +217,7 @@ class BedpressCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            formatDate(), // Use formatted date
+                            formatDate(),
                             style: OnlineTheme.textStyle(
                               size: 15,
                             ),

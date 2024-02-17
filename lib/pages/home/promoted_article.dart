@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:online/components/icon_label.dart';
 
 import '../../theme/themed_icon.dart';
 import '/components/animated_button.dart';
@@ -95,47 +96,26 @@ class PromotedArticles extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          article.heading, // Modify this line
-                          style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.gray9),
+                          article.heading,
+                          style: OnlineTheme.subHeader(),
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const ThemedIcon(icon: IconType.script, size: 18),
-                            const SizedBox(width: 8),
-                            Text(
-                              article.authors.replaceAll(', ', ',\n'),
-                              style: OnlineTheme.textStyle(size: 15),
-                              overflow: TextOverflow.visible,
-                            ),
-                          ],
+                        IconLabel(
+                          icon: IconType.script,
+                          label: article.authors.replaceAll(', ', ',\n'),
+                          fontSize: 15,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const ThemedIcon(icon: IconType.dateTime, size: 18),
-                                const SizedBox(width: 8),
-                                Text(
-                                  dateToString(article),
-                                  style: OnlineTheme.textStyle(size: 15),
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ],
+                            IconLabel(
+                              icon: IconType.dateTime,
+                              label: dateToString(article),
+                              fontSize: 15,
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const ThemedIcon(icon: IconType.clock, size: 18),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '$timeToRead min',
-                                  style: OnlineTheme.textStyle(size: 15),
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ],
+                            IconLabel(
+                              icon: IconType.clock,
+                              label: '$timeToRead min',
+                              fontSize: 15,
                             ),
                           ],
                         )
