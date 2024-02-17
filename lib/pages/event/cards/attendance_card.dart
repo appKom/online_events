@@ -4,7 +4,6 @@ import 'package:online/main.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '/components/animated_button.dart';
-import '/services/online_toast.dart';
 import '/components/separator.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
@@ -110,6 +109,8 @@ class AttendanceCard extends StatelessWidget {
     );
   }
 
+  void showNotification() {}
+
   Widget notifyEventRegistration() {
     return AnimatedButton(
       onTap: () async {
@@ -119,6 +120,15 @@ class AttendanceCard extends StatelessWidget {
           time: scheduleNotificationDateTime,
           header: 'Påmelding Snart!',
           body: 'Påmelding til ${event.title} starter om 15 minutter.',
+        );
+
+        flutterLocalNotificationsPlugin.show(
+          0,
+          'Varsling På',
+          'Du vil bli varslet 15 min før påmelding starter.',
+          const NotificationDetails(
+            iOS: DarwinNotificationDetails(),
+          ),
         );
 
         await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -131,8 +141,6 @@ class AttendanceCard extends StatelessWidget {
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
           matchDateTimeComponents: DateTimeComponents.time,
         );
-
-        OnlineToast.show("Du vil bli varslet 15 minutter før påmelding starter.");
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(

@@ -8,7 +8,10 @@ class IconLabel extends StatelessWidget {
   final String label;
   final Color color;
   final double fontSize;
+  final int fontWeight;
   final double iconSize;
+
+  final MainAxisAlignment alignment;
 
   const IconLabel({
     super.key,
@@ -17,18 +20,21 @@ class IconLabel extends StatelessWidget {
     this.color = OnlineTheme.white,
     this.fontSize = 16,
     this.iconSize = 20,
+    this.fontWeight = 4,
+    this.alignment = MainAxisAlignment.start,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: alignment,
       children: [
         ThemedIcon(icon: icon, size: iconSize, color: color),
         const SizedBox(width: 8),
         Text(
           label,
-          style: OnlineTheme.textStyle(color: color, size: fontSize),
+          style: OnlineTheme.textStyle(color: color, size: fontSize, weight: fontWeight),
           overflow: TextOverflow.visible,
         ),
       ],

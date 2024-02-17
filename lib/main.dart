@@ -28,7 +28,7 @@ Future<void> checkAndRequestPermission(BuildContext context) async {
   if (hasPermission == null || !hasPermission) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Exact alarm permission is required for reminders. Please enable it in settings.'),
+        content: const Text('Exact alarm permission is required for reminders. Please enable it in settings.'),
         action: SnackBarAction(
           label: 'Open Settings',
           onPressed: () => openAppSettings(),
@@ -45,6 +45,22 @@ void openAppSettings() {
   intent.launch();
 }
 
+// Initialization settings for Android
+const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+// Initialization settings for iOS
+const initializationSettingsIOS = DarwinInitializationSettings(
+  requestAlertPermission: true,
+  requestBadgePermission: true,
+  requestSoundPermission: true,
+);
+
+// Combined initialization settings
+const initializationSettings = InitializationSettings(
+  android: initializationSettingsAndroid,
+  iOS: initializationSettingsIOS,
+);
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -52,23 +68,6 @@ Future main() async {
 
   SecureStorage.initialize();
   tz.initializeTimeZones();
-
-  // Initialization settings for Android
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-
-  // Initialization settings for iOS
-  const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings(
-    requestAlertPermission: true,
-    requestBadgePermission: true,
-    requestSoundPermission: true,
-  );
-
-  // Combined initialization settings
-  const InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-    iOS: initializationSettingsIOS,
-  );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   await Client.loadTokensFromSecureStorage();
@@ -123,3 +122,8 @@ class OnlineApp extends StatelessWidget {
     );
   }
 }
+
+// For all badges, use the traffic light model
+// Red = påmelding ikke åpen (enten ikke åpnet enda, eller over)
+// Green = ledige plasser
+// Yellow = venteliste
