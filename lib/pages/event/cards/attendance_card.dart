@@ -74,7 +74,7 @@ class AttendanceCard extends StatelessWidget {
           ),
         ),
         EventCardCountdown(eventTime: attendeeInfo.registrationStart),
-        const SizedBox(height: 10),
+        const SizedBox(height: 24),
         notifyEventRegistration(),
       ],
     );
@@ -142,6 +142,7 @@ class AttendanceCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(5.0),
             border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
           ),
+          alignment: Alignment.center,
           child: Text(
             'Varsle Meg',
             style: OnlineTheme.textStyle(
