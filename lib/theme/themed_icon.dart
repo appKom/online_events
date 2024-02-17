@@ -6,6 +6,7 @@ import 'theme.dart';
 enum IconType {
   badgeCheck,
   dateTime,
+  clock,
   location,
   people,
   camScan,

@@ -134,32 +134,16 @@ class BedpressCard extends StatelessWidget {
     return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpress' : model.eventTypeDisplay;
   }
 
-  BoxDecoration? badgeDecoration(int eventType) {
-    // Kurs
-    // if (eventType == 3) {
-    //   return BoxDecoration(
-    //     color: OnlineTheme.green.darken(20).withOpacity(0.4),
-    //     borderRadius: OnlineTheme.buttonRadius,
-    //     border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
-    //   );
-    // }
-
+  BoxDecoration badgeDecoration(int eventType) {
     return BoxDecoration(
-        color: OnlineTheme.yellow.darken(40),
-        borderRadius: OnlineTheme.buttonRadius,
-        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)));
-    // Bedpress
-    // if (eventType == 2) {
-    // }
-
-    // return null;
+      color: OnlineTheme.yellow.darken(40),
+      borderRadius: OnlineTheme.buttonRadius,
+      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+    );
   }
 
   Color getColor(int eventType) {
     return OnlineTheme.yellow;
-    // if (eventType == 3) return OnlineTheme.green;
-    // if (eventType == 2) return OnlineTheme.yellow;
-    // return OnlineTheme.white;
   }
 
   Widget typeBadge() {
@@ -195,7 +179,7 @@ class BedpressCard extends StatelessWidget {
                 ),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
                 child: Column(
                   children: [
                     Container(
@@ -238,7 +222,6 @@ class BedpressCard extends StatelessWidget {
                             formatDate(), // Use formatted date
                             style: OnlineTheme.textStyle(
                               size: 15,
-                              weight: 7,
                             ),
                           ),
                           Row(

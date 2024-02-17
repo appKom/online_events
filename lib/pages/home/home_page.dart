@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../events/events_page.dart';
@@ -107,24 +108,25 @@ class HomePage extends ScrollablePage {
             'Noe å lese på?',
             style: OnlineTheme.header(),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            height: 222,
-            child: ValueListenableBuilder(
-              valueListenable: Client.articlesCache,
-              builder: (context, articles, child) {
-                if (articles.isEmpty) {
-                  return AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: SkeletonLoader(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  );
-                }
+          const SizedBox(height: 24),
+          ValueListenableBuilder(
+            valueListenable: Client.articlesCache,
+            builder: (context, articles, child) {
+              if (articles.isEmpty) {
+                return AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: SkeletonLoader(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                );
+              }
 
-                return PromotedArticle(article: articles.first);
-              },
-            ),
+              return Center(
+                child: PromotedArticles(
+                  articles: articles.take(3).toList(),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 24),
         ],
