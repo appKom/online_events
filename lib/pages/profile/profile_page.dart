@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../pixel/models/pixel_user_class.dart';
@@ -124,23 +125,41 @@ class _ProfilePageState extends State<ProfilePage> {
     return null;
   }
 
-  Future<void> pickImage(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
 
+  Future<void> pickImage(ImageSource source) async {
     try {
+      final ImagePicker picker = ImagePicker();
       final XFile? pickedFile = await picker.pickImage(source: source);
 
-      setState(() {
-        if (pickedFile != null) {
-          _imageFile = File(pickedFile.path);
-        } else {
-          print("No image was selected");
-        }
-      });
-    } catch (e) {
-      print("Error picking image: $e");
+      if (pickedFile != null) {
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+          ],
+          uiSettings: [
+            AndroidUiSettings(
+                toolbarTitle: 'Cropper',
+                toolbarColor: Colors.deepOrange,
+                toolbarWidgetColor: Colors.white,
+                initAspectRatio: CropAspectRatioPreset.original,
+                lockAspectRatio: false),
+            IOSUiSettings(
+              title: 'Cropper',
+            ),
+          ],
+        );
 
-      setState(() {});
+        setState(() {
+          if (croppedFile != null) {
+            _imageFile = File(croppedFile.path);
+
+          }
+        });
+      }
+    } catch (e) {
+      // Handle exceptions related to image picker or cropper
+      print('Error picking and cropping image: $e');
     }
   }
 
