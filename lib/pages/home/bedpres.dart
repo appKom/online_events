@@ -131,21 +131,39 @@ class BedpresCard extends StatelessWidget {
   }
 
   BoxDecoration badgeDecoration(int eventType) {
+    if (eventType == 2) {
+      return BoxDecoration(
+        color: OnlineTheme.red.darken(40),
+        borderRadius: OnlineTheme.buttonRadius,
+        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+      );
+    }
+
+    // eventType == 3
     return BoxDecoration(
-      color: OnlineTheme.yellow.darken(40),
+      color: OnlineTheme.blue2.darken(40),
       borderRadius: OnlineTheme.buttonRadius,
-      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+      border: const Border.fromBorderSide(
+        BorderSide(color: OnlineTheme.blue2, width: 2),
+      ),
     );
   }
 
   Color getColor(int eventType) {
-    return OnlineTheme.yellow;
+    switch (eventType) {
+      case 2:
+        return OnlineTheme.red;
+      case 3:
+        return OnlineTheme.blue2;
+      default:
+        return OnlineTheme.white;
+    }
   }
 
   Widget typeBadge() {
     return Container(
       height: 30,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: badgeDecoration(model.eventType),
       child: Center(
         child: Text(
