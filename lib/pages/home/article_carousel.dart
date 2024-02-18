@@ -10,23 +10,23 @@ import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 
-class PromotedArticles extends StatelessWidget {
+class ArticleCarousel extends StatelessWidget {
   final List<ArticleModel> articles;
-  const PromotedArticles({super.key, required this.articles});
+  const ArticleCarousel({super.key, required this.articles});
 
   static const months = [
-    'Januar',
-    'Februar',
-    'Mars',
-    'April',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
     'Mai',
-    'Juni',
-    'Juli',
-    'August',
-    'September',
-    'Oktober',
-    'November',
-    'Desember',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des',
   ];
 
   int calculateReadingTime(String heading, String ingress) {
@@ -74,6 +74,8 @@ class PromotedArticles extends StatelessWidget {
       onTap: () => AppNavigator.navigateToPage(ArticlePage(article: article)),
       childBuilder: (context, hover, pointerDown) {
         return Container(
+          width: 250,
+          height: 300,
           decoration: const BoxDecoration(
             border: Border.fromBorderSide(
               BorderSide(width: 2, color: OnlineTheme.grayBorder),
@@ -113,12 +115,12 @@ class PromotedArticles extends StatelessWidget {
                           article.heading,
                           style: OnlineTheme.subHeader(),
                         ),
-                        IconLabel(
-                          icon: IconType.script,
-                          label: article.authors.replaceAll(', ', ',\n'),
-                          fontSize: 15,
-                          iconSize: 18,
-                        ),
+                        // IconLabel(
+                        //   icon: IconType.script,
+                        //   label: article.authors.replaceAll(', ', ',\n'),
+                        //   fontSize: 15,
+                        //   iconSize: 18,
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -147,11 +149,11 @@ class PromotedArticles extends StatelessWidget {
   }
 
   static final _carouselOptions = CarouselOptions(
-    height: 350,
+    height: 300,
     enableInfiniteScroll: true,
     padEnds: true,
     enlargeCenterPage: true,
-    viewportFraction: 0.8,
+    viewportFraction: 0.75,
     enlargeFactor: 0.2,
   );
 
