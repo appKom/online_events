@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online/components/icon_label.dart';
+import 'package:online/components/image_default.dart';
 import 'package:online/services/app_navigator.dart';
 
 import '../../theme/themed_icon.dart';
@@ -216,10 +216,7 @@ class BedpresCard extends StatelessWidget {
                                 model.images.first.md,
                                 fit: BoxFit.cover,
                               )
-                            : SvgPicture.asset(
-                                'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
-                                fit: BoxFit.cover,
-                              ),
+                            : const ImageDefault(),
                       ),
                     ),
                     const SizedBox(height: 20),

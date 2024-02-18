@@ -1,10 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online/components/skeleton_loader.dart';
+import 'package:online/components/image_default.dart';
 
 import '/components/animated_button.dart';
 import '/components/icon_label.dart';
+import '/components/skeleton_loader.dart';
 import '/core/models/article_model.dart';
 import '/pages/article/article_page.dart';
 import '/services/app_navigator.dart';
@@ -49,9 +50,6 @@ class ArticleCarousel extends StatelessWidget {
     final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
     final monthString = months[month];
 
-    // TODO: If an event spans multiple days, show 01.-05. January
-    // TODO: If start and end month is different, shorten to 28. Jan - 03. Feb
-
     return '$dayString. $monthString';
   }
 
@@ -68,34 +66,9 @@ class ArticleCarousel extends StatelessWidget {
     );
   }
 
-  // Widget coverImage(String? url) {
-  //   if (url != null) {
-  //     Container(
-  //       decoration: const BoxDecoration(
-  //         border: Border(
-  //           bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
-  //         ),
-  //       ),
-  //       child: AspectRatio(
-  //         aspectRatio: 16 / 9,
-  //         child: Image.network(
-  //           url,
-  //           fit: BoxFit.cover,
-  //           alignment: Alignment.bottomCenter,
-  //         ),
-  //       ),
-  //     );
-  //   }
-
-  //   return
-  // }
-
   Widget coverImage(ArticleModel article) {
     if (article.image?.original == null) {
-      return SvgPicture.asset(
-        'assets/svg/online_hvit_o.svg',
-        fit: BoxFit.cover,
-      );
+      return const ImageDefault();
     }
 
     return Image.network(
@@ -106,17 +79,13 @@ class ArticleCarousel extends StatelessWidget {
         return const SkeletonLoader();
       },
       errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return SvgPicture.asset(
-          'assets/svg/online_hvit_o.svg',
-          fit: BoxFit.cover,
-        );
+        return const ImageDefault();
       },
     );
   }
 
   Widget articleCard(ArticleModel article) {
     final timeToRead = calculateReadingTime(article.content, article.ingress);
-    // final readingTimeText = "$timeToRead min å lese";
     return AnimatedButton(
       onTap: () => AppNavigator.navigateToPage(ArticlePage(article: article)),
       childBuilder: (context, hover, pointerDown) {
@@ -158,12 +127,6 @@ class ArticleCarousel extends StatelessWidget {
                           article.heading,
                           style: OnlineTheme.subHeader(),
                         ),
-                        // IconLabel(
-                        //   icon: IconType.script,
-                        //   label: article.authors.replaceAll(', ', ',\n'),
-                        //   fontSize: 15,
-                        //   iconSize: 18,
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
