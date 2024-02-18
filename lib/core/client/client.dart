@@ -63,7 +63,7 @@ abstract class Client {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: {
-        'refresh_token': refreshToken,
+        'refresh_token': refreshToken?? '',
         'grant_type': 'refresh_token',
         'client_id': '972717',
       },
