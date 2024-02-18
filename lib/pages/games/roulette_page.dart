@@ -15,26 +15,69 @@ class RoulettePage extends StatefulWidget {
 }
 
 final challenges = [
-  {"title": "Waterfall", "description": "Alle drikker help til de til venstre slutter"},
-  {"title": "6 Minutes", "description": "Finn en spotify playlist og folk må gjette sangene"},
+  {"title": "LAMBO", "description": "Se der står en fyllehund..."},
+  {
+    "title": "Waterfall",
+    "description":
+        "Alle begynner og drikke, når de til venstre av deg slutter så kan du slutte"
+  },
+  {
+    "title": "6 Minutes",
+    "description":
+        "Finn en spotify playlist, sett på en timer og gjett hvilken sang spiller, hvis du kan sangen gi det til neste mann. Hvis du gjetter artist og navn del ut slurker. Hvis tiden går ut på deg bli ferdig med enheten"
+  },
   {"title": "SHUG", "description": "Drikk opp enhenten din"},
-  {"title": "Ratling Bog", "description": "Sett på ratling bog"},
-  {"title": "Gi ut 10 slurker", "description": "tittel"},
-  {"title": "Alle drikker", "description": "Finn en spotify playlist og folk må gjette sangene"},
-  {"title": "Single drikker", "description": "Alle drikker help til de til venstre slutter"},
-  {"title": "Hot seat", "description": "Finn en spotify playlist og folk må gjette sangene"},
-  {"title": "Shot", "description": "shot med den mest edrue i rommet"},
-  {"title": "Fuck marry kill", "description": "Finn en spotify playlist og folk må gjette sangene"},
-  {"title": "Waterfall", "description": "Alle drikker help til de til venstre slutter"},
-  {"title": "6 Minutes", "description": "Finn en spotify playlist og folk må gjette sangene"},
-  {"title": "SHUG", "description": "Drikk opp enhenten din"},
-  {"title": "Ratling Bog", "description": "Sett på ratling bog"},
-  {"title": "Gi ut 10 slurker", "description": "tittel"},
-  {"title": "Alle drikker", "description": "Finn en spotify playlist og folk må gjette sangene"},
-  {"title": "Single drikker", "description": "Alle drikker help til de til venstre slutter"},
-  {"title": "Hot seat", "description": "Finn en spotify playlist og folk må gjette sangene"},
-  {"title": "Shot", "description": "shot med den mest edrue i rommet"},
-  {"title": "Fuck marry kill", "description": "Finn en spotify playlist og folk må gjette sangene"},
+  {
+    "title": "Ratling Bog",
+    "description": "Sett på ratling bog og håp noen vet reglene"
+  },
+  {"title": "Slurkevakten", "description": "Gi ut 10 slurker"},
+  {"title": "Skål!", "description": "Alle skåler og tar en slurk!"},
+  {
+    "title": "Single drikker",
+    "description": "Alle som ikke har kjæreste drikker 💔"
+  },
+  {"title": "SHOTS!", "description": "Shot med den mest edrue i rommet"},
+  {
+    "title": "Kategorier",
+    "description":
+        "Velg en kategori, alle må si noe i den kategorien, den som ikke klarer å komme på noe drikker"
+  },
+  {
+    "title": "Komitee Vors ",
+    "description":
+        "Hvis du er i en komitee drikker du, hvis du er i Appkom drikker du dobbelt, hvis du er Dotkom drikker du trippelt"
+  },
+  {
+    "title": "Jeg har aldri",
+    "description":
+        "Ta en runde å si noe de aldri har gjort, de som har gjort det drikker"
+  },
+  {
+    "title": "Drikk din bodycount",
+    "description":
+        "Drikk din bodycount eller hele enheten din hvis du ikke vil si den 🤫"
+  },
+  {
+    "title": "Opus",
+    "description":
+        "Sett på Opus på spotify å spill terningleken, trill helt til du får en 6. Da kan du drikke en slurk og gi mobilen videre, hvis beaten dropper mens du har mobilen drikk alt, legg til flere mobiler for mer drikke"
+  },
+  {
+    "title": "Roxanne",
+    "description":
+        "Sett på hvilken som helst drikke sang du vil, foreslår Roxanne (Drikk hver gang de synger Roxanne)"
+  },
+    {
+    "title": "Kahoot!",
+    "description":
+        "Hvis du har eller har hatt en klasse med Alf Inge Wang må du drikke"
+  }, // bruh moment
+      {
+    "title": "Party Magician",
+    "description":
+        "Gjør ditt kuleste party triks og velg 2 folk å shotte med deg"
+  },
 ];
 
 class _RoulettePageState extends State<RoulettePage> {
