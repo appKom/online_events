@@ -103,7 +103,7 @@ class HomePage extends ScrollablePage {
             },
           ),
           const SizedBox(height: 24 + 24),
-          Text('Noe å lese på?', style: OnlineTheme.header()),
+          Text('Noe Å Lese På?', style: OnlineTheme.header()),
           const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.articlesCache,
