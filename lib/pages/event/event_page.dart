@@ -151,6 +151,7 @@ class _EventPageState extends State<EventPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    if (attendeeInfoModel.isAttendee)
                     SizedBox.square(
                       dimension: 40,
                       child: Center(
@@ -174,6 +175,7 @@ class _EventPageState extends State<EventPage> {
                     const SizedBox(
                       width: 10,
                     ),
+                    // if (loggedIn && widget.model.organizer == userProfile.positions)
                     SizedBox.square(
                       dimension: 40,
                       child: Center(
