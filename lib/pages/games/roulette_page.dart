@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 
@@ -15,69 +16,92 @@ class RoulettePage extends StatefulWidget {
 }
 
 final challenges = [
-  {"title": "LAMBO", "description": "Se der står en fyllehund..."},
   {
-    "title": "Waterfall",
-    "description":
-        "Alle begynner og drikke, når de til venstre av deg slutter så kan du slutte"
+    'title': 'LAMBO',
+    'description': 'Se der står en fyllehund...',
   },
   {
-    "title": "6 Minutes",
-    "description":
-        "Finn en spotify playlist, sett på en timer og gjett hvilken sang spiller, hvis du kan sangen gi det til neste mann. Hvis du gjetter artist og navn del ut slurker. Hvis tiden går ut på deg bli ferdig med enheten"
-  },
-  {"title": "SHUG", "description": "Drikk opp enhenten din"},
-  {
-    "title": "Ratling Bog",
-    "description": "Sett på ratling bog og håp noen vet reglene"
-  },
-  {"title": "Slurkevakten", "description": "Gi ut 10 slurker"},
-  {"title": "Skål!", "description": "Alle skåler og tar en slurk!"},
-  {
-    "title": "Single drikker",
-    "description": "Alle som ikke har kjæreste drikker 💔"
-  },
-  {"title": "SHOTS!", "description": "Shot med den mest edrue i rommet"},
-  {
-    "title": "Kategorier",
-    "description":
-        "Velg en kategori, alle må si noe i den kategorien, den som ikke klarer å komme på noe drikker"
+    'title': 'Waterfall',
+    'description': 'Alle begynner å drikke, når den til venstre for deg slutter kan du slutte (men du må ikke).',
   },
   {
-    "title": "Komitee Vors ",
-    "description":
-        "Hvis du er i en komitee drikker du, hvis du er i Appkom drikker du dobbelt, hvis du er Dotkom drikker du trippelt"
+    'title': '6 Minutes',
+    'description':
+        'Finn en spotify-liste, sett på en timer og gjett hvilken sang som spiller. Hvis du kan sangen gir du telefonen til nestemann. Hvis du gjetter artist og navn kan du dele ut slurker. Hvis tiden går ut på deg chugger du resten av enheten din.'
   },
   {
-    "title": "Jeg har aldri",
-    "description":
-        "Ta en runde å si noe de aldri har gjort, de som har gjort det drikker"
+    'title': 'SHUG',
+    'description': 'Drikk opp enhenten din!',
   },
   {
-    "title": "Drikk din bodycount",
-    "description":
-        "Drikk din bodycount eller hele enheten din hvis du ikke vil si den 🤫"
+    'title': 'Ratling Bog',
+    'description': 'Sett på ratling bog og håp noen vet reglene!',
   },
   {
-    "title": "Opus",
-    "description":
-        "Sett på Opus på spotify å spill terningleken, trill helt til du får en 6. Da kan du drikke en slurk og gi mobilen videre, hvis beaten dropper mens du har mobilen drikk alt, legg til flere mobiler for mer drikke"
+    'title': 'Slurkevakten',
+    'description': 'Gi ut 10 slurker.',
   },
   {
-    "title": "Roxanne",
-    "description":
-        "Sett på hvilken som helst drikke sang du vil, foreslår Roxanne (Drikk hver gang de synger Roxanne)"
+    'title': 'Skål!',
+    'description': 'Alle skåler og tar en (stor) slurk!',
   },
-    {
-    "title": "Kahoot!",
-    "description":
-        "Hvis du har eller har hatt en klasse med Alf Inge Wang må du drikke"
+  {
+    'title': 'Single drikker',
+    'description': 'Alle som ikke har kjæreste drikker 💔',
+  },
+  {
+    'title': 'Edruvakten er over',
+    'description': 'Shot med den som er mest edru i rommet (av de som drikker).',
+  },
+  {
+    'title': 'Kategorier',
+    'description': 'Velg en kategori. Alle sier noe i kategorien helt til noen ikke klarer. Den som failer chugger.'
+  },
+  {
+    'title': 'Komité-Vors ',
+    'description': 'Hvis du er i en komité drikker du. Appkommere drikker dobbelt. Dotkommere drikker trippelt!'
+  },
+  {
+    'title': 'Jeg har aldri',
+    'description': 'Ta en runde der alle sier noe de "aldri" har gjort. De som har gjort det drikker.',
+  },
+  {
+    'title': 'Drikk din bodycount',
+    'description': 'Drikk din bodycount eller hele enheten din hvis du ikke vil si den 🤫'
+  },
+  {
+    'title': 'Opus',
+    'description':
+        'Sett på Opus på spotify å spill terningleken, trill helt til du får en 6. Da kan du drikke en slurk og gi mobilen videre, hvis beaten dropper mens du har mobilen drikk alt, legg til flere mobiler for mer drikke'
+  },
+  {
+    'title': 'Roxanne',
+    'description': 'Sett på hvilken som helst drikkesang du vil. Foreslår Roxanne (Drikk hver gang de synger Roxanne).'
+  },
+  {
+    'title': 'Kahoot!',
+    'description': 'Hvis du har eller har hatt en klasse med Alf Inge Wang må du drikke!'
   }, // bruh moment
-      {
-    "title": "Party Magician",
-    "description":
-        "Gjør ditt kuleste party triks og velg 2 folk å shotte med deg"
+  {
+    'title': 'Party Magician',
+    'description': 'Gjør ditt kuleste partytriks og velg 2 folk som må shotte med deg.',
   },
+  {
+    'title': 'Drikkevenn',
+    'description': 'Du og personen 5 til høyre for deg er nå drikkevenner! Hver gang en må drikke må begge drikke.',
+  },
+  {
+    'title': 'Chug-off',
+    'description': 'Velg deg en utforder til chug-off! Vinneren kan dele ut 5 slurker. Taperen må skjerpe seg.',
+  },
+  {
+    'title': 'Uteligger',
+    'description': 'Pekelek: Hvem i rommet kler seg mest som en uteligger. Uteliggeren drikker 5 slurker.',
+  },
+  {
+    'title': 'Stripper',
+    'description': 'Kle av deg et valgfritt klesplagg eller ta et shot med en av det andre kjønn 😘',
+  }
 ];
 
 class _RoulettePageState extends State<RoulettePage> {
@@ -96,11 +120,15 @@ class _RoulettePageState extends State<RoulettePage> {
   );
 
   final fortuneList = List<FortuneItem>.empty(growable: true);
+  late final List<Map<String, String>> challengePool;
 
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < challenges.length; i++) {
+
+    challengePool = challenges.sample(20);
+
+    for (int i = 0; i < challengePool.length; i++) {
       late final FortuneItemStyle color;
 
       if (i == 0) {
@@ -114,7 +142,7 @@ class _RoulettePageState extends State<RoulettePage> {
       fortuneList.add(
         FortuneItem(
           child: Text(
-            challenges[i]['title']!,
+            challengePool[i]['title']!,
             style: OnlineTheme.header(),
           ),
           style: color,
@@ -149,8 +177,8 @@ class _RoulettePageState extends State<RoulettePage> {
                     child: FortuneWheel(
                       onAnimationEnd: () {
                         RouletteOverlay(
-                          title: challenges[index]["title"] ?? "",
-                          description: challenges[index]["description"] ?? "",
+                          title: challenges[20]['title'] ?? '',
+                          description: challenges[20]['description'] ?? '',
                         ).show(context);
                       },
                       alignment: Alignment.center,
