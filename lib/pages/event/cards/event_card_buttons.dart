@@ -31,7 +31,7 @@ class EventCardButtons extends StatefulWidget {
 }
 
 class _EventCardButtonsState extends State<EventCardButtons> {
-  Future<void> unregisterForEvent(String eventId) async {
+  Future<void> unregisterForEvent(int eventId) async {
     final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/unregister/';
 
     try {
@@ -127,7 +127,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   Widget registerButton() {
     return AnimatedButton(
       onTap: () {
-        Client.launchInBrowser('https://old.online.ntnu.no/event/${widget.model.id}');
+        Client.launchInBrowser('https://online.ntnu.no/events/${widget.model.id}');
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(
@@ -157,7 +157,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     return AnimatedButton(
       onTap: enabled
           ? () {
-              unregisterForEvent(widget.model.id.toString());
+              unregisterForEvent(widget.model.id);
             }
           : null,
       childBuilder: (context, hover, pointerDown) {
@@ -185,7 +185,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   Widget waitlistButton() {
     return AnimatedButton(
       onTap: () {
-        Client.launchInBrowser('https://old.online.ntnu.no/event/${widget.model.id}');
+        Client.launchInBrowser('https://online.ntnu.no/events/${widget.model.id}');
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(
