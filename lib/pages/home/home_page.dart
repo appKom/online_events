@@ -9,6 +9,7 @@ import 'bedpres.dart';
 import '/pages/home/event_card.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
+import 'info_page.dart';
 import 'promoted_articles.dart';
 
 class HomePage extends ScrollablePage {
@@ -24,9 +25,24 @@ class HomePage extends ScrollablePage {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 24),
-          Text(
-            'Kommende Arrangementer',
-            style: OnlineTheme.header(),
+          Row(
+            children: [
+              Text(
+                'Kommende Arrangementer',
+                style: OnlineTheme.header(),
+              ),
+              const Spacer(),
+              AnimatedButton(
+                  onTap: () => AppNavigator.navigateToPage(
+                        const InfoPage(),
+                      ),
+                  childBuilder: (context, hover, pointerDown) {
+                    return const Icon(
+                      Icons.info_outline,
+                      color: OnlineTheme.white,
+                    );
+                  })
+            ],
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
