@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:online/components/skeleton_loader.dart';
 
 import '/components/animated_button.dart';
@@ -67,6 +68,52 @@ class ArticleCarousel extends StatelessWidget {
     );
   }
 
+  // Widget coverImage(String? url) {
+  //   if (url != null) {
+  //     Container(
+  //       decoration: const BoxDecoration(
+  //         border: Border(
+  //           bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+  //         ),
+  //       ),
+  //       child: AspectRatio(
+  //         aspectRatio: 16 / 9,
+  //         child: Image.network(
+  //           url,
+  //           fit: BoxFit.cover,
+  //           alignment: Alignment.bottomCenter,
+  //         ),
+  //       ),
+  //     );
+  //   }
+
+  //   return
+  // }
+
+  Widget coverImage(ArticleModel article) {
+    if (article.image?.original == null) {
+      return SvgPicture.asset(
+        'assets/svg/online_hvit_o.svg',
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.network(
+      article.image!.original,
+      loadingBuilder: (context, child, evt) {
+        if (evt == null) return child;
+
+        return const SkeletonLoader();
+      },
+      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return SvgPicture.asset(
+          'assets/svg/online_hvit_o.svg',
+          fit: BoxFit.cover,
+        );
+      },
+    );
+  }
+
   Widget articleCard(ArticleModel article) {
     final timeToRead = calculateReadingTime(article.content, article.ingress);
     // final readingTimeText = "$timeToRead min å lese";
@@ -97,11 +144,7 @@ class ArticleCarousel extends StatelessWidget {
                   ),
                   child: AspectRatio(
                     aspectRatio: 16 / 9,
-                    child: Image.network(
-                      article.image?.original ?? 'assets/svg/online_hvit_o.svg', // Modify this line
-                      fit: BoxFit.cover,
-                      alignment: Alignment.bottomCenter,
-                    ),
+                    child: coverImage(article),
                   ),
                 ),
                 Expanded(

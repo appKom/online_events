@@ -166,6 +166,11 @@ class DeveloperModel {
   final String biography;
   final String? role;
 
-  const DeveloperModel(
-      {required this.name, required this.year, required this.image, required this.biography, this.role});
+  const DeveloperModel({
+    required this.name,
+    required this.year,
+    required this.image,
+    required this.biography,
+    this.role,
+  });
 }

@@ -31,7 +31,7 @@ class InfoPage extends ScrollablePage {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text("Online Appen", style: OnlineTheme.textStyle(size: 32)),
+                Text("Online-Appen", style: OnlineTheme.textStyle(size: 32)),
                 const SizedBox(height: 10),
                 Text('Versjon 1.0.0', style: OnlineTheme.textStyle(size: 16)),
               ],
@@ -44,7 +44,7 @@ class InfoPage extends ScrollablePage {
             child: Column(
               children: [
                 Text(
-                  'Online Appen er utviklet av Appkom. Appen skal gjøre det mulig for Onlinere å motta varslinger før påmeldingsstart for arrangementer.',
+                  'Online-Appen er utviklet av Appkom. Appen skal gjøre det mulig for Onlinere å motta varslinger før påmeldingsstart for arrangementer.',
                   style: OnlineTheme.textStyle(),
                 ),
                 const SizedBox(height: 24),
