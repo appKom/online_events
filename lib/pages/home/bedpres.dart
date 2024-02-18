@@ -11,8 +11,8 @@ import '/core/models/event_model.dart';
 import '/pages/event/event_page.dart';
 import '/theme/theme.dart';
 
-class Bedpress extends StatelessWidget {
-  const Bedpress({
+class Bedpres extends StatelessWidget {
+  const Bedpres({
     super.key,
     required this.models,
   });
@@ -80,7 +80,7 @@ class Bedpress extends StatelessWidget {
           items: List.generate(
             filteredModels.length,
             (i) {
-              return BedpressCard(
+              return BedpresCard(
                 model: filteredModels[i],
               );
             },
@@ -91,8 +91,8 @@ class Bedpress extends StatelessWidget {
   }
 }
 
-class BedpressCard extends StatelessWidget {
-  const BedpressCard({
+class BedpresCard extends StatelessWidget {
+  const BedpresCard({
     super.key,
     required this.model,
   });
@@ -133,7 +133,7 @@ class BedpressCard extends StatelessWidget {
 
   String getEventTypeDisplay() {
     // Check if the eventTypeDisplay is 'Bedriftspresentasjon'
-    return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpress' : model.eventTypeDisplay;
+    return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpres' : model.eventTypeDisplay;
   }
 
   BoxDecoration badgeDecoration(int eventType) {

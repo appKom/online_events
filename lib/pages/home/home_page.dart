@@ -5,7 +5,7 @@ import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
-import '/pages/home/bedpress.dart';
+import 'bedpres.dart';
 import '/pages/home/event_card.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
@@ -98,8 +98,8 @@ class HomePage extends ScrollablePage {
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
             builder: (context, events, child) {
-              if (events.isEmpty) return Bedpress.skeleton();
-              return Bedpress(models: events);
+              if (events.isEmpty) return Bedpres.skeleton();
+              return Bedpres(models: events);
             },
           ),
           const SizedBox(height: 24 + 24),
