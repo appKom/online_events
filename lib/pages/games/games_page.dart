@@ -23,11 +23,10 @@ class GamesPage extends ScrollablePage {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 24),
-            child: DrikkeSanger(),
-          ),
-          const SizedBox(height: 24 + 24),
+          const SizedBox(height: 24),
+          const DrikkeSanger(),
+          const SizedBox(height: 24),
+          const SizedBox(height: 24),
           Text('Spill', style: OnlineTheme.header()),
           const SizedBox(height: 24),
           CarouselSlider(
@@ -53,7 +52,7 @@ class GamesPage extends ScrollablePage {
                   AppNavigator.navigateToPage(const BitsHomePage());
                 },
               ),
-                            GameCard(
+              GameCard(
                 name: 'Roulette',
                 imageSource: 'assets/images/bits.png',
                 onTap: () {
