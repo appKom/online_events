@@ -10,7 +10,7 @@ import '/pages/home/event_card.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'info_page.dart';
-import 'promoted_articles.dart';
+import 'article_carousel.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
@@ -119,14 +119,14 @@ class HomePage extends ScrollablePage {
             },
           ),
           const SizedBox(height: 24 + 24),
-          Text('Noe å lese på?', style: OnlineTheme.header()),
+          Text('Noe Å Lese På?', style: OnlineTheme.header()),
           const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.articlesCache,
             builder: (context, articles, child) {
-              if (articles.isEmpty) return Center(child: PromotedArticles.skeleton());
+              if (articles.isEmpty) return Center(child: ArticleCarousel.skeleton());
 
-              return Center(child: PromotedArticles(articles: articles.take(3).toList()));
+              return Center(child: ArticleCarousel(articles: articles.take(3).toList()));
             },
           ),
           const SizedBox(height: 24),

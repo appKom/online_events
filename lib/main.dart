@@ -122,8 +122,3 @@ class OnlineApp extends StatelessWidget {
     );
   }
 }
-
-// For all badges, use the traffic light model
-// Red = påmelding ikke åpen (enten ikke åpnet enda, eller over)
-// Green = ledige plasser
-// Yellow = venteliste

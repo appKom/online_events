@@ -94,18 +94,18 @@ class BedpresCard extends StatelessWidget {
   final EventModel model;
 
   static const monthsNorwegian = [
-    'Januar',
-    'Februar',
-    'Mars',
-    'April',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
     'Mai',
-    'Juni',
-    'Juli',
-    'August',
-    'September',
-    'Oktober',
-    'November',
-    'Desember',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des',
   ];
 
   String formatDate() {

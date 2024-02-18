@@ -164,56 +164,62 @@ class AttendanceCard extends StatelessWidget {
   }
 
   Widget notifyAttendance() {
-    return AnimatedButton(
-      onTap: () async {
-        final DateTime parsedStartDate = DateTime.parse(event.startDate);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 24),
+        AnimatedButton(
+          onTap: () async {
+            final DateTime parsedStartDate = DateTime.parse(event.startDate);
 
-        final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
+            final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
 
-        final notification = NotificationModel(
-          time: scheduleNotificationDateTime,
-          header: 'Arrangement starter snart!',
-          body: '${event.title} starter om 1 time.',
-        );
+            final notification = NotificationModel(
+              time: scheduleNotificationDateTime,
+              header: 'Arrangement starter snart!',
+              body: '${event.title} starter om 1 time.',
+            );
 
-        flutterLocalNotificationsPlugin.show(
-          0,
-          'Varsling På',
-          'Du vil bli påminnet 1 time før arrangementet starter',
-          const NotificationDetails(
-            iOS: DarwinNotificationDetails(),
-          ),
-        );
+            flutterLocalNotificationsPlugin.show(
+              0,
+              'Varsling På',
+              'Du vil bli varslet 1 time før arrangementet starter',
+              const NotificationDetails(
+                iOS: DarwinNotificationDetails(),
+              ),
+            );
 
-        await flutterLocalNotificationsPlugin.zonedSchedule(
-          notification.id,
-          notification.header,
-          notification.body,
-          notification.zonedTime(),
-          NotificationModel.platformChannelSpecifics,
-          androidScheduleMode: AndroidScheduleMode.alarmClock,
-          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-          matchDateTimeComponents: DateTimeComponents.time,
-        );
-      },
-      childBuilder: (context, hover, pointerDown) {
-        return Container(
-          height: OnlineTheme.buttonHeight,
-          decoration: BoxDecoration(
-            color: OnlineTheme.yellow.withOpacity(0.4),
-            borderRadius: BorderRadius.circular(5.0),
-            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            'Husk meg!',
-            style: OnlineTheme.textStyle(
-              weight: 5,
-              color: OnlineTheme.yellow,
-            ),
-          ),
-        );
-      },
+            await flutterLocalNotificationsPlugin.zonedSchedule(
+              notification.id,
+              notification.header,
+              notification.body,
+              notification.zonedTime(),
+              NotificationModel.platformChannelSpecifics,
+              androidScheduleMode: AndroidScheduleMode.alarmClock,
+              uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+              matchDateTimeComponents: DateTimeComponents.time,
+            );
+          },
+          childBuilder: (context, hover, pointerDown) {
+            return Container(
+              height: OnlineTheme.buttonHeight,
+              decoration: BoxDecoration(
+                color: OnlineTheme.yellow.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(5.0),
+                border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                'Varsle Meg',
+                style: OnlineTheme.textStyle(
+                  weight: 5,
+                  color: OnlineTheme.yellow,
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 
