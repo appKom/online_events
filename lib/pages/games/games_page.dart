@@ -55,7 +55,7 @@ class GamesPage extends ScrollablePage {
               ),
                             GameCard(
                 name: 'Roulette',
-                imageSource: 'assets/images/bits.png',
+                imageSource: 'assets/images/roulette.png',
                 onTap: () {
                   AppNavigator.navigateToPage(const RoulettePage());
                 },
