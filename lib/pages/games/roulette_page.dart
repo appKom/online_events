@@ -177,8 +177,8 @@ class _RoulettePageState extends State<RoulettePage> {
                     child: FortuneWheel(
                       onAnimationEnd: () {
                         RouletteOverlay(
-                          title: challenges[20]['title'] ?? '',
-                          description: challenges[20]['description'] ?? '',
+                          title: challengePool[index]['title'] ?? '',
+                          description: challengePool[index]['description'] ?? '',
                         ).show(context);
                       },
                       alignment: Alignment.center,
