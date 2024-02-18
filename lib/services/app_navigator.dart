@@ -30,7 +30,7 @@ abstract class AppNavigator {
   }
 
   static void navigateToPage(Widget page) {
-    Route route = CupertinoPageRoute(
+    Route route = MaterialPageRoute(
       builder: (context) => page,
     );
 
