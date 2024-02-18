@@ -54,12 +54,7 @@ class MyEventsPage extends StatefulWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white))
-                // SkeletonLoader(
-                //   height: 25,
-                //   width: 100,
-                //   borderRadius: BorderRadius.circular(5),
-                // ),
+                Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
               ],
             ),
           ),
@@ -85,10 +80,6 @@ class MyEventsPage extends StatefulWidget {
               );
             }),
           )
-          // SkeletonLoader(
-          //   height: 300,
-          //   borderRadius: BorderRadius.circular(5),
-          // ),
         ],
       ),
     );
@@ -290,8 +281,6 @@ class MyEventsPageState extends State<MyEventsPage> {
               daysOfWeekVisible: false,
               calendarFormat: CalendarFormat.month,
               startingDayOfWeek: StartingDayOfWeek.monday,
-
-              // rowHeight: 55.0,
               availableCalendarFormats: const {CalendarFormat.month: ''},
               onPageChanged: (focusedDay) {
                 setState(() {
@@ -328,14 +317,14 @@ class MyEventsPageState extends State<MyEventsPage> {
                     ),
                     child: Text(
                       date.day.toString(),
-                      style: OnlineTheme.textStyle(),
+                      style: OnlineTheme.textStyle(weight: 5),
                     ),
                   );
                 },
                 defaultBuilder: (context, date, _) {
                   final events = getEventsForDay(date);
 
-                  // TODO: Kurs = Blå, Bedpress = Rød, Andre = Grønn
+                  // TODO: Waitlist = Gul, Registered = Grønn
 
                   if (events.isNotEmpty) {
                     return Container(
@@ -348,7 +337,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                       ),
                       child: Text(
                         date.day.toString(),
-                        style: OnlineTheme.textStyle(),
+                        style: OnlineTheme.textStyle(weight: 5),
                       ),
                     );
                   } else {
