@@ -107,12 +107,12 @@ class DescriptionCardState extends State<EventDescriptionCard> {
 
 class InAppWebViewPage extends StatelessWidget {
   final String url;
-  const InAppWebViewPage({Key? key, required this.url}) : super(key: key);
+  const InAppWebViewPage({super.key, required this.url});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("")),
+      appBar: AppBar(title: const Text("")),
       body: InAppWebView(
         initialUrlRequest: URLRequest(url: Uri.parse(url)),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online/pages/pixel/pixel.dart';
 
 import '../pages/games/games_page.dart';
 import '../pages/login/login_page.dart';
@@ -45,6 +46,11 @@ class NavbarState extends State<Navbar> {
             }
           },
         ),
+        // NavbarButton(
+        //   icon: IconType.pixel,
+        //   activeIcon: IconType.pixelFilled,
+        //   onPressed: () => AppNavigator.replaceWithPage(const PixelPageDisplay()),
+        // ),
         NavbarButton(
           icon: IconType.beer,
           activeIcon: IconType.beerFilled,
