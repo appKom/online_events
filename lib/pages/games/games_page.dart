@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:online/pages/games/roulette_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
@@ -50,6 +51,13 @@ class GamesPage extends ScrollablePage {
                 imageSource: 'assets/images/bits.png',
                 onTap: () {
                   AppNavigator.navigateToPage(const BitsHomePage());
+                },
+              ),
+                            GameCard(
+                name: 'Roulette',
+                imageSource: 'assets/images/bits.png',
+                onTap: () {
+                  AppNavigator.navigateToPage(const RoulettePage());
                 },
               ),
             ],
