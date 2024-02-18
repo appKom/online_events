@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online/components/animated_button.dart';
+import 'package:online/pages/home/info_page.dart';
 
 import '../theme/theme.dart';
 import '/pages/home/home_page.dart';
@@ -72,9 +74,16 @@ class OnlineScaffold extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  'assets/svg/online_logo.svg',
-                  height: 36,
+                AnimatedButton(
+                  onTap: () {
+                    AppNavigator.navigateToPage(const InfoPage());
+                  },
+                  childBuilder: ((context, hover, pointerDown) {
+                    return SvgPicture.asset(
+                      'assets/svg/online_logo.svg',
+                      height: 36,
+                    );
+                  }),
                 ),
                 const Spacer(),
                 SvgPicture.asset(

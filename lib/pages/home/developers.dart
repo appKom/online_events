@@ -1,14 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:online/components/icon_label.dart';
 import 'package:online/components/skeleton_loader.dart';
+import 'package:online/theme/themed_icon.dart';
 
-import '/components/animated_button.dart';
-import '/components/icon_label.dart';
-import '/core/models/article_model.dart';
-import '/pages/article/article_page.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
-import '/theme/themed_icon.dart';
 
 class DeveloperCarousel extends StatelessWidget {
   const DeveloperCarousel({
@@ -17,7 +13,7 @@ class DeveloperCarousel extends StatelessWidget {
 
   static Widget skeleton() {
     return CarouselSlider(
-      items: List.generate(3, (i) {
+      items: List.generate(2, (i) {
         return const SkeletonLoader(
           borderRadius: BorderRadius.all(
             Radius.circular(10),
@@ -28,11 +24,10 @@ class DeveloperCarousel extends StatelessWidget {
     );
   }
 
-  Widget developerCard(DevloperModel devloper) {
-    return AnimatedButton(
-      // onTap: () => AppNavigator.navigateToPage(ArticlePage(article: article)),
-      childBuilder: (context, hover, pointerDown) {
-        return Container(
+  Widget developerCard(DeveloperModel developer) {
+    return Stack(
+      children: [
+        Container(
           width: 250,
           height: 300,
           decoration: const BoxDecoration(
@@ -55,11 +50,11 @@ class DeveloperCarousel extends StatelessWidget {
                     ),
                   ),
                   child: AspectRatio(
-                    aspectRatio: 16 / 9,
+                    aspectRatio: 8 / 5,
                     child: Image.asset(
-                      devloper.image,
-                      fit: BoxFit.fill,
-                      alignment: Alignment.bottomCenter,
+                      developer.image,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
                     ),
                   ),
                 ),
@@ -71,26 +66,22 @@ class DeveloperCarousel extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          devloper.name,
+                          developer.name,
                           style: OnlineTheme.subHeader(),
                         ),
-                        // const SizedBox(height: 10),
-                        Text(devloper.biography, style: OnlineTheme.textStyle(size: 16)),
+                        // Text(developer.biography, style: OnlineTheme.textStyle()),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                            
-                               '${devloper.year.toString()}. klasse',
-                              style: OnlineTheme.textStyle(size: 16),
+                            IconLabel(
+                              icon: IconType.education,
+                              iconSize: 18,
+                              label: '${developer.year.toString()}. klasse',
                             ),
-                            // IconLabel(
-                            //   icon: IconType.clock,
-                            //   label: '$timeToRead min',
-                            //   fontSize: 15,
-                            // ),
+                            // IconLabel(icon: IconType.userFilled, label: '')
                           ],
-                        )
+                        ),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
@@ -98,13 +89,24 @@ class DeveloperCarousel extends StatelessWidget {
               ],
             ),
           ),
-        );
-      },
+        ),
+        Positioned(
+          bottom: 10,
+          left: 0,
+          right: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              roleBadge(developer.biography),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
   static final _carouselOptions = CarouselOptions(
-    height: 300,
+    height: 320,
     enableInfiniteScroll: true,
     padEnds: true,
     enlargeCenterPage: true,
@@ -112,11 +114,41 @@ class DeveloperCarousel extends StatelessWidget {
     enlargeFactor: 0.2,
   );
 
+  Widget roleBadge(String role) {
+    return Container(
+      height: 30,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: OnlineTheme.blue2.darken(40),
+        borderRadius: OnlineTheme.buttonRadius,
+        border: const Border.fromBorderSide(
+          BorderSide(color: OnlineTheme.blue2, width: 2),
+        ),
+      ),
+      child: Center(
+        child: Text(
+          role,
+          style: OnlineTheme.textStyle(weight: 5, size: 14, color: OnlineTheme.blue2),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<DevloperModel> developers = [
-      const DevloperModel(name: 'Fredrik Hansteen', year: 2, image: 'assets/images/better_profile_picture.jpg', biography: 'Oppe og nikker?'),
-      const DevloperModel(name: 'Erlend Strøm', year: 2, image: 'assets/images/profile_picture.png', biography: 'Heisann, jeg er en utvikler'),
+    List<DeveloperModel> developers = [
+      const DeveloperModel(
+        name: 'Fredrik Hansteen',
+        year: 2,
+        image: 'assets/images/better_profile_picture.jpg',
+        biography: 'Appkom-Leder',
+      ),
+      const DeveloperModel(
+        name: 'Erlend Strøm',
+        year: 2,
+        image: 'assets/images/profile_picture.png',
+        biography: 'Appkom-Nestleder',
+      ),
     ];
     List<Widget> developerWidgets = developers.map((developer) => developerCard(developer)).toList();
 
@@ -127,11 +159,13 @@ class DeveloperCarousel extends StatelessWidget {
   }
 }
 
-class DevloperModel {
+class DeveloperModel {
   final String name;
   final int year;
   final String image;
   final String biography;
+  final String? role;
 
-  const DevloperModel({required this.name, required this.year, required this.image, required this.biography});
+  const DeveloperModel(
+      {required this.name, required this.year, required this.image, required this.biography, this.role});
 }

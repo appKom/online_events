@@ -26,22 +26,24 @@ class HomePage extends ScrollablePage {
         children: [
           const SizedBox(height: 24),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Kommende Arrangementer',
                 style: OnlineTheme.header(),
               ),
-              const Spacer(),
               AnimatedButton(
-                  onTap: () => AppNavigator.navigateToPage(
-                        const InfoPage(),
-                      ),
-                  childBuilder: (context, hover, pointerDown) {
-                    return const Icon(
-                      Icons.info_outline,
-                      color: OnlineTheme.white,
-                    );
-                  })
+                onTap: () {
+                  AppNavigator.navigateToPage(const InfoPage());
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return const Icon(
+                    Icons.info_outline,
+                    color: OnlineTheme.white,
+                    size: 25,
+                  );
+                },
+              ),
             ],
           ),
           Container(
