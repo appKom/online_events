@@ -3,37 +3,32 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
 
 class DicePage extends StaticPage {
   const DicePage({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {
-    return const DiceHomePage();
+    return const StatefulDice();
   }
 }
 
-class DiceHomePage extends StatefulWidget {
-  const DiceHomePage({super.key});
+class StatefulDice extends StatefulWidget {
+  const StatefulDice({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _DiceHomePageState createState() => _DiceHomePageState();
+  StatefulDiceState createState() => StatefulDiceState();
 }
 
-class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderStateMixin {
-  int diceRoll = 1;
+class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderStateMixin {
+  int _diceRoll = 1;
   late AnimationController _animationController;
   final _random = Random();
 
   int _step = 0;
+  int _direction = 1;
 
   @override
   void initState() {
@@ -43,18 +38,20 @@ class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderSt
       vsync: this,
     );
 
-    _animationController.addListener(() {
-      final t = Curves.easeOut.transform(_animationController.value);
+    _animationController.addListener(_animate);
+  }
 
-      final i = (t * 5).floor();
+  void _animate() {
+    final t = Curves.easeOut.transform(_animationController.value);
 
-      if (i > _step) {
-        setState(() {
-          _step = i;
-          diceRoll = _random.nextInt(6) + 1;
-        });
-      }
-    });
+    final i = (t * 5).ceil();
+
+    if (i > _step) {
+      setState(() {
+        _step = i;
+        _diceRoll = _random.nextInt(6) + 1;
+      });
+    }
   }
 
   @override
@@ -64,9 +61,12 @@ class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderSt
   }
 
   void rollDice() {
+    if (_animationController.isAnimating) return;
+
     _animationController.reset();
     _step = 0;
-    _animationController.duration = Duration(milliseconds: 250 + Random().nextInt(750));
+    _animationController.duration = Duration(milliseconds: 300 + Random().nextInt(700));
+    _direction = Random().nextBool() ? 1 : -1;
     _animationController.forward();
   }
 
@@ -77,18 +77,18 @@ class _DiceHomePageState extends State<DiceHomePage> with SingleTickerProviderSt
       children: [
         Center(
           child: SizedBox.square(
-            dimension: 200,
+            dimension: 250,
             child: AnimatedBuilder(
               animation: _animationController,
               builder: (context, child) {
                 return Transform.rotate(
-                  angle: pi * 2 * Curves.decelerate.transform(_animationController.value),
+                  angle: _direction * pi * 2 * Curves.decelerate.transform(_animationController.value),
                   child: AnimatedButton(
                     scale: 0.8,
                     onTap: rollDice,
                     childBuilder: (context, hover, pointerDown) {
                       return CustomPaint(
-                        painter: DicePainter(repaint: _animationController, dice: diceRoll),
+                        painter: DicePainter(repaint: _animationController, dice: _diceRoll),
                         size: const Size.square(200),
                       );
                     },

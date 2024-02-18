@@ -158,15 +158,6 @@ class LikedByPageDisplay extends StaticPage {
   final UserPostModel post;
 
   @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader(
-        // buttons: const [
-        //   ProfileButton(),
-        // ],
-        );
-  }
-
-  @override
   Widget content(BuildContext context) {
     return LikeByPage(
       post: post,

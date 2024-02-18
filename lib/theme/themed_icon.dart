@@ -4,8 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'theme.dart';
 
 enum IconType {
+  bell,
+  bellSlash,
   badgeCheck,
   dateTime,
+  clock,
   location,
   people,
   camScan,
@@ -21,6 +24,10 @@ enum IconType {
   qr,
   pixel,
   pixelFilled,
+  script,
+  users,
+  usersFilled,
+  userFilled,
 }
 
 class ThemedIcon extends StatelessWidget {

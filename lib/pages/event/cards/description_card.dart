@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
 
@@ -8,10 +9,12 @@ class EventDescriptionCard extends StatefulWidget {
     super.key,
     required this.description,
     required this.organizer,
+    required this.ingress,
   });
 
   final String description;
   final String organizer;
+  final String ingress;
 
   @override
   DescriptionCardState createState() => DescriptionCardState();
@@ -42,36 +45,38 @@ class DescriptionCardState extends State<EventDescriptionCard> {
     );
   }
 
-  /// Card header
   Widget header() {
     return SizedBox(
       height: 32,
       child: Text(
         'Beskrivelse',
-        style: OnlineTheme.textStyle(
-          size: 20,
-          weight: 7,
-          color: OnlineTheme.white,
-        ),
+        style: OnlineTheme.header(),
       ),
     );
   }
 
-  String _getText() {
-    if (_isExpanded) return widget.description;
-    if (widget.description.length <= 100) return widget.description;
-
-    return '${widget.description.substring(0, 100)}...';
+  String descriptionContent() {
+    return '${widget.ingress}\n\n${widget.description}';
   }
 
-  /// Card Content
+  String _getText() {
+    if (_isExpanded) return descriptionContent();
+    if (descriptionContent().length <= 100) return descriptionContent();
+
+    return '${descriptionContent().substring(0, 100)}...';
+  }
+
   Widget content() {
     return Column(
       children: [
-        Text(
-          _getText(),
-          style: OnlineTheme.textStyle(),
+        MarkdownBody(
+          data: _getText(),
+          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+            p: OnlineTheme.textStyle(),
+          ),
+          onTapLink: (text, href, title) => _launchInAppWebView(href),
         ),
+        const SizedBox(height: 10),
         Text(
           _isExpanded ? 'Vis mindre' : 'Vis mer',
           style: OnlineTheme.textStyle(color: OnlineTheme.yellow),
@@ -86,6 +91,27 @@ class DescriptionCardState extends State<EventDescriptionCard> {
           ],
         ),
       ],
+    );
+  }
+
+  void _launchInAppWebView(String? url) {
+    if (url != null && url.isNotEmpty) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
+    }
+  }
+}
+
+class InAppWebViewPage extends StatelessWidget {
+  final String url;
+  const InAppWebViewPage({Key? key, required this.url}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("")),
+      body: InAppWebView(
+        initialUrlRequest: URLRequest(url: Uri.parse(url)),
+      ),
     );
   }
 }

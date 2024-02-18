@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/theme/theme.dart';
 
 class FaderAbrahamPage extends ScrollablePage {
   const FaderAbrahamPage({super.key});
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

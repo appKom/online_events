@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
 import '/pages/home/event_card.dart';
@@ -19,10 +18,8 @@ class EventsPageState extends State<EventsPage> {
   int currentPage = 1;
 
   Future<void> fetchMoreEvents() async {
-    final moreEventsPage1 =
-        await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
-    final events =
-        Client.eventsCache.value.toList(); 
+    final moreEventsPage1 = await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
+    final events = Client.eventsCache.value.toList();
 
     if (mounted) {
       setState(() {
@@ -37,7 +34,7 @@ class EventsPageState extends State<EventsPage> {
             final bStartDate = DateTime.parse(b.startDate);
             return aStartDate.compareTo(bStartDate);
           });
-          Client.eventsCache.value = Set.from(events); 
+          Client.eventsCache.value = Set.from(events);
         }
 
         currentPage += 2;
@@ -47,8 +44,7 @@ class EventsPageState extends State<EventsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
     final now = DateTime.now();
 
     // Filter eventModels to include only future events
@@ -63,7 +59,9 @@ class EventsPageState extends State<EventsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 24,),
+            const SizedBox(
+              height: 24,
+            ),
             Text(
               'Kommende Arrangementer',
               style: OnlineTheme.header(),
@@ -121,10 +119,6 @@ class EventsPageState extends State<EventsPage> {
 
 class EventsPageDisplay extends StaticPage {
   const EventsPageDisplay({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

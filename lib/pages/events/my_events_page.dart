@@ -3,9 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/components/separator.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/core/models/attended_events.dart';
@@ -36,7 +34,7 @@ class MyEventsPage extends StatefulWidget {
   const MyEventsPage({super.key});
 
   static Widget skeletonLoader(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     final time = DateTime.now();
     String monthName = norwegianMonths[time.month - 1];
@@ -56,12 +54,7 @@ class MyEventsPage extends StatefulWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white))
-                // SkeletonLoader(
-                //   height: 25,
-                //   width: 100,
-                //   borderRadius: BorderRadius.circular(5),
-                // ),
+                Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
               ],
             ),
           ),
@@ -87,10 +80,6 @@ class MyEventsPage extends StatefulWidget {
               );
             }),
           )
-          // SkeletonLoader(
-          //   height: 300,
-          //   borderRadius: BorderRadius.circular(5),
-          // ),
         ],
       ),
     );
@@ -292,8 +281,6 @@ class MyEventsPageState extends State<MyEventsPage> {
               daysOfWeekVisible: false,
               calendarFormat: CalendarFormat.month,
               startingDayOfWeek: StartingDayOfWeek.monday,
-
-              // rowHeight: 55.0,
               availableCalendarFormats: const {CalendarFormat.month: ''},
               onPageChanged: (focusedDay) {
                 setState(() {
@@ -330,14 +317,14 @@ class MyEventsPageState extends State<MyEventsPage> {
                     ),
                     child: Text(
                       date.day.toString(),
-                      style: OnlineTheme.textStyle(),
+                      style: OnlineTheme.textStyle(weight: 5),
                     ),
                   );
                 },
                 defaultBuilder: (context, date, _) {
                   final events = getEventsForDay(date);
 
-                  // TODO: Kurs = Blå, Bedpress = Rød, Andre = Grønn
+                  // TODO: Waitlist = Gul, Registered = Grønn
 
                   if (events.isNotEmpty) {
                     return Container(
@@ -350,7 +337,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                       ),
                       child: Text(
                         date.day.toString(),
-                        style: OnlineTheme.textStyle(),
+                        style: OnlineTheme.textStyle(weight: 5),
                       ),
                     );
                   } else {
@@ -467,10 +454,6 @@ class MyEventsPageState extends State<MyEventsPage> {
 
 class MyEventsPageDisplay extends ScrollablePage {
   const MyEventsPageDisplay({super.key});
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

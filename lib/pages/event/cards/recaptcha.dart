@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http/http.dart' as http;
 
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
 import '/core/models/event_model.dart';
@@ -42,7 +41,7 @@ class _RecaptchaState extends State<ReCaptcha> {
         final String apiUrl =
             'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/register/';
         final Map<String, dynamic> requestBody = {
-          "recaptcha": 'true',
+          "recaptcha": recaptchaToken,
           "allow_pictures": true,
           "show_as_attending_event": true,
           "note": "Online app supremacy"
@@ -109,11 +108,6 @@ class ReCaptchaDisplay extends StaticPage {
   const ReCaptchaDisplay({super.key, required this.model});
 
   final EventModel model;
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

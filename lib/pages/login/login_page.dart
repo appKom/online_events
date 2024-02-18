@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/login/terms_of_service.dart';
 import '/services/app_navigator.dart';
@@ -9,11 +8,6 @@ import '/theme/theme.dart';
 
 class LoginPage extends StaticPage {
   const LoginPage({super.key});
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget content(BuildContext context) {

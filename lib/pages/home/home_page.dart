@@ -2,30 +2,24 @@ import 'package:flutter/material.dart';
 
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
-import '/pages/home/bedpress.dart';
+import 'bedpres.dart';
 import '/pages/home/event_card.dart';
-import '/pages/home/promoted_article.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
+import 'promoted_articles.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
 
   @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
-
-  @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
-      padding: EdgeInsets.only(top: padding.top, left: padding.left, right: padding.right),
+      padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -36,7 +30,7 @@ class HomePage extends ScrollablePage {
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
-            height: 111 * 2,
+            height: 111 * 3,
             child: ValueListenableBuilder(
               valueListenable: Client.eventsCache,
               builder: (context, events, child) {
@@ -45,12 +39,13 @@ class HomePage extends ScrollablePage {
                     children: [
                       EventCard.skeleton(),
                       EventCard.skeleton(),
+                      EventCard.skeleton(),
                     ],
                   );
                 }
 
                 return ListView.builder(
-                  itemCount: 2,
+                  itemCount: 3,
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (c, i) => EventCard(
@@ -61,76 +56,64 @@ class HomePage extends ScrollablePage {
             ),
           ),
           ValueListenableBuilder(
-              valueListenable: Client.eventsCache,
-              builder: (context, events, child) {
-                if (events.isEmpty) {
-                  return Center(
-                    child: SkeletonLoader(
-                      borderRadius: BorderRadius.circular(5),
-                      width: 50,
-                      height: 25,
-                    ),
-                  );
-                }
-
-                return AnimatedButton(
-                  onTap: () => AppNavigator.navigateToPage(const EventsPageDisplay()),
-                  behavior: HitTestBehavior.opaque,
-                  childBuilder: (context, hover, pointerDown) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'MER',
-                          style: OnlineTheme.textStyle(weight: 5),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 2),
-                          child: Icon(
-                            Icons.navigate_next,
-                            color: OnlineTheme.white,
-                            size: 20,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+            valueListenable: Client.eventsCache,
+            builder: (context, events, child) {
+              if (events.isEmpty) {
+                return Center(
+                  child: SkeletonLoader(
+                    borderRadius: BorderRadius.circular(5),
+                    width: 50,
+                    height: 25,
+                  ),
                 );
-              }),
+              }
+
+              return AnimatedButton(
+                onTap: () => AppNavigator.navigateToPage(const EventsPageDisplay()),
+                behavior: HitTestBehavior.opaque,
+                childBuilder: (context, hover, pointerDown) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'MER',
+                        style: OnlineTheme.textStyle(weight: 5),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: Icon(
+                          Icons.navigate_next,
+                          color: OnlineTheme.white,
+                          size: 20,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
           const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
             builder: (context, events, child) {
-              if (events.isEmpty) return Bedpress.skeleton();
-              return Bedpress(models: events);
+              if (events.isEmpty) return Bedpres.skeleton();
+              return Bedpres(models: events);
             },
           ),
           const SizedBox(height: 24 + 24),
-          Text(
-            'Noe å lese på?',
-            style: OnlineTheme.header(),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            height: 222,
-            child: ValueListenableBuilder(
-              valueListenable: Client.articlesCache,
-              builder: (context, articles, child) {
-                if (articles.isEmpty) {
-                  return AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: SkeletonLoader(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  );
-                }
+          Text('Noe å lese på?', style: OnlineTheme.header()),
+          const SizedBox(height: 24),
+          ValueListenableBuilder(
+            valueListenable: Client.articlesCache,
+            builder: (context, articles, child) {
+              if (articles.isEmpty) return Center(child: PromotedArticles.skeleton());
 
-                return PromotedArticle(article: articles.first);
-              },
-            ),
+              return Center(child: PromotedArticles(articles: articles.take(3).toList()));
+            },
           ),
-          const SizedBox(height: 70),
+          const SizedBox(height: 24),
         ],
       ),
     );

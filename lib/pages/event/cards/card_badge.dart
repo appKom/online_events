@@ -4,14 +4,12 @@ import '/theme/theme.dart';
 class CardBadge extends StatelessWidget {
   final Color fill;
   final Color border;
-  // final Gradient gradient; // Changed from Color to Gradient
   final String text;
 
   const CardBadge({
     super.key,
     required this.fill,
     required this.border,
-    // required this.gradient, // Changed parameter
     required this.text,
   });
 
@@ -23,7 +21,6 @@ class CardBadge extends StatelessWidget {
       height: height,
       padding: const EdgeInsets.symmetric(horizontal: height / 2),
       decoration: BoxDecoration(
-        // gradient: gradient, // Use gradient here
         color: fill,
         border: Border.all(color: border, width: 2),
         borderRadius: BorderRadius.circular(height / 2),

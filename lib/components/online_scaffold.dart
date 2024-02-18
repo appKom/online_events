@@ -23,31 +23,6 @@ abstract class ScrollablePage extends OnlinePage {
           ],
         ),
       ),
-      // child: ShaderMask(
-      //   shaderCallback: (bounds) {
-      //     return const LinearGradient(
-      //       begin: Alignment.topCenter,
-      //       end: Alignment.bottomCenter,
-      //       colors: [
-      //         Color(0x00FFFFFF),
-      //         Color(0xFFFFFFFF),
-      //       ],
-      //       stops: [
-      //         0.0,
-      //         0.05,
-      //       ],
-      //     ).createShader(bounds);
-      //   },
-      //   child: SingleChildScrollView(
-      //     padding: EdgeInsets.zero,
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.stretch,
-      //       children: [
-      //         content(context),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
@@ -67,7 +42,6 @@ abstract class StaticPage extends OnlinePage {
 abstract class OnlinePage extends StatelessWidget {
   const OnlinePage({super.key});
 
-  Widget? header(BuildContext context) => null;
   Widget content(BuildContext context);
 }
 
@@ -108,8 +82,6 @@ class OnlineScaffold extends StatelessWidget {
                   height: 36,
                   colorFilter: const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
                 ),
-                // TODO: Flexible way to set these per page
-                // Row(children: buttons),
               ],
             ),
           ),

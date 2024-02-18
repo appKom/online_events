@@ -9,11 +9,6 @@ class BytesHomePage extends ScrollablePage {
   const BytesHomePage({super.key});
 
   @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
@@ -26,14 +21,14 @@ class BytesHomePage extends ScrollablePage {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: OnlineHeader.height(context) + 40),
-              const Text(
+              Text(
                 'Velkommen til Bytes <3',
-                style: OnlineTheme.eventHeader,
+                style: OnlineTheme.header(),
               ),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'Get ready to rumble',
-                style: OnlineTheme.eventListHeader,
+                style: OnlineTheme.header(),
               ),
               const ClipRRect(child: SizedBox(height: 120)),
               Row(

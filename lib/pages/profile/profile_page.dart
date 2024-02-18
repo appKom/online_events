@@ -4,11 +4,9 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:online/services/app_navigator.dart';
 
 import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/components/skeleton_loader.dart';
@@ -17,6 +15,7 @@ import '/core/models/user_model.dart';
 import '/main.dart';
 import '/pages/home/home_page.dart';
 import '/pages/loading/loading_display_page.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -188,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     if (userProfile != null) {
       userId = userProfile!.id;

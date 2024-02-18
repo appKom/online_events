@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
 import '/pages/event/cards/event_card.dart';
-import '/pages/event/cards/event_card_buttons.dart';
 import '/pages/event/cards/event_participants.dart';
 import '/theme/theme.dart';
 import 'card_badge.dart';
@@ -32,11 +31,7 @@ class RegistrationCard extends StatelessWidget {
         badgeText = 'Stengt';
         color = OnlineTheme.red;
         break;
-      case 404:
-        badgeText = 'Påmeldt';
-        color = OnlineTheme.green;
-        break;
-      case 200 || 201 || 210 || 211 || 212 || 213:
+      case 404 || 200 || 201 || 210 || 211 || 212 || 213:
         badgeText = 'Åpen';
         color = OnlineTheme.green;
         break;
@@ -76,36 +71,34 @@ class RegistrationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eligibleForSignup = attendeeInfoModel.isEligibleForSignup.statusCode != 6969;
+
     return OnlineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // if (loggedIn || attendeeInfoModel.isEligibleForSignup.statusCode == 6969)
           header(attendeeInfoModel.isEligibleForSignup.statusCode),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969) const SizedBox(height: 16),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            EventParticipants(
-              model: model,
-              attendeeInfoModel: attendeeInfoModel,
+          if (eligibleForSignup)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 24),
+                EventParticipants(
+                  model: model,
+                  attendeeInfoModel: attendeeInfoModel,
+                ),
+                const SizedBox(height: 24),
+                RegistrationInfo(
+                  attendeeInfoModel: attendeeInfoModel,
+                ),
+              ],
             ),
-          const SizedBox(height: 16),
-          if (attendeeInfoModel.isEligibleForSignup.statusCode != 6969)
-            RegistrationInfo(
-              attendeeInfoModel: attendeeInfoModel,
-            ),
-          const SizedBox(height: 10),
-          if (attendeeInfoModel.isOnWaitlist == true)
-            Center(
-              child: Text(
-                'Du er nummer ${attendeeInfoModel.whatPlaceIsUserOnWaitList} på venteliste',
-                style: OnlineTheme.textStyle(),
-              ),
-            ),
-          EventCardButtons(
-            model: model,
-            attendeeInfoModel: attendeeInfoModel,
-            onUnregisterSuccess: onUnregisterSuccess,
-          ),
+          // const SizedBox(height: 10),
+          // EventCardButtons(
+          //   model: model,
+          //   attendeeInfoModel: attendeeInfoModel,
+          //   onUnregisterSuccess: onUnregisterSuccess,
+          // ),
         ],
       ),
     );

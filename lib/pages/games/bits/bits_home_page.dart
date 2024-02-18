@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:online/services/app_navigator.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/games/bits/bits_page.dart';
+import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class BitsHomePage extends ScrollablePage {
   const BitsHomePage({super.key});
-
-  @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
 
   @override
   Widget build(BuildContext context) {

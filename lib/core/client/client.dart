@@ -33,7 +33,6 @@ abstract class Client {
       expiresIn = expiresInStr != null ? int.tryParse(expiresInStr) : null;
       final tokenSetTimeStr = await SecureStorage.read('tokenSetTime');
       _tokenSetTime = tokenSetTimeStr != null ? DateTime.tryParse(tokenSetTimeStr) : null;
-      print('Tokens loaded from secure storage successfully.');
     } catch (e) {
       print('Error loading tokens from secure storage: $e');
     }
@@ -58,31 +57,26 @@ abstract class Client {
   }
 
   static Future<bool> _refreshToken() async {
-    try {
-      final response = await http.post(
-        Uri.parse('https://old.online.ntnu.no/openid/token'),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: {
-          'refresh_token': refreshToken,
-          'grant_type': 'refresh_token',
-          'client_id': '972717',
-        },
-      );
+    final response = await http.post(
+      Uri.parse('https://old.online.ntnu.no/openid/token'),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'refresh_token': refreshToken,
+        'grant_type': 'refresh_token',
+        'client_id': '972717',
+      },
+    );
 
-      if (response.statusCode == 200) {
+    switch (response.statusCode) {
+      case 200:
         final responseBody = jsonDecode(response.body);
         setAccessToken(responseBody['access_token']);
         setExpiresIn(responseBody['expires_in']);
         return true;
-      } else {
-        print('Failed to refresh token: ${response.statusCode} ${response.reasonPhrase} ${response.body}');
+      default:
         return false;
-      }
-    } catch (e) {
-      print('Exception during token refresh: $e');
-      return false;
     }
   }
 
@@ -309,7 +303,8 @@ abstract class Client {
 
   static Future<List<ArticleModel>?> fetchArticles(int pageNumber) async {
     // await Future.delayed(const Duration(seconds: 5));
-    final articles = await fetch('$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber', ArticleModel.fromJson);
+    final articles =
+        await fetch('$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber', ArticleModel.fromJson);
 
     // Add any new articles fetched
     if (articles != null) {

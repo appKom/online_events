@@ -11,11 +11,6 @@ class BitsGame extends StaticPage {
   const BitsGame({super.key});
 
   @override
-  Widget? header(BuildContext context) {
-    return OnlineHeader();
-  }
-
-  @override
   Widget content(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,7 +63,10 @@ class BitsState extends State<Bits> {
           Expanded(
             flex: 8,
             child: Padding(
-              padding: EdgeInsets.only(left: padding.left, right: padding.right,),
+              padding: EdgeInsets.only(
+                left: padding.left,
+                right: padding.right,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

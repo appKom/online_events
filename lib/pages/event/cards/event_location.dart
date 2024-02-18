@@ -38,7 +38,7 @@ class EventLocation extends StatelessWidget {
             Expanded(
               child: Text(
                 'Portugal, Ericeria',
-                style: OnlineTheme.textStyle(size: 16, height: 1.5, color: OnlineTheme.gray11, weight: 4),
+                style: OnlineTheme.textStyle(size: 16, height: 1.5, color: OnlineTheme.gray9, weight: 4),
                 overflow: TextOverflow.visible,
               ),
             ),
