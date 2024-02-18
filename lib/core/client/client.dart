@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/event_model.dart';
 import '/core/models/article_model.dart';
@@ -17,6 +18,12 @@ abstract class Client {
   static String? refreshToken;
   static int? expiresIn;
   static DateTime? _tokenSetTime;
+
+  static Future<void> launchInBrowser(String url) async {
+    if (!await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)) {
+      throw 'Unable to open $url';
+    }
+  }
 
   static Future<void> saveTokensToSecureStorage() async {
     await SecureStorage.write('accessToken', accessToken ?? '');
@@ -88,8 +95,6 @@ abstract class Client {
   static ValueNotifier<Set<EventModel>> eventsCache = ValueNotifier({});
 
   static Future<Set<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
-    // await Future.delayed(const Duration(seconds: 5));
-
     Set<EventModel> allEvents = {};
 
     for (int page in pages) {

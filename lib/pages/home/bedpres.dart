@@ -28,25 +28,28 @@ class Bedpres extends StatelessWidget {
           'Bedriftpresentasjoner og Kurs',
           style: OnlineTheme.textStyle(size: 20, weight: 7),
         ),
-        SizedBox(
-          height: 236,
-          child: ListView.builder(
-            itemCount: 2,
-            itemBuilder: (c, i) {
-              return Padding(
-                padding: const EdgeInsets.only(right: 24),
-                child: SkeletonLoader(
-                  borderRadius: BorderRadius.circular(12),
-                  width: 222,
-                ),
-              );
-            },
-            scrollDirection: Axis.horizontal,
-          ),
+        CarouselSlider(
+          options: _carouselOptions,
+          items: List.generate(3, (i) {
+            return const SkeletonLoader(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            );
+          }),
         ),
       ],
     );
   }
+
+  static final _carouselOptions = CarouselOptions(
+    height: 320,
+    enableInfiniteScroll: true,
+    padEnds: true,
+    enlargeCenterPage: true,
+    viewportFraction: 0.75,
+    enlargeFactor: 0.2,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +59,6 @@ class Bedpres extends StatelessWidget {
     }).toList();
 
     final filteredModels = futureEvents.where((model) => model.eventType == 2 || model.eventType == 3).toList();
-
-    final options = CarouselOptions(
-      height: 320,
-      enableInfiniteScroll: true,
-      padEnds: true,
-      enlargeCenterPage: true,
-      viewportFraction: 0.75,
-      enlargeFactor: 0.2,
-    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,7 +70,7 @@ class Bedpres extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         CarouselSlider(
-          options: options,
+          options: _carouselOptions,
           items: List.generate(
             filteredModels.length,
             (i) {

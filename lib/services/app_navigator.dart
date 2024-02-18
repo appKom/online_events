@@ -30,7 +30,7 @@ abstract class AppNavigator {
   }
 
   static void navigateToPage(Widget page) {
-    Route route = MaterialPageRoute(
+    final route = MaterialPageRoute(
       builder: (context) => page,
     );
 

@@ -56,7 +56,13 @@ class PromotedArticles extends StatelessWidget {
 
   static Widget skeleton() {
     return CarouselSlider(
-      items: List.generate(3, (i) => const SkeletonLoader()),
+      items: List.generate(3, (i) {
+        return const SkeletonLoader(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        );
+      }),
       options: _carouselOptions,
     );
   }
