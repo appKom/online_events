@@ -121,14 +121,32 @@ class ArticlePage extends ScrollablePage {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            '${article.ingress}\n',
-            style: OnlineTheme.textStyle(),
+          MarkdownBody(
+            data: '${article.ingress}\n',
+            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+              p: OnlineTheme.textStyle(color: OnlineTheme.white),
+              h1: const TextStyle(color: OnlineTheme.white),
+              h2: const TextStyle(color: OnlineTheme.white),
+              h3: const TextStyle(color: OnlineTheme.white), 
+              h4: const TextStyle(color: OnlineTheme.white),
+              h5: const TextStyle(color: OnlineTheme.white),
+              h6: const TextStyle(color: OnlineTheme.white),
+            ),
+            onTapLink: (text, href, title) {
+              if (href == null) return;
+              Client.launchInBrowser(href);
+            },
           ),
           MarkdownBody(
             data: article.content,
             styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-              p: OnlineTheme.textStyle(),
+              p: OnlineTheme.textStyle(color: OnlineTheme.white),
+              h1: const TextStyle(color: OnlineTheme.white),
+              h2: const TextStyle(color: OnlineTheme.white),
+              h3: const TextStyle(color: OnlineTheme.white), 
+              h4: const TextStyle(color: OnlineTheme.white),
+              h5: const TextStyle(color: OnlineTheme.white),
+              h6: const TextStyle(color: OnlineTheme.white),
             ),
             onTapLink: (text, href, title) {
               if (href == null) return;
