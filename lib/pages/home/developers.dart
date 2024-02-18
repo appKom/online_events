@@ -74,6 +74,8 @@ class DeveloperCarousel extends StatelessWidget {
                           devloper.name,
                           style: OnlineTheme.subHeader(),
                         ),
+                        // const SizedBox(height: 10),
+                        Text(devloper.biography, style: OnlineTheme.textStyle(size: 16)),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
