@@ -92,14 +92,14 @@ class RegistrationCard extends StatelessWidget {
                 RegistrationInfo(
                   attendeeInfoModel: attendeeInfoModel,
                 ),
+                const SizedBox(height: 10),
+                EventCardButtons(
+                  model: model,
+                  attendeeInfoModel: attendeeInfoModel,
+                  onUnregisterSuccess: onUnregisterSuccess,
+                ),
               ],
             ),
-          const SizedBox(height: 10),
-          EventCardButtons(
-            model: model,
-            attendeeInfoModel: attendeeInfoModel,
-            onUnregisterSuccess: onUnregisterSuccess,
-          ),
         ],
       ),
     );

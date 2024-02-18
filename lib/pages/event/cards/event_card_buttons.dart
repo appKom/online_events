@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-import 'package:online/services/online_toast.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 import '/components/animated_button.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
 import '/main.dart';
-import '/pages/event/cards/recaptcha.dart';
 import '/pages/event/event_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 
 bool isRegistered = false;
 
@@ -98,7 +92,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
   /// Can the user register at the event?
   bool canRegister() {
-
     // User not logged in
     if (!loggedIn) return false;
 
@@ -130,10 +123,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
     return true;
   }
-
-
-
-  
 
   Widget registerButton() {
     return AnimatedButton(
@@ -219,7 +208,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
