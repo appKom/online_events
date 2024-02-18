@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online/core/client/client.dart';
 
 import '/components/icon_label.dart';
 import '/components/online_scaffold.dart';
@@ -114,9 +116,7 @@ class ArticlePage extends ScrollablePage {
     );
   }
 
-  Widget articleCard() {
-    List<dynamic> contentSegments = extractAndSplitContent(article.content);
-
+  Widget articleCard(BuildContext context) {
     return OnlineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,33 +125,15 @@ class ArticlePage extends ScrollablePage {
             '${article.ingress}\n',
             style: OnlineTheme.textStyle(),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: contentSegments.map((segment) {
-              if (segment is Uri) {
-                return Image.network(
-                  segment.toString(),
-                  fit: BoxFit.cover,
-                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return const SkeletonLoader(height: 200);
-                  },
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return SvgPicture.asset(
-                      'assets/svg/online_hvit_o.svg',
-                      fit: BoxFit.cover,
-                    );
-                  },
-                );
-              }
-
-              return Text(
-                segment,
-                style: OnlineTheme.textStyle(),
-              );
-            }).toList(),
+          MarkdownBody(
+            data: article.content,
+            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+              p: OnlineTheme.textStyle(),
+            ),
+            onTapLink: (text, href, title) {
+              if (href == null) return;
+              Client.launchInBrowser(href);
+            },
           ),
         ],
       ),
@@ -180,7 +162,7 @@ class ArticlePage extends ScrollablePage {
                 const SizedBox(height: 24),
                 // ingressCard(),
                 // const SizedBox(height: 24),
-                articleCard(),
+                articleCard(context),
                 const SizedBox(height: 24),
                 ViewMoreArticles(scrollController: scrollController),
                 const SizedBox(height: 24),
