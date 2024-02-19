@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:online/pages/pixel/pixel.dart';
 
 import '../pages/games/games_page.dart';
 import '../pages/login/login_page.dart';

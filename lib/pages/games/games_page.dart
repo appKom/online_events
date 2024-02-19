@@ -60,18 +60,32 @@ class GamesPage extends ScrollablePage {
                 },
               ),
             ],
-            options: CarouselOptions(
-              height: 200,
-              enableInfiniteScroll: true,
-              padEnds: true,
-              enlargeCenterPage: true,
-              viewportFraction: 0.7,
-              enlargeFactor: 0.2,
-            ),
+            options: getCarouselOptions(context),
+            // options: CarouselOptions(
+            //   height: 200,
+            //   enableInfiniteScroll: true,
+            //   padEnds: true,
+            //   enlargeCenterPage: true,
+            //   viewportFraction: 0.7,
+            //   enlargeFactor: 0.2,
+            // ),
           ),
           const SizedBox(height: 24),
         ],
       ),
+    );
+  }
+
+  static getCarouselOptions(BuildContext context) {
+    final isMobile = OnlineTheme.isMobile(context);
+
+    return CarouselOptions(
+      height: 200,
+      enableInfiniteScroll: true,
+      padEnds: true,
+      enlargeCenterPage: isMobile,
+      viewportFraction: isMobile ? 0.75 : 0.3,
+      enlargeFactor: 0.2,
     );
   }
 }
@@ -95,6 +109,8 @@ class GameCard extends StatelessWidget {
       onTap: onTap,
       childBuilder: (context, hover, pointerDown) {
         return Container(
+          width: 250,
+          height: 200,
           decoration: const BoxDecoration(
             border: Border.fromBorderSide(
               BorderSide(width: 2, color: OnlineTheme.grayBorder),

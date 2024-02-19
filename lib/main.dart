@@ -21,7 +21,7 @@ int userId = 0;
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<void> checkAndRequestPermission(BuildContext context) async {
-  final AndroidFlutterLocalNotificationsPlugin? androidPlatform =
+  final androidPlatform =
       flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
   final bool? hasPermission = await androidPlatform?.requestExactAlarmsPermission();
 

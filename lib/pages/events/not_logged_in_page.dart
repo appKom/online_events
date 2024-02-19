@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../login/auth_web_view_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
-import '/pages/login/terms_of_service.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
@@ -11,10 +11,6 @@ class NotLoggedInPage extends StaticPage {
   const NotLoggedInPage({
     super.key,
   });
-
-  void onTap() {
-    AppNavigator.navigateToPage(const TermsOfServicePage());
-  }
 
   @override
   Widget content(BuildContext context) {
@@ -32,7 +28,9 @@ class NotLoggedInPage extends StaticPage {
           ),
           const SizedBox(height: 24),
           AnimatedButton(
-            onTap: onTap,
+            onTap: () {
+              AppNavigator.navigateToPage(const LoginWebView());
+            },
             childBuilder: (context, hover, pointerDown) {
               return Container(
                 alignment: Alignment.center,

@@ -19,7 +19,7 @@ class Bedpres extends StatelessWidget {
 
   final Set<EventModel> models;
 
-  static Widget skeleton() {
+  static Widget skeleton(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -29,7 +29,7 @@ class Bedpres extends StatelessWidget {
           style: OnlineTheme.textStyle(size: 20, weight: 7),
         ),
         CarouselSlider(
-          options: _carouselOptions,
+          options: getCarouselOptions(context),
           items: List.generate(3, (i) {
             return const SkeletonLoader(
               borderRadius: BorderRadius.all(
@@ -42,14 +42,18 @@ class Bedpres extends StatelessWidget {
     );
   }
 
-  static final _carouselOptions = CarouselOptions(
-    height: 320,
-    enableInfiniteScroll: true,
-    padEnds: true,
-    enlargeCenterPage: true,
-    viewportFraction: 0.75,
-    enlargeFactor: 0.2,
-  );
+  static getCarouselOptions(BuildContext context) {
+    final isMobile = OnlineTheme.isMobile(context);
+
+    return CarouselOptions(
+      height: 320,
+      enableInfiniteScroll: true,
+      padEnds: true,
+      enlargeCenterPage: isMobile,
+      viewportFraction: isMobile ? 0.75 : 0.3,
+      enlargeFactor: 0.2,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +74,7 @@ class Bedpres extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         CarouselSlider(
-          options: _carouselOptions,
+          options: getCarouselOptions(context),
           items: List.generate(
             filteredModels.length,
             (i) {

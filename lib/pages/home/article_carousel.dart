@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online/components/image_default.dart';
 
 import '/components/animated_button.dart';
@@ -53,7 +52,7 @@ class ArticleCarousel extends StatelessWidget {
     return '$dayString. $monthString';
   }
 
-  static Widget skeleton() {
+  static Widget skeleton(BuildContext context) {
     return CarouselSlider(
       items: List.generate(3, (i) {
         return const SkeletonLoader(
@@ -62,7 +61,7 @@ class ArticleCarousel extends StatelessWidget {
           ),
         );
       }),
-      options: _carouselOptions,
+      options: getCarouselOptions(context),
     );
   }
 
@@ -154,19 +153,23 @@ class ArticleCarousel extends StatelessWidget {
     );
   }
 
-  static final _carouselOptions = CarouselOptions(
-    height: 300,
-    enableInfiniteScroll: true,
-    padEnds: true,
-    enlargeCenterPage: true,
-    viewportFraction: 0.75,
-    enlargeFactor: 0.2,
-  );
+  static getCarouselOptions(BuildContext context) {
+    final isMobile = OnlineTheme.isMobile(context);
+
+    return CarouselOptions(
+      height: 300,
+      enableInfiniteScroll: true,
+      padEnds: true,
+      enlargeCenterPage: isMobile,
+      viewportFraction: isMobile ? 0.75 : 0.3,
+      enlargeFactor: 0.2,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
-      options: _carouselOptions,
+      options: getCarouselOptions(context),
       items: List.generate(
         articles.length,
         (i) {
