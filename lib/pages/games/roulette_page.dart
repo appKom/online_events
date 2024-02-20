@@ -155,16 +155,19 @@ class _RoulettePageState extends State<RoulettePage> {
   Widget build(BuildContext context) {
     const size = 900.0;
 
+    final windowWidth = MediaQuery.of(context).size.width;
+    final isMobile = OnlineTheme.isMobile(context);
+
     return Container(
       color: OnlineTheme.background,
       child: Center(
         child: Stack(
-          alignment: Alignment.centerLeft,
+          alignment: isMobile ? Alignment.centerLeft : Alignment.centerLeft,
           children: [
             Positioned(
               width: size,
               height: size,
-              left: -550,
+              left: isMobile ? -550 : windowWidth / 2 - size / 2,
               child: ClipRect(
                 child: OverflowBox(
                   maxWidth: size,
