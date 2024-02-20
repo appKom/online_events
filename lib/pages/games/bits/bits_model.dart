@@ -1,7 +1,24 @@
 class BitsModel {
-  final String header;
-  final String body;
-  final String imageSource;
+  String header;
+  String body;
+  String imageSource;
 
-  const BitsModel({required this.header, required this.body, required this.imageSource});
+  BitsModel({
+    required this.header,
+    required this.body,
+    required this.imageSource,
+  });
+
+  factory BitsModel.fromJson(Map<String, dynamic> json) {
+    return BitsModel(
+      header: json['header'],
+      body: json['body'],
+      imageSource: json['imageSource'],
+    );
+  }
+
+  @override
+  String toString() {
+    return 'UserPostModel(header: $header, body: $body, imageSource: $imageSource)';
+  }
 }
