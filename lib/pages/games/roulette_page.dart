@@ -21,19 +21,21 @@ final challenges = [
     'description': 'Se der står en fyllehund...',
   },
   {
-    "title": "Waterfall",
-    "description":
-        "Alle begynner å slurke, når de til venstre av deg slutter så kan du slutte"
+    'title': 'Waterfall',
+    'description': 'Alle begynner å drikke. Når personen til venstre for deg slutter, kan du slutte.',
   },
   {
     'title': '6 Minutes',
     'description':
-        'Finn en spotify-liste, sett på en timer og gjett hvilken sang som spiller. Hvis du kan sangen gir du telefonen til nestemann. Hvis du gjetter artist og navn kan du dele ut slurker. Hvis tiden går ut på deg chugger du resten av enheten din.'
+        'Finn en Spotify-liste, sett på en timer og gjett hvilken sang som spiller. Hvis du kan sangen gir du telefonen til nestemann. Hvis du gjetter artist og navn kan du dele ut slurker. Hvis tiden går ut på deg drikker du resten av enheten din.'
   },
-  {"title": "Fullfør", "description": "Drikk opp enhenten din"},
+  {
+    'title': 'Fullfør',
+    'description': 'Drikk opp enhenten din.',
+  },
   {
     'title': 'Ratling Bog',
-    'description': 'Sett på ratling bog og håp noen vet reglene!',
+    'description': 'Sett på Ratling Bog og håp noen vet reglene!',
   },
   {
     'title': 'Slurkevakten',
@@ -44,49 +46,42 @@ final challenges = [
     'description': 'Alle skåler og tar en (stor) slurk!',
   },
   {
-    "title": "Single slurker",
-    "description": "Alle som ikke har kjæreste slurker 💔"
-  },
-
-  {
-    "title": "Kategorier",
-    "description":
-        "Velg en kategori, alle må si noe i den kategorien, den som ikke klarer å komme på noe slurker"
+    'title': 'Single Drikker',
+    'description': 'Alle som ikke har kjæreste tar seg 2 slurker 💔',
   },
   {
-    "title": "Komitee Vors ",
-    "description":
-        "Hvis du er i en komitee slurker du, hvis du er i Appkom slurker du dobbelt, hvis du er Dotkom slurker du trippelt"
+    'title': 'Kategorier',
+    'description': 'Velg en kategori, alle må si noe i den kategorien, den som ikke klarer å komme på noe slurker'
   },
   {
-    "title": "Jeg har aldri",
-    "description":
-        "Ta en runde å si noe de aldri har gjort, de som har gjort det slurker"
+    'title': 'Komité-Vors ',
+    'description':
+        'Hvis du er i en komité tar du en slurk. Hvis du er i Appkom tar du 2 slurker. Er du Dotkommer blir det 3 slurker!'
   },
   {
-    "title": "Slurk din bodycount",
-    "description":
-        "Slurk din bodycount eller hele enheten din hvis du ikke vil si den 🤫"
+    'title': 'Jeg har aldri',
+    'description': 'Ta en runde å si noe de aldri har gjort, de som har gjort det tar en slurk.',
   },
   {
-    "title": "Opus",
-    "description":
-        "Sett på Opus på spotify å spill terningleken, trill helt til du får en 6. Da kan du slurke en slurk og gi mobilen videre, hvis beaten dropper mens du har mobilen slurk alt, legg til flere mobiler for mer slurker"
+    'title': 'Slurk din bodycount',
+    'description': 'Slurk din bodycount eller 10 slurker hvis du ikke vil si den 🤫',
   },
   {
-    "title": "Roxanne",
-    "description":
-        "Sett på hvilken som helst slurke sang du vil, foreslår Roxanne (slurk hver gang de synger Roxanne)"
+    'title': 'Opus',
+    'description':
+        'Sett på Opus på Spotify og spill terningleken. Trill helt til du får en 6. Da kan du ta en slurk og gi mobilen videre. Hvis beaten dropper mens du har mobilen taper du. Legg til flere mobiler for mer moro!'
   },
-    {
-    "title": "Kahoot!",
-    "description":
-        "Hvis du har eller har hatt en klasse med Alf Inge Wang må du slurke"
-  }, // bruh moment
-      {
-    "title": "Party Magician",
-    "description":
-        "Gjør ditt kuleste party triks og velg 2 folk å slurke med deg"
+  {
+    'title': 'Roxanne',
+    'description': 'Sett på hvilken som helst drikke-sang du vil. Foreslår Roxanne (slurk hver gang de synger Roxanne)'
+  },
+  {
+    'title': 'Kahoot!',
+    'description': 'Hvis du har eller har hatt en klasse med Alf Inge Wang må du ta en slurk.',
+  },
+  {
+    'title': 'Party Magician',
+    'description': 'Gjør ditt kuleste partytriks og velg 2 folk å til å ta en slurk med deg.',
   },
   {
     'title': 'Drikkevenn',
@@ -102,7 +97,7 @@ final challenges = [
   },
   {
     'title': 'Stripper',
-    'description': 'Kle av deg et valgfritt klesplagg eller ta et shot med en av det andre kjønn 😘',
+    'description': 'Kle av deg et valgfritt klesplagg eller ta 5 slurker med en av det andre kjønn 😘',
   }
 ];
 
