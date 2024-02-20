@@ -1,8 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:online/components/icon_label.dart';
 import 'package:online/components/skeleton_loader.dart';
-import 'package:online/theme/themed_icon.dart';
 
 import '/theme/theme.dart';
 
@@ -26,10 +24,11 @@ class DeveloperCarousel extends StatelessWidget {
 
   Widget developerCard(DeveloperModel developer) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         Container(
           width: 250,
-          height: 300,
+          height: 350,
           decoration: const BoxDecoration(
             border: Border.fromBorderSide(
               BorderSide(width: 2, color: OnlineTheme.grayBorder),
@@ -40,64 +39,68 @@ class DeveloperCarousel extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
-                    ),
-                  ),
-                  child: AspectRatio(
-                    aspectRatio: 8 / 5,
-                    child: Image.asset(
-                      developer.image,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          developer.name,
-                          style: OnlineTheme.subHeader(),
-                        ),
-                        // Text(developer.biography, style: OnlineTheme.textStyle()),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconLabel(
-                              icon: IconType.education,
-                              iconSize: 18,
-                              label: '${developer.year.toString()}. klasse',
-                            ),
-                            // IconLabel(icon: IconType.userFilled, label: '')
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            child: Image.asset(
+              developer.image,
+              fit: BoxFit.cover,
             ),
+            // child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.stretch,
+            //   children: [
+            //     // Container(
+            //     //   decoration: const BoxDecoration(
+            //     //     border: Border(
+            //     //       bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+            //     //     ),
+            //     //   ),
+            //     //   child: AspectRatio(
+            //     //     aspectRatio: 8 / 5,
+            //     //     child: Image.asset(
+            //     //       developer.image,
+            //     //       fit: BoxFit.cover,
+            //     //       alignment: Alignment.center,
+            //     //     ),
+            //     //   ),
+            //     // ),
+            //     // Expanded(
+            //     //   child: Padding(
+            //     //     padding: const EdgeInsets.all(20),
+            //     //     child: Column(
+            //     //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     //       crossAxisAlignment: CrossAxisAlignment.stretch,
+            //     //       children: [
+            //     //         Text(
+            //     //           developer.name,
+            //     //           style: OnlineTheme.subHeader(),
+            //     //         ),
+            //     //         // Text(developer.biography, style: OnlineTheme.textStyle()),
+            //     //         Row(
+            //     //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     //           children: [
+            //     //             IconLabel(
+            //     //               icon: IconType.education,
+            //     //               iconSize: 18,
+            //     //               label: '${developer.year.toString()}. klasse',
+            //     //             ),
+            //     //             // IconLabel(icon: IconType.userFilled, label: '')
+            //     //           ],
+            //     //         ),
+            //     //         const SizedBox(height: 10),
+            //     //       ],
+            //     //     ),
+            //     //   ),
+            //     // ),
+            //   ],
+            // ),
           ),
         ),
         Positioned(
-          bottom: 10,
+          bottom: 0,
           left: 0,
           right: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              roleBadge(developer.biography),
+              roleBadge(developer.name),
             ],
           ),
         ),
@@ -106,7 +109,7 @@ class DeveloperCarousel extends StatelessWidget {
   }
 
   static final _carouselOptions = CarouselOptions(
-    height: 320,
+    height: 350 + 15,
     enableInfiniteScroll: true,
     padEnds: true,
     enlargeCenterPage: true,
@@ -119,16 +122,16 @@ class DeveloperCarousel extends StatelessWidget {
       height: 30,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: OnlineTheme.blue2.darken(40),
+        color: OnlineTheme.yellow.darken(40),
         borderRadius: OnlineTheme.buttonRadius,
         border: const Border.fromBorderSide(
-          BorderSide(color: OnlineTheme.blue2, width: 2),
+          BorderSide(color: OnlineTheme.yellow, width: 2),
         ),
       ),
       child: Center(
         child: Text(
           role,
-          style: OnlineTheme.textStyle(weight: 5, size: 14, color: OnlineTheme.blue2),
+          style: OnlineTheme.textStyle(weight: 5, size: 14, color: OnlineTheme.yellow),
         ),
       ),
     );
@@ -150,7 +153,20 @@ class DeveloperCarousel extends StatelessWidget {
         biography: 'Appkom-Nestleder',
       ),
     ];
+
     List<Widget> developerWidgets = developers.map((developer) => developerCard(developer)).toList();
+
+    // return Column(
+    //   children: [
+    //     Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //       children: [
+    //         developerCard(developers[0]),
+    //         developerCard(developers[1]),
+    //       ],
+    //     ),
+    //   ],
+    // );
 
     return CarouselSlider(
       items: developerWidgets,
