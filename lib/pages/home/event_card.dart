@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:online/services/app_navigator.dart';
 
+import '../../components/image_default.dart';
 import '/components/animated_button.dart';
 import '/components/separator.dart';
 import '/components/skeleton_loader.dart';
@@ -152,6 +152,18 @@ class EventCard extends StatelessWidget {
 
   // static final gray = OnlineTheme.white;
 
+  Widget defaultWithBorder() {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border.fromBorderSide(
+          BorderSide(width: 2, color: OnlineTheme.grayBorder),
+        ),
+        borderRadius: OnlineTheme.buttonRadius,
+      ),
+      child: const ImageDefault(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -189,16 +201,10 @@ class EventCard extends StatelessWidget {
                                 );
                               },
                               errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                return SvgPicture.asset(
-                                  'assets/svg/online_hvit_o.svg',
-                                  fit: BoxFit.cover,
-                                );
+                                return defaultWithBorder();
                               },
                             )
-                          : SvgPicture.asset(
-                              'assets/svg/online_hvit_o.svg',
-                              fit: BoxFit.cover,
-                            ),
+                          : defaultWithBorder(),
                     ),
                   ),
                   // Headers

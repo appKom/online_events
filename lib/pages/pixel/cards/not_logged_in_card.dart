@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../services/app_navigator.dart';
+import '../../login/auth_web_view_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
-import '/pages/login/terms_of_service.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class NotLoggedInCard extends StatelessWidget {
@@ -13,10 +13,6 @@ class NotLoggedInCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void onPressed() {
-      AppNavigator.navigateToPage(const TermsOfServicePage());
-    }
-
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
     return Padding(
         padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -33,23 +29,23 @@ class NotLoggedInCard extends StatelessWidget {
             const SizedBox(
               height: 120,
             ),
-            AnimatedButton(
-                onTap: onPressed,
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    height: OnlineTheme.buttonHeight,
-                    decoration: BoxDecoration(
-                      gradient: OnlineTheme.greenGradient,
-                      borderRadius: OnlineTheme.buttonRadius,
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Logg Inn',
-                        style: OnlineTheme.textStyle(weight: 5),
-                      ),
-                    ),
-                  );
-                })
+            AnimatedButton(onTap: () {
+              AppNavigator.navigateToPage(const LoginWebView());
+            }, childBuilder: (context, hover, pointerDown) {
+              return Container(
+                height: OnlineTheme.buttonHeight,
+                decoration: BoxDecoration(
+                  gradient: OnlineTheme.greenGradient,
+                  borderRadius: OnlineTheme.buttonRadius,
+                ),
+                child: Center(
+                  child: Text(
+                    'Logg Inn',
+                    style: OnlineTheme.textStyle(weight: 5),
+                  ),
+                ),
+              );
+            })
           ],
         ));
   }

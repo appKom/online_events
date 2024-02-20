@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 
@@ -15,24 +16,33 @@ class RoulettePage extends StatefulWidget {
 }
 
 final challenges = [
-  {"title": "LAMBO", "description": "Se der står en fyllehund..."},
+  {
+    'title': 'LAMBO',
+    'description': 'Se der står en fyllehund...',
+  },
   {
     "title": "Waterfall",
     "description":
         "Alle begynner å slurke, når de til venstre av deg slutter så kan du slutte"
   },
   {
-    "title": "6 Minutes",
-    "description":
-        "Finn en spotify playlist, sett på en timer og gjett hvilken sang spiller, hvis du kan sangen gi det til neste mann. Hvis du gjetter artist og navn del ut slurker. Hvis tiden går ut på deg bli ferdig med enheten"
+    'title': '6 Minutes',
+    'description':
+        'Finn en spotify-liste, sett på en timer og gjett hvilken sang som spiller. Hvis du kan sangen gir du telefonen til nestemann. Hvis du gjetter artist og navn kan du dele ut slurker. Hvis tiden går ut på deg chugger du resten av enheten din.'
   },
   {"title": "Fullfør", "description": "Drikk opp enhenten din"},
   {
-    "title": "Ratling Bog",
-    "description": "Sett på ratling bog og håp noen vet reglene"
+    'title': 'Ratling Bog',
+    'description': 'Sett på ratling bog og håp noen vet reglene!',
   },
-  {"title": "Slurkevakten", "description": "Gi ut 10 slurker"},
-  {"title": "Skål!", "description": "Alle skåler og tar en slurk!"},
+  {
+    'title': 'Slurkevakten',
+    'description': 'Gi ut 10 slurker.',
+  },
+  {
+    'title': 'Skål!',
+    'description': 'Alle skåler og tar en (stor) slurk!',
+  },
   {
     "title": "Single drikker",
     "description": "Alle som ikke har kjæreste slurker 💔"
@@ -78,6 +88,22 @@ final challenges = [
     "description":
         "Gjør ditt kuleste party triks og velg 2 folk å slurke med deg"
   },
+  {
+    'title': 'Drikkevenn',
+    'description': 'Du og personen 5 til høyre for deg er nå drikkevenner! Hver gang en må drikke må begge drikke.',
+  },
+  {
+    'title': 'Chug-off',
+    'description': 'Velg deg en utforder til chug-off! Vinneren kan dele ut 5 slurker. Taperen må skjerpe seg.',
+  },
+  {
+    'title': 'Uteligger',
+    'description': 'Pekelek: Hvem i rommet kler seg mest som en uteligger. Uteliggeren drikker 5 slurker.',
+  },
+  {
+    'title': 'Stripper',
+    'description': 'Kle av deg et valgfritt klesplagg eller ta et shot med en av det andre kjønn 😘',
+  }
 ];
 
 class _RoulettePageState extends State<RoulettePage> {
@@ -96,11 +122,15 @@ class _RoulettePageState extends State<RoulettePage> {
   );
 
   final fortuneList = List<FortuneItem>.empty(growable: true);
+  late final List<Map<String, String>> challengePool;
 
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < challenges.length; i++) {
+
+    challengePool = challenges.sample(20);
+
+    for (int i = 0; i < challengePool.length; i++) {
       late final FortuneItemStyle color;
 
       if (i == 0) {
@@ -114,7 +144,7 @@ class _RoulettePageState extends State<RoulettePage> {
       fortuneList.add(
         FortuneItem(
           child: Text(
-            challenges[i]['title']!,
+            challengePool[i]['title']!,
             style: OnlineTheme.header(),
           ),
           style: color,
@@ -149,8 +179,8 @@ class _RoulettePageState extends State<RoulettePage> {
                     child: FortuneWheel(
                       onAnimationEnd: () {
                         RouletteOverlay(
-                          title: challenges[index]["title"] ?? "",
-                          description: challenges[index]["description"] ?? "",
+                          title: challengePool[index]['title'] ?? '',
+                          description: challengePool[index]['description'] ?? '',
                         ).show(context);
                       },
                       alignment: Alignment.center,

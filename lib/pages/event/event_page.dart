@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:online/components/image_default.dart';
 import 'package:online/components/skeleton_loader.dart';
 
 import '/components/animated_button.dart';
@@ -94,37 +94,24 @@ class _EventPageState extends State<EventPage> {
 
   Widget coverImage() {
     if (widget.model.images.isEmpty) {
-      return AspectRatio(
+      return const AspectRatio(
         aspectRatio: 16 / 9,
-        child: SvgPicture.asset(
-          'assets/svg/online_hvit_o.svg',
-          fit: BoxFit.cover,
-        ),
+        child: ImageDefault(),
       );
     }
 
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
-        ),
-      ),
-      child: AspectRatio(
-        aspectRatio: 16 / 9,
-        child: Image.network(
-          widget.model.images.first.original,
-          loadingBuilder: (context, child, evt) {
-            if (evt == null) return child;
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: Image.network(
+        widget.model.images.first.original,
+        loadingBuilder: (context, child, evt) {
+          if (evt == null) return child;
 
-            return const SkeletonLoader();
-          },
-          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return SvgPicture.asset(
-              'assets/svg/online_hvit_o.svg',
-              fit: BoxFit.cover,
-            );
-          },
-        ),
+          return const SkeletonLoader();
+        },
+        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+          return const ImageDefault();
+        },
       ),
     );
   }
@@ -137,7 +124,14 @@ class _EventPageState extends State<EventPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          coverImage(),
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+              ),
+            ),
+            child: coverImage(),
+          ),
           Padding(
             padding: OnlineTheme.horizontalPadding,
             child: Column(
@@ -152,26 +146,26 @@ class _EventPageState extends State<EventPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (attendeeInfoModel.isAttendee)
-                    SizedBox.square(
-                      dimension: 40,
-                      child: Center(
-                        child: AnimatedButton(
-                          onTap: () {
-                            AppNavigator.navigateToRoute(
-                              QRCode(model: widget.model),
-                              additive: true,
-                            );
-                          },
-                          childBuilder: (context, hover, pointerDown) {
-                            return const ThemedIcon(
-                              icon: IconType.qr,
-                              size: 24,
-                              color: OnlineTheme.white,
-                            );
-                          },
+                      SizedBox.square(
+                        dimension: 40,
+                        child: Center(
+                          child: AnimatedButton(
+                            onTap: () {
+                              AppNavigator.navigateToRoute(
+                                QRCode(model: widget.model),
+                                additive: true,
+                              );
+                            },
+                            childBuilder: (context, hover, pointerDown) {
+                              return const ThemedIcon(
+                                icon: IconType.qr,
+                                size: 24,
+                                color: OnlineTheme.white,
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
                     const SizedBox(
                       width: 10,
                     ),

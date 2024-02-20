@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../services/app_navigator.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
-import '/pages/login/terms_of_service.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
+import 'auth_web_view_page.dart';
 
 class LoginPage extends StaticPage {
   const LoginPage({super.key});
@@ -30,7 +30,7 @@ class LoginPage extends StaticPage {
             const SizedBox(height: 24),
             AnimatedButton(
               onTap: () {
-                AppNavigator.navigateToPage(const TermsOfServicePage());
+                AppNavigator.navigateToPage(const LoginWebView());
               },
               childBuilder: (context, hover, pointerDown) {
                 return Container(

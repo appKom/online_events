@@ -116,17 +116,17 @@ class HomePage extends ScrollablePage {
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
             builder: (context, events, child) {
-              if (events.isEmpty) return Bedpres.skeleton();
+              if (events.isEmpty) return Bedpres.skeleton(context);
               return Bedpres(models: events);
             },
           ),
           const SizedBox(height: 24 + 24),
-          Text('Noe Å Lese På?', style: OnlineTheme.header()),
+          Text('Artikler', style: OnlineTheme.header()),
           const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.articlesCache,
             builder: (context, articles, child) {
-              if (articles.isEmpty) return Center(child: ArticleCarousel.skeleton());
+              if (articles.isEmpty) return Center(child: ArticleCarousel.skeleton(context));
 
               return Center(child: ArticleCarousel(articles: articles.take(3).toList()));
             },

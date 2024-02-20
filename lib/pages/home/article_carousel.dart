@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:online/components/skeleton_loader.dart';
+import 'package:online/components/image_default.dart';
 
 import '/components/animated_button.dart';
 import '/components/icon_label.dart';
+import '/components/skeleton_loader.dart';
 import '/core/models/article_model.dart';
 import '/pages/article/article_page.dart';
 import '/services/app_navigator.dart';
@@ -48,13 +49,10 @@ class ArticleCarousel extends StatelessWidget {
     final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
     final monthString = months[month];
 
-    // TODO: If an event spans multiple days, show 01.-05. January
-    // TODO: If start and end month is different, shorten to 28. Jan - 03. Feb
-
     return '$dayString. $monthString';
   }
 
-  static Widget skeleton() {
+  static Widget skeleton(BuildContext context) {
     return CarouselSlider(
       items: List.generate(3, (i) {
         return const SkeletonLoader(
@@ -63,13 +61,30 @@ class ArticleCarousel extends StatelessWidget {
           ),
         );
       }),
-      options: _carouselOptions,
+      options: getCarouselOptions(context),
+    );
+  }
+
+  Widget coverImage(ArticleModel article) {
+    if (article.image?.original == null) {
+      return const ImageDefault();
+    }
+
+    return Image.network(
+      article.image!.original,
+      loadingBuilder: (context, child, evt) {
+        if (evt == null) return child;
+
+        return const SkeletonLoader();
+      },
+      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return const ImageDefault();
+      },
     );
   }
 
   Widget articleCard(ArticleModel article) {
     final timeToRead = calculateReadingTime(article.content, article.ingress);
-    // final readingTimeText = "$timeToRead min å lese";
     return AnimatedButton(
       onTap: () => AppNavigator.navigateToPage(ArticlePage(article: article)),
       childBuilder: (context, hover, pointerDown) {
@@ -97,11 +112,7 @@ class ArticleCarousel extends StatelessWidget {
                   ),
                   child: AspectRatio(
                     aspectRatio: 16 / 9,
-                    child: Image.network(
-                      article.image?.original ?? 'assets/svg/online_hvit_o.svg', // Modify this line
-                      fit: BoxFit.cover,
-                      alignment: Alignment.bottomCenter,
-                    ),
+                    child: coverImage(article),
                   ),
                 ),
                 Expanded(
@@ -115,12 +126,6 @@ class ArticleCarousel extends StatelessWidget {
                           article.heading,
                           style: OnlineTheme.subHeader(),
                         ),
-                        // IconLabel(
-                        //   icon: IconType.script,
-                        //   label: article.authors.replaceAll(', ', ',\n'),
-                        //   fontSize: 15,
-                        //   iconSize: 18,
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -148,19 +153,23 @@ class ArticleCarousel extends StatelessWidget {
     );
   }
 
-  static final _carouselOptions = CarouselOptions(
-    height: 300,
-    enableInfiniteScroll: true,
-    padEnds: true,
-    enlargeCenterPage: true,
-    viewportFraction: 0.75,
-    enlargeFactor: 0.2,
-  );
+  static getCarouselOptions(BuildContext context) {
+    final isMobile = OnlineTheme.isMobile(context);
+
+    return CarouselOptions(
+      height: 300,
+      enableInfiniteScroll: true,
+      padEnds: true,
+      enlargeCenterPage: isMobile,
+      viewportFraction: isMobile ? 0.75 : 0.3,
+      enlargeFactor: 0.2,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
-      options: _carouselOptions,
+      options: getCarouselOptions(context),
       items: List.generate(
         articles.length,
         (i) {
