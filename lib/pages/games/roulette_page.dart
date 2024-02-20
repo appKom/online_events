@@ -63,7 +63,7 @@ final challenges = [
     'description': 'Ta en runde å si noe de aldri har gjort, de som har gjort det tar en slurk.',
   },
   {
-    'title': 'Slurk din bodycount',
+    'title': 'Drikk din bodycount',
     'description': 'Slurk din bodycount eller 10 slurker hvis du ikke vil si den 🤫',
   },
   {
