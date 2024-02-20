@@ -50,7 +50,7 @@ class BitsHomePage extends ScrollablePage {
                 'Trykk på sidene av skjermen for å komme deg videre \n\nPress the sides of the screen to continue',
                 style: OnlineTheme.textStyle(),
               ),
-              const SizedBox(height: 120),
+              const SizedBox(height: 80),
               AnimatedButton(
                 onTap: () {
                   AppNavigator.navigateToPage(const BitsGame());
