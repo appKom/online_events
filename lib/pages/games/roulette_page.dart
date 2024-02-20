@@ -44,7 +44,7 @@ final challenges = [
     'description': 'Alle skåler og tar en (stor) slurk!',
   },
   {
-    "title": "Single drikker",
+    "title": "Single slurker",
     "description": "Alle som ikke har kjæreste slurker 💔"
   },
 

@@ -171,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return;
     }
 
-    String fileName = userProfile!.ntnuUsername;
+    String fileName = userProfile!.username;
 
     try {
       await storage.getFile(
@@ -344,8 +344,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: OnlineTheme.header(),
               ),
               const SizedBox(height: 10),
-              constValueTextInput('Brukernavn', userProfile!.ntnuUsername),
-              constValueTextInput('Telefon', userProfile!.phoneNumber),
+              constValueTextInput('Brukernavn', userProfile!.username),
+              constValueTextInput('Telefon', userProfile!.phoneNumber ?? ''),
               constValueTextInput('E-post', userProfile!.email),
               const Separator(margin: 40),
               Text(
@@ -354,7 +354,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               constValueTextInput('Klassetrinn', userProfile!.year.toString()),
-              constValueTextInput('Startår', userProfile!.startedDate.year.toString()),
+              constValueTextInput('Startår', userProfile!.startedDate!.year.toString()),
               const SizedBox(height: 16),
               SizedBox(
                 height: 40,
