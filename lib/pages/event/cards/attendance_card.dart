@@ -42,7 +42,6 @@ class NotificationModel {
     id = time.hashCode;
   }
 
-  /// Notification time in correct time zone
   tz.TZDateTime zonedTime() {
     return tz.TZDateTime.from(time, tz.local);
   }
@@ -139,7 +138,6 @@ class AttendanceCard extends StatelessWidget {
           NotificationModel.platformChannelSpecifics,
           androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-          matchDateTimeComponents: DateTimeComponents.time,
         );
       },
       childBuilder: (context, hover, pointerDown) {
@@ -197,7 +195,7 @@ class AttendanceCard extends StatelessWidget {
               NotificationModel.platformChannelSpecifics,
               androidScheduleMode: AndroidScheduleMode.alarmClock,
               uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-              matchDateTimeComponents: DateTimeComponents.time,
+              // matchDateTimeComponents: DateTimeComponents.time,
             );
           },
           childBuilder: (context, hover, pointerDown) {
