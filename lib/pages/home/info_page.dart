@@ -33,7 +33,7 @@ class InfoPage extends ScrollablePage {
               children: [
                 Text("Online-Appen", style: OnlineTheme.textStyle(size: 32)),
                 const SizedBox(height: 10),
-                Text('Versjon 1.0.0', style: OnlineTheme.textStyle(size: 16)),
+                Text('Versjon 1.0.1', style: OnlineTheme.textStyle(size: 16)),
               ],
             ),
           ]),

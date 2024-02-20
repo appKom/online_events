@@ -41,7 +41,7 @@ sealed class OnlineTheme {
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 20);
 
   static bool isMobile(BuildContext context) {
-    return MediaQuery.of(context).size.width < 600;
+    return MediaQuery.of(context).size.width < 500;
   }
 
   static const purpleGradient = LinearGradient(

@@ -31,7 +31,7 @@ class NuKlingerPage extends ScrollablePage {
                 const SizedBox(height: 20),
                 Text(
                   'Nu Klinger',
-                  style: OnlineTheme.textStyle(size: 40, weight: 7),
+                  style: OnlineTheme.header(),
                 ),
                 const Separator(margin: 5),
                 const SizedBox(height: 5),
