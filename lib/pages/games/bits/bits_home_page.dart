@@ -47,7 +47,7 @@ class BitsHomePage extends ScrollablePage {
                 height: 15,
               ),
               Text(
-                'Trykk på sidene av skjermen for å komme deg videre',
+                'Trykk på sidene av skjermen for å komme deg videre \n\nPress the sides of the screen to continue',
                 style: OnlineTheme.textStyle(),
               ),
               const SizedBox(height: 120),
