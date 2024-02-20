@@ -31,13 +31,13 @@ class LamboPage extends ScrollablePage {
                 const SizedBox(height: 20),
                 Text(
                   'Lambo',
-                  style: OnlineTheme.textStyle(size: 40, weight: 7),
+                  style: OnlineTheme.header(),
                 ),
                 const Separator(margin: 5),
                 const SizedBox(height: 5),
                 Text(
                   'Tilskuere synger:',
-                  style: OnlineTheme.textStyle(size: 16, weight: 7),
+                  style: OnlineTheme.subHeader(),
                 ),
                 const Separator(margin: 5),
                 Text(
