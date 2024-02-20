@@ -40,7 +40,7 @@ class BitsHomePage extends ScrollablePage {
               ),
               const SizedBox(height: 20),
               Text(
-                'Bits er en kombinasjon av de beste aspektene av ulike drikkeleker. Det er bare å hente deg en ny enhet, for den du holder nå kommer til å bli tømt ganske snabt. ',
+                'Bits er en kombinasjon av de beste aspektene av ulike leker. \n \nSpillet går ut på at spillerne først peker ut noen i pekeleken. Der den som blir mest pekt på, må gjøre det som står på neste side. I løpet av spillet får man "poeng" eller "kjempe poeng", der hva man gjør med et "poeng" er opp til enhver spiller.',
                 style: OnlineTheme.textStyle(),
               ),
               const SizedBox(

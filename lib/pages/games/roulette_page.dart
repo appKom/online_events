@@ -19,14 +19,14 @@ final challenges = [
   {
     "title": "Waterfall",
     "description":
-        "Alle begynner og drikke, når de til venstre av deg slutter så kan du slutte"
+        "Alle begynner å slurke, når de til venstre av deg slutter så kan du slutte"
   },
   {
     "title": "6 Minutes",
     "description":
         "Finn en spotify playlist, sett på en timer og gjett hvilken sang spiller, hvis du kan sangen gi det til neste mann. Hvis du gjetter artist og navn del ut slurker. Hvis tiden går ut på deg bli ferdig med enheten"
   },
-  {"title": "SHUG", "description": "Drikk opp enhenten din"},
+  {"title": "Fullfør", "description": "Drikk opp enhenten din"},
   {
     "title": "Ratling Bog",
     "description": "Sett på ratling bog og håp noen vet reglene"
@@ -35,48 +35,48 @@ final challenges = [
   {"title": "Skål!", "description": "Alle skåler og tar en slurk!"},
   {
     "title": "Single drikker",
-    "description": "Alle som ikke har kjæreste drikker 💔"
+    "description": "Alle som ikke har kjæreste slurker 💔"
   },
-  {"title": "SHOTS!", "description": "Shot med den mest edrue i rommet"},
+
   {
     "title": "Kategorier",
     "description":
-        "Velg en kategori, alle må si noe i den kategorien, den som ikke klarer å komme på noe drikker"
+        "Velg en kategori, alle må si noe i den kategorien, den som ikke klarer å komme på noe slurker"
   },
   {
     "title": "Komitee Vors ",
     "description":
-        "Hvis du er i en komitee drikker du, hvis du er i Appkom drikker du dobbelt, hvis du er Dotkom drikker du trippelt"
+        "Hvis du er i en komitee slurker du, hvis du er i Appkom slurker du dobbelt, hvis du er Dotkom slurker du trippelt"
   },
   {
     "title": "Jeg har aldri",
     "description":
-        "Ta en runde å si noe de aldri har gjort, de som har gjort det drikker"
+        "Ta en runde å si noe de aldri har gjort, de som har gjort det slurker"
   },
   {
-    "title": "Drikk din bodycount",
+    "title": "Slurk din bodycount",
     "description":
-        "Drikk din bodycount eller hele enheten din hvis du ikke vil si den 🤫"
+        "Slurk din bodycount eller hele enheten din hvis du ikke vil si den 🤫"
   },
   {
     "title": "Opus",
     "description":
-        "Sett på Opus på spotify å spill terningleken, trill helt til du får en 6. Da kan du drikke en slurk og gi mobilen videre, hvis beaten dropper mens du har mobilen drikk alt, legg til flere mobiler for mer drikke"
+        "Sett på Opus på spotify å spill terningleken, trill helt til du får en 6. Da kan du slurke en slurk og gi mobilen videre, hvis beaten dropper mens du har mobilen slurk alt, legg til flere mobiler for mer slurker"
   },
   {
     "title": "Roxanne",
     "description":
-        "Sett på hvilken som helst drikke sang du vil, foreslår Roxanne (Drikk hver gang de synger Roxanne)"
+        "Sett på hvilken som helst slurke sang du vil, foreslår Roxanne (slurk hver gang de synger Roxanne)"
   },
     {
     "title": "Kahoot!",
     "description":
-        "Hvis du har eller har hatt en klasse med Alf Inge Wang må du drikke"
+        "Hvis du har eller har hatt en klasse med Alf Inge Wang må du slurke"
   }, // bruh moment
       {
     "title": "Party Magician",
     "description":
-        "Gjør ditt kuleste party triks og velg 2 folk å shotte med deg"
+        "Gjør ditt kuleste party triks og velg 2 folk å slurke med deg"
   },
 ];
 
