@@ -374,12 +374,34 @@ class _ProfilePageState extends State<ProfilePage> {
               const Separator(margin: 20),
               AnimatedButton(
                 onTap: () {
-                  deletePixelUserInfo();
-                  setState(() {
-                  loggedIn = false;
-                  });
-                  AppNavigator.replaceWithPage(const DeleteUserDisplay());
-
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Bekreft sletting'),
+                        content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Avbryt'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Slett'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              deletePixelUserInfo();
+                              setState(() {
+                                loggedIn = false;
+                              });
+                              AppNavigator.replaceWithPage(const DeleteUserDisplay());
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
                 childBuilder: (context, hover, pointerDown) {
                   return Container(
