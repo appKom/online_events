@@ -51,8 +51,8 @@ class NavbarState extends State<Navbar> {
         //   onPressed: () => AppNavigator.replaceWithPage(const PixelPageDisplay()),
         // ),
         NavbarButton(
-          icon: IconType.beer,
-          activeIcon: IconType.beerFilled,
+          icon: IconType.dices,
+          activeIcon: IconType.dicesFilled,
           onPressed: () => AppNavigator.replaceWithPage(const GamesPage()),
         ),
         NavbarButton(

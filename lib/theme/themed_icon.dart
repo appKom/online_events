@@ -29,6 +29,8 @@ enum IconType {
   usersFilled,
   userFilled,
   education,
+  dices,
+  dicesFilled,
 }
 
 class ThemedIcon extends StatelessWidget {
