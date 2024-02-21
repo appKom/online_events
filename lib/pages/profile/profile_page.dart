@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:online/pages/profile/delete_user.dart';
 
 import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
@@ -125,6 +126,30 @@ class _ProfilePageState extends State<ProfilePage> {
     return null;
   }
 
+  Future<PixelUserClass?> deletePixelUserInfo() async {
+    String fileName = userProfile!.username;
+    try {
+      await database.deleteDocument(
+          collectionId: dotenv.env['USER_COLLECTION_ID']!,
+          documentId: userProfile!.username,
+          databaseId: dotenv.env['USER_DATABASE_ID']!);
+    } catch (e) {
+      print('Error fetching document data: $e');
+    }
+    try {} catch (e) {
+      print('An error occurred: $e');
+    }
+    await storage.getFile(
+      bucketId: dotenv.env['USER_BUCKET_ID']!,
+      fileId: fileName,
+    );
+
+    await storage.deleteFile(
+      bucketId: dotenv.env['USER_BUCKET_ID']!,
+      fileId: fileName,
+    );
+    return null;
+  }
 
   Future<void> pickImage(ImageSource source) async {
     try {
@@ -153,7 +178,6 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           if (croppedFile != null) {
             _imageFile = File(croppedFile.path);
-
           }
         });
       }
@@ -347,7 +371,34 @@ class _ProfilePageState extends State<ProfilePage> {
               constValueTextInput('Brukernavn', userProfile!.username),
               constValueTextInput('Telefon', userProfile!.phoneNumber ?? ''),
               constValueTextInput('E-post', userProfile!.email),
-              const Separator(margin: 40),
+              const Separator(margin: 20),
+              AnimatedButton(
+                onTap: () {
+                  deletePixelUserInfo();
+                  setState(() {
+                  loggedIn = false;
+                  });
+                  AppNavigator.replaceWithPage(const DeleteUserDisplay());
+
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return Container(
+                    height: OnlineTheme.buttonHeight,
+                    decoration: BoxDecoration(
+                      color: OnlineTheme.red.withOpacity(0.4),
+                      borderRadius: OnlineTheme.buttonRadius,
+                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Slett eller last ned brukerdata',
+                        style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const Separator(margin: 20),
               Text(
                 'Studie',
                 style: OnlineTheme.header(),
