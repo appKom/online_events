@@ -26,16 +26,6 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true />
-		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>This app includes certain functionalities that could potentially access location
-			data at all times due to integrated third-party libraries. However, please be assured
-			that 'Online' does not actively collect or use your location information in any way
-			during its operation</string>
-
-		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>This app may have the capability to access your location data when in use due to
-			included third-party libraries. We want to clarify that 'Online' does not gather or
-			utilize your location data, and your privacy and trust are our top priorities.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>Need camera access to take pictures</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>

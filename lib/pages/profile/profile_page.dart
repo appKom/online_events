@@ -413,7 +413,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Center(
                       child: Text(
-                        'Slett eller last ned brukerdata',
+                        'Slett brukerdata',
                         style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
                       ),
                     ),
@@ -481,14 +481,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   return Container(
                     height: OnlineTheme.buttonHeight,
                     decoration: BoxDecoration(
-                      color: OnlineTheme.red.withOpacity(0.4),
+                      color: OnlineTheme.yellow.darken(40),
                       borderRadius: OnlineTheme.buttonRadius,
-                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                      border: const Border.fromBorderSide(
+                        BorderSide(color: OnlineTheme.yellow, width: 2),
+                      ),
                     ),
                     child: Center(
                       child: Text(
                         'Logg Ut',
-                        style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+                        style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
                       ),
                     ),
                   );

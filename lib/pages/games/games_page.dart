@@ -53,7 +53,7 @@ class GamesPage extends ScrollablePage {
                 },
               ),
               GameCard(
-                name: 'Tipsy Twister',
+                name: 'Twister',
                 imageSource: 'assets/images/roulette.png',
                 onTap: () {
                   AppNavigator.navigateToPage(const RoulettePage());
