@@ -413,7 +413,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Center(
                       child: Text(
-                        'Slett brukerdata',
+                        'Slett Bruker',
                         style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
                       ),
                     ),

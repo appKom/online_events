@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '/components/online_scaffold.dart';
-import '/core/models/event_model.dart';
 
 class DeleteUser extends StatefulWidget {
   const DeleteUser({super.key});
