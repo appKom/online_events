@@ -22,7 +22,9 @@ class DeleteUserState extends State<DeleteUser> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height - 150,
         child: InAppWebView(
-          initialUrlRequest: URLRequest(url: Uri.parse("https://online.ntnu.no/profile/settings/userdata")),
+          initialUrlRequest: URLRequest(
+              url: Uri.parse(
+                  "https://online.ntnu.no/profile/settings/userdata")),
           onWebViewCreated: (controller) {
             webViewController = controller;
           },
@@ -37,6 +39,6 @@ class DeleteUserDisplay extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    return DeleteUser();
+    return const DeleteUser();
   }
 }

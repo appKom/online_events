@@ -12,7 +12,8 @@ class BitsHomePage extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     const background = Color.fromARGB(255, 225, 10, 189);
 
