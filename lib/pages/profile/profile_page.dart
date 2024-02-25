@@ -435,26 +435,26 @@ class _ProfilePageState extends State<ProfilePage> {
               constValueTextInput('Brukernavn', userProfile!.username),
               constValueTextInput('Telefon', userProfile!.phoneNumber ?? ''),
               constValueTextInput('E-post', userProfile!.email),
-              const Separator(margin: 20),
-              AnimatedButton(
-                onTap: () => initiateDeletion(context),
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    height: OnlineTheme.buttonHeight,
-                    decoration: BoxDecoration(
-                      color: OnlineTheme.red.withOpacity(0.4),
-                      borderRadius: OnlineTheme.buttonRadius,
-                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Slett Bruker',
-                        style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
-                      ),
-                    ),
-                  );
-                },
-              ),
+              // const Separator(margin: 20),
+              // AnimatedButton(
+              //   onTap: () => initiateDeletion(context),
+              //   childBuilder: (context, hover, pointerDown) {
+              //     return Container(
+              //       height: OnlineTheme.buttonHeight,
+              //       decoration: BoxDecoration(
+              //         color: OnlineTheme.red.withOpacity(0.4),
+              //         borderRadius: OnlineTheme.buttonRadius,
+              //         border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+              //       ),
+              //       child: Center(
+              //         child: Text(
+              //           'Slett Bruker',
+              //           style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
               const Separator(margin: 20),
               Text(
                 'Studie',
@@ -507,29 +507,57 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const Separator(margin: 40),
-              AnimatedButton(
-                onTap: () {
-                  loggedIn = false;
-                  AppNavigator.replaceWithPage(const HomePage());
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    height: OnlineTheme.buttonHeight,
-                    decoration: BoxDecoration(
-                      color: OnlineTheme.yellow.darken(40),
-                      borderRadius: OnlineTheme.buttonRadius,
-                      border: const Border.fromBorderSide(
-                        BorderSide(color: OnlineTheme.yellow, width: 2),
-                      ),
+              Row(
+                children: [
+                  Expanded(
+                    child: AnimatedButton(
+                      onTap: () => initiateDeletion(context),
+                      childBuilder: (context, hover, pointerDown) {
+                        return Container(
+                          height: OnlineTheme.buttonHeight,
+                          decoration: BoxDecoration(
+                            color: OnlineTheme.red.withOpacity(0.4),
+                            borderRadius: OnlineTheme.buttonRadius,
+                            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Slett Bruker',
+                              style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    child: Center(
-                      child: Text(
-                        'Logg Ut',
-                        style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
-                      ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: AnimatedButton(
+                      onTap: () {
+                        loggedIn = false;
+                        AppNavigator.replaceWithPage(const HomePage());
+                      },
+                      childBuilder: (context, hover, pointerDown) {
+                        return Container(
+                          height: OnlineTheme.buttonHeight,
+                          decoration: BoxDecoration(
+                            color: OnlineTheme.yellow.darken(40),
+                            borderRadius: OnlineTheme.buttonRadius,
+                            border: const Border.fromBorderSide(
+                              BorderSide(color: OnlineTheme.yellow, width: 2),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Logg Ut',
+                              style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
             ],
