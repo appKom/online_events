@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../home/article_carousel.dart';
 import '/components/icon_label.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/core/models/article_model.dart';
 import '/pages/event/cards/event_card.dart';
-import '/pages/home/article_Carousel.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 
