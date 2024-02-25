@@ -41,9 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     fetchUserProfile();
 
-    final client = Client()
-        .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject(dotenv.env['PROJECT_ID']);
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
 
     storage = Storage(client);
     database = Databases(client);
@@ -231,10 +229,72 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  void initiateDeletion(BuildContext context) {
+    final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
+    if (isIOS) {
+      showCupertinoDialog(context: context, builder: (context) => cupertionDeleteDialog());
+    } else {
+      showDialog(context: context, builder: (context) => materialDeleteDialog());
+    }
+  }
+
+  Widget cupertionDeleteDialog() {
+    return CupertinoAlertDialog(
+      title: const Text('Bekreft sletting'),
+      content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
+      actions: [
+        CupertinoDialogAction(
+          child: const Text('Avbryt'),
+          onPressed: () {
+            AppNavigator.pop();
+          },
+        ),
+        CupertinoDialogAction(
+          isDestructiveAction: true,
+          onPressed: () {
+            AppNavigator.pop();
+            deletePixelUserInfo();
+            setState(() {
+              loggedIn = false;
+            });
+            AppNavigator.replaceWithPage(const DeleteUserDisplay());
+          },
+          child: const Text('Slett'),
+        ),
+      ],
+    );
+  }
+
+  Widget materialDeleteDialog() {
+    return AlertDialog(
+      title: const Text('Bekreft sletting'),
+      content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
+      actions: [
+        TextButton(
+          child: const Text('Avbryt'),
+          onPressed: () {
+            AppNavigator.pop();
+          },
+        ),
+        TextButton(
+          child: const Text('Slett'),
+          onPressed: () {
+            AppNavigator.pop();
+            deletePixelUserInfo();
+            setState(() {
+              loggedIn = false;
+            });
+            AppNavigator.replaceWithPage(const DeleteUserDisplay());
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     if (userProfile != null) {
       userId = userProfile!.id;
@@ -283,11 +343,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                                     fit: BoxFit.cover,
                                     height: 240,
-                                    errorBuilder: (BuildContext context,
-                                        Object exception,
-                                        StackTrace? stackTrace) {
-                                      WidgetsBinding.instance
-                                          .addPostFrameCallback((_) {
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      WidgetsBinding.instance.addPostFrameCallback((_) {
                                         if (!showInfoAboutPicture) {
                                           setState(() {
                                             showInfoAboutPicture = true;
@@ -352,8 +409,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: SkeletonLoader(
-                          borderRadius: BorderRadius.circular(5)),
+                      child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
                     );
                   }
 
@@ -381,83 +437,19 @@ class _ProfilePageState extends State<ProfilePage> {
               constValueTextInput('E-post', userProfile!.email),
               const Separator(margin: 20),
               AnimatedButton(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      final bool isIOS =
-                          Theme.of(context).platform == TargetPlatform.iOS;
-                      if (isIOS) {
-                        return CupertinoAlertDialog(
-                          title: const Text('Bekreft sletting'),
-                          content: const Text(
-                              'Er du sikker på at du vil slette brukerdataene dine?'),
-                          actions: <Widget>[
-                            CupertinoDialogAction(
-                              child: const Text('Avbryt'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            CupertinoDialogAction(
-                              child: const Text('Slett'),
-                              isDestructiveAction: true,
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                deletePixelUserInfo();
-                                setState(() {
-                                  loggedIn = false;
-                                });
-                                AppNavigator.replaceWithPage(
-                                    const DeleteUserDisplay());
-                              },
-                            ),
-                          ],
-                        );
-                      } else {
-                        return AlertDialog(
-                          title: const Text('Bekreft sletting'),
-                          content: const Text(
-                              'Er du sikker på at du vil slette brukerdataene dine?'),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('Avbryt'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text('Slett'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                deletePixelUserInfo();
-                                setState(() {
-                                  loggedIn = false;
-                                });
-                                AppNavigator.replaceWithPage(
-                                    const DeleteUserDisplay());
-                              },
-                            ),
-                          ],
-                        );
-                      }
-                    },
-                  );
-                },
+                onTap: () => initiateDeletion(context),
                 childBuilder: (context, hover, pointerDown) {
                   return Container(
                     height: OnlineTheme.buttonHeight,
                     decoration: BoxDecoration(
                       color: OnlineTheme.red.withOpacity(0.4),
                       borderRadius: OnlineTheme.buttonRadius,
-                      border: const Border.fromBorderSide(
-                          BorderSide(color: OnlineTheme.red, width: 2)),
+                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
                     ),
                     child: Center(
                       child: Text(
                         'Slett Bruker',
-                        style: OnlineTheme.textStyle(
-                            weight: 5, color: OnlineTheme.red),
+                        style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
                       ),
                     ),
                   );
@@ -470,8 +462,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               constValueTextInput('Klassetrinn', userProfile!.year.toString()),
-              constValueTextInput(
-                  'Startår', userProfile!.startedDate!.year.toString()),
+              constValueTextInput('Startår', userProfile!.startedDate!.year.toString()),
               const SizedBox(height: 16),
               SizedBox(
                 height: 40,
@@ -512,8 +503,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 40,
                 child: CustomPaint(
-                  painter:
-                      StudyCoursePainter(year: userProfile!.year.toDouble()),
+                  painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
                 ),
               ),
               const Separator(margin: 40),
@@ -535,8 +525,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Center(
                       child: Text(
                         'Logg Ut',
-                        style: OnlineTheme.textStyle(
-                            weight: 5, color: OnlineTheme.yellow),
+                        style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
                       ),
                     ),
                   );
@@ -615,8 +604,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 3, c3, Offset(segment1, cy), canvas, paint);
     circle(year > 2, c3, canvas, paint);
 
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas,
-        paint);
+    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
 
     line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
     line(year >= 5, c4, c5, canvas, paint);
@@ -624,8 +612,7 @@ class StudyCoursePainter extends CustomPainter {
     line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
     circle(year >= 5, c5, canvas, paint);
 
-    line(year > 5, Offset(segment1 + segment2, 0),
-        Offset(segment1 + segment2, size.height), canvas, paint);
+    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
 
     line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
     circle(year >= 6, c6, canvas, paint);
