@@ -88,7 +88,7 @@ final challenges = [
   ),
   Challenge(
     title: 'Kahoot!',
-    description: 'Hvis du har eller har hatt en klasse med Alf Inge Wang får du et poeng.',
+    description: 'Hvis du har eller har hatt en klasse med Alf Inge Wang får du 1 poeng.',
   ),
   Challenge(
     title: 'Party Magician',
