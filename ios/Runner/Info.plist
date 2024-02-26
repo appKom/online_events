@@ -26,12 +26,14 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true />
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false/>
 		<key>NSCameraUsageDescription</key>
-		<string>Need camera access to take pictures</string>
+		<string>Trenger kameratilgang for å ta bilder.</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>Need access to photo library to save images</string>
+		<string>trenger tilgang til bildebiblioteket for å lagre bilder.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Need access to photo library for image selection</string>
+		<string>Trenger tilgang til bildebiblioteket for å velge bilder.</string>
 		<key>UILocalNotificationUsageDescription</key>
 		<string>To send out notifications before registration start for events, users can choose to
 			get a local notification 15 minuttes before registration start.</string>

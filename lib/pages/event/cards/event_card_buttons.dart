@@ -33,8 +33,7 @@ class EventCardButtons extends StatefulWidget {
 
 class _EventCardButtonsState extends State<EventCardButtons> {
   Future<void> unregisterForEvent(int eventId) async {
-    final String apiUrl =
-        'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/unregister/';
+    final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/unregister/';
 
     try {
       final response = await http.delete(
@@ -84,12 +83,10 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     if (widget.attendeeInfoModel.isAttendee) return false;
 
     // Still available spots - no waitlist yet
-    if (widget.attendeeInfoModel.numberOfSeatsTaken <
-        widget.attendeeInfoModel.maxCapacity) return false;
+    if (widget.attendeeInfoModel.numberOfSeatsTaken < widget.attendeeInfoModel.maxCapacity) return false;
 
     // Registration has ended
-    if (widget.attendeeInfoModel.registrationEnd.isBefore(DateTime.now()))
-      return false;
+    if (widget.attendeeInfoModel.registrationEnd.isBefore(DateTime.now())) return false;
 
     return true;
   }
@@ -103,8 +100,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     if (!widget.attendeeInfoModel.isEligibleForSignup.status) return false;
 
     // Registration has ended
-    if (widget.attendeeInfoModel.registrationEnd.isBefore(DateTime.now()))
-      return false;
+    if (widget.attendeeInfoModel.registrationEnd.isBefore(DateTime.now())) return false;
 
     return true;
   }
@@ -117,16 +113,14 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     if (!widget.attendeeInfoModel.isAttendee) return false;
 
     // May still want to show the unregister button, just grayed out
-    if (widget.attendeeInfoModel.unattendDeadline.isBefore(DateTime.now()))
-      return false;
+    if (widget.attendeeInfoModel.unattendDeadline.isBefore(DateTime.now())) return false;
 
     return true;
   }
 
   bool canNotify() {
     // If registration has not started
-    if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now()))
-      return false;
+    if (widget.attendeeInfoModel.registrationStart.isBefore(DateTime.now())) return false;
 
     return true;
   }
@@ -134,8 +128,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   Widget registerButton() {
     return AnimatedButton(
       onTap: () {
-        Client.launchInBrowser(
-            'https://online.ntnu.no/events/${widget.model.id}');
+        Client.launchInBrowser('https://online.ntnu.no/events/${widget.model.id}');
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(
@@ -146,8 +139,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
             // gradient: OnlineTheme.greenGradient,
             color: OnlineTheme.green.withOpacity(0.4),
             borderRadius: BorderRadius.circular(5),
-            border: const Border.fromBorderSide(
-                BorderSide(color: OnlineTheme.green, width: 2)),
+            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
           ),
           child: Text(
             'Meld På',
@@ -158,66 +150,70 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     );
   }
 
+  void showUnregisterDialog() {
+    final context = AppNavigator.globalNavigator.currentContext;
+
+    if (context == null) return;
+
+    final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
+    if (isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: const Text('Bekreft avmelding'),
+            content: const Text('Er du sikker på at du vil melde deg av?'),
+            actions: [
+              const CupertinoDialogAction(
+                onPressed: AppNavigator.pop,
+                child: Text('Avbryt'),
+              ),
+              CupertinoDialogAction(
+                isDestructiveAction: true,
+                onPressed: () {
+                  AppNavigator.pop();
+                  unregisterForEvent(widget.model.id);
+                },
+                child: const Text('Meld av'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Bekreft avemelding'),
+            content: const Text('Er du sikker på at du vil melde av?'),
+            actions: [
+              const TextButton(
+                onPressed: AppNavigator.pop,
+                child: Text('Avbryt'),
+              ),
+              TextButton(
+                child: const Text('Meld av'),
+                onPressed: () {
+                  AppNavigator.pop();
+                  unregisterForEvent(widget.model.id);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   // TODO: At the moment, there are no cases where button will be shown when disabled, but maybe one day
   Widget unregisterButton(bool enabled) {
-    final fill =
-        enabled ? OnlineTheme.red.withOpacity(0.4) : Colors.transparent;
+    final fill = enabled ? OnlineTheme.red.withOpacity(0.4) : Colors.transparent;
     final border = enabled ? OnlineTheme.red : OnlineTheme.grayBorder;
 
     return AnimatedButton(
-      onTap: enabled
-          ? () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  final bool isIOS =
-                      Theme.of(context).platform == TargetPlatform.iOS;
-                  if (isIOS) {
-                    return CupertinoAlertDialog(
-                      title: const Text('Bekreft avmelding'),
-                      content: const Text(
-                          'Er du sikker på at du vil melde deg av arrangementet?'),
-                      actions: <Widget>[
-                        CupertinoDialogAction(
-                          child: const Text('Avbryt'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        CupertinoDialogAction(
-                          child: const Text('Meld av'),
-                          isDestructiveAction: true,
-                          onPressed: () {
-                            unregisterForEvent(widget.model.id);
-                          },
-                        ),
-                      ],
-                    );
-                  } else {
-                    return AlertDialog(
-                      title: const Text('Bekreft avemelding'),
-                      content: const Text(
-                          'Er du sikker på at du vil melde av arrangementet?'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('Avbryt'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: const Text('Meld av'),
-                          onPressed: () {
-                            unregisterForEvent(widget.model.id);
-                          },
-                        ),
-                      ],
-                    );
-                  }
-                },
-              );
-            }
-          : null,
+      onTap: enabled ? showUnregisterDialog : null,
       childBuilder: (context, hover, pointerDown) {
         return Container(
           margin: const EdgeInsets.only(top: 10),
@@ -243,8 +239,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   Widget waitlistButton() {
     return AnimatedButton(
       onTap: () {
-        Client.launchInBrowser(
-            'https://online.ntnu.no/events/${widget.model.id}');
+        Client.launchInBrowser('https://online.ntnu.no/events/${widget.model.id}');
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(
@@ -254,8 +249,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           decoration: BoxDecoration(
             color: OnlineTheme.yellow.withOpacity(0.4),
             borderRadius: BorderRadius.circular(5.0),
-            border: const Border.fromBorderSide(
-                BorderSide(color: OnlineTheme.yellow, width: 2)),
+            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
           ),
           child: Text(
             'Meld På Venteliste',
