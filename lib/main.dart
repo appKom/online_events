@@ -18,17 +18,21 @@ bool loggedIn = false;
 UserModel? userProfile;
 int userId = 0;
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 Future<void> checkAndRequestPermission(BuildContext context) async {
   final androidPlatform =
-      flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-  final bool? hasPermission = await androidPlatform?.requestExactAlarmsPermission();
+      flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+  final bool? hasPermission =
+      await androidPlatform?.requestExactAlarmsPermission();
 
   if (hasPermission == null || !hasPermission) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Exact alarm permission is required for reminders. Please enable it in settings.'),
+        content: const Text(
+            'Exact alarm permission is required for reminders. Please enable it in settings.'),
         action: SnackBarAction(
           label: 'Open Settings',
           onPressed: () => openAppSettings(),
@@ -46,7 +50,8 @@ void openAppSettings() {
 }
 
 // Initialization settings for Android
-const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+const initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
 
 // Initialization settings for iOS
 const initializationSettingsIOS = DarwinInitializationSettings(
