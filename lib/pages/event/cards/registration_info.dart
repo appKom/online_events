@@ -35,9 +35,11 @@ class RegistrationInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd.MM, HH:mm');
 
-    final start = dateFormat.format(attendeeInfoModel.registrationStart);
-    final end = dateFormat.format(attendeeInfoModel.registrationEnd);
-    final unregister = dateFormat.format(attendeeInfoModel.unattendDeadline);
+    final start =
+        dateFormat.format(attendeeInfoModel.registrationStart.toLocal());
+    final end = dateFormat.format(attendeeInfoModel.registrationEnd.toLocal());
+    final unregister =
+        dateFormat.format(attendeeInfoModel.unattendDeadline.toLocal());
 
     return Row(
       children: [
