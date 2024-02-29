@@ -15,7 +15,6 @@ import '/components/separator.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart' as io;
 import '/core/models/user_model.dart';
-import '/main.dart';
 import '/pages/loading/loading_display_page.dart';
 import '/pages/profile/delete_user.dart';
 import '/services/app_navigator.dart';
@@ -47,8 +46,9 @@ class _ProfilePageState extends State<ProfilePage> {
     storage = Storage(client);
     database = Databases(client);
 
-    fetchPixelUserInfo().then((userData) {
-      print(userData);
+    final userModel = io.Client.userCache.value;
+
+    fetchPixelUserInfo(userModel).then((userData) {
       if (userData != null) {
         setState(() {
           pixelUserData = userData;
@@ -61,50 +61,44 @@ class _ProfilePageState extends State<ProfilePage> {
     UserModel? profile = await io.Client.getUserProfile();
     if (profile != null) {
       setState(() {
-        userProfile = profile;
+        // TODO: Can this be done in a better way? setState rebuilds the whole widget.
       });
 
-      await saveUserProfileToDatabase();
+      await saveUserProfileToDatabase(profile);
     }
   }
 
-  Future<void> saveUserProfileToDatabase() async {
-    if (userProfile == null) {
-      print("UserProfile is null");
-      return;
-    }
+  Future<void> saveUserProfileToDatabase(UserModel? userModel) async {
+    if (userModel == null) return;
 
     try {
       await database.createDocument(
-          collectionId: dotenv.env['USER_COLLECTION_ID']!,
-          databaseId: dotenv.env['USER_DATABASE_ID']!,
-          documentId: userProfile!.username,
-          data: {
-            'username': userProfile!.username,
-            'id': userProfile!.id,
-            'first_name': userProfile!.firstName,
-            'last_name': userProfile!.lastName,
-            'ntnuUsername': userProfile!.ntnuUsername,
-            'year': userProfile!.year
-          });
-      print("UserProfile saved successfully");
+        collectionId: dotenv.env['USER_COLLECTION_ID']!,
+        databaseId: dotenv.env['USER_DATABASE_ID']!,
+        documentId: userModel.username,
+        data: {
+          'username': userModel.username,
+          'id': userModel.id,
+          'first_name': userModel.firstName,
+          'last_name': userModel.lastName,
+          'ntnuUsername': userModel.ntnuUsername,
+          'year': userModel.year
+        },
+      );
     } catch (e) {
       print("Error saving UserProfile: $e");
     }
   }
 
-  Future<void> saveBiography() async {
-    if (userProfile == null && _titleController.text.isNotEmpty) {
-      print("UserProfile is null");
-      return;
-    }
+  Future<void> saveBiography(UserModel? userModel) async {
+    if (userModel == null && _titleController.text.isNotEmpty) return;
+
     try {
       await database.updateDocument(
           collectionId: dotenv.env['USER_COLLECTION_ID']!,
           databaseId: dotenv.env['USER_DATABASE_ID']!,
-          documentId: userProfile!.username,
+          documentId: userModel!.username,
           data: {'biography': _titleController.text});
-      print("Biography saved successfully");
       if (pixelUserData != null) {
         pixelUserData!.biography = _titleController.text;
         setState(() {});
@@ -115,12 +109,15 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<PixelUserClass?> fetchPixelUserInfo() async {
+  Future<PixelUserClass?> fetchPixelUserInfo(UserModel? userModel) async {
+    if (userModel == null) return null;
+
     try {
       final response = await database.getDocument(
-          collectionId: dotenv.env['USER_COLLECTION_ID']!,
-          documentId: userProfile!.username,
-          databaseId: dotenv.env['USER_DATABASE_ID']!);
+        collectionId: dotenv.env['USER_COLLECTION_ID']!,
+        documentId: userModel.username,
+        databaseId: dotenv.env['USER_DATABASE_ID']!,
+      );
       return PixelUserClass.fromJson(response.data);
     } catch (e) {
       print('Error fetching document data: $e');
@@ -128,19 +125,20 @@ class _ProfilePageState extends State<ProfilePage> {
     return null;
   }
 
-  Future<PixelUserClass?> deletePixelUserInfo() async {
-    String fileName = userProfile!.username;
+  Future<void> deletePixelUserInfo(UserModel? userModel) async {
+    if (userModel == null) return;
+
+    String fileName = userModel.username;
     try {
       await database.deleteDocument(
-          collectionId: dotenv.env['USER_COLLECTION_ID']!,
-          documentId: userProfile!.username,
-          databaseId: dotenv.env['USER_DATABASE_ID']!);
+        collectionId: dotenv.env['USER_COLLECTION_ID']!,
+        documentId: userModel.username,
+        databaseId: dotenv.env['USER_DATABASE_ID']!,
+      );
     } catch (e) {
       print('Error fetching document data: $e');
     }
-    try {} catch (e) {
-      print('An error occurred: $e');
-    }
+
     await storage.getFile(
       bucketId: dotenv.env['USER_BUCKET_ID']!,
       fileId: fileName,
@@ -150,7 +148,6 @@ class _ProfilePageState extends State<ProfilePage> {
       bucketId: dotenv.env['USER_BUCKET_ID']!,
       fileId: fileName,
     );
-    return null;
   }
 
   Future<void> pickImage(ImageSource source) async {
@@ -189,15 +186,15 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<void> uploadImage() async {
-    if (userProfile == null) return;
+  Future<void> uploadImage(UserModel? userModel) async {
+    if (userModel == null) return;
 
     if (_imageFile == null) {
       print("No image selected");
       return;
     }
 
-    String fileName = userProfile!.username;
+    String fileName = userModel.username;
 
     try {
       await storage.getFile(
@@ -210,7 +207,7 @@ class _ProfilePageState extends State<ProfilePage> {
         fileId: fileName,
       );
     } catch (e) {
-      //Should probaly handle
+      // TODO: Should probaly handle
     }
 
     try {
@@ -253,15 +250,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         CupertinoDialogAction(
           isDestructiveAction: true,
-          onPressed: () {
-            AppNavigator.pop();
-            deletePixelUserInfo();
-            setState(() {
-              // TODO: Test this
-              Authenticator.logout();
-            });
-            AppNavigator.replaceWithPage(const DeleteUserDisplay());
-          },
+          onPressed: delete,
           child: const Text('Slett'),
         ),
       ],
@@ -281,16 +270,25 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         TextButton(
           child: const Text('Slett'),
-          onPressed: () {
-            AppNavigator.pop();
-            deletePixelUserInfo();
-
-            // TODO: Should have the same delete function as ios
-            // AppNavigator.replaceWithPage(const LoginPage());
-            AppNavigator.replaceWithPage(const DeleteUserDisplay());
-          },
+          onPressed: delete,
         ),
       ],
+    );
+  }
+
+  void delete() {
+    final userInfo = io.Client.userCache.value;
+
+    if (userInfo == null) return;
+
+    AppNavigator.pop();
+    deletePixelUserInfo(userInfo);
+    setState(() {
+      // TODO: Test this
+      Authenticator.logout();
+    });
+    AppNavigator.replaceWithPage(
+      const DeleteUserDisplay(),
     );
   }
 
@@ -298,258 +296,259 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
-    if (userProfile != null) {
-      userId = userProfile!.id;
-    }
+    return SingleChildScrollView(
+      child: Padding(
+        padding: padding,
+        child: ValueListenableBuilder(
+          valueListenable: io.Client.userCache,
+          builder: (context, userProfile, child) {
+            if (userProfile == null) {
+              return const LoadingPageDisplay();
+            }
 
-    if (userProfile != null) {
-      return SingleChildScrollView(
-        child: Padding(
-          padding: padding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 24),
-              Center(
-                child: Text(
-                  '${userProfile!.firstName} ${userProfile!.lastName}',
-                  style: OnlineTheme.textStyle(
-                    size: 20,
-                    weight: 7,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 24),
+                Center(
+                  child: Text(
+                    '${userProfile.firstName} ${userProfile.lastName}',
+                    style: OnlineTheme.textStyle(
+                      size: 20,
+                      weight: 7,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              Center(
-                child: AnimatedButton(
-                  onTap: () async {
-                    await pickImage(ImageSource.gallery);
-                    if (_imageFile != null) {
-                      await uploadImage();
-                    }
-                  },
-                  childBuilder: (context, hover, pointerDown) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ClipOval(
-                          child: SizedBox(
-                            width: 125,
-                            height: 125,
-                            child: _imageFile != null
-                                ? Image.file(
-                                    _imageFile!,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.network(
-                                    'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile?.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
-                                    fit: BoxFit.cover,
-                                    height: 240,
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                                        if (!showInfoAboutPicture) {
-                                          setState(() {
-                                            showInfoAboutPicture = true;
-                                          });
-                                        }
-                                      });
-                                      return Image.asset(
-                                        'assets/images/default_profile_picture.png',
-                                        fit: BoxFit.cover,
-                                        height: 240,
-                                      );
-                                    },
-                                  ),
-                          ),
-                        ),
-                        if (showInfoAboutPicture)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              'Trykk for å laste opp profil bilde',
-                              style: OnlineTheme.textStyle(
-                                color: OnlineTheme.blue2,
-                              ),
+                const SizedBox(height: 24),
+                Center(
+                  child: AnimatedButton(
+                    onTap: () async {
+                      await pickImage(ImageSource.gallery);
+                      if (_imageFile != null) {
+                        await uploadImage(userProfile);
+                      }
+                    },
+                    childBuilder: (context, hover, pointerDown) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ClipOval(
+                            child: SizedBox(
+                              width: 125,
+                              height: 125,
+                              child: _imageFile != null
+                                  ? Image.file(
+                                      _imageFile!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+                                      fit: BoxFit.cover,
+                                      height: 240,
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                                          if (!showInfoAboutPicture) {
+                                            setState(() {
+                                              showInfoAboutPicture = true;
+                                            });
+                                          }
+                                        });
+                                        return Image.asset(
+                                          'assets/images/default_profile_picture.png',
+                                          fit: BoxFit.cover,
+                                          height: 240,
+                                        );
+                                      },
+                                    ),
                             ),
                           ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                      ],
+                          if (showInfoAboutPicture)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                'Trykk for å laste opp profil bilde',
+                                style: OnlineTheme.textStyle(
+                                  color: OnlineTheme.blue2,
+                                ),
+                              ),
+                            ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                TextFormField(
+                  controller: _titleController,
+                  style: OnlineTheme.textStyle(),
+                  decoration: InputDecoration(
+                    labelText: 'Skriv om deg selv:',
+                    labelStyle: OnlineTheme.textStyle(),
+                    hintStyle: OnlineTheme.textStyle(),
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.white),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: OnlineTheme.white),
+                    ),
+                  ),
+                  onFieldSubmitted: (value) {
+                    saveBiography(userProfile);
+                  },
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Text(
+                  'Biografi',
+                  style: OnlineTheme.header(),
+                ),
+                FutureBuilder<PixelUserClass?>(
+                  future: fetchPixelUserInfo(userProfile),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      return Text("Error: ${snapshot.error}");
+                    }
+                    String biographyText = snapshot.data?.biography ?? '';
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        biographyText,
+                        style: OnlineTheme.textStyle(weight: 5),
+                      ),
                     );
                   },
                 ),
-              ),
-              TextFormField(
-                controller: _titleController,
-                style: OnlineTheme.textStyle(),
-                decoration: InputDecoration(
-                  labelText: 'Skriv om deg selv:',
-                  labelStyle: OnlineTheme.textStyle(),
-                  hintStyle: OnlineTheme.textStyle(),
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: OnlineTheme.white),
-                  ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: OnlineTheme.white),
+                const Separator(margin: 40),
+                Text(
+                  'Kontakt',
+                  style: OnlineTheme.header(),
+                ),
+                const SizedBox(height: 10),
+                constValueTextInput('Brukernavn', userProfile.username),
+                constValueTextInput('Telefon', userProfile.phoneNumber ?? ''),
+                constValueTextInput('E-post', userProfile.email),
+                const Separator(margin: 20),
+                Text(
+                  'Studie',
+                  style: OnlineTheme.header(),
+                ),
+                const SizedBox(height: 10),
+                constValueTextInput('Klassetrinn', userProfile.year.toString()),
+                constValueTextInput('Startår', userProfile.startedDate!.year.toString()),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Center(
+                          child: Text(
+                            'Bachelor',
+                            style: OnlineTheme.subHeader(),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Center(
+                          child: Text(
+                            'Master',
+                            style: OnlineTheme.subHeader(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 25),
+                      Expanded(
+                        flex: 1,
+                        child: Center(
+                          child: Text(
+                            'PhD',
+                            style: OnlineTheme.subHeader(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                onFieldSubmitted: (value) {
-                  saveBiography();
-                },
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Text(
-                'Biografi',
-                style: OnlineTheme.header(),
-              ),
-              FutureBuilder<PixelUserClass?>(
-                future: fetchPixelUserInfo(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
-                    );
-                  }
-
-                  if (snapshot.hasError) {
-                    return Text("Error: ${snapshot.error}");
-                  }
-                  String biographyText = snapshot.data?.biography ?? '';
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      biographyText,
-                      style: OnlineTheme.textStyle(weight: 5),
-                    ),
-                  );
-                },
-              ),
-              const Separator(margin: 40),
-              Text(
-                'Kontakt',
-                style: OnlineTheme.header(),
-              ),
-              const SizedBox(height: 10),
-              constValueTextInput('Brukernavn', userProfile!.username),
-              constValueTextInput('Telefon', userProfile!.phoneNumber ?? ''),
-              constValueTextInput('E-post', userProfile!.email),
-              const Separator(margin: 20),
-              Text(
-                'Studie',
-                style: OnlineTheme.header(),
-              ),
-              const SizedBox(height: 10),
-              constValueTextInput('Klassetrinn', userProfile!.year.toString()),
-              constValueTextInput('Startår', userProfile!.startedDate!.year.toString()),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 40,
-                child: Row(
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 40,
+                  child: CustomPaint(
+                    painter: StudyCoursePainter(year: userProfile.year.toDouble()),
+                  ),
+                ),
+                const Separator(margin: 40),
+                Row(
                   children: [
                     Expanded(
-                      flex: 3,
-                      child: Center(
-                        child: Text(
-                          'Bachelor',
-                          style: OnlineTheme.subHeader(),
-                        ),
+                      child: AnimatedButton(
+                        onTap: () => initiateDeletion(context),
+                        childBuilder: (context, hover, pointerDown) {
+                          return Container(
+                            height: OnlineTheme.buttonHeight,
+                            decoration: BoxDecoration(
+                              color: OnlineTheme.red.withOpacity(0.4),
+                              borderRadius: OnlineTheme.buttonRadius,
+                              border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Slett Bruker',
+                                style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
+                    const SizedBox(width: 10),
                     Expanded(
-                      flex: 2,
-                      child: Center(
-                        child: Text(
-                          'Master',
-                          style: OnlineTheme.subHeader(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 25),
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: Text(
-                          'PhD',
-                          style: OnlineTheme.subHeader(),
-                        ),
+                      child: AnimatedButton(
+                        onTap: () async {
+                          await Authenticator.logout();
+                          // AppNavigator.replaceWithPage(const LoginPage());
+                          Navbar.navigateTo(NavbarPage.home);
+                        },
+                        childBuilder: (context, hover, pointerDown) {
+                          return Container(
+                            height: OnlineTheme.buttonHeight,
+                            decoration: BoxDecoration(
+                              color: OnlineTheme.yellow.darken(40),
+                              borderRadius: OnlineTheme.buttonRadius,
+                              border: const Border.fromBorderSide(
+                                BorderSide(color: OnlineTheme.yellow, width: 2),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Logg Ut',
+                                style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 40,
-                child: CustomPaint(
-                  painter: StudyCoursePainter(year: userProfile!.year.toDouble()),
-                ),
-              ),
-              const Separator(margin: 40),
-              Row(
-                children: [
-                  Expanded(
-                    child: AnimatedButton(
-                      onTap: () => initiateDeletion(context),
-                      childBuilder: (context, hover, pointerDown) {
-                        return Container(
-                          height: OnlineTheme.buttonHeight,
-                          decoration: BoxDecoration(
-                            color: OnlineTheme.red.withOpacity(0.4),
-                            borderRadius: OnlineTheme.buttonRadius,
-                            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Slett Bruker',
-                              style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: AnimatedButton(
-                      onTap: () async {
-                        await Authenticator.logout();
-                        // AppNavigator.replaceWithPage(const LoginPage());
-                        Navbar.navigateTo(NavbarPage.home);
-                      },
-                      childBuilder: (context, hover, pointerDown) {
-                        return Container(
-                          height: OnlineTheme.buttonHeight,
-                          decoration: BoxDecoration(
-                            color: OnlineTheme.yellow.darken(40),
-                            borderRadius: OnlineTheme.buttonRadius,
-                            border: const Border.fromBorderSide(
-                              BorderSide(color: OnlineTheme.yellow, width: 2),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Logg Ut',
-                              style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-            ],
-          ),
+                const SizedBox(height: 24),
+              ],
+            );
+          },
         ),
-      );
-    } else {
-      return const LoadingPageDisplay();
-    }
+      ),
+    );
   }
 
   Widget constValueTextInput(String label, String value) {

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:online/services/authenticator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/event_model.dart';
@@ -11,6 +10,7 @@ import '/core/models/attended_events.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/attendees_list.dart';
 import '/core/models/user_model.dart';
+import '/services/authenticator.dart';
 
 abstract class Client {
   static const endpoint = 'https://old.online.ntnu.no';
@@ -25,6 +25,7 @@ abstract class Client {
   }
 
   static ValueNotifier<Set<EventModel>> eventsCache = ValueNotifier({});
+  static ValueNotifier<UserModel?> userCache = ValueNotifier(null);
 
   static Future<Set<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
     Set<EventModel> allEvents = {};
@@ -76,8 +77,6 @@ abstract class Client {
 
     return pastEvents;
   }
-
-  static ValueNotifier<UserModel?> userCache = ValueNotifier(null);
 
   static Future<UserModel?> getUserProfile() async {
     final accessToken = Authenticator.credentials?.accessToken;
@@ -229,9 +228,10 @@ abstract class Client {
   static ValueNotifier<Set<ArticleModel>> articlesCache = ValueNotifier({});
 
   static Future<List<ArticleModel>?> fetchArticles(int pageNumber) async {
-    // await Future.delayed(const Duration(seconds: 5));
-    final articles =
-        await fetch('$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber', ArticleModel.fromJson);
+    final articles = await fetch(
+      '$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber',
+      ArticleModel.fromJson,
+    );
 
     // Add any new articles fetched
     if (articles != null) {

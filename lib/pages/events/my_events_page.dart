@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '/services/authenticator.dart';
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_scaffold.dart';
@@ -9,8 +8,8 @@ import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/core/models/attended_events.dart';
 import '/core/models/event_model.dart';
-import '/main.dart';
 import '/pages/home/event_card.dart';
+import '/services/authenticator.dart';
 import '/theme/theme.dart';
 
 List<AttendedEvents> attendedEvents = [];
@@ -141,7 +140,12 @@ class MyEventsPageState extends State<MyEventsPage> {
   }
 
   Future<void> fetchAttendeeInfo() async {
-    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userId) ?? [];
+    final user = Client.userCache.value;
+
+    if (user == null) return;
+
+    // TODO: This is a bit of a hack
+    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(user.id) ?? [];
     if (mounted) {
       setState(() {
         attendedEvents = allAttendees;
