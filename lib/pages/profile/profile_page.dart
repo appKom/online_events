@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:online/pages/login/login_page.dart';
+import 'package:online/components/navbar.dart';
 
 import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
@@ -224,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         //hei
       });
-      AppNavigator.replaceWithPage(const ProfilePage());
+      AppNavigator.replaceWithPage(const ProfilePageDisplay());
     } catch (e) {
       print("Error uploading image: $e");
     }
@@ -517,7 +517,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: AnimatedButton(
                       onTap: () async {
                         await Authenticator.logout();
-                        AppNavigator.replaceWithPage(const LoginPage());
+                        // AppNavigator.replaceWithPage(const LoginPage());
+                        Navbar.navigateTo(NavbarPage.home);
                       },
                       childBuilder: (context, hover, pointerDown) {
                         return Container(
