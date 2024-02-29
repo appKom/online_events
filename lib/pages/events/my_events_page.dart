@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '/services/authenticator.dart';
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_scaffold.dart';
@@ -99,7 +100,7 @@ class MyEventsPageState extends State<MyEventsPage> {
   void initState() {
     super.initState();
     _isLoading = true;
-    if (loggedIn) {
+    if (Authenticator.isLoggedIn()) {
       // TODO: This logic is convoluted and can cause memory leaks if exited at unexpected times
       fetchMoreEvents()
           .then((_) {

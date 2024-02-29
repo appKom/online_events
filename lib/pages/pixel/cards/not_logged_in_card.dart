@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../services/app_navigator.dart';
-import '../../login/auth_web_view_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/theme/theme.dart';
@@ -30,7 +28,8 @@ class NotLoggedInCard extends StatelessWidget {
               height: 120,
             ),
             AnimatedButton(onTap: () {
-              AppNavigator.navigateToPage(const LoginWebView());
+              // TODO: This ised the old login page. We use Auth0 now.
+              // AppNavigator.navigateToPage(const LoginWebView());
             }, childBuilder: (context, hover, pointerDown) {
               return Container(
                 height: OnlineTheme.buttonHeight,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:online/services/authenticator.dart';
 
 import '../pages/games/games_page.dart';
 import '../pages/login/login_page.dart';
 import '../pages/profile/profile_page.dart';
-import '/main.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
@@ -38,7 +38,7 @@ class NavbarState extends State<Navbar> {
           icon: IconType.calendarClock,
           activeIcon: IconType.calendarClockFilled,
           onPressed: () {
-            if (loggedIn) {
+            if (Authenticator.isLoggedIn()) {
               AppNavigator.replaceWithPage(const MyEventsPageDisplay());
             } else {
               AppNavigator.replaceWithPage(const NotLoggedInPage());
@@ -59,7 +59,7 @@ class NavbarState extends State<Navbar> {
           icon: IconType.settings,
           activeIcon: IconType.settingsFilled,
           onPressed: () {
-            if (loggedIn) {
+            if (Authenticator.isLoggedIn()) {
               AppNavigator.replaceWithPage(const ProfilePageDisplay());
             } else {
               AppNavigator.replaceWithPage(const LoginPage());

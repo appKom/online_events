@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:online/services/authenticator.dart';
 
 import '/components/animated_button.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
-import '/main.dart';
 import '/pages/event/event_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
@@ -74,7 +74,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   /// Can the user sign up for waitlist?
   bool canWaitlist() {
     // User not logged in
-    if (!loggedIn) return false;
+    if (!Authenticator.isLoggedIn()) return false;
 
     // No waitlist to register to
     if (!widget.attendeeInfoModel.waitlist) return false;
@@ -94,7 +94,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   /// Can the user register at the event?
   bool canRegister() {
     // User not logged in
-    if (!loggedIn) return false;
+    if (!Authenticator.isLoggedIn()) return false;
 
     // User not eligible for signup
     if (!widget.attendeeInfoModel.isEligibleForSignup.status) return false;
@@ -107,7 +107,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
   bool canUnregister() {
     // User not logged in
-    if (!loggedIn) return false;
+    if (!Authenticator.isLoggedIn()) return false;
 
     // User not registered for this event
     if (!widget.attendeeInfoModel.isAttendee) return false;

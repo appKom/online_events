@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../login/auth_web_view_page.dart';
-import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 // TODO: Redundant? Could provide header to LoginPage and make it reusable
@@ -14,7 +11,6 @@ class NotLoggedInPage extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    // TODO: implement content
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -26,26 +22,27 @@ class NotLoggedInPage extends StaticPage {
             style: OnlineTheme.header(),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 24),
-          AnimatedButton(
-            onTap: () {
-              AppNavigator.navigateToPage(const LoginWebView());
-            },
-            childBuilder: (context, hover, pointerDown) {
-              return Container(
-                alignment: Alignment.center,
-                height: OnlineTheme.buttonHeight,
-                decoration: BoxDecoration(
-                    color: OnlineTheme.green.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(5),
-                    border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2))),
-                child: Text(
-                  'Logg Inn',
-                  style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
-                ),
-              );
-            },
-          ),
+          // TODO: Re-add the login button?
+          // const SizedBox(height: 24),
+          // AnimatedButton(
+          //   onTap: () {
+          //     AppNavigator.navigateToPage(const LoginWebView());
+          //   },
+          //   childBuilder: (context, hover, pointerDown) {
+          //     return Container(
+          //       alignment: Alignment.center,
+          //       height: OnlineTheme.buttonHeight,
+          //       decoration: BoxDecoration(
+          //           color: OnlineTheme.green.withOpacity(0.4),
+          //           borderRadius: BorderRadius.circular(5),
+          //           border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2))),
+          //       child: Text(
+          //         'Logg Inn',
+          //         style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );

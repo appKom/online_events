@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:online/pages/profile/delete_user.dart';
+import 'package:online/pages/login/login_page.dart';
 
 import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
@@ -16,9 +16,10 @@ import '/components/skeleton_loader.dart';
 import '/core/client/client.dart' as io;
 import '/core/models/user_model.dart';
 import '/main.dart';
-import '/pages/home/home_page.dart';
 import '/pages/loading/loading_display_page.dart';
+import '/pages/profile/delete_user.dart';
 import '/services/app_navigator.dart';
+import '/services/authenticator.dart';
 import '/theme/theme.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -256,7 +257,8 @@ class _ProfilePageState extends State<ProfilePage> {
             AppNavigator.pop();
             deletePixelUserInfo();
             setState(() {
-              loggedIn = false;
+              // TODO: Test this
+              Authenticator.logout();
             });
             AppNavigator.replaceWithPage(const DeleteUserDisplay());
           },
@@ -282,9 +284,9 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () {
             AppNavigator.pop();
             deletePixelUserInfo();
-            setState(() {
-              loggedIn = false;
-            });
+
+            // TODO: Should have the same delete function as ios
+            // AppNavigator.replaceWithPage(const LoginPage());
             AppNavigator.replaceWithPage(const DeleteUserDisplay());
           },
         ),
@@ -435,26 +437,6 @@ class _ProfilePageState extends State<ProfilePage> {
               constValueTextInput('Brukernavn', userProfile!.username),
               constValueTextInput('Telefon', userProfile!.phoneNumber ?? ''),
               constValueTextInput('E-post', userProfile!.email),
-              // const Separator(margin: 20),
-              // AnimatedButton(
-              //   onTap: () => initiateDeletion(context),
-              //   childBuilder: (context, hover, pointerDown) {
-              //     return Container(
-              //       height: OnlineTheme.buttonHeight,
-              //       decoration: BoxDecoration(
-              //         color: OnlineTheme.red.withOpacity(0.4),
-              //         borderRadius: OnlineTheme.buttonRadius,
-              //         border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
-              //       ),
-              //       child: Center(
-              //         child: Text(
-              //           'Slett Bruker',
-              //           style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
               const Separator(margin: 20),
               Text(
                 'Studie',
@@ -533,9 +515,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: AnimatedButton(
-                      onTap: () {
-                        loggedIn = false;
-                        AppNavigator.replaceWithPage(const HomePage());
+                      onTap: () async {
+                        await Authenticator.logout();
+                        AppNavigator.replaceWithPage(const LoginPage());
                       },
                       childBuilder: (context, hover, pointerDown) {
                         return Container(

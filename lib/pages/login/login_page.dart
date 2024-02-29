@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
+import '/pages/profile/profile_page.dart';
 import '/services/app_navigator.dart';
+import '/services/authenticator.dart';
 import '/theme/theme.dart';
-import 'auth_web_view_page.dart';
 
 class LoginPage extends StaticPage {
   const LoginPage({super.key});
@@ -29,7 +30,7 @@ class LoginPage extends StaticPage {
               Text('Logg inn med Online', style: OnlineTheme.header()),
               const SizedBox(height: 24),
               AnimatedButton(
-                onTap: openLoginWebView,
+                onTap: login,
                 childBuilder: (context, hover, pointerDown) {
                   return Container(
                     height: OnlineTheme.buttonHeight,
@@ -57,10 +58,17 @@ class LoginPage extends StaticPage {
     if (!isIos) return;
 
     await AppTrackingTransparency.requestTrackingAuthorization();
-    // final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
   }
 
-  void openLoginWebView() {
-    AppNavigator.navigateToPage(const LoginWebView());
+  Future login() async {
+    final response = await Authenticator.login();
+
+    if (response != null) {
+      AppNavigator.replaceWithPage(const ProfilePage());
+    }
   }
+
+  // void openLoginWebView() {
+  //   AppNavigator.navigateToPage(const LoginWebView());
+  // }
 }

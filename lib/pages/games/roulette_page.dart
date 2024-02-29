@@ -224,21 +224,23 @@ class RouletteOverlay extends DarkOverlay {
 
   @override
   Widget content(BuildContext context, Animation<double> animation) {
-    return Padding(
-      padding: OnlineTheme.horizontalPadding,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: OnlineTheme.header(),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            description,
-            style: OnlineTheme.textStyle(),
-          ),
-        ],
+    return IgnorePointer(
+      child: Padding(
+        padding: OnlineTheme.horizontalPadding,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: OnlineTheme.header(),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              description,
+              style: OnlineTheme.textStyle(),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -3,19 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
 import 'package:http/http.dart' as http;
-import 'package:online/components/image_default.dart';
-import 'package:online/components/skeleton_loader.dart';
 
 import '/components/animated_button.dart';
+import '/components/image_default.dart';
 import '/components/online_scaffold.dart';
+import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
 import '/core/models/event_organizers.dart';
-import '/main.dart';
 import '/pages/event/cards/registration_card.dart';
 import '/pages/event/qr_code.dart';
 import '/services/app_navigator.dart';
+import '/services/authenticator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'cards/attendance_card.dart';
@@ -48,7 +48,7 @@ class _EventPageState extends State<EventPage> {
   }
 
   Future<void> refreshAttendance() async {
-    AttendeeInfoModel? attendance = loggedIn
+    AttendeeInfoModel? attendance = Authenticator.isLoggedIn()
         ? await Client.getEventAttendanceLoggedIn(widget.model.id)
         : await Client.getEventAttendance(widget.model.id);
 
@@ -70,8 +70,7 @@ class _EventPageState extends State<EventPage> {
     final event = int.tryParse(parts[2]) ?? 0;
     final approved = parts[3].toLowerCase() == 'true';
 
-    const url =
-        'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
+    const url = 'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
 
     final body = {
       'rfid': rfid,
@@ -89,8 +88,7 @@ class _EventPageState extends State<EventPage> {
     if (response.statusCode == 201) {
       print('Attendance registered successfully!');
     } else {
-      print(
-          'Failed to register attendance. Status code: ${response.statusCode}');
+      print('Failed to register attendance. Status code: ${response.statusCode}');
     }
   }
 
@@ -111,8 +109,7 @@ class _EventPageState extends State<EventPage> {
 
           return const SkeletonLoader();
         },
-        errorBuilder:
-            (BuildContext context, Object exception, StackTrace? stackTrace) {
+        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
           return const ImageDefault();
         },
       ),
@@ -172,8 +169,7 @@ class _EventPageState extends State<EventPage> {
                     const SizedBox(
                       width: 10,
                     ),
-                    // if (loggedIn && widget.model.organizer == userProfile.positions)
-                    if (loggedIn)
+                    if (Authenticator.isLoggedIn())
                       SizedBox.square(
                         dimension: 40,
                         child: Center(
@@ -181,9 +177,7 @@ class _EventPageState extends State<EventPage> {
                             onTap: () async {
                               final qrResult = await Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const QrCodeScannerDisplay()),
+                                MaterialPageRoute(builder: (context) => const QrCodeScannerDisplay()),
                               );
                               if (qrResult != null) {
                                 registerAttendance(qrResult);
@@ -202,8 +196,7 @@ class _EventPageState extends State<EventPage> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                AttendanceCard(
-                    event: widget.model, attendeeInfo: attendeeInfoModel),
+                AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
                 const SizedBox(height: 24),
                 EventDescriptionCard(
                   description: widget.model.description,
