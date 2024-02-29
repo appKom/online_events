@@ -18,7 +18,7 @@ class ViewMoreArticles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Works for the latest article, but if you scroll down on another article,
-    // the article you just read will show up
+    //  the article you just read will show up
     final modelsToShow = Client.articlesCache.value.skip(1).toList();
 
     return Column(

@@ -10,15 +10,18 @@ class DeveloperCarousel extends StatelessWidget {
   });
 
   static Widget skeleton() {
-    return CarouselSlider(
-      items: List.generate(2, (i) {
-        return const SkeletonLoader(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        );
-      }),
-      options: _carouselOptions,
+    return Transform.scale(
+      scale: 0.5,
+      child: CarouselSlider(
+        items: List.generate(2, (i) {
+          return const SkeletonLoader(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          );
+        }),
+        options: _carouselOptions,
+      ),
     );
   }
 
@@ -27,8 +30,8 @@ class DeveloperCarousel extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          width: 250,
-          height: 350,
+          width: 200,
+          height: 200,
           decoration: const BoxDecoration(
             border: Border.fromBorderSide(
               BorderSide(width: 2, color: OnlineTheme.grayBorder),
@@ -43,54 +46,6 @@ class DeveloperCarousel extends StatelessWidget {
               developer.image,
               fit: BoxFit.cover,
             ),
-            // child: Column(
-            //   crossAxisAlignment: CrossAxisAlignment.stretch,
-            //   children: [
-            //     // Container(
-            //     //   decoration: const BoxDecoration(
-            //     //     border: Border(
-            //     //       bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
-            //     //     ),
-            //     //   ),
-            //     //   child: AspectRatio(
-            //     //     aspectRatio: 8 / 5,
-            //     //     child: Image.asset(
-            //     //       developer.image,
-            //     //       fit: BoxFit.cover,
-            //     //       alignment: Alignment.center,
-            //     //     ),
-            //     //   ),
-            //     // ),
-            //     // Expanded(
-            //     //   child: Padding(
-            //     //     padding: const EdgeInsets.all(20),
-            //     //     child: Column(
-            //     //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     //       crossAxisAlignment: CrossAxisAlignment.stretch,
-            //     //       children: [
-            //     //         Text(
-            //     //           developer.name,
-            //     //           style: OnlineTheme.subHeader(),
-            //     //         ),
-            //     //         // Text(developer.biography, style: OnlineTheme.textStyle()),
-            //     //         Row(
-            //     //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     //           children: [
-            //     //             IconLabel(
-            //     //               icon: IconType.education,
-            //     //               iconSize: 18,
-            //     //               label: '${developer.year.toString()}. klasse',
-            //     //             ),
-            //     //             // IconLabel(icon: IconType.userFilled, label: '')
-            //     //           ],
-            //     //         ),
-            //     //         const SizedBox(height: 10),
-            //     //       ],
-            //     //     ),
-            //     //   ),
-            //     // ),
-            //   ],
-            // ),
           ),
         ),
         Positioned(
@@ -109,11 +64,11 @@ class DeveloperCarousel extends StatelessWidget {
   }
 
   static final _carouselOptions = CarouselOptions(
-    height: 350 + 15,
+    height: 200 + 15,
     enableInfiniteScroll: true,
     padEnds: true,
     enlargeCenterPage: true,
-    viewportFraction: 0.75,
+    viewportFraction: 0.65,
     enlargeFactor: 0.2,
   );
 
@@ -141,32 +96,20 @@ class DeveloperCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     List<DeveloperModel> developers = [
       const DeveloperModel(
-        name: 'Fredrik Hansteen',
-        year: 2,
-        image: 'assets/images/better_profile_picture.jpg',
-        biography: 'Appkom-Leder',
-      ),
-      const DeveloperModel(
         name: 'Erlend Strøm',
         year: 2,
         image: 'assets/images/profile_picture.png',
         biography: 'Appkom-Nestleder',
       ),
+      const DeveloperModel(
+        name: 'Fredrik Hansteen',
+        year: 2,
+        image: 'assets/images/better_profile_picture.jpg',
+        biography: 'Appkom-Leder',
+      ),
     ];
 
     List<Widget> developerWidgets = developers.map((developer) => developerCard(developer)).toList();
-
-    // return Column(
-    //   children: [
-    //     Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //       children: [
-    //         developerCard(developers[0]),
-    //         developerCard(developers[1]),
-    //       ],
-    //     ),
-    //   ],
-    // );
 
     return CarouselSlider(
       items: developerWidgets,

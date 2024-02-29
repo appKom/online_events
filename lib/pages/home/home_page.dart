@@ -5,12 +5,11 @@ import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
-import 'bedpres.dart';
 import '/pages/home/event_card.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
-import 'info_page.dart';
 import 'article_carousel.dart';
+import 'bedpres.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
@@ -32,18 +31,18 @@ class HomePage extends ScrollablePage {
                 'Kommende Arrangementer',
                 style: OnlineTheme.header(),
               ),
-              AnimatedButton(
-                onTap: () {
-                  AppNavigator.navigateToPage(const InfoPage());
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return const Icon(
-                    Icons.info_outline,
-                    color: OnlineTheme.white,
-                    size: 25,
-                  );
-                },
-              ),
+              // AnimatedButton(
+              //   onTap: () {
+              //     AppNavigator.navigateToPage(const InfoPage());
+              //   },
+              //   childBuilder: (context, hover, pointerDown) {
+              //     return const Icon(
+              //       Icons.info_outline,
+              //       color: OnlineTheme.white,
+              //       size: 25,
+              //     );
+              //   },
+              // ),
             ],
           ),
           Container(

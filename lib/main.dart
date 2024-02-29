@@ -1,9 +1,7 @@
-import 'package:android_intent_plus/android_intent.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import '/components/online_scaffold.dart';
@@ -15,13 +13,6 @@ import 'core/client/client.dart';
 import 'firebase_options.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-void openAppSettings() {
-  const AndroidIntent intent = AndroidIntent(
-    action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
-  );
-  intent.launch();
-}
 
 // Initialization settings for Android
 const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -49,15 +40,6 @@ Future main() async {
   tz.initializeTimeZones();
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  // await Client.loadTokensFromSecureStorage();
-
-  // if (!Client.tokenExpired()) {
-  //   loggedIn = true;
-  //   userProfile = await Client.getUserProfile();
-  //   userId = userProfile?.id ?? 0;
-  // } else if (await Client.fetchRefreshToken()) {
-  //   loggedIn = true;
-  // }
 
   runApp(const OnlineApp());
 
@@ -93,13 +75,11 @@ class OnlineApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverlaySupport.global(
-      child: MaterialApp(
-        navigatorKey: AppNavigator.globalNavigator,
-        title: 'Online',
-        debugShowCheckedModeBanner: false,
-        home: const OnlineScaffold(),
-      ),
+    return MaterialApp(
+      navigatorKey: AppNavigator.globalNavigator,
+      title: 'Online',
+      debugShowCheckedModeBanner: false,
+      home: const OnlineScaffold(),
     );
   }
 }

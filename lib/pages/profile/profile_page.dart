@@ -263,14 +263,14 @@ class _ProfilePageState extends State<ProfilePage> {
       content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
       actions: [
         TextButton(
-          child: const Text('Avbryt'),
           onPressed: () {
             AppNavigator.pop();
           },
+          child: const Text('Avbryt'),
         ),
         TextButton(
-          child: const Text('Slett'),
           onPressed: delete,
+          child: const Text('Slett'),
         ),
       ],
     );
@@ -296,17 +296,17 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: padding,
-        child: ValueListenableBuilder(
-          valueListenable: io.Client.userCache,
-          builder: (context, userProfile, child) {
-            if (userProfile == null) {
-              return const LoadingPageDisplay();
-            }
+    return ValueListenableBuilder(
+      valueListenable: io.Client.userCache,
+      builder: (context, userProfile, child) {
+        if (userProfile == null) {
+          return const LoadingPageDisplay();
+        }
 
-            return Column(
+        return SingleChildScrollView(
+          child: Padding(
+            padding: padding,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 24),
@@ -544,10 +544,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 24),
               ],
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 

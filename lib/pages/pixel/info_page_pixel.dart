@@ -13,7 +13,7 @@ class InfoPagePixel extends DarkOverlay {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           Text(
             'Pixel',
             style: OnlineTheme.textStyle(size: 40, weight: 7),
