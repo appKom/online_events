@@ -5,7 +5,7 @@
 
     <application
         android:label="Online"
-        android:name="${applicationName}"
+        android:name="ntnu.online.app"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         android:enableOnBackInvokedCallback="true">

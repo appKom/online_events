@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../../../core/client/client.dart';
 import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
@@ -113,9 +112,9 @@ class InAppWebViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("")),
-      body: InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(url)),
-      ),
+      // body: InAppWebView(
+      //   initialUrlRequest: URLRequest(url: Uri.parse(url)),
+      // ),
     );
   }
 }
