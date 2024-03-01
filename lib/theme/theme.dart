@@ -29,12 +29,13 @@ sealed class OnlineTheme {
 
   static const purple1 = Color(0xFFAB18C8);
 
+  static const lightGray = Color(0xFFD0D0D0);
   static const gray0 = Color(0xFF22272F);
   static const gray8 = Color(0xFFA6ABB5);
   static const gray9 = Color(0xFFB7BBC3);
   static const gray13 = Color(0xFF131315);
-  static const gray15 = Color(0xFF4C566A);
-  static const gray16 = Color(0xFF797979);
+  static const gray15 = Color(0xFF4C566A); // Only used once by skeleton loader
+  static const gray16 = Color(0xFF797979); // Only used once by skeleton loader
 
   static const grayBorder = Color(0xFF22272F);
 
@@ -121,7 +122,7 @@ sealed class OnlineTheme {
   }
 
   static TextStyle header() => textStyle(size: 20, weight: 6);
-  static TextStyle subHeader([Color? color]) => textStyle(size: 16, weight: 7, color: color ?? white);
+  static TextStyle subHeader([Color? color]) => textStyle(size: 16, weight: 6, color: color ?? white);
 
   static TextStyle textStyle({
     Color color = white,

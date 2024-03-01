@@ -10,7 +10,6 @@ import '/services/app_navigator.dart';
 import '/services/authenticator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
-import 'animated_button.dart';
 
 enum NavbarPage {
   home,
@@ -92,8 +91,8 @@ class NavbarState extends State<Navbar> {
       onPressed: Navbar._navigateGames,
     ),
     NavbarButton(
-      icon: IconType.settings,
-      activeIcon: IconType.settingsFilled,
+      icon: IconType.user,
+      activeIcon: IconType.userFilled,
       onPressed: Navbar._navigateProfile,
     ),
   ];
@@ -106,25 +105,22 @@ class NavbarState extends State<Navbar> {
         return Expanded(
           child: Padding(
             padding: EdgeInsets.only(bottom: padding),
-            child: AnimatedButton(
+            child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
                 _buttons[i].onPressed?.call();
 
                 NavbarState.selected.value = i;
               },
-              scale: 0.8,
-              childBuilder: (context, hover, pointerDown) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: ThemedIcon(
-                    key: UniqueKey(),
-                    icon: active ? _buttons[i].activeIcon : _buttons[i].icon,
-                    size: 24,
-                    color: active ? OnlineTheme.yellow : OnlineTheme.white,
-                  ),
-                );
-              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: ThemedIcon(
+                  key: UniqueKey(),
+                  icon: active ? _buttons[i].activeIcon : _buttons[i].icon,
+                  size: 24,
+                  color: active ? OnlineTheme.yellow : OnlineTheme.white,
+                ),
+              ),
             ),
           ),
         );

@@ -7,15 +7,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:online/components/navbar.dart';
+import 'package:online/components/skeleton_loader.dart';
+import 'package:online/pages/event/cards/event_card.dart';
+import 'package:online/theme/themed_icon.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
-import '/components/skeleton_loader.dart';
 import '/core/client/client.dart' as io;
 import '/core/models/user_model.dart';
-import '/pages/loading/loading_display_page.dart';
 import '/pages/profile/delete_user.dart';
 import '/services/app_navigator.dart';
 import '/services/authenticator.dart';
@@ -30,10 +32,9 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late Storage storage;
-  bool showInfoAboutPicture = false;
   File? _imageFile;
   late Databases database;
-  final TextEditingController _titleController = TextEditingController();
+  // final TextEditingController _titleController = TextEditingController();
   PixelUserClass? pixelUserData;
 
   @override
@@ -90,24 +91,24 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<void> saveBiography(UserModel? userModel) async {
-    if (userModel == null && _titleController.text.isNotEmpty) return;
+  // Future<void> saveBiography(UserModel? userModel) async {
+  //   if (userModel == null && _titleController.text.isNotEmpty) return;
 
-    try {
-      await database.updateDocument(
-          collectionId: dotenv.env['USER_COLLECTION_ID']!,
-          databaseId: dotenv.env['USER_DATABASE_ID']!,
-          documentId: userModel!.username,
-          data: {'biography': _titleController.text});
-      if (pixelUserData != null) {
-        pixelUserData!.biography = _titleController.text;
-        setState(() {});
-      }
-      _titleController.clear();
-    } catch (e) {
-      print("Error saving Biography: $e");
-    }
-  }
+  //   try {
+  //     await database.updateDocument(
+  //         collectionId: dotenv.env['USER_COLLECTION_ID']!,
+  //         databaseId: dotenv.env['USER_DATABASE_ID']!,
+  //         documentId: userModel!.username,
+  //         data: {'biography': _titleController.text});
+  //     if (pixelUserData != null) {
+  //       pixelUserData!.biography = _titleController.text;
+  //       setState(() {});
+  //     }
+  //     _titleController.clear();
+  //   } catch (e) {
+  //     print("Error saving Biography: $e");
+  //   }
+  // }
 
   Future<PixelUserClass?> fetchPixelUserInfo(UserModel? userModel) async {
     if (userModel == null) return null;
@@ -292,16 +293,204 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Widget profilePicture(UserModel? user) {
+    if (user == null) {
+      return SkeletonLoader(
+        height: 150,
+        width: 150,
+        borderRadius: BorderRadius.circular(75),
+      );
+    }
+
+    return ClipOval(
+      child: SizedBox(
+        width: 150,
+        height: 150,
+        child: _imageFile != null
+            ? Image.file(
+                _imageFile!,
+                fit: BoxFit.cover,
+              )
+            : Image.network(
+                'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${user.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+                fit: BoxFit.cover,
+                height: 240,
+                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  return Image.asset(
+                    'assets/images/default_profile_picture.png',
+                    fit: BoxFit.cover,
+                    height: 240,
+                  );
+                },
+              ),
+      ),
+    );
+  }
+
+  void editProfile() {
+    launchUrl(
+      Uri.parse('https://old.online.ntnu.no/profile/edit/'),
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  Widget profileHeader(UserModel? user) {
+    if (user == null) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SkeletonLoader(width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
+          const SizedBox(width: 10),
+          SkeletonLoader(width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
+        ],
+      );
+    }
+
+    return Center(
+      child: Text(
+        '${user.firstName} ${user.lastName}',
+        style: OnlineTheme.header(),
+      ),
+    );
+  }
+
+  Widget bioCard(UserModel? user) {
+    late final Widget content;
+
+    if (user == null) {
+      content = SkeletonLoader(
+        height: 40,
+        borderRadius: BorderRadius.circular(5),
+      );
+    } else {
+      content = Text(
+        user.bio ?? 'Klikk for å legge til bio',
+        style: OnlineTheme.textStyle(),
+      );
+    }
+
+    return AnimatedButton(
+      onTap: editProfile,
+      childBuilder: (context, hover, pointerDown) {
+        return OnlineCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _editHeader('Biografi'),
+              const SizedBox(height: 24),
+              content,
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget contactCard(UserModel? user) {
+    late final List<Widget> content;
+
+    if (user == null) {
+      content = List.generate(3, (_) => _propertySkeleton());
+    } else {
+      content = [
+        constValueTextInput('Brukernavn', user.username),
+        constValueTextInput('Telefon', user.phoneNumber ?? ''),
+        constValueTextInput('E-post', user.email),
+      ];
+    }
+
+    return AnimatedButton(
+      onTap: editProfile,
+      childBuilder: (context, hover, pointerDown) {
+        return OnlineCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Kontakt', style: OnlineTheme.header()),
+              ...content,
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget studyCard(UserModel? user) {
+    late final List<Widget> content;
+
+    if (user == null) {
+      content = List.generate(2, (_) => _propertySkeleton());
+    } else {
+      content = [
+        constValueTextInput('Klassetrinn', user.year.toString()),
+        constValueTextInput('Startår', user.startedDate!.year.toString()),
+      ];
+    }
+
+    return OnlineCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('Studie', style: OnlineTheme.header()),
+          ...content,
+        ],
+      ),
+    );
+  }
+
+  Widget studyCourse(UserModel? user) {
+    if (user == null) {
+      return SizedBox(
+        height: 40,
+        child: CustomPaint(
+          painter: StudyCoursePainter(year: 0),
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 40,
+      child: CustomPaint(
+        painter: StudyCoursePainter(year: user.year.toDouble()),
+      ),
+    );
+  }
+
+  Widget _editHeader(String header) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          header,
+          style: OnlineTheme.header(),
+        ),
+        const ThemedIcon(icon: IconType.userEdit, size: 18),
+      ],
+    );
+  }
+
+  Widget _propertySkeleton() {
+    return SizedBox(
+      height: 40,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SkeletonLoader(width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
+          SkeletonLoader(width: 150, height: 24, borderRadius: BorderRadius.circular(5)),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
-    return ValueListenableBuilder(
-      valueListenable: io.Client.userCache,
-      builder: (context, userProfile, child) {
-        if (userProfile == null) {
-          return const LoadingPageDisplay();
-        }
+    return FutureBuilder(
+      future: io.Client.getUserProfile(),
+      builder: (context, snapshot) {
+        final user = snapshot.data;
 
         return SingleChildScrollView(
           child: Padding(
@@ -310,141 +499,70 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 24),
-                Center(
-                  child: Text(
-                    '${userProfile.firstName} ${userProfile.lastName}',
-                    style: OnlineTheme.textStyle(
-                      size: 20,
-                      weight: 7,
+                profileHeader(user),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Center(
+                    child: AnimatedButton(
+                      onTap: () async {
+                        await pickImage(ImageSource.gallery);
+                        if (_imageFile != null) {
+                          await uploadImage(user);
+                        }
+                      },
+                      childBuilder: (context, hover, pointerDown) {
+                        return profilePicture(user);
+                      },
                     ),
                   ),
                 ),
+                // TextFormField(
+                //   controller: _titleController,
+                //   style: OnlineTheme.textStyle(),
+                //   decoration: InputDecoration(
+                //     labelText: 'Skriv om deg selv:',
+                //     labelStyle: OnlineTheme.textStyle(),
+                //     hintStyle: OnlineTheme.textStyle(),
+                //     enabledBorder: const UnderlineInputBorder(
+                //       borderSide: BorderSide(color: OnlineTheme.white),
+                //     ),
+                //     focusedBorder: const UnderlineInputBorder(
+                //       borderSide: BorderSide(color: OnlineTheme.white),
+                //     ),
+                //   ),
+                //   onFieldSubmitted: (value) {
+                //     saveBiography(userProfile);
+                //   },
+                // ),
                 const SizedBox(height: 24),
-                Center(
-                  child: AnimatedButton(
-                    onTap: () async {
-                      await pickImage(ImageSource.gallery);
-                      if (_imageFile != null) {
-                        await uploadImage(userProfile);
-                      }
-                    },
-                    childBuilder: (context, hover, pointerDown) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ClipOval(
-                            child: SizedBox(
-                              width: 125,
-                              height: 125,
-                              child: _imageFile != null
-                                  ? Image.file(
-                                      _imageFile!,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.network(
-                                      'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${userProfile.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
-                                      fit: BoxFit.cover,
-                                      height: 240,
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                                          if (!showInfoAboutPicture) {
-                                            setState(() {
-                                              showInfoAboutPicture = true;
-                                            });
-                                          }
-                                        });
-                                        return Image.asset(
-                                          'assets/images/default_profile_picture.png',
-                                          fit: BoxFit.cover,
-                                          height: 240,
-                                        );
-                                      },
-                                    ),
-                            ),
-                          ),
-                          if (showInfoAboutPicture)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text(
-                                'Trykk for å laste opp profil bilde',
-                                style: OnlineTheme.textStyle(
-                                  color: OnlineTheme.blue2,
-                                ),
-                              ),
-                            ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                TextFormField(
-                  controller: _titleController,
-                  style: OnlineTheme.textStyle(),
-                  decoration: InputDecoration(
-                    labelText: 'Skriv om deg selv:',
-                    labelStyle: OnlineTheme.textStyle(),
-                    hintStyle: OnlineTheme.textStyle(),
-                    enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: OnlineTheme.white),
-                    ),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: OnlineTheme.white),
-                    ),
-                  ),
-                  onFieldSubmitted: (value) {
-                    saveBiography(userProfile);
-                  },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  'Biografi',
-                  style: OnlineTheme.header(),
-                ),
-                FutureBuilder<PixelUserClass?>(
-                  future: fetchPixelUserInfo(userProfile),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
-                      );
-                    }
+                bioCard(user),
+                const SizedBox(height: 24),
+                // FutureBuilder<PixelUserClass?>(
+                //   future: fetchPixelUserInfo(userProfile),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.waiting) {
+                //       return Padding(
+                //         padding: const EdgeInsets.only(top: 10),
+                //         child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
+                //       );
+                //     }
 
-                    if (snapshot.hasError) {
-                      return Text("Error: ${snapshot.error}");
-                    }
-                    String biographyText = snapshot.data?.biography ?? '';
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        biographyText,
-                        style: OnlineTheme.textStyle(weight: 5),
-                      ),
-                    );
-                  },
-                ),
-                const Separator(margin: 40),
-                Text(
-                  'Kontakt',
-                  style: OnlineTheme.header(),
-                ),
-                const SizedBox(height: 10),
-                constValueTextInput('Brukernavn', userProfile.username),
-                constValueTextInput('Telefon', userProfile.phoneNumber ?? ''),
-                constValueTextInput('E-post', userProfile.email),
-                const Separator(margin: 20),
-                Text(
-                  'Studie',
-                  style: OnlineTheme.header(),
-                ),
-                const SizedBox(height: 10),
-                constValueTextInput('Klassetrinn', userProfile.year.toString()),
-                constValueTextInput('Startår', userProfile.startedDate!.year.toString()),
+                //     if (snapshot.hasError) {
+                //       return Text("Error: ${snapshot.error}");
+                //     }
+                //     String biographyText = snapshot.data?.biography ?? '';
+                //     return Padding(
+                //       padding: const EdgeInsets.only(top: 10),
+                //       child: Text(
+                //         biographyText,
+                //         style: OnlineTheme.textStyle(),
+                //       ),
+                //     );
+                //   },
+                // ),
+                contactCard(user),
+                const SizedBox(height: 24),
+                studyCard(user),
                 const SizedBox(height: 16),
                 SizedBox(
                   height: 40,
@@ -482,13 +600,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  height: 40,
-                  child: CustomPaint(
-                    painter: StudyCoursePainter(year: userProfile.year.toDouble()),
-                  ),
-                ),
-                const Separator(margin: 40),
+                studyCourse(user),
+                const Separator(margin: 24 + 24),
                 Row(
                   children: [
                     Expanded(

@@ -225,6 +225,7 @@ class AttendanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return OnlineCard(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
             child: Row(
@@ -241,16 +242,21 @@ class AttendanceCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const ThemedIcon(icon: IconType.location, size: 20),
-                const SizedBox(width: 8),
-                Text(
-                  event.location,
-                  style: OnlineTheme.textStyle(),
-                ),
-              ],
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const ThemedIcon(icon: IconType.location, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    event.location,
+                    style: OnlineTheme.textStyle(),
+                    softWrap: true,
+                  ),
+                ],
+              ),
             ),
           ),
           if (showCountdownToRegistrationStart()) countdownToRegistrationStart(),

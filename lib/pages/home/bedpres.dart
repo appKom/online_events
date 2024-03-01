@@ -23,15 +23,17 @@ class Bedpres extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 24),
         Text(
           'Bedriftpresentasjoner og Kurs',
           style: OnlineTheme.textStyle(size: 20, weight: 7),
         ),
+        const SizedBox(height: 24),
         CarouselSlider(
           options: getCarouselOptions(context),
           items: List.generate(3, (i) {
             return const SkeletonLoader(
+              width: 250,
+              height: 300,
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
               ),
@@ -68,7 +70,6 @@ class Bedpres extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 24),
         Text(
           'Bedpresser & Kurs',
           style: OnlineTheme.header(),
@@ -228,7 +229,7 @@ class BedpresCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
-                        truncateWithEllipsis(model.title, 35),
+                        truncateWithEllipsis(model.title, 38),
                         style: OnlineTheme.subHeader(),
                       ),
                     ),

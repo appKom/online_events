@@ -45,23 +45,19 @@ class HomePage extends ScrollablePage {
             ],
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            height: 111 * 3,
+            margin: const EdgeInsets.symmetric(vertical: 24),
+            height: 100 * 4,
             child: ValueListenableBuilder(
               valueListenable: Client.eventsCache,
               builder: (context, events, child) {
                 if (events.isEmpty) {
                   return Column(
-                    children: [
-                      EventCard.skeleton(),
-                      EventCard.skeleton(),
-                      EventCard.skeleton(),
-                    ],
+                    children: List.generate(4, (_) => EventCard.skeleton()),
                   );
                 }
 
                 return ListView.builder(
-                  itemCount: 3,
+                  itemCount: 4,
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (c, i) => EventCard(
@@ -103,7 +99,7 @@ class HomePage extends ScrollablePage {
               );
             },
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 24 + 24),
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
             builder: (context, events, child) {

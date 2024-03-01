@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:online/components/icon_label.dart';
 import 'package:online/services/app_navigator.dart';
+import 'package:online/theme/themed_icon.dart';
 
 import '../../components/image_default.dart';
 import '/components/animated_button.dart';
@@ -19,18 +21,18 @@ class EventCard extends StatelessWidget {
   final EventModel model;
 
   static const monthsNorwegian = {
-    'January': 'Januar',
-    'February': 'Februar',
-    'March': 'Mars',
-    'April': 'April',
+    'January': 'Jan',
+    'February': 'Feb',
+    'March': 'Mar',
+    'April': 'Apr',
     'May': 'Mai',
-    'June': 'Juni',
-    'July': 'Juli',
-    'August': 'August',
-    'September': 'September',
-    'October': 'Oktober',
-    'November': 'November',
-    'December': 'Desember',
+    'June': 'Jun',
+    'July': 'Jul',
+    'August': 'Aug',
+    'September': 'Sep',
+    'October': 'Okt',
+    'November': 'Nov',
+    'December': 'Des',
   };
 
   String formatDateSpan(String startDate, String endDate) {
@@ -76,70 +78,67 @@ class EventCard extends StatelessWidget {
     ));
   }
 
-  String peopleToString() {
-    if (model.maxCapacity == null) return 'Ubegrenset';
+  String participants() {
+    if (model.maxCapacity == null) return '∞';
 
     return '${model.numberOfSeatsTaken}/${model.maxCapacity}';
   }
 
   static Widget skeleton() {
-    return SizedBox(
-      height: 111,
+    return const SizedBox(
+      height: 100,
       child: Stack(
         children: [
-          Stack(
-            children: [
-              // Event Icon
-              Positioned(
-                left: 0,
-                top: 10,
-                width: 84,
-                height: 84,
-                child: SkeletonLoader(
-                  borderRadius: BorderRadius.circular(5),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox.square(
+                  dimension: 80,
+                  child: SkeletonLoader(borderRadius: OnlineTheme.buttonRadius),
                 ),
-              ),
-              // Headers
-              Positioned(
-                left: 100,
-                top: 10,
-                right: 0,
-                height: 70,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Event Name
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 3),
-                      child: SkeletonLoader(
-                        height: 18,
-                        width: 150,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: SkeletonLoader(
-                        height: 16,
-                        width: 80,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: SkeletonLoader(
-                        height: 16,
-                        width: 40,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                  ],
+                SizedBox(
+                  width: 24,
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SkeletonLoader(
+                            width: 150,
+                            height: 24,
+                            borderRadius: OnlineTheme.buttonRadius,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SkeletonLoader(
+                            borderRadius: OnlineTheme.buttonRadius,
+                            width: 80,
+                            height: 20,
+                          ),
+                          SkeletonLoader(
+                            borderRadius: OnlineTheme.buttonRadius,
+                            width: 50,
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           // Bottom Separator
-          const Positioned(
+          Positioned(
             left: 0,
             right: 0,
             bottom: 0,
@@ -164,79 +163,77 @@ class EventCard extends StatelessWidget {
     );
   }
 
+  Widget eventIcon() {
+    if (model.images.isEmpty) return defaultWithBorder();
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: Image.network(
+        model.images.first.md,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+
+          return const SkeletonLoader(width: 100, height: 100);
+        },
+        errorBuilder: (context, exception, stackTrace) {
+          return defaultWithBorder();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 111,
+      height: 100,
       child: Stack(
         children: [
           AnimatedButton(
             behavior: HitTestBehavior.opaque,
             onTap: showInfo,
             childBuilder: (context, hover, pointerDown) {
-              return Stack(
-                children: [
-                  // Event Icon
-                  Positioned(
-                    left: 0,
-                    top: 10,
-                    width: 84,
-                    height: 84,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: model.images.isNotEmpty
-                          ? Image.network(
-                              model.images.first.md,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              },
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                return defaultWithBorder();
-                              },
-                            )
-                          : defaultWithBorder(),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox.square(
+                      dimension: 80,
+                      child: eventIcon(),
                     ),
-                  ),
-                  // Headers
-                  Positioned(
-                    left: 100,
-                    top: 10,
-                    right: 0,
-                    height: 70,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Event Name
-                        SizedBox(
-                          height: 24,
-                          child: Text(
-                            shortenName(),
-                            style: OnlineTheme.textStyle(
-                              color: OnlineTheme.white,
-                              weight: 7,
-                            ),
-                            overflow: TextOverflow.ellipsis,
+                    const SizedBox(
+                      width: 24,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          header(),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconLabel(
+                                icon: IconType.dateTime,
+                                label: formatDateSpan(model.startDate, model.endDate),
+                                color: OnlineTheme.lightGray,
+                                fontWeight: 5,
+                              ),
+                              IconLabel(
+                                icon: IconType.usersFilled,
+                                label: participants(),
+                                color: OnlineTheme.lightGray,
+                                iconSize: 16,
+                              ),
+                            ],
                           ),
-                        ),
-                        subHeader(Icons.calendar_month, formatDateSpan(model.startDate, model.endDate)),
-                        subHeader(
-                          Icons.people,
-                          peopleToString(),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),
@@ -252,29 +249,14 @@ class EventCard extends StatelessWidget {
     );
   }
 
-  Widget subHeader(IconData icon, String text) {
-    return SizedBox(
-      height: 20,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: OnlineTheme.white,
-            size: 18,
-          ),
-          const SizedBox(width: 5),
-          Text(
-            text,
-            style: OnlineTheme.textStyle(
-              size: 14,
-              weight: 4,
-              color: OnlineTheme.white,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+  Widget header() {
+    return Text(
+      shortenName(),
+      style: OnlineTheme.textStyle(
+        color: OnlineTheme.white,
+        weight: 6,
       ),
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
