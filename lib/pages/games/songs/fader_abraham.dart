@@ -9,46 +9,37 @@ class FaderAbrahamPage extends ScrollablePage {
 
   String _getText() {
     return '''
-Fader abraham har fire sønner, ja fire sønner, har fader abraham! 
+Fader abraham har fire sønner, ja fire sønner, har Fader Abraham! 
 Også drakk de litt (drikk)\n
 Også drakk de litt (drikk)\n
 Og de moret seg og sang; “Høyre arm”\n
 ---
-Fader abraham har fire sønner, ja fire sønner, har fader abraham!\n
+Fader abraham har fire sønner, ja fire sønner, har Fader Abraham!\n
 Også drakk de litt (drikk)\n
 Også drakk de litt (drikk)\n
 Og de moret seg og sang; “Høyre arm, venstre arm”\n
 ---
-I denne gamle staden satt så mangen en konge stor, og hadde nok av øl fra fat og piker ved sitt bord.
-Og de laga bøljer i gata når hjem ifra gildet de fór.
-Og nu sitter de alle mann alle i valhall og traller til oss i kor;\n
----
-Fader abraham har fire sønner, ja fire sønner, har fader abraham!\n
+Fader abraham har fire sønner, ja fire sønner, har Fader Abraham!\n
 Også drakk de litt (drikk)\n
 Også drakk de litt (drikk)\n
 Og de moret seg og sang; “Høyre arm, venstre arm, høyre fot”\n
 ---
-Fader abraham har fire sønner, ja fire sønner, har fader abraham!\n
-Også drakk de litt (drikk)\n
-Også drakk de litt (drikk)\n
-Og de moret seg og sang; “Høyre arm, venstre arm, høyre fot”\n
----
-Fader abraham har fire sønner, ja fire sønner, har fader abraham!\n
+Fader abraham har fire sønner, ja fire sønner, har Fader Abraham!\n
 Også drakk de litt (drikk)\n
 Også drakk de litt (drikk)\n
 Og de moret seg og sang; “Høyre arm, venstre arm, høyre fot, venstre fot”\n
 ---
-Fader abraham har fire sønner, ja fire sønner, har fader abraham!\n
+Fader abraham har fire sønner, ja fire sønner, har Fader Abraham!\n
 Også drakk de litt (drikk)\n
 Også drakk de litt (drikk)\n
 Og de moret seg og sang; “Høyre arm, venstre arm, høyre fot, venstre fot, rumpa ut”\n
 ---
-Fader abraham har fire sønner, ja fire sønner, har fader abraham!\n
+Fader abraham har fire sønner, ja fire sønner, har Fader Abraham!\n
 Også drakk de litt (drikk)\n
 Også drakk de litt (drikk)\n
 Og de moret seg og sang; “Høyre arm, venstre arm, høyre fot, venstre fot, rumpa ut, kroppen frem”\n
 ---
-Fader abraham har fire sønner, ja fire sønner, har fader abraham!\n
+Fader abraham har fire sønner, ja fire sønner, har Fader Abraham!\n
 Også drakk de litt (drikk)\n
 Også drakk de litt (drikk)\n
 Og de moret seg og sang; “Høyre arm, venstre arm, høyre fot, venstre fot, rumpa ut, kroppen frem, tunga ut”\n
