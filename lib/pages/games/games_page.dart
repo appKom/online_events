@@ -24,7 +24,7 @@ class GamesPage extends ScrollablePage {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 24),
-          const DrikkeSanger(),
+          DrikkeSanger(carouselOptions: getCarouselOptions(context)),
           const SizedBox(height: 24),
           const SizedBox(height: 24),
           Text('Spill', style: OnlineTheme.header()),
@@ -61,14 +61,6 @@ class GamesPage extends ScrollablePage {
               ),
             ],
             options: getCarouselOptions(context),
-            // options: CarouselOptions(
-            //   height: 200,
-            //   enableInfiniteScroll: true,
-            //   padEnds: true,
-            //   enlargeCenterPage: true,
-            //   viewportFraction: 0.7,
-            //   enlargeFactor: 0.2,
-            // ),
           ),
           const SizedBox(height: 24),
         ],
@@ -86,6 +78,7 @@ class GamesPage extends ScrollablePage {
       enlargeCenterPage: isMobile,
       viewportFraction: isMobile ? 0.75 : 0.3,
       enlargeFactor: 0.2,
+      clipBehavior: Clip.none,
     );
   }
 }

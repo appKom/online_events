@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
-import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/pages/home/event_card.dart';
 import '/services/app_navigator.dart';
@@ -75,18 +74,11 @@ class HomePage extends ScrollablePage {
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
             builder: (context, events, child) {
-              if (events.isEmpty) {
-                return Center(
-                  child: SkeletonLoader(
-                    borderRadius: BorderRadius.circular(5),
-                    width: 50,
-                    height: 25,
-                  ),
-                );
-              }
-
               return AnimatedButton(
-                onTap: () => AppNavigator.navigateToPage(const EventsPageDisplay()),
+                onTap: () {
+                  if (events.isEmpty) return;
+                  AppNavigator.navigateToPage(const EventsPageDisplay());
+                },
                 behavior: HitTestBehavior.opaque,
                 childBuilder: (context, hover, pointerDown) {
                   return Row(
@@ -126,7 +118,6 @@ class HomePage extends ScrollablePage {
             valueListenable: Client.articlesCache,
             builder: (context, articles, child) {
               if (articles.isEmpty) return Center(child: ArticleCarousel.skeleton(context));
-
               return Center(child: ArticleCarousel(articles: articles.take(3).toList()));
             },
           ),

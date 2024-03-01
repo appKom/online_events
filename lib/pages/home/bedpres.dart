@@ -52,6 +52,7 @@ class Bedpres extends StatelessWidget {
       enlargeCenterPage: isMobile,
       viewportFraction: isMobile ? 0.75 : 0.3,
       enlargeFactor: 0.2,
+      clipBehavior: Clip.none,
     );
   }
 

@@ -9,32 +9,12 @@ import 'lambo.dart';
 import 'nu_klinger.dart';
 
 class DrikkeSanger extends StatelessWidget {
-  const DrikkeSanger({super.key});
+  const DrikkeSanger({super.key, required this.carouselOptions});
 
-  static getCarouselOptions(BuildContext context) {
-    final isMobile = OnlineTheme.isMobile(context);
-
-    return CarouselOptions(
-      height: 200,
-      enableInfiniteScroll: true,
-      padEnds: true,
-      enlargeCenterPage: isMobile,
-      viewportFraction: isMobile ? 0.75 : 0.3,
-      enlargeFactor: 0.2,
-    );
-  }
+  final CarouselOptions carouselOptions;
 
   @override
   Widget build(BuildContext context) {
-    // final options = CarouselOptions(
-    //   height: 200,
-    //   enableInfiniteScroll: true,
-    //   enlargeCenterPage: true,
-    //   padEnds: true,
-    //   viewportFraction: 0.7,
-    //   enlargeFactor: 0.2,
-    // );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -44,7 +24,7 @@ class DrikkeSanger extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         CarouselSlider(
-          options: getCarouselOptions(context),
+          options: carouselOptions,
           items: [
             SongCard(
               name: 'Lambo',
