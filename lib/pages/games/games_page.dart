@@ -17,7 +17,8 @@ class GamesPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding =
+        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -57,7 +58,7 @@ class GamesPage extends ScrollablePage {
                 name: 'Bits',
                 imageSource: 'assets/images/bits.png',
                 onTap: () {
-                  AppNavigator.globalNavigateTo(const BitsHomePage());
+                  AppNavigator.navigateToPage(const BitsHomePage());
                 },
               ),
               GameCard(
@@ -126,7 +127,8 @@ class GameCard extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                      bottom:
+                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
                     ),
                   ),
                   child: AspectRatio(

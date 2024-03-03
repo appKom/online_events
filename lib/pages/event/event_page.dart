@@ -144,61 +144,61 @@ class _EventPageState extends State<EventPage> {
                   widget.model.title,
                   style: OnlineTheme.header(),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (attendeeInfoModel.isAttendee)
-                      SizedBox.square(
-                        dimension: 40,
-                        child: Center(
-                          child: AnimatedButton(
-                            onTap: () {
-                              AppNavigator.navigateToRoute(
-                                QRCode(model: widget.model),
-                                additive: true,
-                              );
-                            },
-                            childBuilder: (context, hover, pointerDown) {
-                              return const ThemedIcon(
-                                icon: IconType.qr,
-                                size: 24,
-                                color: OnlineTheme.white,
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    if (Authenticator.isLoggedIn())
-                      SizedBox.square(
-                        dimension: 40,
-                        child: Center(
-                          child: AnimatedButton(
-                            onTap: () async {
-                              // final qrResult = await Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           const QrCodeScannerDisplay()),
-                              // );
-                              // if (qrResult != null) {
-                              //   registerAttendance(qrResult);
-                              // }
-                            },
-                            childBuilder: (context, hover, pointerDown) {
-                              return const ThemedIcon(
-                                icon: IconType.camScan,
-                                size: 24,
-                                color: OnlineTheme.white,
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     if (attendeeInfoModel.isAttendee)
+                //       SizedBox.square(
+                //         dimension: 40,
+                //         child: Center(
+                //           child: AnimatedButton(
+                //             onTap: () {
+                //               AppNavigator.navigateToRoute(
+                //                 QRCode(model: widget.model),
+                //                 additive: true,
+                //               );
+                //             },
+                //             childBuilder: (context, hover, pointerDown) {
+                //               return const ThemedIcon(
+                //                 icon: IconType.qr,
+                //                 size: 24,
+                //                 color: OnlineTheme.white,
+                //               );
+                //             },
+                //           ),
+                //         ),
+                //       ),
+                //     const SizedBox(
+                //       width: 10,
+                //     ),
+                //     if (Authenticator.isLoggedIn())
+                //       SizedBox.square(
+                //         dimension: 40,
+                //         child: Center(
+                //           child: AnimatedButton(
+                //             onTap: () async {
+                //               // final qrResult = await Navigator.push(
+                //               //   context,
+                //               //   MaterialPageRoute(
+                //               //       builder: (context) =>
+                //               //           const QrCodeScannerDisplay()),
+                //               // );
+                //               // if (qrResult != null) {
+                //               //   registerAttendance(qrResult);
+                //               // }
+                //             },
+                //             childBuilder: (context, hover, pointerDown) {
+                //               return const ThemedIcon(
+                //                 icon: IconType.camScan,
+                //                 size: 24,
+                //                 color: OnlineTheme.white,
+                //               );
+                //             },
+                //           ),
+                //         ),
+                //       ),
+                //   ],
+                // ),
                 const SizedBox(height: 24),
                 AttendanceCard(
                     event: widget.model, attendeeInfo: attendeeInfoModel),

@@ -54,7 +54,7 @@ class BitsHomePage extends ScrollablePage {
               const SizedBox(height: 80),
               AnimatedButton(
                 onTap: () {
-                  AppNavigator.navigateToPage(const BitsGame());
+                  AppNavigator.globalNavigateTo(BitsGame());
                 },
                 childBuilder: (context, hover, pointerDown) {
                   return Container(
