@@ -1,7 +1,6 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic",
-    "conventionalCommits.scopes": [
-        "rouletteWheel"
-    ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "conventionalCommits.scopes": ["rouletteWheel"],
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "cmake.sourceDirectory": "/opt/online_events/linux"
 }

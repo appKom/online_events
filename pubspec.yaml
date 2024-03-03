@@ -27,7 +27,6 @@ dependencies:
   image_cropper: ^5.0.1
   path_provider: ^2.0.9
   qr_flutter: ^4.1.0
-  qr_code_scanner: ^1.0.1
   flutter_firebase_recaptcha: ^1.0.2
   flutter_inappwebview: ^5.8.0
   flutter_local_notifications: ^16.3.2

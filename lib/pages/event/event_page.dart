@@ -20,7 +20,6 @@ import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'cards/attendance_card.dart';
 import 'cards/description_card.dart';
-import 'qr_code_scanner.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -70,7 +69,8 @@ class _EventPageState extends State<EventPage> {
     final event = int.tryParse(parts[2]) ?? 0;
     final approved = parts[3].toLowerCase() == 'true';
 
-    const url = 'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
+    const url =
+        'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
 
     final body = {
       'rfid': rfid,
@@ -88,7 +88,8 @@ class _EventPageState extends State<EventPage> {
     if (response.statusCode == 201) {
       print('Attendance registered successfully!');
     } else {
-      print('Failed to register attendance. Status code: ${response.statusCode}');
+      print(
+          'Failed to register attendance. Status code: ${response.statusCode}');
     }
   }
 
@@ -109,7 +110,8 @@ class _EventPageState extends State<EventPage> {
 
           return const SkeletonLoader();
         },
-        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+        errorBuilder:
+            (BuildContext context, Object exception, StackTrace? stackTrace) {
           return const ImageDefault();
         },
       ),
@@ -175,13 +177,15 @@ class _EventPageState extends State<EventPage> {
                         child: Center(
                           child: AnimatedButton(
                             onTap: () async {
-                              final qrResult = await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const QrCodeScannerDisplay()),
-                              );
-                              if (qrResult != null) {
-                                registerAttendance(qrResult);
-                              }
+                              // final qrResult = await Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) =>
+                              //           const QrCodeScannerDisplay()),
+                              // );
+                              // if (qrResult != null) {
+                              //   registerAttendance(qrResult);
+                              // }
                             },
                             childBuilder: (context, hover, pointerDown) {
                               return const ThemedIcon(
@@ -196,7 +200,8 @@ class _EventPageState extends State<EventPage> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
+                AttendanceCard(
+                    event: widget.model, attendeeInfo: attendeeInfoModel),
                 const SizedBox(height: 24),
                 EventDescriptionCard(
                   description: widget.model.description,
