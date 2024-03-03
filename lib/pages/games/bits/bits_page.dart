@@ -26,7 +26,7 @@ class BitsGame extends StaticPage {
       padding: MediaQuery.of(context).padding,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [OnlineTheme.background, background],
+          colors: [OnlineTheme.purple1, background],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           stops: [0.1, 0.9],
@@ -85,8 +85,7 @@ class BitsGame extends StaticPage {
 const bitsPages = [
   BitsModel(
     header: 'MÅL',
-    body:
-        'Dere er nå ferdig med studiene! Nyt livet som bedrep og ta en lambo hele gjengen!',
+    body: 'Dere er nå ferdig med studiene! Nyt livet som bedrep og ta en lambo hele gjengen!',
     imageSource: 'assets/bits/bitsimage35.png',
   ),
   BitsModel(
@@ -116,8 +115,7 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'Gammel og Ung',
-    body:
-        'Eldste og yngste i rommet kan dele ut halvparten av alderen sin i poeng',
+    body: 'Eldste og yngste i rommet kan dele ut halvparten av alderen sin i poeng',
     imageSource: 'assets/bits/bitsimage29.png',
   ),
   BitsModel(
@@ -127,8 +125,7 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'Vinter OL',
-    body:
-        'Du ble forkjølet etter vinter OL, du får et kjempe poeng for å lindre halsbetennelsen',
+    body: 'Du ble forkjølet etter vinter OL, du får et kjempe poeng for å lindre halsbetennelsen',
     imageSource: 'assets/bits/bitsimage27.png',
   ),
   BitsModel(
@@ -178,8 +175,7 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'Julebord',
-    body:
-        'Hold en tale i to minutter, hvor du forteller hvorfor du har fortjent å være årets nisse',
+    body: 'Hold en tale i to minutter, hvor du forteller hvorfor du har fortjent å være årets nisse',
     imageSource: 'assets/bits/bitsimage20.png',
   ),
   BitsModel(

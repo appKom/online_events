@@ -7,11 +7,7 @@ class BitsCard extends StatelessWidget {
   final String body;
   final int position;
 
-  const BitsCard(
-      {super.key,
-      required this.body,
-      required this.position,
-      required this.header});
+  const BitsCard({super.key, required this.body, required this.position, required this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +29,7 @@ class BitsCard extends StatelessWidget {
               Center(
                 child: Text(
                   header,
-                  style: OnlineTheme.textStyle(
-                      color: OnlineTheme.gray0, weight: 7, size: 25),
+                  style: OnlineTheme.textStyle(color: OnlineTheme.gray0, weight: 7, size: 25),
                 ),
               ),
               const SizedBox(
@@ -45,8 +40,7 @@ class BitsCard extends StatelessWidget {
                 child: Center(
                   child: Text(
                     body,
-                    style: OnlineTheme.textStyle(
-                        color: OnlineTheme.gray0, weight: 5, size: 18),
+                    style: OnlineTheme.textStyle(color: OnlineTheme.gray0, weight: 5, size: 18),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -59,11 +53,11 @@ class BitsCard extends StatelessWidget {
                 children: [
                   Text(
                     position.toString(),
-                    style: const TextStyle(
-                        color: OnlineTheme.hundredSecondaryTextColor,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Avenir',
-                        fontSize: 24),
+                    style: OnlineTheme.textStyle(
+                      color: OnlineTheme.purple1,
+                      weight: 6,
+                      size: 24,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ],

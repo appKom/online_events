@@ -1,87 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/games/bits/bits_page.dart';
-import '/services/app_navigator.dart';
-import '/theme/theme.dart';
 
-class BitsHomePage extends ScrollablePage {
+class BitsHomePage extends StaticPage {
   const BitsHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
-
-    const background = Color.fromARGB(255, 225, 10, 189);
-
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            OnlineTheme.background,
-            background,
-          ],
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.only(left: padding.left, right: padding.right),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: OnlineHeader.height(context) + 40),
-              Text(
-                'Velkommen til Bits <3',
-                style: OnlineTheme.textStyle(size: 20, weight: 7),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Bits er en kombinasjon av de beste aspektene av ulike leker. \n \nSpillet er en pekelek der den som blir mest pekt på, må gjøre det som står på neste side. I løpet av spillet får man "poeng" eller "kjempe-poeng". Hva man gjør med "poeng" er opp til spillerne.',
-                style: OnlineTheme.textStyle(),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                'Trykk på sidene av skjermen for å komme deg videre \n\nPress the sides of the screen to continue',
-                style: OnlineTheme.textStyle(),
-              ),
-              const SizedBox(height: 80),
-              AnimatedButton(
-                onTap: () {
-                  AppNavigator.globalNavigateTo(BitsGame());
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    height: OnlineTheme.buttonHeight,
-                    decoration: const BoxDecoration(
-                      gradient: OnlineTheme.purpleGradient,
-                      borderRadius: OnlineTheme.buttonRadius,
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Start spillet!',
-                        style: OnlineTheme.textStyle(),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
   Widget content(BuildContext context) {
-    // Properly implement the content method or make sure it's not called if not needed.
-    return Container(); // Return an empty Container or actual content if available
+    return BitsGame();
   }
 }
