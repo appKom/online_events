@@ -8,8 +8,8 @@ import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/core/models/attended_events.dart';
 import '/core/models/event_model.dart';
+import '/main.dart';
 import '/pages/home/event_card.dart';
-import '/services/authenticator.dart';
 import '/theme/theme.dart';
 
 List<AttendedEvents> attendedEvents = [];
@@ -54,7 +54,12 @@ class MyEventsPage extends StatefulWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
+                Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white))
+                // SkeletonLoader(
+                //   height: 25,
+                //   width: 100,
+                //   borderRadius: BorderRadius.circular(5),
+                // ),
               ],
             ),
           ),
@@ -80,6 +85,10 @@ class MyEventsPage extends StatefulWidget {
               );
             }),
           )
+          // SkeletonLoader(
+          //   height: 300,
+          //   borderRadius: BorderRadius.circular(5),
+          // ),
         ],
       ),
     );
@@ -99,7 +108,7 @@ class MyEventsPageState extends State<MyEventsPage> {
   void initState() {
     super.initState();
     _isLoading = true;
-    if (Authenticator.isLoggedIn()) {
+    if (loggedIn) {
       // TODO: This logic is convoluted and can cause memory leaks if exited at unexpected times
       fetchMoreEvents()
           .then((_) {
@@ -140,12 +149,7 @@ class MyEventsPageState extends State<MyEventsPage> {
   }
 
   Future<void> fetchAttendeeInfo() async {
-    final user = Client.userCache.value;
-
-    if (user == null) return;
-
-    // TODO: This is a bit of a hack
-    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(user.id) ?? [];
+    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(userId) ?? [];
     if (mounted) {
       setState(() {
         attendedEvents = allAttendees;
@@ -286,6 +290,8 @@ class MyEventsPageState extends State<MyEventsPage> {
               daysOfWeekVisible: false,
               calendarFormat: CalendarFormat.month,
               startingDayOfWeek: StartingDayOfWeek.monday,
+
+              // rowHeight: 55.0,
               availableCalendarFormats: const {CalendarFormat.month: ''},
               onPageChanged: (focusedDay) {
                 setState(() {
@@ -310,7 +316,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                     margin: const EdgeInsets.all(2.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: eventful ? OnlineTheme.green5 : OnlineTheme.darkGray,
+                      color: eventful ? OnlineTheme.green5 : OnlineTheme.gray13,
                       shape: BoxShape.rectangle,
                       border: Border.fromBorderSide(
                         BorderSide(
@@ -322,14 +328,14 @@ class MyEventsPageState extends State<MyEventsPage> {
                     ),
                     child: Text(
                       date.day.toString(),
-                      style: OnlineTheme.textStyle(weight: 5),
+                      style: OnlineTheme.textStyle(),
                     ),
                   );
                 },
                 defaultBuilder: (context, date, _) {
                   final events = getEventsForDay(date);
 
-                  // TODO: Waitlist = Gul, Registered = Grønn
+                  // TODO: Kurs = Blå, Bedpress = Rød, Andre = Grønn
 
                   if (events.isNotEmpty) {
                     return Container(
@@ -342,7 +348,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                       ),
                       child: Text(
                         date.day.toString(),
-                        style: OnlineTheme.textStyle(weight: 5),
+                        style: OnlineTheme.textStyle(),
                       ),
                     );
                   } else {
@@ -350,7 +356,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                       margin: const EdgeInsets.all(4.0),
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
-                        color: OnlineTheme.darkGray,
+                        color: OnlineTheme.gray13,
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),

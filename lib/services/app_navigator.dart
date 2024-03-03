@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NoAnimationPageRoute<T> extends MaterialPageRoute<T> {
@@ -29,7 +30,7 @@ abstract class AppNavigator {
   }
 
   static void navigateToPage(Widget page) {
-    final route = MaterialPageRoute(
+    Route route = CupertinoPageRoute(
       builder: (context) => page,
     );
 

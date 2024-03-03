@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:online/services/app_navigator.dart';
 
 import '../pixel.dart';
 import '/components/animated_button.dart';
-import '/core/client/client.dart';
+import '/main.dart';
 import '/pages/pixel/liked_by_page.dart';
 import '/pages/pixel/models/user_post.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class LikesCard extends StatefulWidget {
@@ -35,9 +35,7 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
   @override
   void initState() {
     super.initState();
-    final userProfile = Client.userCache.value;
-
-    isLiked = widget.post.likedBy.contains(userProfile?.username);
+    isLiked = widget.post.likedBy.contains(userProfile!.username);
     numberOfLikes = widget.post.numberOfLikes;
 
     _animationController = AnimationController(
@@ -67,7 +65,6 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
     }
 
     try {
-      final userProfile = Client.userCache.value;
       String userId = userProfile!.username.toString();
       await widget.onLikePost(widget.post.id, widget.post, userId);
     } catch (error) {
@@ -85,7 +82,6 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
     });
 
     try {
-      final userProfile = Client.userCache.value;
       String userId = userProfile!.username.toString();
       await widget.onUnlikePost(widget.post.id, widget.post, userId);
     } catch (error) {
@@ -99,7 +95,6 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
-    final userProfile = Client.userCache.value;
     return Column(
       children: [
         GestureDetector(

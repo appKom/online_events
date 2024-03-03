@@ -1,13 +1,13 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:online/services/authenticator.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
+import '/main.dart';
 import '/pages/pixel/cards/description_card.dart';
 import '/pages/pixel/cards/likes_card.dart';
 import '/pages/pixel/cards/not_logged_in_card.dart';
@@ -165,7 +165,7 @@ class PixelPageState extends State<PixelPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (Authenticator.isLoggedIn()) {
+    if (loggedIn) {
       return Scaffold(
         backgroundColor: OnlineTheme.background,
         body: RefreshIndicator(

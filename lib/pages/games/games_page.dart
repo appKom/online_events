@@ -1,7 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:online/pages/games/hundred_questions/hundred_questions_page.dart';
-import 'package:online/pages/games/roulette_page.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
@@ -17,18 +15,18 @@ class GamesPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 24),
-          DrikkeSanger(carouselOptions: getCarouselOptions(context)),
-          const SizedBox(height: 24),
-          const SizedBox(height: 24),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: DrikkeSanger(),
+          ),
+          const SizedBox(height: 24 + 24),
           Text('Spill', style: OnlineTheme.header()),
           const SizedBox(height: 24),
           CarouselSlider(
@@ -48,46 +46,25 @@ class GamesPage extends ScrollablePage {
                 },
               ),
               GameCard(
-                name: 'Hundre spørsmål',
-                imageSource: 'assets/images/SpinLine.png',
-                onTap: () {
-                  AppNavigator.navigateToPage(const HundredQuestionsInfo());
-                },
-              ),
-              GameCard(
                 name: 'Bits',
                 imageSource: 'assets/images/bits.png',
                 onTap: () {
                   AppNavigator.navigateToPage(const BitsHomePage());
                 },
               ),
-              GameCard(
-                name: 'Roulette',
-                imageSource: 'assets/images/roulette.png',
-                onTap: () {
-                  AppNavigator.navigateToPage(const RoulettePage());
-                },
-              ),
             ],
-            options: getCarouselOptions(context),
+            options: CarouselOptions(
+              height: 200,
+              enableInfiniteScroll: true,
+              padEnds: true,
+              enlargeCenterPage: true,
+              viewportFraction: 0.7,
+              enlargeFactor: 0.2,
+            ),
           ),
           const SizedBox(height: 24),
         ],
       ),
-    );
-  }
-
-  static getCarouselOptions(BuildContext context) {
-    final isMobile = OnlineTheme.isMobile(context);
-
-    return CarouselOptions(
-      height: 200,
-      enableInfiniteScroll: true,
-      padEnds: true,
-      enlargeCenterPage: isMobile,
-      viewportFraction: isMobile ? 0.75 : 0.3,
-      enlargeFactor: 0.2,
-      clipBehavior: Clip.none,
     );
   }
 }
@@ -111,8 +88,6 @@ class GameCard extends StatelessWidget {
       onTap: onTap,
       childBuilder: (context, hover, pointerDown) {
         return Container(
-          width: 250,
-          height: 200,
           decoration: const BoxDecoration(
             border: Border.fromBorderSide(
               BorderSide(width: 2, color: OnlineTheme.grayBorder),
@@ -127,8 +102,7 @@ class GameCard extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom:
-                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
                     ),
                   ),
                   child: AspectRatio(

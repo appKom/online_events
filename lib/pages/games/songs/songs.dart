@@ -9,12 +9,19 @@ import 'lambo.dart';
 import 'nu_klinger.dart';
 
 class DrikkeSanger extends StatelessWidget {
-  const DrikkeSanger({super.key, required this.carouselOptions});
-
-  final CarouselOptions carouselOptions;
+  const DrikkeSanger({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final options = CarouselOptions(
+      height: 200,
+      enableInfiniteScroll: true,
+      enlargeCenterPage: true,
+      padEnds: true,
+      viewportFraction: 0.7,
+      enlargeFactor: 0.2,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -24,7 +31,7 @@ class DrikkeSanger extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         CarouselSlider(
-          options: carouselOptions,
+          options: options,
           items: [
             SongCard(
               name: 'Lambo',
@@ -72,8 +79,6 @@ class SongCard extends StatelessWidget {
       onTap: onTap,
       childBuilder: (context, hover, pointerDown) {
         return Container(
-          width: 250,
-          height: 200,
           decoration: const BoxDecoration(
             border: Border.fromBorderSide(
               BorderSide(width: 2, color: OnlineTheme.grayBorder),
@@ -107,6 +112,19 @@ class SongCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                // Positioned(
+                //   bottom: 0,
+                //   left: 0,
+                //   right: 0,
+                //   child: Container(
+                //     padding: const EdgeInsets.all(12), // Add some padding around the text
+                //     color: Colors.black.withOpacity(0.5), // Semi-transparent background for the text
+                //     child: Text(
+                //       name,
+                //       style: OnlineTheme.textStyle(weight: 7, size: 20),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

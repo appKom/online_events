@@ -2,9 +2,10 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
-    id 'com.google.gms.google-services'
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -32,18 +33,16 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.example.online_events"
-    testNamespace "com.example.testonline_events"
-    compileSdk 34
-    ndkVersion '25.1.8937393'
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = '1.8'
     }
 
     sourceSets {
@@ -56,12 +55,10 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
-        targetSdk 34
-        versionCode 1
-        versionName '1.0'
-        minSdkVersion 21
-        multiDexEnabled true
-        manifestPlaceholders += [auth0Domain: "onlineweb-prod.eu.auth0.com", auth0Scheme: "https"]
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        minSdkVersion 20
     }
 
     signingConfigs {
@@ -84,7 +81,4 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
-    implementation 'androidx.multidex:multidex:2.0.1'
-}
+dependencies {}

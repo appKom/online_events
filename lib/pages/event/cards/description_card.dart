@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import '../../../core/client/client.dart';
 import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
 
@@ -74,17 +73,8 @@ class DescriptionCardState extends State<EventDescriptionCard> {
           data: _getText(),
           styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
             p: OnlineTheme.textStyle(),
-            h1: const TextStyle(color: OnlineTheme.white),
-            h2: const TextStyle(color: OnlineTheme.white),
-            h3: const TextStyle(color: OnlineTheme.white),
-            h4: const TextStyle(color: OnlineTheme.white),
-            h5: const TextStyle(color: OnlineTheme.white),
-            h6: const TextStyle(color: OnlineTheme.white),
           ),
-          onTapLink: (text, href, title) {
-            if (href == null) return;
-            Client.launchInBrowser(href);
-          },
+          onTapLink: (text, href, title) => _launchInAppWebView(href),
         ),
         const SizedBox(height: 10),
         Text(
@@ -103,16 +93,22 @@ class DescriptionCardState extends State<EventDescriptionCard> {
       ],
     );
   }
+
+  void _launchInAppWebView(String? url) {
+    if (url != null && url.isNotEmpty) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
+    }
+  }
 }
 
 class InAppWebViewPage extends StatelessWidget {
   final String url;
-  const InAppWebViewPage({super.key, required this.url});
+  const InAppWebViewPage({Key? key, required this.url}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("")),
+      appBar: AppBar(title: Text("")),
       body: InAppWebView(
         initialUrlRequest: URLRequest(url: Uri.parse(url)),
       ),

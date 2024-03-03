@@ -11,7 +11,7 @@ import '/components/animated_button.dart';
 import '/components/navbar.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/core/client/client.dart' as io;
+import '/main.dart';
 import '/pages/pixel/pixel.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
@@ -80,8 +80,6 @@ class UploadPageState extends State<UploadPage> {
   }
 
   Future<void> uploadImage() async {
-    final user = io.Client.userCache.value;
-
     if (_selectedImage == null) {
       print("No image selected");
       return;
@@ -101,7 +99,7 @@ class UploadPageState extends State<UploadPage> {
       //Should probaly handle
     }
 
-    String imageIdBeNotPoppin = '${user!.username}${formatDateTime(DateTime.now())}';
+    String imageIdBeNotPoppin = '${userProfile!.username}${formatDateTime(DateTime.now())}';
 
     try {
       final file = await storage.createFile(
@@ -109,7 +107,7 @@ class UploadPageState extends State<UploadPage> {
         fileId: imageIdBeNotPoppin,
         file: InputFile.fromPath(
           path: _selectedImage!.path,
-          filename: '${user.username}${formatDateTime(DateTime.now())}',
+          filename: '${userProfile!.username}${formatDateTime(DateTime.now())}',
         ),
       );
 
@@ -135,11 +133,11 @@ class UploadPageState extends State<UploadPage> {
   }
 
   Future<void> savePostToDataBase(String imageIdbePoppin) async {
-    final user = io.Client.userCache.value;
-
-    if (user == null) return;
-
     String imageId = imageIdbePoppin;
+    if (userProfile == null) {
+      print("UserProfile is null");
+      return;
+    }
 
     try {
       await database.createDocument(
@@ -147,11 +145,11 @@ class UploadPageState extends State<UploadPage> {
           databaseId: dotenv.env['PIXEL_DATABASE_ID']!,
           documentId: ID.unique(),
           data: {
-            'image_name': user.username,
+            'image_name': userProfile!.username,
             'number_of_likes': 0,
-            'username': user.ntnuUsername,
-            'first_name': user.firstName,
-            'last_name': user.lastName,
+            'username': userProfile!.ntnuUsername,
+            'first_name': userProfile!.firstName,
+            'last_name': userProfile!.lastName,
             'description': _titleController.text,
             'post_created': formatDateTime2(DateTime.now()),
             'image_link':

@@ -124,7 +124,7 @@ class LikedByPageState extends State<LikeByPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  users[index].userName,
+                                  '${users[index].userName}',
                                   style: OnlineTheme.textStyle(size: 16, weight: 5),
                                 ),
                                 Text(

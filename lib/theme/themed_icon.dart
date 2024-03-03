@@ -10,6 +10,7 @@ enum IconType {
   dateTime,
   clock,
   location,
+  people,
   camScan,
   copy,
   calendarClock,
@@ -26,12 +27,7 @@ enum IconType {
   script,
   users,
   usersFilled,
-  user,
   userFilled,
-  userEdit,
-  education,
-  dices,
-  dicesFilled,
 }
 
 class ThemedIcon extends StatelessWidget {

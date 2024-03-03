@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ntnu.online.app">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 

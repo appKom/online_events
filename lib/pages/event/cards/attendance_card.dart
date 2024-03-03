@@ -42,6 +42,7 @@ class NotificationModel {
     id = time.hashCode;
   }
 
+  /// Notification time in correct time zone
   tz.TZDateTime zonedTime() {
     return tz.TZDateTime.from(time, tz.local);
   }
@@ -64,11 +65,13 @@ class AttendanceCard extends StatelessWidget {
     return Column(
       children: [
         const Separator(margin: 24),
-        Text(
-          'Påmelding åpner om',
-          style: OnlineTheme.textStyle(weight: 5),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Text(
+            'Påmelding åpner om',
+            style: OnlineTheme.textStyle(weight: 5),
+          ),
         ),
-        const SizedBox(height: 10),
         EventCardCountdown(eventTime: attendeeInfo.registrationStart),
         const SizedBox(height: 24),
         notifyEventRegistration(),
@@ -136,6 +139,7 @@ class AttendanceCard extends StatelessWidget {
           NotificationModel.platformChannelSpecifics,
           androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.time,
         );
       },
       childBuilder: (context, hover, pointerDown) {
@@ -159,100 +163,27 @@ class AttendanceCard extends StatelessWidget {
     );
   }
 
-  Widget notifyAttendance() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const SizedBox(height: 24),
-        AnimatedButton(
-          onTap: () async {
-            final DateTime parsedStartDate = DateTime.parse(event.startDate);
-
-            final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
-
-            final notification = NotificationModel(
-              time: scheduleNotificationDateTime,
-              header: 'Arrangement starter snart!',
-              body: '${event.title} starter om 1 time.',
-            );
-
-            flutterLocalNotificationsPlugin.show(
-              0,
-              'Varsling På',
-              'Du vil bli varslet 1 time før arrangementet starter',
-              const NotificationDetails(
-                iOS: DarwinNotificationDetails(),
-              ),
-            );
-
-            await flutterLocalNotificationsPlugin.zonedSchedule(
-              notification.id,
-              notification.header,
-              notification.body,
-              notification.zonedTime(),
-              NotificationModel.platformChannelSpecifics,
-              androidScheduleMode: AndroidScheduleMode.alarmClock,
-              uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-              // matchDateTimeComponents: DateTimeComponents.time,
-            );
-          },
-          childBuilder: (context, hover, pointerDown) {
-            return Container(
-              height: OnlineTheme.buttonHeight,
-              decoration: BoxDecoration(
-                color: OnlineTheme.yellow.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(5.0),
-                border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                'Varsle Meg',
-                style: OnlineTheme.textStyle(
-                  weight: 5,
-                  color: OnlineTheme.yellow,
-                ),
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget header() {
-    return SizedBox(
-      height: 32,
-      child: Text(
-        'Tid & Sted',
-        style: OnlineTheme.header(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return OnlineCard(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          header(),
-          const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const ThemedIcon(icon: IconType.dateTime, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                EventDateFormatter.formatEventDates(event.startDate, event.endDate),
-                style: OnlineTheme.textStyle(),
-              ),
-            ],
+          SizedBox(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const ThemedIcon(icon: IconType.dateTime, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  EventDateFormatter.formatEventDates(event.startDate, event.endDate),
+                  style: OnlineTheme.textStyle(),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+          SizedBox(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const ThemedIcon(icon: IconType.location, size: 20),
@@ -260,14 +191,12 @@ class AttendanceCard extends StatelessWidget {
                 Text(
                   event.location,
                   style: OnlineTheme.textStyle(),
-                  softWrap: true,
                 ),
               ],
             ),
           ),
           if (showCountdownToRegistrationStart()) countdownToRegistrationStart(),
           if (showCountdownToEventStart()) countdownToEventStart(),
-          if (attendeeInfo.isAttendee) notifyAttendance(),
         ],
       ),
     );

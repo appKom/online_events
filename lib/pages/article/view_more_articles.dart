@@ -18,7 +18,7 @@ class ViewMoreArticles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Works for the latest article, but if you scroll down on another article,
-    //  the article you just read will show up
+    // the article you just read will show up
     final modelsToShow = Client.articlesCache.value.skip(1).toList();
 
     return Column(
@@ -180,7 +180,7 @@ class MoreArticleCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: Container(
             width: 266,
-            color: OnlineTheme.darkGray,
+            color: OnlineTheme.gray13,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -189,7 +189,7 @@ class MoreArticleCard extends StatelessWidget {
                   flex: 1,
                   child: Stack(
                     children: [
-                      Positioned.fill(child: Container(color: OnlineTheme.darkGray)),
+                      Positioned.fill(child: Container(color: OnlineTheme.gray13)),
                       Positioned(
                         left: 20,
                         bottom: 80,

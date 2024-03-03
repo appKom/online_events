@@ -4,33 +4,33 @@ class UserModel {
   final String lastName;
   final String username;
   final String? nickname;
-  final String? ntnuUsername;
+  final String ntnuUsername;
   final int year;
   final String email;
   final String? onlineMail;
-  final String? phoneNumber;
-  final String? address;
+  final String phoneNumber;
+  final String address;
   final String? website;
   final String? github;
   final String? linkedin;
-  final List<dynamic>? positions;
-  final List<dynamic>? specialPositions;
+  final List<dynamic> positions;
+  final List<dynamic> specialPositions;
   final String? rfid;
-  final int? fieldOfStudy;
-  final DateTime? startedDate;
-  final bool? compiled;
-  final bool? infomail;
-  final bool? jobmail;
-  final String? zipCode;
+  final int fieldOfStudy;
+  final DateTime startedDate;
+  final bool compiled;
+  final bool infomail;
+  final bool jobmail;
+  final String zipCode;
   final String? allergies;
-  final bool? markRulesAccepted;
-  final String? gender;
-  final String? bio;
-  final int? saldo;
-  final bool? isCommittee;
-  final bool? isMember;
-  final String? image;
-  final bool? hasExpiringMembership;
+  final bool markRulesAccepted;
+  final String gender;
+  final String bio;
+  final int saldo;
+  final bool isCommittee;
+  final bool isMember;
+  final String image;
+  final bool hasExpiringMembership;
 
   UserModel({
     required this.id,
@@ -38,33 +38,33 @@ class UserModel {
     required this.lastName,
     required this.username,
     this.nickname,
-    this.ntnuUsername,
+    required this.ntnuUsername,
     required this.year,
     required this.email,
     this.onlineMail,
-    this.phoneNumber,
-    this.address,
+    required this.phoneNumber,
+    required this.address,
     this.website,
     this.github,
     this.linkedin,
-    this.positions,
-    this.specialPositions,
+    required this.positions,
+    required this.specialPositions,
     this.rfid,
-    this.fieldOfStudy,
-    this.startedDate,
-    this.compiled,
-    this.infomail,
-    this.jobmail,
-    this.zipCode,
+    required this.fieldOfStudy,
+    required this.startedDate,
+    required this.compiled,
+    required this.infomail,
+    required this.jobmail,
+    required this.zipCode,
     this.allergies,
-    this.markRulesAccepted,
-    this.gender,
-    this.bio,
-    this.saldo,
-    this.isCommittee,
-    this.isMember,
-    this.image,
-    this.hasExpiringMembership,
+    required this.markRulesAccepted,
+    required this.gender,
+    required this.bio,
+    required this.saldo,
+    required this.isCommittee,
+    required this.isMember,
+    required this.image,
+    required this.hasExpiringMembership,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {

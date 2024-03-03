@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 
 import '../models/event_model.dart';
 import '/core/models/article_model.dart';
@@ -10,13 +9,14 @@ import '/core/models/attended_events.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/attendees_list.dart';
 import '/core/models/user_model.dart';
-import '/services/authenticator.dart';
+import '/services/secure_storage.dart';
 
 abstract class Client {
   static const endpoint = 'https://old.online.ntnu.no';
   static String? accessToken;
   static String? refreshToken;
   static int? expiresIn;
+  static DateTime? _tokenSetTime;
 
   static Future<void> saveTokensToSecureStorage() async {
     await SecureStorage.write('accessToken', accessToken ?? '');
@@ -77,17 +77,19 @@ abstract class Client {
         return true;
       default:
         return false;
-
-  static Future<void> launchInBrowser(String url) async {
-    if (!await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)) {
-      throw 'Unable to open $url';
     }
   }
 
+  static bool tokenExpired() {
+    if (_tokenSetTime == null) return true;
+    return DateTime.now().isAfter(_tokenSetTime!);
+  }
+
   static ValueNotifier<Set<EventModel>> eventsCache = ValueNotifier({});
-  static ValueNotifier<UserModel?> userCache = ValueNotifier(null);
 
   static Future<Set<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
+    // await Future.delayed(const Duration(seconds: 5));
+
     Set<EventModel> allEvents = {};
 
     for (int page in pages) {
@@ -100,6 +102,8 @@ abstract class Client {
         final events = jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
 
         allEvents.addAll(events);
+      } else {
+        print('Failed to fetch events from $url');
       }
     }
 
@@ -132,16 +136,23 @@ abstract class Client {
         final events = jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
 
         pastEvents.addAll(events);
+      } else {
+        print('Failed to fetch events from $url');
       }
     }
 
     return pastEvents;
   }
 
-  static Future<UserModel?> getUserProfile() async {
-    final accessToken = Authenticator.credentials?.accessToken;
+  static Future<bool> fetchRefreshToken() async {
+    if (tokenExpired()) return await _refreshToken();
+    return true;
+  }
 
-    if (accessToken == null) return null;
+  static ValueNotifier<UserModel?> userCache = ValueNotifier(null);
+
+  static Future<UserModel?> getUserProfile() async {
+    if (!await fetchRefreshToken()) return null;
 
     const url = '$endpoint/api/v1/profile/';
 
@@ -163,9 +174,7 @@ abstract class Client {
   }
 
   static Future<List<AttendedEvents>?> getAttendedEvents(int userId) async {
-    final accessToken = Authenticator.credentials?.accessToken;
-
-    if (accessToken == null) return null;
+    if (!await fetchRefreshToken()) return null;
 
     List<AttendedEvents> allAttendees = [];
 
@@ -192,6 +201,8 @@ abstract class Client {
             .toList();
 
         allAttendees.addAll(attendees);
+      } else {
+        print('Failed to fetch attendees info from $url');
       }
     }
 
@@ -210,14 +221,13 @@ abstract class Client {
       final jsonResponse = jsonDecode(decodedResponseBody);
       return AttendeeInfoModel.fromJson(jsonResponse);
     } else {
+      print('Failed to fetch attendance');
       return null;
     }
   }
 
   static Future<AttendeeInfoModel?> getEventAttendanceLoggedIn(int eventId) async {
-    final accessToken = Authenticator.credentials?.accessToken;
-
-    if (accessToken == null) return null;
+    if (!await fetchRefreshToken()) return null;
 
     final url = '$endpoint/api/v1/event/attendance-events/$eventId/';
 
@@ -233,14 +243,13 @@ abstract class Client {
       final jsonResponse = jsonDecode(decodedResponseBody);
       return AttendeeInfoModel.fromJson(jsonResponse);
     } else {
+      print('Failed to fetch attendance');
       return null;
     }
   }
 
   static Future<List<AttendeesList>?> getEventAttendees(int eventId) async {
-    final accessToken = Authenticator.credentials?.accessToken;
-
-    if (accessToken == null) return null;
+    if (!await fetchRefreshToken()) return null;
 
     final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
 
@@ -257,15 +266,19 @@ abstract class Client {
 
       return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
     } else {
+      print('Failed to fetch event attendees from $url');
       return [];
     }
   }
 
   static Future<List<AttendeesList>> getEventWaitlists(int eventId) async {
-    final accessToken = Authenticator.credentials?.accessToken;
-
-    if (accessToken == null) return [];
-
+    if (tokenExpired()) {
+      bool refreshed = await _refreshToken();
+      if (!refreshed) {
+        print('Token refresh failed, cannot fetch event attendees');
+        return [];
+      }
+    }
     final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-on-waitlist/';
 
     final response = await http.get(
@@ -281,6 +294,7 @@ abstract class Client {
 
       return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
     } else {
+      print('Failed to fetch event waitlist from $url');
       return [];
     }
   }
@@ -288,10 +302,9 @@ abstract class Client {
   static ValueNotifier<Set<ArticleModel>> articlesCache = ValueNotifier({});
 
   static Future<List<ArticleModel>?> fetchArticles(int pageNumber) async {
-    final articles = await fetch(
-      '$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber',
-      ArticleModel.fromJson,
-    );
+    // await Future.delayed(const Duration(seconds: 5));
+    final articles =
+        await fetch('$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber', ArticleModel.fromJson);
 
     // Add any new articles fetched
     if (articles != null) {

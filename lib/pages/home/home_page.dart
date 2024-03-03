@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
+import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
+import 'bedpres.dart';
 import '/pages/home/event_card.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
-import 'article_carousel.dart';
-import 'bedpres.dart';
-import 'info_page.dart';
+import 'promoted_articles.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
 
   @override
   Widget content(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -25,41 +24,28 @@ class HomePage extends ScrollablePage {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Kommende Arrangementer',
-                style: OnlineTheme.header(),
-              ),
-              // AnimatedButton(
-              //   onTap: () {
-              //     AppNavigator.navigateToPage(const InfoPage());
-              //   },
-              //   childBuilder: (context, hover, pointerDown) {
-              //     return const Icon(
-              //       Icons.info_outline,
-              //       color: OnlineTheme.white,
-              //       size: 25,
-              //     );
-              //   },
-              // ),
-            ],
+          Text(
+            'Kommende Arrangementer',
+            style: OnlineTheme.header(),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 24),
-            height: 100 * 4,
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 111 * 3,
             child: ValueListenableBuilder(
               valueListenable: Client.eventsCache,
               builder: (context, events, child) {
                 if (events.isEmpty) {
                   return Column(
-                    children: List.generate(4, (_) => EventCard.skeleton()),
+                    children: [
+                      EventCard.skeleton(),
+                      EventCard.skeleton(),
+                      EventCard.skeleton(),
+                    ],
                   );
                 }
 
                 return ListView.builder(
-                  itemCount: 4,
+                  itemCount: 3,
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (c, i) => EventCard(
@@ -72,11 +58,18 @@ class HomePage extends ScrollablePage {
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
             builder: (context, events, child) {
+              if (events.isEmpty) {
+                return Center(
+                  child: SkeletonLoader(
+                    borderRadius: BorderRadius.circular(5),
+                    width: 50,
+                    height: 25,
+                  ),
+                );
+              }
+
               return AnimatedButton(
-                onTap: () {
-                  if (events.isEmpty) return;
-                  AppNavigator.navigateToPage(const EventsPageDisplay());
-                },
+                onTap: () => AppNavigator.navigateToPage(const EventsPageDisplay()),
                 behavior: HitTestBehavior.opaque,
                 childBuilder: (context, hover, pointerDown) {
                   return Row(
@@ -101,49 +94,23 @@ class HomePage extends ScrollablePage {
               );
             },
           ),
-          const SizedBox(height: 24 + 24),
+          const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.eventsCache,
             builder: (context, events, child) {
-              if (events.isEmpty) return Bedpres.skeleton(context);
+              if (events.isEmpty) return Bedpres.skeleton();
               return Bedpres(models: events);
             },
           ),
           const SizedBox(height: 24 + 24),
-          Text('Artikler', style: OnlineTheme.header()),
+          Text('Noe å lese på?', style: OnlineTheme.header()),
           const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.articlesCache,
             builder: (context, articles, child) {
-              if (articles.isEmpty)
-                return Center(child: ArticleCarousel.skeleton(context));
-              return Center(
-                  child: ArticleCarousel(articles: articles.take(3).toList()));
-            },
-          ),
-          const SizedBox(height: 24 + 24),
-          AnimatedButton(
-            onTap: () {
-              AppNavigator.navigateToPage(const InfoPage());
-            },
-            childBuilder: (context, hover, pointerDown) {
-              return Container(
-                height: 40,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: OnlineTheme.yellow.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(5.0),
-                  border: const Border.fromBorderSide(
-                      BorderSide(color: OnlineTheme.yellow, width: 2)),
-                ),
-                child: Text(
-                  'Om Online-Appen',
-                  style: OnlineTheme.textStyle(
-                    weight: 5,
-                    color: OnlineTheme.yellow,
-                  ),
-                ),
-              );
+              if (articles.isEmpty) return Center(child: PromotedArticles.skeleton());
+
+              return Center(child: PromotedArticles(articles: articles.take(3).toList()));
             },
           ),
           const SizedBox(height: 24),

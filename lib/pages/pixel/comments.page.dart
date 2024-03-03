@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import '/components/animated_button.dart';
 import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
-import '/core/client/client.dart' as io;
+import '/main.dart';
 import '/pages/pixel/models/user_post.dart';
 import '/pages/pixel/pixel.dart';
 import '/pages/pixel/view_pixel_user.dart';
@@ -150,8 +150,6 @@ class CommentPageState extends State<CommentPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userProfile = io.Client.userCache.value;
-
     return Scaffold(
       backgroundColor: OnlineTheme.background,
       body: SafeArea(

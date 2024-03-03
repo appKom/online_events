@@ -6,7 +6,6 @@ import '/pages/event/cards/event_card.dart';
 import '/pages/event/cards/event_participants.dart';
 import '/theme/theme.dart';
 import 'card_badge.dart';
-import 'event_card_buttons.dart';
 import 'registration_info.dart';
 
 class RegistrationCard extends StatelessWidget {
@@ -92,14 +91,14 @@ class RegistrationCard extends StatelessWidget {
                 RegistrationInfo(
                   attendeeInfoModel: attendeeInfoModel,
                 ),
-                const SizedBox(height: 10),
-                EventCardButtons(
-                  model: model,
-                  attendeeInfoModel: attendeeInfoModel,
-                  onUnregisterSuccess: onUnregisterSuccess,
-                ),
               ],
             ),
+          // const SizedBox(height: 10),
+          // EventCardButtons(
+          //   model: model,
+          //   attendeeInfoModel: attendeeInfoModel,
+          //   onUnregisterSuccess: onUnregisterSuccess,
+          // ),
         ],
       ),
     );

@@ -3,20 +3,14 @@ import 'package:flutter/material.dart';
 import '../pages/games/games_page.dart';
 import '../pages/login/login_page.dart';
 import '../pages/profile/profile_page.dart';
+import '/main.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';
-import '/services/authenticator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
-
-enum NavbarPage {
-  home,
-  events,
-  games,
-  profile,
-}
+import 'animated_button.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -26,105 +20,78 @@ class Navbar extends StatefulWidget {
     return padding + 40 + 24;
   }
 
-  static void _navigateHome() {
-    AppNavigator.replaceWithPage(const HomePage());
-    NavbarState.selected.value = 0;
-  }
-
-  static void _navigateEvents() {
-    if (Authenticator.isLoggedIn()) {
-      AppNavigator.replaceWithPage(const MyEventsPageDisplay());
-    } else {
-      AppNavigator.replaceWithPage(const NotLoggedInPage());
-    }
-    NavbarState.selected.value = 1;
-  }
-
-  static void _navigateGames() {
-    AppNavigator.replaceWithPage(const GamesPage());
-    NavbarState.selected.value = 2;
-  }
-
-  static void _navigateProfile() {
-    if (Authenticator.isLoggedIn()) {
-      AppNavigator.replaceWithPage(const ProfilePageDisplay());
-    } else {
-      AppNavigator.replaceWithPage(const LoginPage());
-    }
-    NavbarState.selected.value = 3;
-  }
-
-  static void navigateTo(NavbarPage page) {
-    switch (page) {
-      case NavbarPage.home:
-        return _navigateHome();
-      case NavbarPage.events:
-        return _navigateEvents();
-      case NavbarPage.games:
-        return _navigateGames();
-      case NavbarPage.profile:
-        return _navigateProfile();
-    }
-  }
-
   @override
   State<StatefulWidget> createState() => NavbarState();
 }
 
 class NavbarState extends State<Navbar> {
-  static ValueNotifier<int> selected = ValueNotifier(0);
+  int selected = 0;
 
-  static const List<NavbarButton> _buttons = [
-    NavbarButton(
-      icon: IconType.home,
-      activeIcon: IconType.homeFilled,
-      onPressed: Navbar._navigateHome,
-    ),
-    NavbarButton(
-      icon: IconType.calendarClock,
-      activeIcon: IconType.calendarClockFilled,
-      onPressed: Navbar._navigateEvents,
-    ),
-    NavbarButton(
-      icon: IconType.dices,
-      activeIcon: IconType.dicesFilled,
-      onPressed: Navbar._navigateGames,
-    ),
-    NavbarButton(
-      icon: IconType.user,
-      activeIcon: IconType.userFilled,
-      onPressed: Navbar._navigateProfile,
-    ),
-  ];
+  // Initialize buttons directly in the declaration
+  List<NavbarButton> get buttons => [
+        NavbarButton(
+          icon: IconType.home,
+          activeIcon: IconType.homeFilled,
+          onPressed: () => AppNavigator.replaceWithPage(const HomePage()), // Use global loggedIn
+        ),
+        NavbarButton(
+          icon: IconType.calendarClock,
+          activeIcon: IconType.calendarClockFilled,
+          onPressed: () {
+            if (loggedIn) {
+              AppNavigator.replaceWithPage(const MyEventsPageDisplay());
+            } else {
+              AppNavigator.replaceWithPage(const NotLoggedInPage());
+            }
+          },
+        ),
+        NavbarButton(
+          icon: IconType.beer,
+          activeIcon: IconType.beerFilled,
+          onPressed: () => AppNavigator.replaceWithPage(const GamesPage()),
+        ),
+        NavbarButton(
+          icon: IconType.settings,
+          activeIcon: IconType.settingsFilled,
+          onPressed: () {
+            if (loggedIn) {
+              AppNavigator.replaceWithPage(const ProfilePageDisplay());
+            } else {
+              AppNavigator.replaceWithPage(const LoginPage());
+            }
+          },
+        ),
+      ];
 
   Widget navButton(int i, double padding) {
-    return ValueListenableBuilder(
-      valueListenable: selected,
-      builder: (context, selected, child) {
-        final active = i == selected;
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: padding),
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                _buttons[i].onPressed?.call();
+    final active = i == selected;
 
-                NavbarState.selected.value = i;
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: ThemedIcon(
-                  key: UniqueKey(),
-                  icon: active ? _buttons[i].activeIcon : _buttons[i].icon,
-                  size: 24,
-                  color: active ? OnlineTheme.yellow : OnlineTheme.white,
-                ),
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: padding),
+        child: AnimatedButton(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            buttons[i].onPressed?.call();
+
+            setState(() {
+              selected = i;
+            });
+          },
+          scale: 0.8,
+          childBuilder: (context, hover, pointerDown) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: ThemedIcon(
+                key: UniqueKey(),
+                icon: active ? buttons[i].activeIcon : buttons[i].icon,
+                size: 24,
+                color: active ? OnlineTheme.yellow : OnlineTheme.white,
               ),
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -141,7 +108,7 @@ class NavbarState extends State<Navbar> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: List.generate(
-          _buttons.length,
+          buttons.length,
           (i) => navButton(i, padding.bottom),
         ),
       ),
