@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ionicons/ionicons.dart';
@@ -6,8 +7,9 @@ import '../../../theme/theme.dart';
 
 class CustomCard extends StatelessWidget {
   final String name;
+  final int position;
 
-  const CustomCard({super.key, required this.name});
+  const CustomCard({super.key, required this.name, required this.position});
 
   @override
   Widget build(BuildContext context) {
@@ -20,52 +22,41 @@ class CustomCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(34.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                name,
-                style: const TextStyle(
-                    color: OnlineTheme.hundredPrimaryTextColor,
-                    fontWeight: FontWeight.w900,
-                    fontFamily: 'Avenir',
-                    fontSize: 50),
-                textAlign: TextAlign.left,
+              const SizedBox(
+                height: 70,
               ),
-              Center(
-                child: Text(
-                  "Solar System",
-                  style: TextStyle(
-                      color: OnlineTheme.hundredPrimaryTextColor,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Avenir',
-                      fontSize: 28),
-                  textAlign: TextAlign.left,
+              Container(
+                height: 160,
+                child: Center(
+                  child: Text(
+                    name,
+                    style: const TextStyle(
+                        color: OnlineTheme.hundredPrimaryTextColor,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'Avenir',
+                        fontSize: 28),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
               const SizedBox(
-                height: 24,
+                height: 60,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Know More",
-                    style: TextStyle(
+                    position.toString(),
+                    style: const TextStyle(
                         color: OnlineTheme.hundredSecondaryTextColor,
                         fontWeight: FontWeight.w600,
                         fontFamily: 'Avenir',
                         fontSize: 20),
                     textAlign: TextAlign.left,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
-                    child: Icon(
-                      Ionicons.arrow_forward,
-                      color: OnlineTheme.hundredSecondaryTextColor,
-                      size: 20,
-                    ),
-                  )
                 ],
               )
             ],

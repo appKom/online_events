@@ -14,7 +14,7 @@ class HundredQuestionsInfo extends StatelessWidget {
     return Scaffold(
       backgroundColor: OnlineTheme.hundredGradientEndColor,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             gradient: LinearGradient(
                 colors: [
                   OnlineTheme.hundredGradientStartColor,
@@ -22,10 +22,13 @@ class HundredQuestionsInfo extends StatelessWidget {
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: const [0.1, 0.9])),
+                stops: [0.1, 0.9])),
         child: SafeArea(
             child: Column(
           children: <Widget>[
+            const SizedBox(
+              height: 100,
+            ),
             const HeaderWidget(),
             SizedBox(
               height: 500,
@@ -34,12 +37,6 @@ class HundredQuestionsInfo extends StatelessWidget {
                 itemWidth: MediaQuery.of(context).size.width,
                 itemHeight: MediaQuery.of(context).size.height,
                 layout: SwiperLayout.TINDER,
-                pagination: SwiperPagination(
-                    builder: DotSwiperPaginationBuilder(
-                        color: OnlineTheme.hundredDotColor,
-                        activeColor: Colors.white,
-                        activeSize: 12,
-                        space: 4)),
                 itemBuilder: (context, index) {
                   return Stack(
                     children: [
@@ -49,14 +46,11 @@ class HundredQuestionsInfo extends StatelessWidget {
                             height: 60,
                           ),
                           CustomCard(
-                            name: hundredInfo[index].name,
+                            name: hundredInfo[index].question,
+                            position: hundredInfo[index].position,
                           ),
                         ],
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 20),
-                      //   child: Image.asset(hundredInfo[index].iconImage),
-                      // )
                     ],
                   );
                 },

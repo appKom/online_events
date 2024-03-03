@@ -1,72 +1,172 @@
 class HundredInfo {
   final int position;
-  final String name;
-  final String iconImage;
-  final String description;
+  final String question;
 
   HundredInfo(
     this.position, {
-    required this.name,
-    required this.iconImage,
-    required this.description,
+    required this.question,
   });
 }
 
 List<HundredInfo> hundredInfo = [
   HundredInfo(
     1,
-    name: 'Mercury',
-    iconImage: 'assets/images/better_profile_picture.jpg',
-    description:
-        "Zipping around the sun in only 88 days, Mercury is the closest planet to the sun, and it's also the smallest, only a little bit larger than Earth's moon. Because its so close to the sun (about two-fifths the distance between Earth and the sun), Mercury experiences dramatic changes in its day and night temperatures: Day temperatures can reach a scorching 840  F (450 C), which is hot enough to melt lead. Meanwhile on the night side, temperatures drop to minus 290 F (minus 180 C).",
+    question: 'Hvem er den største kokken?',
   ),
   HundredInfo(
     2,
-    name: 'Venus',
-    iconImage: 'assets/images/better_profile_picture.jpg',
-    description:
-        "The second planet from the sun, Venus is Earth's twin in size. Radar images beneath its atmosphere reveal that its surface has various mountains and volcanoes. But beyond that, the two planets couldn't be more different. Because of its thick, toxic atmosphere that's made of sulfuric acid clouds, Venus is an extreme example of the greenhouse effect. It's scorching-hot, even hotter than Mercury. The average temperature on Venus' surface is 900 F (465 C). At 92 bar, the pressure at the surface would crush and kill you. And oddly, Venus spins slowly from east to west, the opposite direction of most of the other planets.",
+    question: 'Hvem sin kode fungerer alltid uansett hvor dårlig den ser ut?',
   ),
   HundredInfo(
     3,
-    name: 'Earth',
-    iconImage: 'assets/images/better_profile_picture.jpg',
-    description:
-        "The third planet from the sun, Earth is a waterworld, with two-thirds of the planet covered by ocean. It's the only world known to harbor life. Earth's atmosphere is rich in nitrogen and oxygen. Earth's surface rotates about its axis at 1,532 feet per second (467 meters per second) — slightly more than 1,000 mph (1,600 kph) — at the equator. The planet zips around the sun at more than 18 miles per second (29 km per second).",
+    question: 'Hvem er best venn med GPT?',
   ),
   HundredInfo(
     4,
-    name: 'Mars',
-    iconImage: 'assets/images/better_profile_picture.jpg',
-    description:
-        "The fourth planet from the sun is Mars, and it's a cold, desert-like place covered in dust. This dust is made of iron oxides, giving the planet its iconic red hue. Mars shares similarities with Earth: It is rocky, has mountains, valleys and canyons, and storm systems ranging from localized tornado-like dust devils to planet-engulfing dust storms. ",
+    question: 'Hvem er det som alltid møter opp på forelesning?',
   ),
   HundredInfo(
     5,
-    name: 'Jupiter',
-    iconImage: 'assets/images/better_profile_picture.jpg',
-    description:
-        "The fifth planet from the sun, Jupiter is a giant gas world that is the most massive planet in our solar system — more than twice as massive as all the other planets combined, according to NASA. Its swirling clouds are colorful due to different types of trace gases. And a major feature in its swirling clouds is the Great Red Spot, a giant storm more than 10,000 miles wide. It has raged at more than 400 mph for the last 150 years, at least. Jupiter has a strong magnetic field, and with 75 moons, it looks a bit like a miniature solar system.",
+    question: 'Hvem stikker alltid hjem etter forelesning?',
   ),
   HundredInfo(
     6,
-    name: 'Saturn',
-    iconImage: 'assets/images/better_profile_picture.jpg',
-    description:
-        "The sixth planet from the sun, Saturn is known most for its rings. When polymath Galileo Galilei first studied Saturn in the early 1600s, he thought it was an object with three parts: a planet and two large moons on either side. Not knowing he was seeing a planet with rings, the stumped astronomer entered a small drawing — a symbol with one large circle and two smaller ones — in his notebook, as a noun in a sentence describing his discovery. More than 40 years later, Christiaan Huygens proposed that they were rings. The rings are made of ice and rock and scientists are not yet sure how they formed. The gaseous planet is mostly hydrogen and helium and has numerous moons.",
+    question: 'Hvem har størst sannsynlighet til å sovne på vors?',
   ),
   HundredInfo(
     7,
-    name: 'Uranus',
-    iconImage: 'assets/images/better_profile_picture.jpg',
-    description:
-        "The seventh planet from the sun, Uranus is an oddball. It has clouds made of hydrogen sulfide, the same chemical that makes rotten eggs smell so foul. It rotates from east to west like Venus. But unlike Venus or any other planet, its equator is nearly at right angles to its orbit — it basically orbits on its side. Astronomers believe an object twice the size of Earth collided with Uranus roughly 4 billion years ago, causing Uranus to tilt. That tilt causes extreme seasons that last 20-plus years, and the sun beats down on one pole or the other for 84 Earth-years at a time. ",
+    question: 'Hvem spør alltid om å queue på vors?',
   ),
   HundredInfo(
     8,
-    name: 'Neptune',
-    iconImage: 'assets/images/better_profile_picture.jpg',
-    description:
-        "The eighth planet from the sun, Neptune is about the size of Uranus and is known for supersonic strong winds. Neptune is far out and cold. The planet is more than 30 times as far from the sun as Earth. Neptune was the first planet predicted to exist by using math, before it was visually detected. Irregularities in the orbit of Uranus led French astronomer Alexis Bouvard to suggest some other planet might be exerting a gravitational tug. German astronomer Johann Galle used calculations to help find Neptune in a telescope. Neptune is about 17 times as massive as Earth and has a rocky core.",
+    question: 'Hvem trenger ikke vise medlemskortet på Samf?',
   ),
+  HundredInfo(9, question: "Hvem er med på alt?"),
+  HundredInfo(10, question: "Hvem stjeler mest fra kiosken?"),
+  HundredInfo(11, question: "Største boomer?"),
+  HundredInfo(12, question: "Største Gen Z?"),
+  HundredInfo(13, question: "Hvem har bedreppene rundt lillefingeren?"),
+  HundredInfo(14, question: "Hvem får alltid tak i ekstra bonger?"),
+  HundredInfo(15, question: "Hvem konter mest?"),
+  HundredInfo(16, question: "Hvem er mest syk?"),
+  HundredInfo(17,
+      question:
+          "Hvem hoster flest vors? Ta en slurk for hosten som må deale med dere!"),
+  HundredInfo(18, question: "Hvem er den største bodega-krigeren?"),
+  HundredInfo(19, question: "Hvem hadde brukt JavaFX uironisk?"),
+  HundredInfo(20,
+      question:
+          "Hvem er mest kansellerbar? Pass på litt ekstra etter drikkinga du..."),
+  HundredInfo(21, question: "Hvem ser mest ut som de snuser?"),
+  HundredInfo(22, question: "Hvem er på Debug's top 10 most wanted?"),
+  HundredInfo(23, question: "Hvem ligger alltid bakpå øvinger?"),
+  HundredInfo(24, question: "Hvem ville du helst hatt med på en øde øy?"),
+  HundredInfo(25, question: "Hvem er den største karaokestjerna?"),
+  HundredInfo(26,
+      question: "Hvem er kronisk hang? På 2-dagers allerede, eller?"),
+  HundredInfo(27, question: "Hvem gir deg høyest blodtrykk?"),
+  HundredInfo(28, question: "Hvem iskter mest (realfags)kjeller?"),
+  HundredInfo(29,
+      question: "Hvem ville du helst ikke vert fanga i en heis med?"),
+  HundredInfo(30, question: "Hvem er medlem av kontorsofaklubben?"),
+  HundredInfo(31, question: "Hvem er best i Smash?"),
+  HundredInfo(32, question: "Hvem er best i Mario Kart?"),
+  HundredInfo(33, question: "Hvem ignorerer smashpausen?"),
+  HundredInfo(34, question: "Hvem tar de lengste 'pausene'?"),
+  HundredInfo(35, question: "Hvem ender alltid opp på Heidi's?"),
+  HundredInfo(36, question: "Hvem drar alltid på Cavasondag?"),
+  HundredInfo(37, question: "Hvem er mest keen på å være fadder?"),
+  HundredInfo(38,
+      question: "Hvem er din partner-in-crime for øvinger og gruppearbeid?"),
+  HundredInfo(39, question: "Hvem tilbringer mest tid på kontoret?"),
+  HundredInfo(40, question: "Hvem forsvinner først på Samf?"),
+  HundredInfo(41, question: "Hvem får ikke kjøpe drikke i baren?"),
+  HundredInfo(42, question: "Hvem detter først i bakken i Åre?"),
+  HundredInfo(43, question: "Hvem skal 'stå på ski' i Åre?"),
+  HundredInfo(44,
+      question:
+          "Hvem blir kastet ut først fra Immball? Hvem må fortsatt vise leg på Vinmonopolet?"),
+  HundredInfo(45, question: "Hvem kommer senest på vors?"),
+  HundredInfo(46, question: "Hvem er dårligst i beerpong?"),
+  HundredInfo(47, question: "Hvem har fått flest prikker?"),
+  HundredInfo(48, question: "Hvem skir på isen på vei til Bygget?"),
+  HundredInfo(49,
+      question:
+          "Hvem er mest sannsynlig til å ende opp på Red Wines Wall of Shame?"),
+  HundredInfo(50, question: "Hvem brenner flest Hiroshima-shots på Circus?"),
+  HundredInfo(51, question: "Hvem spør mest 'for en venn' i Online Slacken?"),
+  HundredInfo(52, question: "Hvem er på største A4-bonna?"),
+  HundredInfo(53, question: "Hvem er den sterkeste A4-krigeren?"),
+  HundredInfo(54, question: "Hvem finner du alltid i Realfagkantina?"),
+  HundredInfo(55, question: "Hvem er litt for vennlig med abakuler?"),
+  HundredInfo(56, question: "Hvem har de mest kreative rostene?"),
+  HundredInfo(57, question: "Hvem har de dårligste comebacksa?"),
+  HundredInfo(58,
+      question:
+          "Hvem sitt størstipend forsvinner på mystisk vis hver semesterstart?"),
+  HundredInfo(59,
+      question: "Hvem starter en OnlyFans hvis de stryker algdat en gang til!"),
+  HundredInfo(60,
+      question: "Hvem kunne startet den neste store crypto scammen?"),
+  HundredInfo(61, question: "Hvem hadde brukt «Passord123» som passord?"),
+  HundredInfo(62,
+      question: "Hvem sitt rom ser ut som et diskotek på grunn av alt i RGB?"),
+  HundredInfo(63,
+      question:
+          "Hvem ser Wolf of Wallstreet hver dag som 'Pensum' i sigma grindset?"),
+  HundredInfo(64, question: "Hvem er et academic weapon?"),
+  HundredInfo(65, question: "Hvem er et academic victim?"),
+  HundredInfo(66,
+      question: "Hvem er flinkest til å diskutere? Diskuter deg til en shot!!"),
+  HundredInfo(67,
+      question:
+          "Hvem kunne kysset noen for en drink på byen? Hva med noen i rommet? 😉"),
+  HundredInfo(68,
+      question:
+          "Hvem syns fortsatt at dette tallet er morsomt? Voks opp... Ta 3 straffeslurker"),
+  HundredInfo(69, question: "Hvem starter den neste store interessegruppen?"),
+  HundredInfo(70, question: "Hvem spammer emojis som en 14 år gammel jente?"),
+  HundredInfo(71, question: "Hvem er en gud i tetris battle fra videregående?"),
+  HundredInfo(72,
+      question: "Hvem kunne vært en jock i en American High School film?"),
+  HundredInfo(73,
+      question:
+          "Hvem kunne vært lead Cheerleader i en American High School film?"),
+  HundredInfo(74,
+      question: "Hvem bruker fortsatt kalkulatoren sin til å skrive 5318008?"),
+  HundredInfo(75, question: "Hvem preacher fargene til NTNUI?"),
+  HundredInfo(76, question: "Hvem planlegger hybelen sin i Sims?"),
+  HundredInfo(77, question: "Hvem bruker alt i light mode?"),
+  HundredInfo(78,
+      question: "Hvem har lengst streak på Duolingo men klarer ikke si noe?"),
+  HundredInfo(79, question: "Hvem har mest hvit monster i blodet?"),
+  HundredInfo(80, question: "Hvem får grønnsakene sine fra Mama Nudler?"),
+  HundredInfo(81, question: "Hvem lager best memes under genfors?"),
+  HundredInfo(82, question: "Hvem gjør alltid noe meme verdig under genfors?"),
+  HundredInfo(83,
+      question:
+          "Hvem klager på at eksamen gikk dritt, men alltid får bra karakter?"),
+  HundredInfo(84, question: "Hvem svarer på spørsmål på StackOverflow?"),
+  HundredInfo(85,
+      question: "Hvem bruker Reddit AITA til å stille spørsmål om livet sitt?"),
+  HundredInfo(86,
+      question:
+          "Hvem har Samfundets BESTE sjekkereplikk? Sjekk opp personen til venstre da vel 😉"),
+  HundredInfo(87,
+      question: "Hvem har den VERSTE? Kanskje du kan få noen tips fra gruppa?"),
+  HundredInfo(88, question: "Hvem er mest flat-earther?"),
+  HundredInfo(89,
+      question:
+          "Hvem legger alltid ut for drikke på Samf når du har for lite på brukskonto?"),
+  HundredInfo(90,
+      question: "Hvem har alltid en (ikke nødvendigvis god) plan på byen?"),
+  HundredInfo(91, question: "Hvem spiller mest League of Legends?"),
+  HundredInfo(92,
+      question: "Hvem burde virkelig få seg litt frisk luft og røre gress?"),
+  HundredInfo(93, question: "Hvem sitter mer på Netflix enn?"),
+  HundredInfo(94, question: "Hvem er den største romantikeren? #rizz"),
+  HundredInfo(96,
+      question: "Hvem sover aldri i sin egen seng etter en kveld på byen?"),
+  HundredInfo(97, question: "Hvem er ditt A4 gang-crush?"),
+  HundredInfo(98, question: "Hvem løper vekk fra purken? (Hvis de blir tatt)"),
 ];
