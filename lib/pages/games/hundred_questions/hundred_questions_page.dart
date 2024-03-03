@@ -57,7 +57,7 @@ class HundredQuestionsInfo extends StaticPage {
                 return Center(
                   child: CustomCard(
                     name: questions[index],
-                    position: questions.length - index,
+                    index: questions.length - index,
                   ),
                 );
               },

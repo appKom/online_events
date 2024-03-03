@@ -4,9 +4,9 @@ import '/theme/theme.dart';
 
 class CustomCard extends StatelessWidget {
   final String name;
-  final int position;
+  final int index;
 
-  const CustomCard({super.key, required this.name, required this.position});
+  const CustomCard({super.key, required this.name, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -19,38 +19,37 @@ class CustomCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 70,
-              ),
-              SizedBox(
-                height: 160,
+              const SizedBox(height: 24),
+              Expanded(
                 child: Center(
                   child: Text(
                     name,
-                    style: OnlineTheme.textStyle(color: OnlineTheme.gray0, weight: 5, size: 25),
-                    textAlign: TextAlign.left,
+                    style: OnlineTheme.textStyle(
+                      color: OnlineTheme.gray0,
+                      weight: 5,
+                      size: 25,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 60,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    position.toString(),
-                    style: const TextStyle(
-                        color: OnlineTheme.hundredSecondaryTextColor,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Avenir',
-                        fontSize: 20),
-                    textAlign: TextAlign.left,
-                  ),
-                ],
+              SizedBox(
+                height: 24,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      index.toString(),
+                      style: OnlineTheme.textStyle(
+                        color: OnlineTheme.purple1,
+                        size: 20,
+                        weight: 6,
+                      ),
+                    ),
+                  ],
+                ),
               )
             ],
           ),
