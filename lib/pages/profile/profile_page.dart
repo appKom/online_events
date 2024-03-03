@@ -34,7 +34,6 @@ class _ProfilePageState extends State<ProfilePage> {
   late Storage storage;
   File? _imageFile;
   late Databases database;
-  // final TextEditingController _titleController = TextEditingController();
   PixelUserClass? pixelUserData;
 
   @override
@@ -90,25 +89,6 @@ class _ProfilePageState extends State<ProfilePage> {
       print("Error saving UserProfile: $e");
     }
   }
-
-  // Future<void> saveBiography(UserModel? userModel) async {
-  //   if (userModel == null && _titleController.text.isNotEmpty) return;
-
-  //   try {
-  //     await database.updateDocument(
-  //         collectionId: dotenv.env['USER_COLLECTION_ID']!,
-  //         databaseId: dotenv.env['USER_DATABASE_ID']!,
-  //         documentId: userModel!.username,
-  //         data: {'biography': _titleController.text});
-  //     if (pixelUserData != null) {
-  //       pixelUserData!.biography = _titleController.text;
-  //       setState(() {});
-  //     }
-  //     _titleController.clear();
-  //   } catch (e) {
-  //     print("Error saving Biography: $e");
-  //   }
-  // }
 
   Future<PixelUserClass?> fetchPixelUserInfo(UserModel? userModel) async {
     if (userModel == null) return null;
@@ -189,11 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> uploadImage(UserModel? userModel) async {
     if (userModel == null) return;
-
-    if (_imageFile == null) {
-      print("No image selected");
-      return;
-    }
+    if (_imageFile == null) return;
 
     String fileName = userModel.username;
 

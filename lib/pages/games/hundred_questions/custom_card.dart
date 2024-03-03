@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:ionicons/ionicons.dart';
 
-import '../../../theme/theme.dart';
+import '/theme/theme.dart';
 
 class CustomCard extends StatelessWidget {
   final String name;
@@ -17,10 +14,10 @@ class CustomCard extends StatelessWidget {
       height: 400,
       child: Card(
         elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.all(34.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,16 +25,12 @@ class CustomCard extends StatelessWidget {
               const SizedBox(
                 height: 70,
               ),
-              Container(
+              SizedBox(
                 height: 160,
                 child: Center(
                   child: Text(
                     name,
-                    style: const TextStyle(
-                        color: OnlineTheme.hundredPrimaryTextColor,
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'Avenir',
-                        fontSize: 28),
+                    style: OnlineTheme.textStyle(color: OnlineTheme.gray0, weight: 5, size: 25),
                     textAlign: TextAlign.left,
                   ),
                 ),

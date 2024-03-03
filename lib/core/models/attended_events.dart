@@ -4,7 +4,6 @@ class AttendedEvents {
   final UserInfo user;
   final DateTime timestamp;
 
-
   AttendedEvents({
     required this.id,
     required this.event,
@@ -16,11 +15,8 @@ class AttendedEvents {
     return AttendedEvents(
       id: json['id'] ?? 0,
       event: json['event'] ?? 0,
-      timestamp: json['timestamp'] != null
-          ? DateTime.parse(json['timestamp'])
-          : DateTime.now(),
-      user:
-          UserInfo.fromJson(json['user'] ?? {}),
+      timestamp: json['timestamp'] != null ? DateTime.parse(json['timestamp']) : DateTime.now(),
+      user: UserInfo.fromJson(json['user'] ?? {}),
     );
   }
 }
@@ -29,7 +25,7 @@ class UserInfo {
   final int id;
   final String firstName;
   final int lastName;
-  final String username; 
+  final String username;
 
   UserInfo({
     required this.id,

@@ -1,63 +1,79 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:online/pages/games/hundred_questions/hundred_models.dart';
+import 'package:online/components/animated_button.dart';
+import 'package:online/services/app_navigator.dart';
+import 'package:online/theme/themed_icon.dart';
 
-import '../../../theme/theme.dart';
+import '/components/online_scaffold.dart';
+import '/theme/theme.dart';
 import 'custom_card.dart';
-import 'header_widget.dart';
+import 'questions.dart';
 
-class HundredQuestionsInfo extends StatelessWidget {
-  const HundredQuestionsInfo({super.key});
+class HundredQuestionsInfo extends StaticPage {
+  HundredQuestionsInfo({super.key});
+
+  final controller = SwiperController();
+
+  Future onTap(int idnex) async {
+    await controller.previous();
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: OnlineTheme.hundredGradientEndColor,
-      body: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [
-                  OnlineTheme.hundredGradientStartColor,
-                  OnlineTheme.hundredGradientEndColor
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.1, 0.9])),
-        child: SafeArea(
-            child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 100,
+  Widget content(BuildContext context) {
+    return Container(
+      padding: MediaQuery.of(context).padding,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [OnlineTheme.hundredGradientStartColor, OnlineTheme.hundredGradientEndColor],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: [0.1, 0.9],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            "Hundre Spørsmål",
+            style: OnlineTheme.textStyle(
+              color: OnlineTheme.hundredTitleTextColor,
+              size: 30,
+              weight: 7,
             ),
-            const HeaderWidget(),
-            SizedBox(
-              height: 500,
-              child: Swiper(
-                itemCount: hundredInfo.length,
-                itemWidth: MediaQuery.of(context).size.width,
-                itemHeight: MediaQuery.of(context).size.height,
-                layout: SwiperLayout.TINDER,
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      Column(
-                        children: [
-                          const SizedBox(
-                            height: 60,
-                          ),
-                          CustomCard(
-                            name: hundredInfo[index].question,
-                            position: hundredInfo[index].position,
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-            )
-          ],
-        )),
+          ),
+          SizedBox(
+            height: 430,
+            child: Swiper(
+              onTap: onTap,
+              itemCount: questions.length,
+              itemWidth: MediaQuery.of(context).size.width,
+              itemHeight: MediaQuery.of(context).size.height,
+              index: questions.length - 1,
+              allowImplicitScrolling: true,
+              loop: false,
+              layout: SwiperLayout.TINDER,
+              controller: controller,
+              itemBuilder: (context, index) {
+                return Center(
+                  child: CustomCard(
+                    name: questions[index],
+                    position: questions.length - index,
+                  ),
+                );
+              },
+            ),
+          ),
+          AnimatedButton(
+            onTap: AppNavigator.pop,
+            scale: 0.9,
+            childBuilder: (context, hover, pointerDown) {
+              return const ThemedIcon(
+                icon: IconType.cross,
+                size: 24,
+              );
+            },
+          )
+        ],
       ),
     );
   }

@@ -17,8 +17,7 @@ class GamesPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -44,7 +43,7 @@ class GamesPage extends ScrollablePage {
                 name: 'Hundre spørsmål',
                 imageSource: 'assets/images/hundred-questions.png',
                 onTap: () {
-                  AppNavigator.globalNavigateTo(const HundredQuestionsInfo());
+                  AppNavigator.globalNavigateTo(HundredQuestionsInfo());
                 },
               ),
               GameCard(
@@ -127,8 +126,7 @@ class GameCard extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom:
-                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
                     ),
                   ),
                   child: AspectRatio(
