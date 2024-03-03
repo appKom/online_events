@@ -8,18 +8,22 @@ import '/services/app_navigator.dart';
 import '/services/authenticator.dart';
 import '/theme/theme.dart';
 
+bool acceptedPrivacy = true;
+
 class LoginPage extends StaticPage {
   const LoginPage({super.key});
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding =
+        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     final isIos = Theme.of(context).platform == TargetPlatform.iOS;
 
     return FutureBuilder(
       future: appTrackingPermission(isIos),
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) return const IgnorePointer();
+        if (snapshot.connectionState != ConnectionState.done)
+          return const IgnorePointer();
 
         return Padding(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -38,11 +42,13 @@ class LoginPage extends StaticPage {
                     decoration: BoxDecoration(
                       color: OnlineTheme.green.withOpacity(0.4),
                       borderRadius: BorderRadius.circular(5),
-                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
+                      border: const Border.fromBorderSide(
+                          BorderSide(color: OnlineTheme.green, width: 2)),
                     ),
                     child: Text(
                       'Logg Inn',
-                      style: OnlineTheme.textStyle(color: OnlineTheme.green, weight: 5),
+                      style: OnlineTheme.textStyle(
+                          color: OnlineTheme.green, weight: 5),
                     ),
                   );
                 },
@@ -56,8 +62,15 @@ class LoginPage extends StaticPage {
 
   Future<void> appTrackingPermission(bool isIos) async {
     if (!isIos) return;
+    final status = await AppTrackingTransparency.requestTrackingAuthorization();
 
-    await AppTrackingTransparency.requestTrackingAuthorization();
+    if (status == TrackingStatus.authorized) {
+      // User said yes to tracking
+      acceptedPrivacy = true;
+    } else {
+      // User said no to tracking
+      acceptedPrivacy = false;
+    }
   }
 
   Future login() async {
