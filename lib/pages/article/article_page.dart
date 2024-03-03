@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../home/article_carousel.dart';
 import '/components/icon_label.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
+import '/core/client/client.dart';
 import '/core/models/article_model.dart';
-import '/pages/article/view_more_articles.dart';
 import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
@@ -114,44 +116,36 @@ class ArticlePage extends ScrollablePage {
     );
   }
 
-  Widget articleCard() {
-    List<dynamic> contentSegments = extractAndSplitContent(article.content);
+  static final markdownTheme = MarkdownStyleSheet(
+    p: OnlineTheme.textStyle(color: OnlineTheme.white),
+    h1: const TextStyle(color: OnlineTheme.white),
+    h2: const TextStyle(color: OnlineTheme.white),
+    h3: const TextStyle(color: OnlineTheme.white),
+    h4: const TextStyle(color: OnlineTheme.white),
+    h5: const TextStyle(color: OnlineTheme.white),
+    h6: const TextStyle(color: OnlineTheme.white),
+  );
 
+  Widget articleCard(BuildContext context) {
     return OnlineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            '${article.ingress}\n',
-            style: OnlineTheme.textStyle(),
+          MarkdownBody(
+            data: '${article.ingress}\n',
+            styleSheet: markdownTheme,
+            onTapLink: (text, href, title) {
+              if (href == null) return;
+              Client.launchInBrowser(href);
+            },
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: contentSegments.map((segment) {
-              if (segment is Uri) {
-                return Image.network(
-                  segment.toString(),
-                  fit: BoxFit.cover,
-                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return const SkeletonLoader(height: 200);
-                  },
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return SvgPicture.asset(
-                      'assets/svg/online_hvit_o.svg',
-                      fit: BoxFit.cover,
-                    );
-                  },
-                );
-              }
-
-              return Text(
-                segment,
-                style: OnlineTheme.textStyle(),
-              );
-            }).toList(),
+          MarkdownBody(
+            data: article.content,
+            styleSheet: markdownTheme,
+            onTapLink: (text, href, title) {
+              if (href == null) return;
+              Client.launchInBrowser(href);
+            },
           ),
         ],
       ),
@@ -178,11 +172,13 @@ class ArticlePage extends ScrollablePage {
                 const SizedBox(height: 24),
                 authorsAndDateCard(),
                 const SizedBox(height: 24),
-                // ingressCard(),
-                // const SizedBox(height: 24),
-                articleCard(),
+                articleCard(context),
                 const SizedBox(height: 24),
-                ViewMoreArticles(scrollController: scrollController),
+                Text('Les Mer', style: OnlineTheme.header()),
+                const SizedBox(height: 24),
+                ArticleCarousel(
+                  articles: Client.articlesCache.value.toList()..removeWhere((a) => a.heading == article.heading),
+                ),
                 const SizedBox(height: 24),
               ],
             ),

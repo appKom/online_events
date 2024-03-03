@@ -6,7 +6,8 @@ import '/theme/theme.dart';
 class OnlineHeader extends StatelessWidget {
   final List<Widget> buttons;
 
-  OnlineHeader({super.key, List<Widget>? buttons}) : buttons = buttons ?? List.empty(growable: false);
+  OnlineHeader({super.key, List<Widget>? buttons})
+      : buttons = buttons ?? List.empty(growable: false);
 
   /// Height of OnlineHeader
   static double height(BuildContext context) {
@@ -27,7 +28,8 @@ class OnlineHeader extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: OnlineTheme.background.withOpacity(0.9),
-        border: const Border(bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        border: const Border(
+            bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
       ),
       child: SizedBox(
         height: 40,
@@ -43,7 +45,8 @@ class OnlineHeader extends StatelessWidget {
             SvgPicture.asset(
               'assets/svg/bekk.svg',
               height: 36,
-              colorFilter: const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
+              colorFilter:
+                  const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
             ),
             Row(children: buttons),
           ],

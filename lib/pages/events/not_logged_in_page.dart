@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:online/components/navbar.dart';
+import 'package:online/services/authenticator.dart';
 
-import '/components/animated_button.dart';
+import '../../components/animated_button.dart';
 import '/components/online_scaffold.dart';
-import '/pages/login/terms_of_service.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 // TODO: Redundant? Could provide header to LoginPage and make it reusable
@@ -12,13 +12,8 @@ class NotLoggedInPage extends StaticPage {
     super.key,
   });
 
-  void onTap() {
-    AppNavigator.navigateToPage(const TermsOfServicePage());
-  }
-
   @override
   Widget content(BuildContext context) {
-    // TODO: implement content
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
@@ -32,7 +27,7 @@ class NotLoggedInPage extends StaticPage {
           ),
           const SizedBox(height: 24),
           AnimatedButton(
-            onTap: onTap,
+            onTap: login,
             childBuilder: (context, hover, pointerDown) {
               return Container(
                 alignment: Alignment.center,
@@ -51,5 +46,13 @@ class NotLoggedInPage extends StaticPage {
         ],
       ),
     );
+  }
+
+  Future login() async {
+    final response = await Authenticator.login();
+
+    if (response != null) {
+      Navbar.navigateTo(NavbarPage.profile);
+    }
   }
 }

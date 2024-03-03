@@ -2,25 +2,24 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:online/components/skeleton_loader.dart';
 
 import '/components/animated_button.dart';
+import '/components/image_default.dart';
 import '/components/online_scaffold.dart';
+import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
 import '/core/models/event_organizers.dart';
-import '/main.dart';
 import '/pages/event/cards/registration_card.dart';
 import '/pages/event/qr_code.dart';
 import '/services/app_navigator.dart';
+import '/services/authenticator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 import 'cards/attendance_card.dart';
 import 'cards/description_card.dart';
-import 'qr_code_scanner.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -48,7 +47,7 @@ class _EventPageState extends State<EventPage> {
   }
 
   Future<void> refreshAttendance() async {
-    AttendeeInfoModel? attendance = loggedIn
+    AttendeeInfoModel? attendance = Authenticator.isLoggedIn()
         ? await Client.getEventAttendanceLoggedIn(widget.model.id)
         : await Client.getEventAttendance(widget.model.id);
 
@@ -70,7 +69,8 @@ class _EventPageState extends State<EventPage> {
     final event = int.tryParse(parts[2]) ?? 0;
     final approved = parts[3].toLowerCase() == 'true';
 
-    const url = 'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
+    const url =
+        'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
 
     final body = {
       'rfid': rfid,
@@ -88,43 +88,32 @@ class _EventPageState extends State<EventPage> {
     if (response.statusCode == 201) {
       print('Attendance registered successfully!');
     } else {
-      print('Failed to register attendance. Status code: ${response.statusCode}');
+      print(
+          'Failed to register attendance. Status code: ${response.statusCode}');
     }
   }
 
   Widget coverImage() {
     if (widget.model.images.isEmpty) {
-      return AspectRatio(
+      return const AspectRatio(
         aspectRatio: 16 / 9,
-        child: SvgPicture.asset(
-          'assets/svg/online_hvit_o.svg',
-          fit: BoxFit.cover,
-        ),
+        child: ImageDefault(),
       );
     }
 
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
-        ),
-      ),
-      child: AspectRatio(
-        aspectRatio: 16 / 9,
-        child: Image.network(
-          widget.model.images.first.original,
-          loadingBuilder: (context, child, evt) {
-            if (evt == null) return child;
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: Image.network(
+        widget.model.images.first.original,
+        loadingBuilder: (context, child, evt) {
+          if (evt == null) return child;
 
-            return const SkeletonLoader();
-          },
-          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return SvgPicture.asset(
-              'assets/svg/online_hvit_o.svg',
-              fit: BoxFit.cover,
-            );
-          },
-        ),
+          return const SkeletonLoader();
+        },
+        errorBuilder:
+            (BuildContext context, Object exception, StackTrace? stackTrace) {
+          return const ImageDefault();
+        },
       ),
     );
   }
@@ -137,7 +126,14 @@ class _EventPageState extends State<EventPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          coverImage(),
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+              ),
+            ),
+            child: coverImage(),
+          ),
           Padding(
             padding: OnlineTheme.horizontalPadding,
             child: Column(
@@ -151,56 +147,61 @@ class _EventPageState extends State<EventPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox.square(
-                      dimension: 40,
-                      child: Center(
-                        child: AnimatedButton(
-                          onTap: () {
-                            AppNavigator.navigateToRoute(
-                              QRCode(model: widget.model),
-                              additive: true,
-                            );
-                          },
-                          childBuilder: (context, hover, pointerDown) {
-                            return const ThemedIcon(
-                              icon: IconType.qr,
-                              size: 24,
-                              color: OnlineTheme.white,
-                            );
-                          },
+                    if (attendeeInfoModel.isAttendee)
+                      SizedBox.square(
+                        dimension: 40,
+                        child: Center(
+                          child: AnimatedButton(
+                            onTap: () {
+                              AppNavigator.navigateToRoute(
+                                QRCode(model: widget.model),
+                                additive: true,
+                              );
+                            },
+                            childBuilder: (context, hover, pointerDown) {
+                              return const ThemedIcon(
+                                icon: IconType.qr,
+                                size: 24,
+                                color: OnlineTheme.white,
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
                     const SizedBox(
                       width: 10,
                     ),
-                    SizedBox.square(
-                      dimension: 40,
-                      child: Center(
-                        child: AnimatedButton(
-                          onTap: () async {
-                            final qrResult = await Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const QrCodeScannerDisplay()),
-                            );
-                            if (qrResult != null) {
-                              registerAttendance(qrResult);
-                            }
-                          },
-                          childBuilder: (context, hover, pointerDown) {
-                            return const ThemedIcon(
-                              icon: IconType.camScan,
-                              size: 24,
-                              color: OnlineTheme.white,
-                            );
-                          },
+                    if (Authenticator.isLoggedIn())
+                      SizedBox.square(
+                        dimension: 40,
+                        child: Center(
+                          child: AnimatedButton(
+                            onTap: () async {
+                              // final qrResult = await Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) =>
+                              //           const QrCodeScannerDisplay()),
+                              // );
+                              // if (qrResult != null) {
+                              //   registerAttendance(qrResult);
+                              // }
+                            },
+                            childBuilder: (context, hover, pointerDown) {
+                              return const ThemedIcon(
+                                icon: IconType.camScan,
+                                size: 24,
+                                color: OnlineTheme.white,
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 24),
-                AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
+                AttendanceCard(
+                    event: widget.model, attendeeInfo: attendeeInfoModel),
                 const SizedBox(height: 24),
                 EventDescriptionCard(
                   description: widget.model.description,

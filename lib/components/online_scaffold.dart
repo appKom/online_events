@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online/components/animated_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../theme/theme.dart';
 import '/pages/home/home_page.dart';
@@ -72,28 +74,40 @@ class OnlineScaffold extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  'assets/svg/online_logo.svg',
-                  height: 36,
+                AnimatedButton(
+                  onTap: () {
+                    launchUrl(
+                      Uri.parse('https://online.ntnu.no'),
+                      mode: LaunchMode.externalApplication,
+                    );
+                  },
+                  // onTap: () {
+                  //   AppNavigator.navigateToPage(const InfoPage());
+                  // },
+                  childBuilder: ((context, hover, pointerDown) {
+                    return SvgPicture.asset(
+                      'assets/svg/online_logo.svg',
+                      height: 36,
+                    );
+                  }),
                 ),
                 const Spacer(),
-                SvgPicture.asset(
-                  'assets/svg/bekk.svg',
-                  height: 36,
-                  colorFilter: const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
-                ),
+                AnimatedButton(onTap: () {
+                  launchUrl(
+                    Uri.parse('https://bekk.no'),
+                    mode: LaunchMode.externalApplication,
+                  );
+                }, childBuilder: (context, hover, pointerDown) {
+                  return SvgPicture.asset(
+                    'assets/svg/bekk.svg',
+                    height: 36,
+                    colorFilter: const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
+                  );
+                }),
               ],
             ),
           ),
         ),
-        // leading: SizedBox(
-        //   height: 40,
-        //   child: SvgPicture.asset(
-        //     'assets/svg/online_logo.svg',
-        //     height: 36,
-        //   ),
-        // ),
-        // bottom: Container(child: ),
       ),
     );
   }

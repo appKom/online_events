@@ -44,7 +44,7 @@ class EventsPageState extends State<EventsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     final now = DateTime.now();
 
     // Filter eventModels to include only future events
@@ -59,16 +59,14 @@ class EventsPageState extends State<EventsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(
-              height: 24,
-            ),
+            const SizedBox(height: 24),
             Text(
               'Kommende Arrangementer',
               style: OnlineTheme.header(),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 24),
             SizedBox(
-              height: 111.0 * futureEvents.length,
+              height: 100.0 * futureEvents.length,
               child: ListView.builder(
                 itemCount: futureEvents.length,
                 padding: EdgeInsets.zero,
@@ -78,9 +76,7 @@ class EventsPageState extends State<EventsPage> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 24),
             Center(
               child: AnimatedButton(
                 onTap: () {

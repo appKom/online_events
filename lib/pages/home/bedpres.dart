@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online/components/icon_label.dart';
+import 'package:online/components/image_default.dart';
 import 'package:online/services/app_navigator.dart';
 
 import '../../theme/themed_icon.dart';
@@ -19,32 +19,42 @@ class Bedpres extends StatelessWidget {
 
   final Set<EventModel> models;
 
-  static Widget skeleton() {
+  static Widget skeleton(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 24),
         Text(
           'Bedriftpresentasjoner og Kurs',
           style: OnlineTheme.textStyle(size: 20, weight: 7),
         ),
-        SizedBox(
-          height: 236,
-          child: ListView.builder(
-            itemCount: 2,
-            itemBuilder: (c, i) {
-              return Padding(
-                padding: const EdgeInsets.only(right: 24),
-                child: SkeletonLoader(
-                  borderRadius: BorderRadius.circular(12),
-                  width: 222,
-                ),
-              );
-            },
-            scrollDirection: Axis.horizontal,
-          ),
+        const SizedBox(height: 24),
+        CarouselSlider(
+          options: getCarouselOptions(context),
+          items: List.generate(3, (i) {
+            return const SkeletonLoader(
+              width: 250,
+              height: 300,
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            );
+          }),
         ),
       ],
+    );
+  }
+
+  static getCarouselOptions(BuildContext context) {
+    final isMobile = OnlineTheme.isMobile(context);
+
+    return CarouselOptions(
+      height: 320,
+      enableInfiniteScroll: true,
+      padEnds: true,
+      enlargeCenterPage: isMobile,
+      viewportFraction: isMobile ? 0.75 : 0.3,
+      enlargeFactor: 0.2,
+      clipBehavior: Clip.none,
     );
   }
 
@@ -57,26 +67,16 @@ class Bedpres extends StatelessWidget {
 
     final filteredModels = futureEvents.where((model) => model.eventType == 2 || model.eventType == 3).toList();
 
-    final options = CarouselOptions(
-      height: 320,
-      enableInfiniteScroll: true,
-      padEnds: true,
-      enlargeCenterPage: true,
-      viewportFraction: 0.75,
-      enlargeFactor: 0.2,
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 24),
         Text(
           'Bedpresser & Kurs',
           style: OnlineTheme.header(),
         ),
         const SizedBox(height: 24),
         CarouselSlider(
-          options: options,
+          options: getCarouselOptions(context),
           items: List.generate(
             filteredModels.length,
             (i) {
@@ -100,18 +100,18 @@ class BedpresCard extends StatelessWidget {
   final EventModel model;
 
   static const monthsNorwegian = [
-    'Januar',
-    'Februar',
-    'Mars',
-    'April',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
     'Mai',
-    'Juni',
-    'Juli',
-    'August',
-    'September',
-    'Oktober',
-    'November',
-    'Desember',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des',
   ];
 
   String formatDate() {
@@ -137,21 +137,39 @@ class BedpresCard extends StatelessWidget {
   }
 
   BoxDecoration badgeDecoration(int eventType) {
+    if (eventType == 2) {
+      return BoxDecoration(
+        color: OnlineTheme.red.darken(40),
+        borderRadius: OnlineTheme.buttonRadius,
+        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+      );
+    }
+
+    // eventType == 3
     return BoxDecoration(
-      color: OnlineTheme.yellow.darken(40),
+      color: OnlineTheme.blue2.darken(40),
       borderRadius: OnlineTheme.buttonRadius,
-      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+      border: const Border.fromBorderSide(
+        BorderSide(color: OnlineTheme.blue2, width: 2),
+      ),
     );
   }
 
   Color getColor(int eventType) {
-    return OnlineTheme.yellow;
+    switch (eventType) {
+      case 2:
+        return OnlineTheme.red;
+      case 3:
+        return OnlineTheme.blue2;
+      default:
+        return OnlineTheme.white;
+    }
   }
 
   Widget typeBadge() {
     return Container(
       height: 30,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: badgeDecoration(model.eventType),
       child: Center(
         child: Text(
@@ -204,17 +222,14 @@ class BedpresCard extends StatelessWidget {
                                 model.images.first.md,
                                 fit: BoxFit.cover,
                               )
-                            : SvgPicture.asset(
-                                'assets/svg/online_hvit_o.svg', // Replace with your default image asset path
-                                fit: BoxFit.cover,
-                              ),
+                            : const ImageDefault(),
                       ),
                     ),
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
-                        truncateWithEllipsis(model.title, 35),
+                        truncateWithEllipsis(model.title, 38),
                         style: OnlineTheme.subHeader(),
                       ),
                     ),

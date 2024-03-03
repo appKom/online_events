@@ -12,7 +12,8 @@ class BitsHomePage extends ScrollablePage {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
 
     const background = Color.fromARGB(255, 225, 10, 189);
 
@@ -40,17 +41,17 @@ class BitsHomePage extends ScrollablePage {
               ),
               const SizedBox(height: 20),
               Text(
-                'Bits er en kombinasjon av de beste aspektene av ulike drikkeleker. Det er bare å hente deg en ny enhet, for den du holder nå kommer til å bli tømt ganske snabt. ',
+                'Bits er en kombinasjon av de beste aspektene av ulike leker. \n \nSpillet er en pekelek der den som blir mest pekt på, må gjøre det som står på neste side. I løpet av spillet får man "poeng" eller "kjempe-poeng". Hva man gjør med "poeng" er opp til spillerne.',
                 style: OnlineTheme.textStyle(),
               ),
               const SizedBox(
                 height: 15,
               ),
               Text(
-                'Trykk på sidene av skjermen for å komme deg videre',
+                'Trykk på sidene av skjermen for å komme deg videre \n\nPress the sides of the screen to continue',
                 style: OnlineTheme.textStyle(),
               ),
-              const SizedBox(height: 120),
+              const SizedBox(height: 80),
               AnimatedButton(
                 onTap: () {
                   AppNavigator.navigateToPage(const BitsGame());
