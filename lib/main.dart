@@ -48,29 +48,29 @@ Future main() async {
   Client.getEvents(pages: [1]);
   Client.fetchArticles(1);
 
-  // await _configureFirebase();
+  await _configureFirebase();
 
   await Authenticator.fetchStoredCredentials();
 }
 
-// Future _configureFirebase() async {
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
+Future _configureFirebase() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-//   final messaging = FirebaseMessaging.instance;
-//   await messaging.requestPermission(
-//     alert: true,
-//     announcement: false,
-//     badge: true,
-//     carPlay: false,
-//     criticalAlert: false,
-//     provisional: false,
-//     sound: true,
-//   );
+  final messaging = FirebaseMessaging.instance;
+  await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 
-//   await FirebaseMessaging.instance.getToken();
-// }
+  await FirebaseMessaging.instance.getToken();
+}
 
 class OnlineApp extends StatelessWidget {
   const OnlineApp({super.key});
