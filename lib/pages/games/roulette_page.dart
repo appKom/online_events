@@ -99,10 +99,10 @@ final challenges = [
     title: 'Poeng-venner!',
     description: 'Du og personen 5 til høyre for deg er nå poeng-venner! Hver gang en får poeng får begge poeng.',
   ),
-  Challenge(
-    title: 'Uteligger',
-    description: 'Pekelek: Hvem i rommet kler seg mest som en uteligger. Uteliggeren får 5 poeng.',
-  ),
+  // Challenge(
+  //   title: 'Uteligger',
+  //   description: 'Pekelek: Hvem i rommet kler seg mest som en uteligger. Uteliggeren får 5 poeng.',
+  // ),
   Challenge(
     title: 'Kjendis',
     description: 'Pekelek: Hvem i rommet ligner mest på en kjendis? Alle fans (de som pekte på kjendisen) får 5 poeng!',
@@ -121,7 +121,7 @@ class RouletteState extends State<Roulette> {
   );
 
   static const black = FortuneItemStyle(
-    color: OnlineTheme.gray13,
+    color: OnlineTheme.darkGray,
   );
 
   final fortuneList = List<FortuneItem>.empty(growable: true);

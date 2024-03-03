@@ -22,18 +22,16 @@ sealed class OnlineTheme {
   static const red = Color.fromRGBO(220, 50, 80, 1);
   static const red1 = Color(0xFFF43145);
 
-  static const pink1 = Color(0xFF5E0231);
-  static const pink2 = Color(0xFFEB536E);
-
   static const yellow = Color(0xFFFAB759);
 
   static const purple1 = Color(0xFFAB18C8);
 
   static const lightGray = Color(0xFFD0D0D0);
+  static const darkGray = Color(0xFF151520);
+
   static const gray0 = Color(0xFF22272F);
   static const gray8 = Color(0xFFA6ABB5);
   static const gray9 = Color(0xFFB7BBC3);
-  static const gray13 = Color(0xFF131315);
   static const gray15 = Color(0xFF4C566A); // Only used once by skeleton loader
   static const gray16 = Color(0xFF797979); // Only used once by skeleton loader
 

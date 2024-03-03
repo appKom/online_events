@@ -310,7 +310,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                     margin: const EdgeInsets.all(2.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: eventful ? OnlineTheme.green5 : OnlineTheme.gray13,
+                      color: eventful ? OnlineTheme.green5 : OnlineTheme.darkGray,
                       shape: BoxShape.rectangle,
                       border: Border.fromBorderSide(
                         BorderSide(
@@ -350,7 +350,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                       margin: const EdgeInsets.all(4.0),
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
-                        color: OnlineTheme.gray13,
+                        color: OnlineTheme.darkGray,
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),

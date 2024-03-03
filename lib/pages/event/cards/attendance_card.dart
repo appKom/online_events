@@ -64,13 +64,11 @@ class AttendanceCard extends StatelessWidget {
     return Column(
       children: [
         const Separator(margin: 24),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Text(
-            'Påmelding åpner om',
-            style: OnlineTheme.textStyle(weight: 5),
-          ),
+        Text(
+          'Påmelding åpner om',
+          style: OnlineTheme.textStyle(weight: 5),
         ),
+        const SizedBox(height: 10),
         EventCardCountdown(eventTime: attendeeInfo.registrationStart),
         const SizedBox(height: 24),
         notifyEventRegistration(),
@@ -221,42 +219,50 @@ class AttendanceCard extends StatelessWidget {
     );
   }
 
+  Widget header() {
+    return SizedBox(
+      height: 32,
+      child: Text(
+        'Tid & Sted',
+        style: OnlineTheme.header(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return OnlineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const ThemedIcon(icon: IconType.dateTime, size: 20),
-                const SizedBox(width: 8),
-                Text(
-                  EventDateFormatter.formatEventDates(event.startDate, event.endDate),
-                  style: OnlineTheme.textStyle(),
-                ),
-              ],
-            ),
+          header(),
+          const SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const ThemedIcon(icon: IconType.dateTime, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                EventDateFormatter.formatEventDates(event.startDate, event.endDate),
+                style: OnlineTheme.textStyle(),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const ThemedIcon(icon: IconType.location, size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    event.location,
-                    style: OnlineTheme.textStyle(),
-                    softWrap: true,
-                  ),
-                ],
-              ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const ThemedIcon(icon: IconType.location, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  event.location,
+                  style: OnlineTheme.textStyle(),
+                  softWrap: true,
+                ),
+              ],
             ),
           ),
           if (showCountdownToRegistrationStart()) countdownToRegistrationStart(),

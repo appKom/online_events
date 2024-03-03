@@ -180,7 +180,7 @@ class MoreArticleCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: Container(
             width: 266,
-            color: OnlineTheme.gray13,
+            color: OnlineTheme.darkGray,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -189,7 +189,7 @@ class MoreArticleCard extends StatelessWidget {
                   flex: 1,
                   child: Stack(
                     children: [
-                      Positioned.fill(child: Container(color: OnlineTheme.gray13)),
+                      Positioned.fill(child: Container(color: OnlineTheme.darkGray)),
                       Positioned(
                         left: 20,
                         bottom: 80,

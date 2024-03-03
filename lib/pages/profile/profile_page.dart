@@ -377,7 +377,7 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _editHeader('Biografi'),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               content,
             ],
           ),
@@ -399,19 +399,18 @@ class _ProfilePageState extends State<ProfilePage> {
       ];
     }
 
-    return AnimatedButton(
-      onTap: editProfile,
-      childBuilder: (context, hover, pointerDown) {
-        return OnlineCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text('Kontakt', style: OnlineTheme.header()),
-              ...content,
-            ],
+    return OnlineCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: 32,
+            child: Text('Kontakt', style: OnlineTheme.header()),
           ),
-        );
-      },
+          const SizedBox(height: 16),
+          ...content,
+        ],
+      ),
     );
   }
 
@@ -431,41 +430,99 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Studie', style: OnlineTheme.header()),
+          SizedBox(
+            height: 32,
+            child: Text('Studie', style: OnlineTheme.header()),
+          ),
+          const SizedBox(height: 16),
           ...content,
+          const Separator(margin: 24),
+          studyCourse(user),
         ],
       ),
     );
   }
 
   Widget studyCourse(UserModel? user) {
-    if (user == null) {
-      return SizedBox(
-        height: 40,
-        child: CustomPaint(
-          painter: StudyCoursePainter(year: 0),
+    Widget stage(String header, int count, int progress) {
+      return Expanded(
+        flex: count,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              height: 32,
+              child: Center(
+                child: Text(
+                  header,
+                  style: OnlineTheme.subHeader(),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(
+                count,
+                (i) {
+                  final color = i < progress ? OnlineTheme.yellow : OnlineTheme.darkGray;
+
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: SizedBox(
+                        height: 10,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: color,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       );
     }
 
-    return SizedBox(
-      height: 40,
-      child: CustomPaint(
-        painter: StudyCoursePainter(year: user.year.toDouble()),
-      ),
+    if (user == null) {
+      return Row(
+        children: [
+          stage('Bachelor', 3, 0),
+          stage('Master', 2, 0),
+          stage('PhD', 1, 0),
+        ],
+      );
+    }
+
+    return Row(
+      children: [
+        stage('Bachelor', 3, user.year),
+        stage('Master', 2, user.year - 3),
+        stage('PhD', 1, user.year - 5),
+      ],
     );
   }
 
   Widget _editHeader(String header) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          header,
-          style: OnlineTheme.header(),
-        ),
-        const ThemedIcon(icon: IconType.userEdit, size: 18),
-      ],
+    return SizedBox(
+      height: 32,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            header,
+            style: OnlineTheme.header(),
+          ),
+          const ThemedIcon(icon: IconType.userEdit, size: 18),
+        ],
+      ),
     );
   }
 
@@ -516,92 +573,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                // TextFormField(
-                //   controller: _titleController,
-                //   style: OnlineTheme.textStyle(),
-                //   decoration: InputDecoration(
-                //     labelText: 'Skriv om deg selv:',
-                //     labelStyle: OnlineTheme.textStyle(),
-                //     hintStyle: OnlineTheme.textStyle(),
-                //     enabledBorder: const UnderlineInputBorder(
-                //       borderSide: BorderSide(color: OnlineTheme.white),
-                //     ),
-                //     focusedBorder: const UnderlineInputBorder(
-                //       borderSide: BorderSide(color: OnlineTheme.white),
-                //     ),
-                //   ),
-                //   onFieldSubmitted: (value) {
-                //     saveBiography(userProfile);
-                //   },
-                // ),
                 const SizedBox(height: 24),
                 bioCard(user),
                 const SizedBox(height: 24),
-                // FutureBuilder<PixelUserClass?>(
-                //   future: fetchPixelUserInfo(userProfile),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.waiting) {
-                //       return Padding(
-                //         padding: const EdgeInsets.only(top: 10),
-                //         child: SkeletonLoader(borderRadius: BorderRadius.circular(5)),
-                //       );
-                //     }
-
-                //     if (snapshot.hasError) {
-                //       return Text("Error: ${snapshot.error}");
-                //     }
-                //     String biographyText = snapshot.data?.biography ?? '';
-                //     return Padding(
-                //       padding: const EdgeInsets.only(top: 10),
-                //       child: Text(
-                //         biographyText,
-                //         style: OnlineTheme.textStyle(),
-                //       ),
-                //     );
-                //   },
-                // ),
                 contactCard(user),
                 const SizedBox(height: 24),
                 studyCard(user),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Center(
-                          child: Text(
-                            'Bachelor',
-                            style: OnlineTheme.subHeader(),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Center(
-                          child: Text(
-                            'Master',
-                            style: OnlineTheme.subHeader(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 25),
-                      Expanded(
-                        flex: 1,
-                        child: Center(
-                          child: Text(
-                            'PhD',
-                            style: OnlineTheme.subHeader(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                studyCourse(user),
-                const Separator(margin: 24 + 24),
+                const SizedBox(height: 24 + 24),
                 Row(
                   children: [
                     Expanded(
@@ -692,83 +670,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-}
-
-class StudyCoursePainter extends CustomPainter {
-  final double year;
-
-  StudyCoursePainter({super.repaint, required this.year});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3;
-
-    final cy = size.height / 2; // Center Y
-
-    final fraction = size.width / 6;
-    final segment1 = fraction * 3 - 18;
-    final segment2 = fraction * 2 + 9;
-
-    final c1 = Offset(18, cy);
-    final c2 = Offset(9 + (segment1 - 36) / 2, cy);
-    final c3 = Offset((segment1 - 36), cy);
-
-    final c4 = Offset(segment1 + 36, cy);
-    final c5 = Offset(segment1 + segment2 - 36, cy);
-
-    final c6 = Offset(size.width - 18, cy);
-
-    line(year >= 1, c1, c2, canvas, paint);
-    circle(year >= 1, c1, canvas, paint);
-    line(year > 2, c2, c3, canvas, paint);
-    circle(year > 1, c2, canvas, paint);
-    line(year > 3, c3, Offset(segment1, cy), canvas, paint);
-    circle(year > 2, c3, canvas, paint);
-
-    line(year > 3, Offset(segment1, 0), Offset(segment1, size.height), canvas, paint);
-
-    line(year >= 4, Offset(segment1 + 1.5, cy), c4, canvas, paint);
-    line(year >= 5, c4, c5, canvas, paint);
-    circle(year > 4, c4, canvas, paint);
-    line(year > 5, c5, Offset(segment1 + segment2, cy), canvas, paint);
-    circle(year >= 5, c5, canvas, paint);
-
-    line(year > 5, Offset(segment1 + segment2, 0), Offset(segment1 + segment2, size.height), canvas, paint);
-
-    line(year >= 6, Offset(segment1 + segment2 + 1.5, cy), c6, canvas, paint);
-    circle(year >= 6, c6, canvas, paint);
-  }
-
-  void line(bool active, Offset start, Offset end, Canvas canvas, Paint paint) {
-    final color = active ? green : gray;
-    paint.color = color;
-    canvas.drawLine(start, end, paint);
-  }
-
-  // static const gray = Color(0xFF153E75);
-  static const gray = OnlineTheme.grayBorder;
-  static const green = OnlineTheme.yellow;
-
-  void circle(bool active, Offset c, Canvas canvas, Paint paint) {
-    final color = active ? green : gray;
-
-    paint.color = OnlineTheme.background;
-    paint.style = PaintingStyle.fill;
-
-    canvas.drawCircle(c, 15, paint);
-
-    paint.color = color;
-    paint.style = PaintingStyle.stroke;
-    canvas.drawCircle(c, 16, paint);
-
-    paint.style = PaintingStyle.fill;
-    canvas.drawCircle(c, 8, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class ProfilePageDisplay extends StaticPage {
