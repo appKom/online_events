@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:online/pages/games/hundred_questions/hundred_questions_page.dart';
 import 'package:online/pages/games/roulette_page.dart';
 
 import '/components/animated_button.dart';
@@ -16,7 +17,8 @@ class GamesPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding =
+        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -43,6 +45,13 @@ class GamesPage extends ScrollablePage {
                 imageSource: 'assets/images/SpinLine.png',
                 onTap: () {
                   AppNavigator.navigateToPage(const SpinLinePage());
+                },
+              ),
+              GameCard(
+                name: 'Hundre spørsmål',
+                imageSource: 'assets/images/SpinLine.png',
+                onTap: () {
+                  AppNavigator.navigateToPage(const HundredQuestionsInfo());
                 },
               ),
               GameCard(
@@ -118,7 +127,8 @@ class GameCard extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                      bottom:
+                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
                     ),
                   ),
                   child: AspectRatio(

@@ -37,6 +37,15 @@ sealed class OnlineTheme {
 
   static const grayBorder = Color(0xFF22272F);
 
+  static const hundredPrimaryTextColor = Color(0xFF414C6B);
+  static const hundredSecondaryTextColor = Color(0xFFE4979E);
+  static const hundredTitleTextColor = Colors.white;
+  static const hundredContentTextColor = Color(0xff868686);
+  static const hundredNavigationColor = Color(0xFF6751B5);
+  static const hundredGradientStartColor = Color(0xFF4051A9);
+  static const hundredGradientEndColor = Color(0xFF9354B9);
+  static const hundredDotColor = Color(0xFFA87DCF);
+
   static const horizontalPadding = EdgeInsets.symmetric(horizontal: 20);
 
   static bool isMobile(BuildContext context) {
@@ -120,7 +129,8 @@ sealed class OnlineTheme {
   }
 
   static TextStyle header() => textStyle(size: 20, weight: 6);
-  static TextStyle subHeader([Color? color]) => textStyle(size: 16, weight: 6, color: color ?? white);
+  static TextStyle subHeader([Color? color]) =>
+      textStyle(size: 16, weight: 6, color: color ?? white);
 
   static TextStyle textStyle({
     Color color = white,
