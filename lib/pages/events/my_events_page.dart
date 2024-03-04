@@ -154,6 +154,13 @@ class MyEventsPageState extends State<MyEventsPage> {
     }
   }
 
+  Future<void> fetchEventWaitList(int eventID) async {
+    final onWaitList = await Client.getEventWaitlists(eventID);
+    final user = Client.userCache.value;
+
+    if (user == null) return;
+  }
+
   static const List<String> _norwegianWeekDays = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
 
   static Widget customDaysOfWeekBuilder(BuildContext context, int i) {

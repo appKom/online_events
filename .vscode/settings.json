@@ -1,7 +1,8 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "conventionalCommits.scopes": [
-        "rouletteWheel"
+        "rouletteWheel",
+        "Calender"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
 }
