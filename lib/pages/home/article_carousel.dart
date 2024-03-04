@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:online/components/image_default.dart';
@@ -46,7 +47,8 @@ class ArticleCarousel extends StatelessWidget {
     final day = date.day;
     final dayString = day.toString().padLeft(2, '0');
 
-    final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
+    final month =
+        date.month - 1; // Months go from 1-12 but we need an index of 0-11
     final monthString = months[month];
 
     return '$dayString. $monthString';
@@ -70,16 +72,10 @@ class ArticleCarousel extends StatelessWidget {
       return const ImageDefault();
     }
 
-    return Image.network(
-      article.image!.original,
-      loadingBuilder: (context, child, evt) {
-        if (evt == null) return child;
-
-        return const SkeletonLoader();
-      },
-      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return const ImageDefault();
-      },
+    return CachedNetworkImage(
+      imageUrl: article.image!.original,
+      placeholder: (context, url) => const SkeletonLoader(),
+      errorWidget: (context, url, error) => const ImageDefault(),
     );
   }
 
@@ -107,7 +103,8 @@ class ArticleCarousel extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                      bottom:
+                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
                     ),
                   ),
                   child: AspectRatio(

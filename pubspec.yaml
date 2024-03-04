@@ -37,6 +37,7 @@ dependencies:
   app_tracking_transparency: ^2.0.4
   auth0_flutter: ^1.5.0
   card_swiper: ^3.0.1
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -47,7 +48,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/bits/
     - assets/icons/
     - assets/images/
     - assets/svg/

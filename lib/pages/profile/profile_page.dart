@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -294,18 +295,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   _imageFile!,
                   fit: BoxFit.cover,
                 )
-              : Image.network(
-                  'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${user.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+              : CachedNetworkImage(
+                  imageUrl:
+                      'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${user.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                   fit: BoxFit.cover,
                   height: 240,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return Image.asset(
-                      'assets/images/default_profile_picture.png',
-                      fit: BoxFit.cover,
-                      height: 240,
-                    );
-                  },
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/images/default_profile_picture.png',
+                    fit: BoxFit.cover,
+                    height: 240,
+                  ),
                 ),
         ),
       );
@@ -565,9 +566,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Center(
                     child: AnimatedButton(
                       onTap: () async {
-                        await pickImage(ImageSource.gallery);
-                        if (_imageFile != null) {
-                          await uploadImage(user);
+                        if (acceptedPrivacy) {
+                          await pickImage(ImageSource.gallery);
+                          if (_imageFile != null) {
+                            await uploadImage(user);
+                          }
                         }
                       },
                       childBuilder: (context, hover, pointerDown) {

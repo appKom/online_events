@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:online/components/icon_label.dart';
@@ -52,7 +53,8 @@ class EventCard extends StatelessWidget {
     String startMonth = translateMonth(outputMonthFormat.format(startDateTime));
     String endMonth = translateMonth(outputMonthFormat.format(endDateTime));
 
-    if (startDateTime.year == endDateTime.year && startDateTime.month == endDateTime.month) {
+    if (startDateTime.year == endDateTime.year &&
+        startDateTime.month == endDateTime.month) {
       if (startDateTime.day == endDateTime.day) {
         return '$startDay. $startMonth';
       } else {
@@ -168,17 +170,12 @@ class EventCard extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
-      child: Image.network(
-        model.images.first.md,
+      child: CachedNetworkImage(
+        imageUrl: model.images.first.md,
         fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-
-          return const SkeletonLoader(width: 100, height: 100);
-        },
-        errorBuilder: (context, exception, stackTrace) {
-          return defaultWithBorder();
-        },
+        placeholder: (context, url) =>
+            const SkeletonLoader(width: 100, height: 100),
+        errorWidget: (context, url, error) => defaultWithBorder(),
       ),
     );
   }
@@ -217,7 +214,8 @@ class EventCard extends StatelessWidget {
                             children: [
                               IconLabel(
                                 icon: IconType.dateTime,
-                                label: formatDateSpan(model.startDate, model.endDate),
+                                label: formatDateSpan(
+                                    model.startDate, model.endDate),
                                 color: OnlineTheme.lightGray,
                                 fontWeight: 5,
                               ),

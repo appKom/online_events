@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,33 +17,6 @@ class ArticlePage extends ScrollablePage {
   final ArticleModel article;
   final ScrollController scrollController = ScrollController();
   ArticlePage({super.key, required this.article});
-
-  List<dynamic> extractAndSplitContent(String content) {
-    RegExp exp = RegExp(r'(https?://\S+\.(jpg|jpeg|png|gif))');
-    Iterable<RegExpMatch> matches = exp.allMatches(content);
-
-    List<dynamic> segments = [];
-    int lastEnd = 0;
-
-    for (var match in matches) {
-      String imgUrl = match.group(0)!;
-      int startIndex = match.start;
-
-      if (startIndex > lastEnd) {
-        segments.add(content.substring(lastEnd, startIndex));
-      }
-
-      segments.add(Uri.parse(imgUrl));
-      lastEnd = match.end;
-    }
-
-    // Add any remaining text
-    if (lastEnd < content.length) {
-      segments.add(content.substring(lastEnd));
-    }
-
-    return segments;
-  }
 
   static const months = [
     'Januar',
@@ -85,22 +59,16 @@ class ArticlePage extends ScrollablePage {
     }
 
     // Load cover image
-    return Image.network(
-      article.image!.original,
+    return CachedNetworkImage(
+      imageUrl: article.image!.original,
       fit: BoxFit.cover,
       height: 240,
-      loadingBuilder: (context, child, evt) {
-        if (evt == null) return child;
-
-        return const SkeletonLoader(height: 240);
-      },
-      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return SvgPicture.asset(
-          'assets/svg/online_hvit_o.svg',
-          fit: BoxFit.cover,
-          height: 240,
-        );
-      },
+      placeholder: (context, url) => const SkeletonLoader(height: 240),
+      errorWidget: (context, url, error) => SvgPicture.asset(
+        'assets/svg/online_hvit_o.svg',
+        fit: BoxFit.cover,
+        height: 240,
+      ),
     );
   }
 
@@ -108,7 +76,10 @@ class ArticlePage extends ScrollablePage {
     return OnlineCard(
       child: Column(
         children: [
-          IconLabel(icon: IconType.script, iconSize: 18, label: article.authors.replaceAll(', ', ',\n')),
+          IconLabel(
+              icon: IconType.script,
+              iconSize: 18,
+              label: article.authors.replaceAll(', ', ',\n')),
           const SizedBox(height: 16),
           IconLabel(icon: IconType.dateTime, label: dateToString()),
         ],
@@ -177,7 +148,8 @@ class ArticlePage extends ScrollablePage {
                 Text('Les Mer', style: OnlineTheme.header()),
                 const SizedBox(height: 24),
                 ArticleCarousel(
-                  articles: Client.articlesCache.value.toList()..removeWhere((a) => a.heading == article.heading),
+                  articles: Client.articlesCache.value.toList()
+                    ..removeWhere((a) => a.heading == article.heading),
                 ),
                 const SizedBox(height: 24),
               ],
