@@ -147,7 +147,7 @@ class AttendanceCard extends StatelessWidget {
       flutterLocalNotificationsPlugin.show(
         0,
         'Varsling Av',
-        'Påmeldingsvrsling for dette arrangementet er skrudd av.',
+        'Du vil ikke lenger bli varslet før påmelding starter.',
         const NotificationDetails(
           iOS: DarwinNotificationDetails(),
         ),
