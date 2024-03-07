@@ -38,9 +38,7 @@ class NotificationModel {
 
   late final int id;
 
-  NotificationModel({required this.time, required this.header, required this.body}) {
-    id = time.hashCode;
-  }
+  NotificationModel({required this.time, required this.header, required this.body, required this.id});
 
   tz.TZDateTime zonedTime() {
     return tz.TZDateTime.from(time, tz.local);
@@ -48,7 +46,7 @@ class NotificationModel {
 }
 
 class AttendanceCard extends StatelessWidget {
-  const AttendanceCard({super.key, required this.event, required this.attendeeInfo});
+  AttendanceCard({super.key, required this.event, required this.attendeeInfo});
 
   final EventModel event;
   final AttendeeInfoModel attendeeInfo;
@@ -108,55 +106,92 @@ class AttendanceCard extends StatelessWidget {
 
   void showNotification() {}
 
+  final ValueNotifier<bool> willNotifyBeforeRegistration = ValueNotifier(false);
+
   Widget notifyEventRegistration() {
-    return AnimatedButton(
-      onTap: () async {
-        final scheduleNotificationDateTime = attendeeInfo.registrationStart.subtract(const Duration(minutes: 15));
+    Future registerNotification() async {
+      willNotifyBeforeRegistration.value = true;
 
-        final notification = NotificationModel(
-          time: scheduleNotificationDateTime,
-          header: 'Påmelding Snart!',
-          body: 'Påmelding til ${event.title} starter om 15 minutter.',
-        );
+      final scheduleNotificationDateTime = attendeeInfo.registrationStart.subtract(const Duration(minutes: 15));
 
-        flutterLocalNotificationsPlugin.show(
-          0,
-          'Varsling På',
-          'Du vil bli varslet 15 min før påmelding starter.',
-          const NotificationDetails(
-            iOS: DarwinNotificationDetails(),
-          ),
-        );
+      final notification = NotificationModel(
+        id: event.id,
+        time: scheduleNotificationDateTime,
+        header: 'Påmelding Snart!',
+        body: 'Påmelding til ${event.title} starter om 15 minutter.',
+      );
 
-        await flutterLocalNotificationsPlugin.zonedSchedule(
-          notification.id,
-          notification.header,
-          notification.body,
-          notification.zonedTime(),
-          NotificationModel.platformChannelSpecifics,
-          androidScheduleMode: AndroidScheduleMode.alarmClock,
-          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-        );
-      },
-      childBuilder: (context, hover, pointerDown) {
-        return Container(
-          height: OnlineTheme.buttonHeight,
-          decoration: BoxDecoration(
-            color: OnlineTheme.yellow.withOpacity(0.4),
-            borderRadius: BorderRadius.circular(5.0),
-            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            'Varsle Meg',
-            style: OnlineTheme.textStyle(
-              weight: 5,
-              color: OnlineTheme.yellow,
-            ),
-          ),
-        );
-      },
-    );
+      flutterLocalNotificationsPlugin.show(
+        0,
+        'Varsling På',
+        'Du vil bli varslet 15 min før påmelding starter.',
+        const NotificationDetails(
+          iOS: DarwinNotificationDetails(),
+        ),
+      );
+
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        notification.id,
+        notification.header,
+        notification.body,
+        notification.zonedTime(),
+        NotificationModel.platformChannelSpecifics,
+        androidScheduleMode: AndroidScheduleMode.alarmClock,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    }
+
+    Future unregisterNotification() async {
+      willNotifyBeforeRegistration.value = false;
+
+      flutterLocalNotificationsPlugin.show(
+        0,
+        'Varsling Av',
+        'Påmeldingsvrsling for dette arrangementet er skrudd av.',
+        const NotificationDetails(
+          iOS: DarwinNotificationDetails(),
+        ),
+      );
+
+      await flutterLocalNotificationsPlugin.cancel(event.id);
+    }
+
+    return ValueListenableBuilder(
+        valueListenable: willNotifyBeforeRegistration,
+        builder: (context, willNotify, child) {
+          final color = willNotify ? OnlineTheme.red : OnlineTheme.yellow;
+          final text = willNotify ? 'Ikke Varsle Meg' : 'Varsle Meg';
+
+          return AnimatedButton(
+            onTap: () async {
+              if (!willNotify) {
+                await registerNotification();
+              } else {
+                await unregisterNotification();
+              }
+            },
+            childBuilder: (context, hover, pointerDown) {
+              return Container(
+                height: OnlineTheme.buttonHeight,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(5.0),
+                  border: Border.fromBorderSide(
+                    BorderSide(color: color, width: 2),
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  text,
+                  style: OnlineTheme.textStyle(
+                    weight: 5,
+                    color: color,
+                  ),
+                ),
+              );
+            },
+          );
+        });
   }
 
   Widget notifyAttendance() {
@@ -171,6 +206,7 @@ class AttendanceCard extends StatelessWidget {
             final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
 
             final notification = NotificationModel(
+              id: event.id,
               time: scheduleNotificationDateTime,
               header: 'Arrangement starter snart!',
               body: '${event.title} starter om 1 time.',

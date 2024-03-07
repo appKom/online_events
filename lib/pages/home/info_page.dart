@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '/pages/event/cards/event_card.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
+import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
-import 'developers.dart';
 
 class InfoPage extends ScrollablePage {
   const InfoPage({super.key});
 
   @override
   Widget content(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -73,8 +71,7 @@ class InfoPage extends ScrollablePage {
                 decoration: BoxDecoration(
                   color: OnlineTheme.yellow.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(5.0),
-                  border: const Border.fromBorderSide(
-                      BorderSide(color: OnlineTheme.yellow, width: 2)),
+                  border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
                 ),
                 child: Text(
                   'Gi Tilbakemelding!',
@@ -86,13 +83,13 @@ class InfoPage extends ScrollablePage {
               );
             },
           ),
-          const SizedBox(height: 24 + 24),
-          Text(
-            'Utviklere',
-            style: OnlineTheme.header(),
-          ),
-          const SizedBox(height: 24),
-          const Center(child: DeveloperCarousel()),
+          // const SizedBox(height: 24 + 24),
+          // Text(
+          //   'Utviklere',
+          //   style: OnlineTheme.header(),
+          // ),
+          // const SizedBox(height: 24),
+          // const Center(child: DeveloperCarousel()),
           const SizedBox(height: 24),
         ],
       ),
