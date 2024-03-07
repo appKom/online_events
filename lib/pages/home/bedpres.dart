@@ -66,9 +66,7 @@ class Bedpres extends StatelessWidget {
       return eventDate.isAfter(DateTime.now());
     }).toList();
 
-    final filteredModels = futureEvents
-        .where((model) => model.eventType == 2 || model.eventType == 3)
-        .toList();
+    final filteredModels = futureEvents.where((model) => model.eventType == 2 || model.eventType == 3).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,9 +123,7 @@ class BedpresCard extends StatelessWidget {
   }
 
   String truncateWithEllipsis(String text, int maxLength) {
-    return (text.length <= maxLength)
-        ? text
-        : '${text.substring(0, maxLength)}...';
+    return (text.length <= maxLength) ? text : '${text.substring(0, maxLength)}...';
   }
 
   void showInfo() {
@@ -138,9 +134,7 @@ class BedpresCard extends StatelessWidget {
 
   String getEventTypeDisplay() {
     // Check if the eventTypeDisplay is 'Bedriftspresentasjon'
-    return model.eventTypeDisplay == 'Bedriftspresentasjon'
-        ? 'Bedpres'
-        : model.eventTypeDisplay;
+    return model.eventTypeDisplay == 'Bedriftspresentasjon' ? 'Bedpres' : model.eventTypeDisplay;
   }
 
   BoxDecoration badgeDecoration(int eventType) {
@@ -148,8 +142,7 @@ class BedpresCard extends StatelessWidget {
       return BoxDecoration(
         color: OnlineTheme.red.darken(40),
         borderRadius: OnlineTheme.buttonRadius,
-        border: const Border.fromBorderSide(
-            BorderSide(color: OnlineTheme.red, width: 2)),
+        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
       );
     }
 
@@ -182,16 +175,14 @@ class BedpresCard extends StatelessWidget {
       child: Center(
         child: Text(
           getEventTypeDisplay(),
-          style: OnlineTheme.textStyle(
-              weight: 5, size: 14, color: getColor(model.eventType)),
+          style: OnlineTheme.textStyle(weight: 5, size: 14, color: getColor(model.eventType)),
         ),
       ),
     );
   }
 
   String participants() {
-    if (model.numberOfSeatsTaken == null && model.maxCapacity == null)
-      return '∞';
+    if (model.numberOfSeatsTaken == null && model.maxCapacity == null) return '∞';
 
     return '${model.numberOfSeatsTaken ?? 0}/${model.maxCapacity ?? 0}';
   }
@@ -222,8 +213,7 @@ class BedpresCard extends StatelessWidget {
                     Container(
                       decoration: const BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(
-                              width: 2, color: OnlineTheme.grayBorder),
+                          bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
                         ),
                       ),
                       child: AspectRatio(
@@ -232,10 +222,8 @@ class BedpresCard extends StatelessWidget {
                             ? CachedNetworkImage(
                                 imageUrl: model.images.first.md,
                                 fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    const SkeletonLoader(),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
+                                placeholder: (context, url) => const SkeletonLoader(),
+                                errorWidget: (context, url, error) => const Icon(Icons.error),
                               )
                             : const ImageDefault(),
                       ),
@@ -254,12 +242,8 @@ class BedpresCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconLabel(
-                              icon: IconType.dateTime, label: formatDate()),
-                          IconLabel(
-                              icon: IconType.usersFilled,
-                              label: participants(),
-                              iconSize: 16),
+                          IconLabel(icon: IconType.dateTime, label: formatDate()),
+                          IconLabel(icon: IconType.usersFilled, label: participants(), iconSize: 16),
                         ],
                       ),
                     ),

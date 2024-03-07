@@ -225,12 +225,12 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'POENG!',
-    body: '',
+    body: ';)',
     imageSource: 'assets/bits/bitsskaal.png',
   ),
   BitsModel(
     header: 'Jobbintervju',
-    body: 'Du må forberede deg til jobbintervju, du får et kjempe poeng',
+    body: 'Du må forberede deg til jobbintervju så du får et kjempe-poeng!',
     imageSource: 'assets/bits/bitsimage12.png',
   ),
   BitsModel(
@@ -245,12 +245,12 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'Pekelek',
-    body: 'Startet å få poeng i yngst alder',
+    body: 'Startet å få poeng i yngst alder.',
     imageSource: 'assets/bits/bitsimage7.png',
   ),
   BitsModel(
     header: 'Immball',
-    body: '"Av med buksene" Ta av et valgfrittplagg',
+    body: '"Av med buksene" Ta av et valgfritt plagg',
     imageSource: 'assets/bits/bitsimage6.png',
   ),
   BitsModel(
