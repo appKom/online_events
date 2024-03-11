@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online/pages/home/polls/online_polls.dart';
+import 'package:online/services/authenticator.dart';
 
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
@@ -109,6 +111,11 @@ class HomePage extends ScrollablePage {
               return Bedpres(models: events);
             },
           ),
+          const SizedBox(
+            height: 24,
+          ),
+          // if (Authenticator.isLoggedIn())
+          const OnlinePolls(),
           const SizedBox(height: 24 + 24),
           Text('Artikler', style: OnlineTheme.header()),
           const SizedBox(height: 24),

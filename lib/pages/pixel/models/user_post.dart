@@ -11,7 +11,6 @@ class UserPostModel {
   final DateTime createdAt;
   List<String> likedBy;
   List<String> comments;
-  
 
   UserPostModel({
     required this.id,
@@ -37,20 +36,19 @@ class UserPostModel {
     if (json['\$createdAt'] != null) {
       parsedCreatedAt = DateTime.parse(json['\$createdAt']);
     } else {
-      parsedCreatedAt =
-          DateTime.now(); 
+      parsedCreatedAt = DateTime.now();
     }
 
     return UserPostModel(
       id: fileID,
-      imageName: json['image_name'], 
-      numberOfLikes: json['number_of_likes'], 
+      imageName: json['image_name'],
+      numberOfLikes: json['number_of_likes'],
       username: json['username'],
-      firstName: json['first_name'], 
-      lastName: json['last_name'], 
+      firstName: json['first_name'],
+      lastName: json['last_name'],
       description: json['description'],
-      imageLink: json['image_link'], 
-      postCreated: json['post_created'], 
+      imageLink: json['image_link'],
+      postCreated: json['post_created'],
       createdAt: parsedCreatedAt,
       likedBy: likedBy,
       comments: comments,
