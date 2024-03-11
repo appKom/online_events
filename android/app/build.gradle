@@ -60,7 +60,7 @@ android {
         versionName '1.0'
         minSdkVersion 21
         multiDexEnabled true
-        manifestPlaceholders += [auth0Domain: "https://auth.online.ntnu.no", auth0Scheme: "https"]
+        manifestPlaceholders += [auth0Domain: "auth.online.ntnu.no", auth0Scheme: "https"]
     }
 
     signingConfigs {
