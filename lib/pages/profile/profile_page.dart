@@ -603,29 +603,29 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     const SizedBox(height: 24),
                     profileHeader(user),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(vertical: 24),
-                    //   child: Center(
-                    //     child: ValueListenableBuilder(
-                    //       valueListenable: acceptedPrivacy,
-                    //       builder: (context, accepted, child) {
-                    //         return AnimatedButton(
-                    //           onTap: () async {
-                    //             if (!accepted) return;
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      child: Center(
+                        child: ValueListenableBuilder(
+                          valueListenable: acceptedPrivacy,
+                          builder: (context, accepted, child) {
+                            return AnimatedButton(
+                              onTap: () async {
+                                if (!accepted) return;
 
-                    //             await pickImage(ImageSource.gallery);
-                    //             if (_imageFile != null) {
-                    //               await uploadImage(user);
-                    //             }
-                    //           },
-                    //           childBuilder: (context, hover, pointerDown) {
-                    //             return profilePicture(user);
-                    //           },
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
+                                await pickImage(ImageSource.gallery);
+                                if (_imageFile != null) {
+                                  await uploadImage(user);
+                                }
+                              },
+                              childBuilder: (context, hover, pointerDown) {
+                                return profilePicture(user);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 24),
                     bioCard(user),
                     const SizedBox(height: 24),
