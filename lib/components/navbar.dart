@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../pages/games/games_page.dart';
 import '../pages/login/login_page.dart';
+import '../pages/pixel/pixel.dart';
 import '../pages/profile/profile_page.dart';
 import '/pages/events/my_events_page.dart';
 import '/pages/events/not_logged_in_page.dart';
@@ -14,6 +15,7 @@ import '/theme/themed_icon.dart';
 enum NavbarPage {
   home,
   events,
+  pixel,
   games,
   profile,
 }
@@ -45,6 +47,11 @@ class Navbar extends StatefulWidget {
     NavbarState.selected.value = 2;
   }
 
+  static void _navigatePixel() {
+    AppNavigator.replaceWithPage(const PixelPage());
+    NavbarState.selected.value = 3;
+  }
+
   static void _navigateProfile() {
     if (Authenticator.isLoggedIn()) {
       AppNavigator.replaceWithPage(const ProfilePageDisplay());
@@ -60,6 +67,8 @@ class Navbar extends StatefulWidget {
         return _navigateHome();
       case NavbarPage.events:
         return _navigateEvents();
+      case NavbarPage.pixel:
+        return _navigatePixel();
       case NavbarPage.games:
         return _navigateGames();
       case NavbarPage.profile:
@@ -84,6 +93,11 @@ class NavbarState extends State<Navbar> {
       icon: IconType.calendarClock,
       activeIcon: IconType.calendarClockFilled,
       onPressed: Navbar._navigateEvents,
+    ),
+    NavbarButton(
+      icon: IconType.pixel,
+      activeIcon: IconType.pixelFilled,
+      onPressed: Navbar._navigatePixel,
     ),
     NavbarButton(
       icon: IconType.dices,
@@ -135,7 +149,8 @@ class NavbarState extends State<Navbar> {
     return Container(
       decoration: BoxDecoration(
         color: OnlineTheme.background.withOpacity(0.9),
-        border: const Border(top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        border: const Border(
+            top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

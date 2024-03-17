@@ -115,7 +115,7 @@ class HomePage extends ScrollablePage {
             height: 24,
           ),
           // if (Authenticator.isLoggedIn())
-          const OnlinePolls(),
+          // const OnlinePolls(),
           const SizedBox(height: 24 + 24),
           Text('Artikler', style: OnlineTheme.header()),
           const SizedBox(height: 24),
