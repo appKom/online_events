@@ -6,15 +6,52 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../models/event_model.dart';
 import '/core/models/article_model.dart';
-import '/core/models/attended_events.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/attendees_list.dart';
 import '/core/models/user_model.dart';
 import '/services/authenticator.dart';
 
+/// Info about user's attendance at an event.
+/// Is the event paid, has the user paid for the event, did the user show up, etc.
+class EventAttendanceModel {
+  final int id;
+  final bool attended;
+  final String timestamp;
+  final bool isPaidEvent;
+  final bool hasPaidForEvent;
+
+  EventAttendanceModel({
+    required this.id,
+    required this.attended,
+    required this.timestamp,
+    required this.isPaidEvent,
+    required this.hasPaidForEvent,
+  });
+
+  factory EventAttendanceModel.fromJson(Map<String, dynamic> json) {
+    return EventAttendanceModel(
+      id: json['event'],
+      attended: json['attended'],
+      timestamp: json['timestamp'],
+      isPaidEvent: json['paid'],
+      hasPaidForEvent: json['has_paid'],
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EventAttendanceModel) return false;
+    if (other.runtimeType != runtimeType) return false;
+    return id == other.id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+}
+
 abstract class Client {
   static const endpoint = 'https://old.online.ntnu.no';
-  static String? accessToken;
   static String? refreshToken;
   static int? expiresIn;
 
@@ -31,7 +68,7 @@ abstract class Client {
     Set<EventModel> allEvents = {};
 
     for (int page in pages) {
-      String url = page == 1 ? '$endpoint/api/v1/event/events/' : '$endpoint/api/v1/event/events/?page=$page';
+      String url = '$endpoint/api/v1/event/events/?page=$page';
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
@@ -49,33 +86,6 @@ abstract class Client {
     }
 
     return allEvents;
-  }
-
-  static Future<List<EventModel>?> getPastEvents() async {
-    List<EventModel> pastEvents = [];
-
-    // URLs for each page
-    List<String> urls = [
-      '$endpoint/api/v1/event/events/?page?5',
-      '$endpoint/api/v1/event/events/?page=6',
-      '$endpoint/api/v1/event/events/?page=7',
-      '$endpoint/api/v1/event/events/?page=8',
-    ];
-
-    for (var url in urls) {
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-        final jsonResponse = jsonDecode(responseBody);
-
-        final events = jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
-
-        pastEvents.addAll(events);
-      }
-    }
-
-    return pastEvents;
   }
 
   static Future<UserModel?> getUserProfile() async {
@@ -102,40 +112,45 @@ abstract class Client {
     return null;
   }
 
-  static Future<List<AttendedEvents>?> getAttendedEvents(int userId) async {
+  static final ValueNotifier<Set<EventAttendanceModel>> eventAttendanceCache = ValueNotifier({});
+
+  /// Get all events that user has attended or is attending
+  static Future<List<EventAttendanceModel>> getAttendanceEvents({
+    required int userId,
+    int pageCount = 2,
+    int pageOffset = 0,
+  }) async {
     final accessToken = Authenticator.credentials?.accessToken;
 
-    if (accessToken == null) return null;
+    if (accessToken == null) return [];
 
-    List<AttendedEvents> allAttendees = [];
+    final urls = List.generate(pageCount, (i) {
+      return '$endpoint/api/v1/event/attendees/?page=${pageOffset + i + 1}&ordering=-id&user=$userId';
+    });
 
-    // URLs for each page
-    List<String> urls = [
-      '$endpoint/api/v1/event/attendees/?allow_pictures=&attended=&event=&extras=&ordering=-id&show_as_attending_event=&user=$userId',
-      '$endpoint/api/v1/event/attendees/?allow_pictures=&attended=&event=&extras=&ordering=-id&page=2&show_as_attending_event=&user=$userId',
-    ];
-
-    for (var url in urls) {
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {
+    final responses = await Future.wait(
+      urls.map(
+        (url) => http.get(Uri.parse(url), headers: {
           'Authorization': 'Bearer $accessToken',
-        },
-      );
+        }),
+      ),
+    );
 
-      if (response.statusCode == 200) {
-        final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-        final jsonResponse = jsonDecode(responseBody);
+    final results = <EventAttendanceModel>[];
 
-        final attendees = jsonResponse['results']
-            .map<AttendedEvents>((attendeeJson) => AttendedEvents.fromJson(attendeeJson))
-            .toList();
-
-        allAttendees.addAll(attendees);
-      }
+    for (final response in responses) {
+      final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final jsonResults = jsonDecode(body)['results'];
+      results.addAll(jsonResults.map<EventAttendanceModel>((json) => EventAttendanceModel.fromJson(json)).toList());
     }
 
-    return allAttendees;
+    print(results.length);
+
+    if (results.isNotEmpty) {
+      eventAttendanceCache.value = Set.from(eventAttendanceCache.value)..addAll(results);
+    }
+
+    return results;
   }
 
   static Future<AttendeeInfoModel?> getEventAttendance(int eventId) async {

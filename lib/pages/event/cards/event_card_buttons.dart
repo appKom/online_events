@@ -40,7 +40,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
         Uri.parse(apiUrl),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": 'Bearer ${Client.accessToken}',
+          "Authorization": 'Bearer ${Authenticator.credentials!.accessToken}',
         },
       );
 

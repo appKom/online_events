@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '/components/animated_button.dart';
-import '/components/navbar.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
 import '/core/client/client.dart';
-import '/core/models/attended_events.dart';
 import '/core/models/event_model.dart';
 import '/pages/home/event_card.dart';
 import '/services/authenticator.dart';
 import '/theme/theme.dart';
 
-List<AttendedEvents> attendedEvents = [];
+// List<AttendedEvents> attendedEvents = [];
 List<EventModel> pastEventModels = [];
 
 final List<String> norwegianMonths = [
@@ -144,11 +142,10 @@ class MyEventsPageState extends State<MyEventsPage> {
 
     if (user == null) return;
 
-    // TODO: This is a bit of a hack
-    List<AttendedEvents> allAttendees = await Client.getAttendedEvents(user.id) ?? [];
+    await Client.getAttendanceEvents(userId: user.id);
+
     if (mounted) {
       setState(() {
-        attendedEvents = allAttendees;
         _isLoading = false;
       });
     }
@@ -221,20 +218,23 @@ class MyEventsPageState extends State<MyEventsPage> {
     if (_isLoading) {
       return MyEventsPage.skeletonLoader(context);
     }
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     final now = DateTime.now();
 
-    final upcomingEvents = Client.eventsCache.value
-        .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
-        .where((model) {
+    final eventAttendances = Client.eventAttendanceCache.value;
+
+    final upcomingEvents =
+        Client.eventsCache.value.where((model) => eventAttendances.any((event) => event.id == model.id)).where((model) {
       final eventDate = DateTime.parse(model.startDate);
       return eventDate.isAfter(now);
     }).toList();
 
-    final pastEvents = Client.eventsCache.value
-        .where((model) => attendedEvents.any((attendedEvent) => attendedEvent.event == model.id))
-        .where((model) {
+    print(upcomingEvents.length);
+
+    final pastEvents =
+        Client.eventsCache.value.where((model) => eventAttendances.any((event) => event.id == model.id)).where((model) {
       final eventDate = DateTime.parse(model.startDate);
       return eventDate.isBefore(now);
     }).toList();
@@ -265,7 +265,6 @@ class MyEventsPageState extends State<MyEventsPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 24),
-            Text('Mine Arrangementer', style: OnlineTheme.header()),
             const SizedBox(height: 10),
             _customHeaderWidget(
               focusedDay: _focusedDay,
@@ -396,9 +395,8 @@ class MyEventsPageState extends State<MyEventsPage> {
                 weekdayStyle: TextStyle(color: Colors.white),
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 24 + 24),
+            Text('Mine Arrangementer', style: OnlineTheme.header()),
             _buildEventList(upcomingEvents),
             const SizedBox(height: 24),
             Text('Tidligere Arrangementer', style: OnlineTheme.header()),
@@ -418,7 +416,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                     children: [
                       Text(
                         'MER',
-                        style: OnlineTheme.textStyle(weight: 4),
+                        style: OnlineTheme.textStyle(weight: 5),
                       ),
                       const SizedBox(width: 2),
                       const Padding(
@@ -434,7 +432,7 @@ class MyEventsPageState extends State<MyEventsPage> {
                 },
               ),
             ),
-            SizedBox(height: Navbar.height(context) + 10),
+            const SizedBox(height: 24),
           ],
         ),
       ),
@@ -444,7 +442,7 @@ class MyEventsPageState extends State<MyEventsPage> {
   Widget _buildEventList(List<EventModel> events) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
-      height: 111.0 * events.length,
+      height: 100.0 * events.length,
       child: ListView.builder(
         itemCount: events.length,
         padding: EdgeInsets.zero,

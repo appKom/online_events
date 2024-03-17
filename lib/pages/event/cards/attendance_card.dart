@@ -160,7 +160,7 @@ class AttendanceCard extends StatelessWidget {
         valueListenable: willNotifyBeforeRegistration,
         builder: (context, willNotify, child) {
           final color = willNotify ? OnlineTheme.red : OnlineTheme.yellow;
-          final text = willNotify ? 'Ikke Varsle Meg' : 'Varsle Meg';
+          final text = willNotify ? 'Ikke Varsle Meg' : 'Varsle Før Påmelding';
 
           return AnimatedButton(
             onTap: () async {
@@ -194,63 +194,96 @@ class AttendanceCard extends StatelessWidget {
         });
   }
 
+  final ValueNotifier<bool> willNotifyBeforeEventStart = ValueNotifier(false);
+
   Widget notifyAttendance() {
+    Future eventStartNotification() async {
+      willNotifyBeforeEventStart.value = true;
+
+      final DateTime parsedStartDate = DateTime.parse(event.startDate);
+
+      final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
+
+      final notification = NotificationModel(
+        id: event.id,
+        time: scheduleNotificationDateTime,
+        header: 'Arrangement starter snart!',
+        body: '${event.title} starter om 1 time.',
+      );
+
+      flutterLocalNotificationsPlugin.show(
+        0,
+        'Varsling På',
+        'Du vil bli varslet 1 time før arrangementet starter.',
+        const NotificationDetails(
+          iOS: DarwinNotificationDetails(),
+        ),
+      );
+
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        notification.id,
+        notification.header,
+        notification.body,
+        notification.zonedTime(),
+        NotificationModel.platformChannelSpecifics,
+        androidScheduleMode: AndroidScheduleMode.alarmClock,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    }
+
+    Future eventEndNotification() async {
+      willNotifyBeforeEventStart.value = false;
+
+      flutterLocalNotificationsPlugin.show(
+        0,
+        'Varsling Av',
+        'Du vil ikke lenger bli varslet før arrangementet starter.',
+        const NotificationDetails(
+          iOS: DarwinNotificationDetails(),
+        ),
+      );
+
+      await flutterLocalNotificationsPlugin.cancel(event.id);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 24),
-        AnimatedButton(
-          onTap: () async {
-            final DateTime parsedStartDate = DateTime.parse(event.startDate);
+        ValueListenableBuilder(
+            valueListenable: willNotifyBeforeEventStart,
+            builder: (context, willNotify, child) {
+              final color = willNotify ? OnlineTheme.red : OnlineTheme.yellow;
+              final text = willNotify ? 'Ikke Varsle Meg' : 'Varsle Før Start';
 
-            final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
-
-            final notification = NotificationModel(
-              id: event.id,
-              time: scheduleNotificationDateTime,
-              header: 'Arrangement starter snart!',
-              body: '${event.title} starter om 1 time.',
-            );
-
-            flutterLocalNotificationsPlugin.show(
-              0,
-              'Varsling På',
-              'Du vil bli varslet 1 time før arrangementet starter',
-              const NotificationDetails(
-                iOS: DarwinNotificationDetails(),
-              ),
-            );
-
-            await flutterLocalNotificationsPlugin.zonedSchedule(
-              notification.id,
-              notification.header,
-              notification.body,
-              notification.zonedTime(),
-              NotificationModel.platformChannelSpecifics,
-              androidScheduleMode: AndroidScheduleMode.alarmClock,
-              uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-              // matchDateTimeComponents: DateTimeComponents.time,
-            );
-          },
-          childBuilder: (context, hover, pointerDown) {
-            return Container(
-              height: OnlineTheme.buttonHeight,
-              decoration: BoxDecoration(
-                color: OnlineTheme.yellow.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(5.0),
-                border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                'Varsle Meg',
-                style: OnlineTheme.textStyle(
-                  weight: 5,
-                  color: OnlineTheme.yellow,
-                ),
-              ),
-            );
-          },
-        ),
+              return AnimatedButton(
+                onTap: () async {
+                  if (willNotify) {
+                    await eventEndNotification();
+                  } else {
+                    await eventStartNotification();
+                  }
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return Container(
+                    height: OnlineTheme.buttonHeight,
+                    decoration: BoxDecoration(
+                      color: color.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(5.0),
+                      border: Border.fromBorderSide(BorderSide(color: color, width: 2)),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      text,
+                      style: OnlineTheme.textStyle(
+                        weight: 5,
+                        color: color,
+                      ),
+                    ),
+                  );
+                },
+              );
+            }),
       ],
     );
   }

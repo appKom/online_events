@@ -70,7 +70,6 @@ class EventModel implements JsonModel {
   }
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
-
     return EventModel(
       id: json['id'],
       title: json['title'],
@@ -95,6 +94,17 @@ class EventModel implements JsonModel {
   }
 
   @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EventModel) return false;
+    if (other.runtimeType != runtimeType) return false;
+    return id == other.id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
   String toString() {
     return 'EventModel: { id: $id, title: $title, startDate: $startDate, endDate: $endDate, location: $location,}';
   }
@@ -104,9 +114,7 @@ class Author {
   final int id;
   final String firstName;
   final String lastName;
-  final String userName; 
-
-  
+  final String userName;
 
   Author({
     required this.id,
