@@ -1,7 +1,6 @@
 import 'image_model.dart';
-import 'json_model.dart';
 
-class EventModel implements JsonModel {
+class EventModel {
   final int id;
   final String title;
   final String slug;
@@ -43,31 +42,6 @@ class EventModel implements JsonModel {
     this.numberOfSeatsTaken,
     this.author,
   });
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'slug': slug,
-      'ingress': ingress,
-      'ingress_short': ingressShort,
-      'description': description,
-      'start_date': startDate,
-      'end_date': endDate,
-      'location': location,
-      'event_type': eventType,
-      'event_type_display': eventTypeDisplay,
-      'organizer': organizer,
-      'author': author,
-      'images': images.map((image) => image.toJson()).toList(),
-      'companies': companies,
-      'is_attendance_event': isAttendanceEvent,
-      'max_capacity': maxCapacity,
-      'waitlist': waitlist,
-      'number_of_seats_taken': numberOfSeatsTaken,
-    };
-  }
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(

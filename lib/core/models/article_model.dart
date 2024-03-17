@@ -1,7 +1,6 @@
 import 'image_model.dart';
-import 'json_model.dart';
 
-class ArticleModel implements JsonModel {
+class ArticleModel {
   final String absoluteUrl;
   final String authors;
   final Author createdBy;
@@ -55,30 +54,9 @@ class ArticleModel implements JsonModel {
       image: json['image'] != null ? ImageModel.fromJson(json['image']) : null,
     );
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'absolute_url': absoluteUrl,
-      'authors': authors,
-      'created_by': createdBy.toJson(), // Assuming Author has toJson() method
-      'changed_date': changedDate,
-      'content': content,
-      'created_date': createdDate,
-      'featured': featured,
-      'heading': heading,
-      'ingress': ingress,
-      'ingress_short': ingressShort,
-      'published_date': publishedDate.toIso8601String(),
-      'slug': slug,
-      'tags': tags,
-      'video': video,
-      'image': image?.toJson(),
-    };
-  }
 }
 
-class Author implements JsonModel {
+class Author {
   final int id;
   final String firstName;
   final String lastName;
@@ -95,7 +73,6 @@ class Author implements JsonModel {
     );
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,

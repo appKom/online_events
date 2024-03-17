@@ -1,6 +1,4 @@
-import '/core/models/json_model.dart';
-
-class ImageModel implements JsonModel {
+class ImageModel {
   final int id;
   final String name;
   final String timestamp;
@@ -34,27 +32,6 @@ class ImageModel implements JsonModel {
     required this.preset,
     required this.presetDisplay,
   });
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'timestamp': timestamp,
-      'description': description,
-      'thumb': thumb,
-      'original': original,
-      'wide': wide,
-      'lg': lg,
-      'md': md,
-      'sm': sm,
-      'xs': xs,
-      'tags': tags,
-      'photographer': photographer,
-      'preset': preset,
-      'preset_display': presetDisplay,
-    };
-  }
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
     return ImageModel(
