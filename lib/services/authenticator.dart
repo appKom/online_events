@@ -34,7 +34,9 @@ abstract class Authenticator {
   }
 
   static Future<Credentials?> login() async {
-    if (auth0 == null) throw Exception('Auth0 has not been initialized! Please call Authenticator.initialize() first.');
+    if (auth0 == null)
+      throw Exception(
+          'Auth0 has not been initialized! Please call Authenticator.initialize() first.');
 
     try {
       final response = await auth0!.webAuthentication().login();
@@ -48,7 +50,10 @@ abstract class Authenticator {
   }
 
   static Future<void> logout() async {
-    if (auth0 == null) throw Exception('Auth0 has not been initialized! Please call Authenticator.initialize() first.');
+    if (auth0 == null) {
+      throw Exception(
+          'Auth0 has not been initialized! Please call Authenticator.initialize() first.');
+    }
 
     await auth0!.webAuthentication().logout();
     // await auth0!.credentialsManager.clearCredentials();

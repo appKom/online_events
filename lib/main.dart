@@ -51,6 +51,10 @@ Future main() async {
   await _configureFirebase();
 
   await Authenticator.fetchStoredCredentials();
+
+  if (Authenticator.isLoggedIn()) {
+    await Client.getUserProfile();
+  }
 }
 
 Future _configureFirebase() async {
