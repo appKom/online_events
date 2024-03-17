@@ -13,6 +13,7 @@ import '/theme/theme.dart';
 // List<AttendedEvents> attendedEvents = [];
 List<EventModel> pastEventModels = [];
 
+// TODO; We have these months multiple places, should be moved to a shared file
 final List<String> norwegianMonths = [
   'Januar',
   'Februar',
@@ -44,8 +45,6 @@ class MyEventsPage extends StatefulWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 24),
-          Text('Mine Arrangementer', style: OnlineTheme.header()),
-          const SizedBox(height: 10),
           SizedBox(
             height: 50,
             child: Row(
@@ -91,7 +90,9 @@ class MyEventsPageState extends State<MyEventsPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   bool _isLoading = true;
-  int currentPage = 1;
+
+  static final ValueNotifier<int> eventPageOffset = ValueNotifier(0);
+  static final ValueNotifier<int> attendancePageOffset = ValueNotifier(0);
 
   @override
   void initState() {
@@ -119,7 +120,8 @@ class MyEventsPageState extends State<MyEventsPage> {
   }
 
   Future<void> fetchMoreEvents() async {
-    final moreEventsPage1 = await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
+    final offset = eventPageOffset.value;
+    final moreEventsPage1 = await Client.getEvents(pages: [offset + 1, offset + 2]);
 
     final events = Client.eventsCache.value;
 
@@ -132,7 +134,7 @@ class MyEventsPageState extends State<MyEventsPage> {
             }
           }
         }
-        currentPage += 3;
+        eventPageOffset.value += 2;
       });
     }
   }
@@ -142,7 +144,11 @@ class MyEventsPageState extends State<MyEventsPage> {
 
     if (user == null) return;
 
-    await Client.getAttendanceEvents(userId: user.id);
+    final offset = attendancePageOffset.value;
+
+    await Client.getAttendanceEvents(userId: user.id, pageCount: 2, pageOffset: offset);
+
+    attendancePageOffset.value += 2;
 
     if (mounted) {
       setState(() {
@@ -265,7 +271,6 @@ class MyEventsPageState extends State<MyEventsPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 24),
-            const SizedBox(height: 10),
             _customHeaderWidget(
               focusedDay: _focusedDay,
               onLeftArrowTap: () {
@@ -398,12 +403,10 @@ class MyEventsPageState extends State<MyEventsPage> {
             const SizedBox(height: 24 + 24),
             Text('Mine Arrangementer', style: OnlineTheme.header()),
             _buildEventList(upcomingEvents),
-            const SizedBox(height: 24),
+            const SizedBox(height: 24 + 24),
             Text('Tidligere Arrangementer', style: OnlineTheme.header()),
             _buildEventList(pastEvents),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 24),
             Center(
               child: AnimatedButton(
                 onTap: () {

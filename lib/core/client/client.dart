@@ -139,6 +139,8 @@ abstract class Client {
     final results = <EventAttendanceModel>[];
 
     for (final response in responses) {
+      if (response.statusCode != 200) continue;
+
       final body = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResults = jsonDecode(body)['results'];
       results.addAll(jsonResults.map<EventAttendanceModel>((json) => EventAttendanceModel.fromJson(json)).toList());
