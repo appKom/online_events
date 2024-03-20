@@ -5,6 +5,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 
+import '../../components/animated_button.dart';
+import '../../services/app_navigator.dart';
 import '/components/online_scaffold.dart';
 import '/dark_overlay.dart';
 import '/theme/theme.dart';
@@ -59,7 +61,8 @@ final challenges = [
   ),
   Challenge(
     title: 'Poeng-politiet',
-    description: 'Poeng-politiet banker på døra! De gir ut 5 poeng til alle med en drikke i hånda.',
+    description:
+        'Poeng-politiet banker på døra! De gir ut 5 poeng til alle med en drikke i hånda.',
   ),
   Challenge(
     title: '''Rattlin' Bog''',
@@ -71,15 +74,18 @@ final challenges = [
   ),
   Challenge(
     title: 'Singel-livet',
-    description: 'Alle som ikke har kjæreste får 2 poeng, men kan gi bort 1 av dem til en som fortjener det 🥰',
+    description:
+        'Alle som ikke har kjæreste får 2 poeng, men kan gi bort 1 av dem til en som fortjener det 🥰',
   ),
   Challenge(
     title: 'Komité-Vors',
-    description: 'Hvis du er i en komité får du 1 poeng. Hvis du er i Appkom får du 2. Er du Dotkommer får du 3!',
+    description:
+        'Hvis du er i en komité får du 1 poeng. Hvis du er i Appkom får du 2. Er du Dotkommer får du 3!',
   ),
   Challenge(
     title: 'Jeg har aldri',
-    description: 'Ta en runde der alle sier noe de "aldri" har gjort. De som har gjort det får 1 poeng.',
+    description:
+        'Ta en runde der alle sier noe de "aldri" har gjort. De som har gjort det får 1 poeng.',
   ),
   Challenge(
     title: 'Opus',
@@ -88,7 +94,8 @@ final challenges = [
   ),
   Challenge(
     title: 'Kahoot!',
-    description: 'Hvis du har eller har hatt en klasse med Alf Inge Wang får du 1 poeng.',
+    description:
+        'Hvis du har eller har hatt en klasse med Alf Inge Wang får du 1 poeng.',
   ),
   Challenge(
     title: 'Party Magician',
@@ -97,7 +104,8 @@ final challenges = [
   ),
   Challenge(
     title: 'Poeng-venner!',
-    description: 'Du og personen 5 til høyre for deg er nå poeng-venner! Hver gang en får poeng får begge poeng.',
+    description:
+        'Du og personen 5 til høyre for deg er nå poeng-venner! Hver gang en får poeng får begge poeng.',
   ),
   // Challenge(
   //   title: 'Uteligger',
@@ -105,7 +113,8 @@ final challenges = [
   // ),
   Challenge(
     title: 'Kjendis',
-    description: 'Pekelek: Hvem i rommet ligner mest på en kjendis? Alle fans (de som pekte på kjendisen) får 5 poeng!',
+    description:
+        'Pekelek: Hvem i rommet ligner mest på en kjendis? Alle fans (de som pekte på kjendisen) får 5 poeng!',
   ),
 ];
 
@@ -208,6 +217,19 @@ class RouletteState extends State<Roulette> {
                   ),
                 ),
               ),
+            ),
+            Positioned(
+              top: 30,
+              right: 30,
+              child: AnimatedButton(onTap: () {
+                AppNavigator.pop();
+              }, childBuilder: (context, hover, pointerDown) {
+                return const Icon(
+                  Icons.close_outlined,
+                  color: OnlineTheme.white,
+                  size: 30,
+                );
+              }),
             ),
           ],
         ),

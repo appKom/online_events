@@ -2,7 +2,9 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:online/theme/theme.dart';
 
+import '../../services/app_navigator.dart';
 import '/components/animated_button.dart';
 
 class SpinLine extends StatefulWidget {
@@ -12,7 +14,8 @@ class SpinLine extends StatefulWidget {
   SpinLineState createState() => SpinLineState();
 }
 
-class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin {
+class SpinLineState extends State<SpinLine>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
   final random = Random();
@@ -68,24 +71,44 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: AnimatedBuilder(
-        animation: controller,
-        builder: (context, child) {
-          return AnimatedButton(onTap: () {
-            if (!controller.isAnimating) {
-              spin();
-            }
-          }, childBuilder: (context, hover, pointerDown) {
-            return Transform.rotate(
-              angle: rotation,
-              child: SvgPicture.asset(
-                'assets/svg/online_hvit_o.svg',
-                height: 300,
-              ),
-            );
-          });
-        },
+    return Scaffold(
+      backgroundColor: OnlineTheme.background,
+      body: Stack(
+        children: [
+          Center(
+            child: AnimatedBuilder(
+              animation: controller,
+              builder: (context, child) {
+                return AnimatedButton(onTap: () {
+                  if (!controller.isAnimating) {
+                    spin();
+                  }
+                }, childBuilder: (context, hover, pointerDown) {
+                  return Transform.rotate(
+                    angle: rotation,
+                    child: SvgPicture.asset(
+                      'assets/svg/online_hvit_o.svg',
+                      height: 300,
+                    ),
+                  );
+                });
+              },
+            ),
+          ),
+          Positioned(
+            top: 30,
+            right: 30,
+            child: AnimatedButton(onTap: () {
+              AppNavigator.pop();
+            }, childBuilder: (context, hover, pointerDown) {
+              return const Icon(
+                Icons.close_outlined,
+                color: OnlineTheme.white,
+                size: 30,
+              );
+            }),
+          ),
+        ],
       ),
     );
   }

@@ -114,18 +114,17 @@ class StatefulDiceState extends State<StatefulDice>
             ],
           ),
           Positioned(
-            top: 20,
-            right: 20,
-            child: IconButton(
-              icon: const Icon(
+            top: 30,
+            right: 30,
+            child: AnimatedButton(onTap: () {
+              AppNavigator.pop();
+            }, childBuilder: (context, hover, pointerDown) {
+              return const Icon(
                 Icons.close_outlined,
                 color: OnlineTheme.white,
                 size: 30,
-              ),
-              onPressed: () {
-                AppNavigator.pop();
-              },
-            ),
+              );
+            }),
           ),
         ],
       ),
