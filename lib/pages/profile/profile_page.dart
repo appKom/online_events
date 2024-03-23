@@ -11,6 +11,7 @@ import 'package:online/components/navbar.dart';
 import 'package:online/components/skeleton_loader.dart';
 import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/login/login_page.dart';
+import 'package:online/pages/profile/settings.dart';
 import 'package:online/theme/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -286,81 +287,44 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    return ClipOval(
-      child: SizedBox(
-        width: 150,
-        height: 150,
-        child: ValueListenableBuilder(
-          valueListenable: acceptedPrivacy,
-          builder: (context, accepted, child) {
-            if (accepted) {
-              return _imageFile != null
-                  ? Image.file(
-                      _imageFile!,
-                      fit: BoxFit.cover,
-                    )
-                  : CachedNetworkImage(
-                      imageUrl:
-                          'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${user.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
-                      fit: BoxFit.cover,
-                      height: 240,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Image.asset(
-                        'assets/images/default_profile_picture.png',
-                        fit: BoxFit.cover,
-                        height: 240,
-                      ),
-                    );
-            }
-
-            return Image.asset(
-              'assets/images/default_profile_picture.png',
-              fit: BoxFit.cover,
-              height: 240,
-            );
-          },
+    if (Platform.isIOS && acceptedPrivacy.value) {
+      return ClipOval(
+        child: SizedBox(
+          width: 150,
+          height: 150,
+          child: _imageFile != null
+              ? Image.file(
+                  _imageFile!,
+                  fit: BoxFit.cover,
+                )
+              : CachedNetworkImage(
+                  imageUrl:
+                      'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${user.username ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
+                  fit: BoxFit.cover,
+                  height: 240,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/images/default_profile_picture.png',
+                    fit: BoxFit.cover,
+                    height: 240,
+                  ),
+                ),
         ),
-      ),
-    );
-
-    // if (acceptedPrivacy.value) {
-    //   return ClipOval(
-    //     child: SizedBox(
-    //       width: 150,
-    //       height: 150,
-    //       child: _imageFile != null
-    //           ? Image.file(
-    //               _imageFile!,
-    //               fit: BoxFit.cover,
-    //             )
-    //           : CachedNetworkImage(
-    //               imageUrl:
-    //                   'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${user.ntnuUsername ?? 'default'}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
-    //               fit: BoxFit.cover,
-    //               height: 240,
-    //               placeholder: (context, url) => const CircularProgressIndicator(),
-    //               errorWidget: (context, url, error) => Image.asset(
-    //                 'assets/images/default_profile_picture.png',
-    //                 fit: BoxFit.cover,
-    //                 height: 240,
-    //               ),
-    //             ),
-    //     ),
-    //   );
-    // } else {
-    //   return ClipOval(
-    //     child: SizedBox(
-    //       width: 150,
-    //       height: 150,
-    //       child: Image.asset(
-    //         'assets/images/default_profile_picture.png',
-    //         fit: BoxFit.cover,
-    //         height: 240,
-    //       ),
-    //     ),
-    //   );
-    // }
+      );
+    } else {
+      return ClipOval(
+        child: SizedBox(
+          width: 150,
+          height: 150,
+          child: Image.asset(
+            'assets/images/default_profile_picture.png',
+            fit: BoxFit.cover,
+            height: 240,
+          ),
+        ),
+      );
+    }
   }
 
   void editProfile() {
@@ -632,6 +596,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     contactCard(user),
                     const SizedBox(height: 24),
                     studyCard(user),
+                    const SizedBox(height: 24),
+                    const SettingsPage(),
                     const SizedBox(height: 24 + 24),
                     Row(
                       children: [

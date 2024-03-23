@@ -73,6 +73,7 @@ Future _configureFirebase() async {
     sound: true,
   );
 
+  await messaging.subscribeToTopic('allUsers');
   await FirebaseMessaging.instance.getToken();
 }
 
