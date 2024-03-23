@@ -63,8 +63,10 @@ class SettingsPageState extends State<SettingsPage> {
 
     if (subscribed == true && topicName != null) {
       messaging.subscribeToTopic(topicName);
+      print("Subscribed to ${topicName}");
     } else if (subscribed == false && topicName != null) {
       messaging.unsubscribeFromTopic(topicName);
+      print("Unsubscribed to ${topicName}");
     }
   }
 
