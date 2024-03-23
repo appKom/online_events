@@ -109,7 +109,7 @@ class AttendeeInfoModel {
       extras: json['extras'] ?? [],
       payment: json['payment'],
       feedback: json['feedback'],
-      hasPostponedRegistration: json['has_postponed_registration'] ?? false,
+      hasPostponedRegistration: json['has_postponed_registration'] ?? '',
       isMarked: json['is_marked'] ?? false,
       isSuspended: json['is_suspended'] ?? false,
       isEligibleForSignup:
