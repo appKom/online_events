@@ -16,7 +16,8 @@ class HomePage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding =
+        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -114,8 +115,10 @@ class HomePage extends ScrollablePage {
           ValueListenableBuilder(
             valueListenable: Client.articlesCache,
             builder: (context, articles, child) {
-              if (articles.isEmpty) return Center(child: ArticleCarousel.skeleton(context));
-              return Center(child: ArticleCarousel(articles: articles.take(3).toList()));
+              if (articles.isEmpty)
+                return Center(child: ArticleCarousel.skeleton(context));
+              return Center(
+                  child: ArticleCarousel(articles: articles.take(3).toList()));
             },
           ),
           const SizedBox(height: 24 + 24),
@@ -130,7 +133,8 @@ class HomePage extends ScrollablePage {
                 decoration: BoxDecoration(
                   color: OnlineTheme.yellow.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(5.0),
-                  border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+                  border: const Border.fromBorderSide(
+                      BorderSide(color: OnlineTheme.yellow, width: 2)),
                 ),
                 child: Text(
                   'Om Online-Appen',
@@ -142,36 +146,36 @@ class HomePage extends ScrollablePage {
               );
             },
           ),
-          const SizedBox(height: 24),
-          AnimatedButton(
-            onTap: () async {
-              final events = await Client.getAttendanceEvents(userId: Client.userCache.value!.id, pageCount: 2);
+          // const SizedBox(height: 24),
+          // AnimatedButton(
+          //   onTap: () async {
+          //     final events = await Client.getAttendanceEvents(userId: Client.userCache.value!.id, pageCount: 2);
 
-              for (final event in events) {
-                print('${event.id}: ${event.timestamp}');
-              }
+          //     for (final event in events) {
+          //       print('${event.id}: ${event.timestamp}');
+          //     }
 
-              print(events.length);
-            },
-            childBuilder: (context, hover, pointerDown) {
-              return Container(
-                height: 40,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: OnlineTheme.yellow.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(5.0),
-                  border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
-                ),
-                child: Text(
-                  'Test',
-                  style: OnlineTheme.textStyle(
-                    weight: 5,
-                    color: OnlineTheme.yellow,
-                  ),
-                ),
-              );
-            },
-          ),
+          //     print(events.length);
+          //   },
+          //   childBuilder: (context, hover, pointerDown) {
+          //     return Container(
+          //       height: 40,
+          //       alignment: Alignment.center,
+          //       decoration: BoxDecoration(
+          //         color: OnlineTheme.yellow.withOpacity(0.4),
+          //         borderRadius: BorderRadius.circular(5.0),
+          //         border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+          //       ),
+          //       child: Text(
+          //         'Test',
+          //         style: OnlineTheme.textStyle(
+          //           weight: 5,
+          //           color: OnlineTheme.yellow,
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // ),
           const SizedBox(height: 24),
         ],
       ),
