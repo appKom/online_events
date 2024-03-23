@@ -51,14 +51,16 @@ abstract class OnlinePage extends StatelessWidget {
 class OnlineScaffold extends StatelessWidget {
   const OnlineScaffold({super.key});
 
-  static ValueNotifier<OnlinePage> page = ValueNotifier(const LoadingPageDisplay());
+  static ValueNotifier<OnlinePage> page =
+      ValueNotifier(const LoadingPageDisplay());
 
   PreferredSize onlineHeader(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
     return PreferredSize(
       preferredSize: const Size.fromHeight(75),
       child: AppBar(
-        shape: const Border(bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        shape: const Border(
+            bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
         backgroundColor: OnlineTheme.background.withOpacity(0.9),
         elevation: 0,
         flexibleSpace: Container(
@@ -76,14 +78,9 @@ class OnlineScaffold extends StatelessWidget {
               children: [
                 AnimatedButton(
                   onTap: () {
-                    launchUrl(
-                      Uri.parse('https://online.ntnu.no'),
-                      mode: LaunchMode.externalApplication,
-                    );
+                    AppNavigator.navigateToPage(const HomePage());
+                    NavbarState.setActiveHome();
                   },
-                  // onTap: () {
-                  //   AppNavigator.navigateToPage(const InfoPage());
-                  // },
                   childBuilder: ((context, hover, pointerDown) {
                     return SvgPicture.asset(
                       'assets/svg/online_logo.svg',
@@ -101,7 +98,8 @@ class OnlineScaffold extends StatelessWidget {
                   return SvgPicture.asset(
                     'assets/svg/bekk.svg',
                     height: 36,
-                    colorFilter: const ColorFilter.mode(OnlineTheme.white, BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(
+                        OnlineTheme.white, BlendMode.srcIn),
                   );
                 }),
               ],
@@ -121,7 +119,8 @@ class OnlineScaffold extends StatelessWidget {
       body: Navigator(
         key: AppNavigator.onlineNavigator,
         initialRoute: '/',
-        onGenerateInitialRoutes: (NavigatorState navigator, String initialRouteName) {
+        onGenerateInitialRoutes:
+            (NavigatorState navigator, String initialRouteName) {
           return [
             MaterialPageRoute(builder: (context) => const HomePage()),
           ];

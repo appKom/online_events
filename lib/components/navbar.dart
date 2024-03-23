@@ -74,6 +74,10 @@ class Navbar extends StatefulWidget {
 class NavbarState extends State<Navbar> {
   static ValueNotifier<int> selected = ValueNotifier(0);
 
+  static void setActiveHome() {
+    selected.value = 0;
+  }
+
   static const List<NavbarButton> _buttons = [
     NavbarButton(
       icon: IconType.home,
@@ -135,7 +139,8 @@ class NavbarState extends State<Navbar> {
     return Container(
       decoration: BoxDecoration(
         color: OnlineTheme.background.withOpacity(0.9),
-        border: const Border(top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        border: const Border(
+            top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
