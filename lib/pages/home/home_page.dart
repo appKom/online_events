@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
@@ -10,12 +11,35 @@ import '/theme/theme.dart';
 import 'article_carousel.dart';
 import 'bedpres.dart';
 import 'info_page.dart';
+// import 'new_update_popup.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
 
+  // void _showUpdatePopup(BuildContext context) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   bool shouldShowPopup = prefs.getBool('showUpdatePopup') ?? true;
+
+  //   if (shouldShowPopup) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return Dialog(
+  //           shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(12.0)),
+  //           child: const NewUpdatePopup(),
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
+
   @override
   Widget content(BuildContext context) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showUpdatePopup(context);
+    // });
+
     final padding =
         MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 

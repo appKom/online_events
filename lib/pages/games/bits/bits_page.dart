@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:online/pages/games/bits/bits_card.dart';
 
@@ -10,18 +12,78 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:online/components/animated_button.dart';
 import 'package:online/theme/themed_icon.dart';
 
-class BitsGame extends StaticPage {
-  BitsGame({super.key});
+import 'game_over_page.dart';
 
-  final controller = SwiperController();
+class BitsGame extends StatefulWidget {
+  final List<String> playerNames;
 
-  Future onTap(int idnex) async {
-    await controller.previous();
+  const BitsGame({super.key, required this.playerNames});
+
+  @override
+  State<BitsGame> createState() => _BitsGameState();
+}
+
+class _BitsGameState extends State<BitsGame> {
+  final SwiperController _controller = SwiperController();
+  late List<BitsModel> _shuffledPages;
+  late int _currentLength;
+
+  @override
+  void initState() {
+    super.initState();
+    _shuffledPages = generateBitsModelsWithRandomPlayer().toList()..shuffle();
+    _currentLength = _shuffledPages.length;
+  }
+
+  Iterable<BitsModel> generateBitsModelsWithRandomPlayer() sync* {
+    final random = Random();
+
+    for (final page in bitsPages) {
+      var header = page.header;
+      var body = page.body;
+
+      if (widget.playerNames.isNotEmpty) {
+        String? randomPlayer;
+        String? randomPlayer2;
+
+        if (widget.playerNames.length >= 2) {
+          int firstIndex = random.nextInt(widget.playerNames.length);
+          int secondIndex = firstIndex;
+
+          while (secondIndex == firstIndex) {
+            secondIndex = random.nextInt(widget.playerNames.length);
+          }
+
+          randomPlayer = widget.playerNames[firstIndex];
+          randomPlayer2 = widget.playerNames[secondIndex];
+        } else if (widget.playerNames.length == 1) {
+          randomPlayer = randomPlayer2 = widget.playerNames.first;
+        }
+        if (randomPlayer != null && randomPlayer2 != null) {
+          header = header
+              .replaceAll('Random2', randomPlayer2)
+              .replaceAll('Random', randomPlayer);
+          body = body
+              .replaceAll('Random2', randomPlayer2)
+              .replaceAll('Random', randomPlayer);
+        }
+      }
+
+      yield BitsModel(header: header, body: body);
+    }
+  }
+
+  Future<void> _onTap(int index) async {
+    await _controller.previous();
+    setState(() {
+      _currentLength = max(0, _currentLength - 1);
+    });
   }
 
   @override
-  Widget content(BuildContext context) {
+  Widget build(BuildContext context) {
     const background = Color.fromARGB(255, 225, 10, 189);
+
     return Container(
       padding: MediaQuery.of(context).padding,
       decoration: const BoxDecoration(
@@ -46,21 +108,27 @@ class BitsGame extends StaticPage {
           SizedBox(
             height: 430,
             child: Swiper(
-              onTap: onTap,
-              itemCount: bitsPages.length,
+              onIndexChanged: (index) {
+                setState(() {
+                  _currentLength = max(0, _currentLength - 1);
+                });
+              },
+              onTap: _onTap,
+              itemCount: _shuffledPages.length,
               itemWidth: MediaQuery.of(context).size.width,
               itemHeight: MediaQuery.of(context).size.height,
-              index: bitsPages.length - 1,
+              controller: _controller,
+              index: _shuffledPages.length - 1,
               allowImplicitScrolling: true,
               loop: false,
               layout: SwiperLayout.TINDER,
-              controller: controller,
               itemBuilder: (context, index) {
                 return Center(
                   child: BitsCard(
-                    body: bitsPages[index].body,
-                    position: bitsPages.length - index,
-                    header: bitsPages[index].header,
+                    body: _shuffledPages[index].body,
+                    position: _shuffledPages.length - index,
+                    header: _shuffledPages[index].header,
+                    length: _currentLength,
                   ),
                 );
               },
@@ -84,198 +152,127 @@ class BitsGame extends StaticPage {
 
 const bitsPages = [
   BitsModel(
-    header: 'MÅL',
-    body: 'Dere er nå ferdig med studiene! Nyt livet som bedrep og ta en lambo hele gjengen!',
-    imageSource: 'assets/bits/bitsimage35.png',
+    header: 'Random',
+    body:
+        'Vi vet alle at du liker å få på. Ta en slurk for hver person i rommet du har ligget med',
   ),
   BitsModel(
-    header: 'Pekelek',
-    body: 'Har mest rizz',
-    imageSource: 'assets/bits/bitsimage34.png',
-  ),
-  BitsModel(
-    header: 'Eksamensfest',
-    body: 'Alle får 3 poeng for å feire at dere er ferdig med eksamen',
-    imageSource: 'assets/bits/bitsimage33.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Burde bli leder for Online',
-    imageSource: 'assets/bits/bitsimage32.png',
-  ),
-  BitsModel(
-    header: 'Kok',
-    body: 'Du blir tatt for kok, du får 5 poeng',
-    imageSource: 'assets/bits/bitsimage31.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Slipper aldri inn på Samf',
-    imageSource: 'assets/bits/bitsimage30.png',
-  ),
-  BitsModel(
-    header: 'Gammel og Ung',
-    body: 'Eldste og yngste i rommet kan dele ut halvparten av alderen sin i poeng',
-    imageSource: 'assets/bits/bitsimage29.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Stjeler fra kiosken',
-    imageSource: 'assets/bits/bitsimage28.png',
-  ),
-  BitsModel(
-    header: 'Vinter OL',
-    body: 'Du ble forkjølet etter vinter OL, du får et kjempe poeng for å lindre halsbetennelsen',
-    imageSource: 'assets/bits/bitsimage27.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Knuser flest hjerter',
-    imageSource: 'assets/bits/bitsimage18.png',
-  ),
-  BitsModel(
-    header: 'POENG!',
-    body: '',
-    imageSource: 'assets/bits/bitsskaal.png',
-  ),
-  BitsModel(
-    header: 'Swap',
-    body: 'Bytt et klesplagg med personen til venstre for deg',
-    imageSource: 'assets/bits/bitsimage25.5.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Havner oftest på legevakten',
-    imageSource: 'assets/bits/bitsimage26.png',
-  ),
-  BitsModel(
-    header: 'OW er nede',
-    body: 'Du får 5 poeng for å få OW opp igjen',
-    imageSource: 'assets/bits/bitsimage25.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Tar best lambo',
-    imageSource: 'assets/bits/bitsimage1.png',
-  ),
-  BitsModel(
-    header: 'Oktoberfest',
-    body: 'Fullfør det du har i hånden',
-    imageSource: 'assets/bits/bitsimage23.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Lever fremdeles i russetiden',
-    imageSource: 'assets/bits/bitsimage22.png',
-  ),
-  BitsModel(
-    header: 'Årets Nisse',
-    body: 'Som årets nisse kan du dele ut 4 poeng',
-    imageSource: 'assets/bits/bitsimage21.png',
-  ),
-  BitsModel(
-    header: 'Julebord',
-    body: 'Hold en tale i to minutter, hvor du forteller hvorfor du har fortjent å være årets nisse',
-    imageSource: 'assets/bits/bitsimage20.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Den som har vært på flest bedpres',
-    imageSource: 'assets/bits/bitsimage19.png',
-  ),
-  BitsModel(
-    header: 'POENG!',
-    body: '',
-    imageSource: 'assets/bits/bitsskaal.png',
-  ),
-  BitsModel(
-    header: 'Poeng eller sannhet',
-    body: 'Er det noen i Online du har et øye for',
-    imageSource: 'assets/bits/bitsimage18.png',
-  ),
-  BitsModel(
-    header: 'Bedpres',
-    body: 'Du kan gi ut fem poeng',
-    imageSource: 'assets/bits/bitsimage17.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Strøk i ITGK',
-    imageSource: 'assets/bits/bitsimage16.png',
-  ),
-  BitsModel(
-    header: 'Surfetur med X-sport',
-    body: 'Du blir tatt av en bølge, hvis hvordan du surfer',
-    imageSource: 'assets/bits/bitsimage15.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Avslutter festen først',
-    imageSource: 'assets/bits/bitsimage14.png',
-  ),
-  BitsModel(
-    header: 'Blåtur',
-    body: 'Blåturen tar deg til et ukjent sted, ta noen andres poeng',
-    imageSource: 'assets/bits/bitsimage13.5.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Passer best inn i Appkom',
-    imageSource: 'assets/bits/bitsimage13.png',
-  ),
-  BitsModel(
-    header: 'POENG!',
-    body: ';)',
-    imageSource: 'assets/bits/bitsskaal.png',
-  ),
-  BitsModel(
-    header: 'Jobbintervju',
-    body: 'Du må forberede deg til jobbintervju så du får et kjempe-poeng!',
-    imageSource: 'assets/bits/bitsimage12.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Fikk A i exphil',
-    imageSource: 'assets/bits/bitsimage9.png',
-  ),
-  BitsModel(
-    header: 'Kontoret',
-    body: 'Du brukte ikke lokk i mikroen, du får 3 poeng',
-    imageSource: 'assets/bits/bitsimage8.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Startet å få poeng i yngst alder.',
-    imageSource: 'assets/bits/bitsimage7.png',
-  ),
-  BitsModel(
-    header: 'Immball',
-    body: '"Av med buksene" Ta av et valgfritt plagg',
-    imageSource: 'assets/bits/bitsimage6.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Spiller mest Smash på A4',
-    imageSource: 'assets/bits/bitsimage5.png',
-  ),
-  BitsModel(
-    header: 'Togafest',
-    body: 'Bruk et håndkle som toga resten av spillet',
-    imageSource: 'assets/bits/bitsimage4.png',
-  ),
-  BitsModel(
-    header: 'Pekelek',
-    body: 'Blir påspandert mest på byen',
-    imageSource: 'assets/bits/bitsimage3.png',
+    header: 'Random',
+    body: 'Velg to "fadderbarn" som tar en slurk hver gang du gjør det"',
   ),
   BitsModel(
     header: 'Fadderuke',
-    body: 'Velg to "fadderbarn" som får et "poeng" hver gang du får et "poeng"',
-    imageSource: 'assets/bits/bitsimage2.png',
+    body:
+        'Random lengter tilbake til fadderuken. For å bringe tilbake de gode minnene, må Random si en fun fact om alle i rommet',
+  ),
+  BitsModel(
+    header: 'Lambo!',
+    body: 'Random må ta en lambo, alle synger!',
+  ),
+  BitsModel(
+    header: 'Togafest',
+    body: 'Random må bruke et håndkle som toga resten av spillet',
+  ),
+  BitsModel(
+    header: 'Immball',
+    body: 'Random "Av med buksene" Ta av et valgfritt plagg',
   ),
   BitsModel(
     header: 'Pekelek',
-    body: 'Kunne brukt en sjekkereplikk relatert til informatikk.',
-    imageSource: 'assets/bits/bitsimage1.png',
+    body: 'Hvem startet å få poeng i yngst alder?',
+  ),
+  BitsModel(
+    header: 'Kontoret',
+    body: 'Random du brukte ikke lokk i mikroen, ta 3 slurker',
+  ),
+  BitsModel(
+    header: 'Jobbintervju',
+    body: 'Random må forberede seg til jobbintervju, fullfør glasset!',
+  ),
+  BitsModel(
+    header: 'Blåtur',
+    body: 'Blåturen tar Random til et ukjent sted, ta noen andres glass',
+  ),
+  BitsModel(
+    header: 'Random',
+    body:
+        'Vi vet du avslutter festen først, hvem i rommet ønsker du å avslutte festen med?',
+  ),
+  BitsModel(
+    header: 'Surfetur med X-sport',
+    body: 'Random blir tatt av en bølge, hvis hvordan du surfer',
+  ),
+  BitsModel(
+    header: 'Bedpres',
+    body: 'Random kan gi ut 5 bonger (bong = slurk)',
+  ),
+  BitsModel(
+    header: 'Slurk eller sannhet',
+    body: 'Har Random et øye for Random2 ?',
+  ),
+  BitsModel(
+    header: 'Lambo!',
+    body: 'Random må ta en lambo, alle synger!',
+  ),
+  BitsModel(
+    header: 'Julebord',
+    body:
+        'Random må holde en tale i to minutter, Random fortell hvorfor du har fortjent å være årets nisse',
+  ),
+  BitsModel(
+    header: 'Oktoberfest',
+    body: 'Random fullfør det du har i hånden',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Hvem tar best lambo? Gjerne demonstrer',
+  ),
+  BitsModel(
+    header: 'OW er nede',
+    body: 'Random må ta 5 slurker for å få OW opp igjen',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Hvem havner oftest på legevakten',
+  ),
+  BitsModel(
+    header: 'Swap',
+    body: 'Random bytt et klesplagg med Random2',
+  ),
+  BitsModel(
+    header: 'Lambo!',
+    body: 'Random må ta en lambo, alle synger!',
+  ),
+  BitsModel(
+    header: 'Random',
+    body:
+        'Vi vet alle at du knuser flest hjerter, ta en slurk for alle du har ligget med i år',
+  ),
+  BitsModel(
+    header: 'Vinter OL',
+    body:
+        'Random ble forkjølet etter vinter OL, fullfør glasset for å lindre halsbetennelsen',
+  ),
+  BitsModel(
+    header: 'Pekelek',
+    body: 'Hvem stjeler mest fra kiosken, ',
+  ),
+  BitsModel(
+    header: 'Gammel og Ung',
+    body:
+        'Eldste og yngste i rommet kan dele ut halvparten av alderen sin i slurker',
+  ),
+  BitsModel(
+    header: 'Kok',
+    body:
+        'Random blir tatt for kok, del glasset ditt med Random2 for å vise at du er angrer deg',
+  ),
+  BitsModel(
+    header: 'Eksamensfest',
+    body: 'Alle tar 3 slurker for å feire at dere er ferdig med eksamen',
+  ),
+  BitsModel(
+    header: 'Random har rizz',
+    body: 'Demonstrer rizzen din ovenfor Random2',
   ),
 ];
