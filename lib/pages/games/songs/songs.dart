@@ -1,5 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:online/pages/games/songs/himmelseng.dart';
+import 'package:online/pages/games/songs/kamerater_hev_glasset.dart';
+import 'package:online/pages/games/songs/studenter_visen.dart';
 import 'package:online/services/app_navigator.dart';
 
 import '/components/animated_button.dart';
@@ -38,6 +41,27 @@ class DrikkeSanger extends StatelessWidget {
               imageSource: 'assets/images/nu_klinger.jpg',
               onTap: () => AppNavigator.navigateToPage(
                 const NuKlingerPage(),
+              ),
+            ),
+            SongCard(
+              name: 'Studenter Visen',
+              imageSource: 'assets/images/studentervisen.png',
+              onTap: () => AppNavigator.navigateToPage(
+                const StudenterVisenPage(),
+              ),
+            ),
+            SongCard(
+              name: 'Kamerater Hev Nu Glasset!',
+              imageSource: 'assets/images/kameraterhevglasset.png',
+              onTap: () => AppNavigator.navigateToPage(
+                const KameraterHevGlassetPage(),
+              ),
+            ),
+            SongCard(
+              name: 'Himmelseng',
+              imageSource: 'assets/images/himmelseng.png',
+              onTap: () => AppNavigator.navigateToPage(
+                const HimmelsengPage(),
               ),
             ),
             SongCard(
@@ -87,7 +111,8 @@ class SongCard extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                      bottom:
+                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
                     ),
                   ),
                   child: AspectRatio(

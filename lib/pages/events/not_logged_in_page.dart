@@ -14,7 +14,8 @@ class NotLoggedInPage extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
     return Padding(
       padding: EdgeInsets.only(left: padding.left, right: padding.right),
       child: Column(
@@ -35,10 +36,12 @@ class NotLoggedInPage extends StaticPage {
                 decoration: BoxDecoration(
                     color: OnlineTheme.green.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(5),
-                    border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2))),
+                    border: const Border.fromBorderSide(
+                        BorderSide(color: OnlineTheme.green, width: 2))),
                 child: Text(
                   'Logg Inn',
-                  style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
+                  style: OnlineTheme.textStyle(
+                      weight: 5, color: OnlineTheme.green),
                 ),
               );
             },
@@ -53,6 +56,7 @@ class NotLoggedInPage extends StaticPage {
 
     if (response != null) {
       Navbar.navigateTo(NavbarPage.profile);
+      NavbarState.setActiveProfile();
     }
   }
 }

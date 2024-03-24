@@ -78,6 +78,10 @@ class NavbarState extends State<Navbar> {
     selected.value = 0;
   }
 
+  static void setActiveProfile() {
+    selected.value = 3;
+  }
+
   static const List<NavbarButton> _buttons = [
     NavbarButton(
       icon: IconType.home,
