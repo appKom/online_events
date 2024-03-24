@@ -194,7 +194,7 @@ const bitsPages = [
   BitsModel(
       header: 'Rygg til rygg',
       body:
-          'Dere kan nå sette dere ned. Det laget med flest poeng kan dele ut 10 slurker til motstanderlaget'),
+          'Dere kan nå sette dere ned. Det laget med flest poeng kan dele ut 10 slurker til motstander-laget'),
   BitsModel(
     header: 'Rygg til rygg',
     body: 'Hvem stjeler mest fra kiosken?',
@@ -222,7 +222,7 @@ const bitsPages = [
   BitsModel(
     header: 'Rygg til rygg',
     body:
-        'Random og Random2 stå rygg til rygg.  Ta en slurk hver gang dere tror påstanden gjelder dere.  Dersom kun en drikker, får dere et poeng, dersom begge drikker eller ingen, så får tilskuernepoeng!.',
+        'Random og Random2 stå rygg til rygg.  Ta en slurk hver gang dere tror påstanden gjelder dere. Dersom kun en drikker, får dere et poeng, dersom begge drikker eller ingen, så får tilskuerne poeng!.',
   ),
   BitsModel(
     header: 'Immball',

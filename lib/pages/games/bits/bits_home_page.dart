@@ -51,7 +51,7 @@ class BitsHomePageState extends State<BitsHomePage> {
             style: OnlineTheme.textStyle(),
           ),
         ),
-        if (number > 2)
+        if (number > 2 && number == playerNumbers.last)
           IconButton(
             icon: const Icon(Icons.close, color: OnlineTheme.white),
             onPressed: () => _removePlayerField(number),
