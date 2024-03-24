@@ -39,6 +39,11 @@ class HomePage extends ScrollablePage {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   _showUpdatePopup(context);
     // });
+    final now = DateTime.now();
+    final futureEvents = Client.eventsCache.value.where((event) {
+      final eventDate = DateTime.parse(event.endDate);
+      return eventDate.isAfter(now);
+    }).toList();
 
     final padding =
         MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
@@ -87,7 +92,7 @@ class HomePage extends ScrollablePage {
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (c, i) => EventCard(
-                    model: events.elementAt(i),
+                    model: futureEvents.elementAt(i),
                   ),
                 );
               },
@@ -99,7 +104,7 @@ class HomePage extends ScrollablePage {
               return AnimatedButton(
                 onTap: () {
                   if (events.isEmpty) return;
-                  AppNavigator.navigateToPage(const EventsPageDisplay());
+                  AppNavigator.navigateToPage(const EventsPage());
                 },
                 behavior: HitTestBehavior.opaque,
                 childBuilder: (context, hover, pointerDown) {
