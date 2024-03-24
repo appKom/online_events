@@ -93,9 +93,8 @@ class EventsPageState extends State<EventsPage> {
                 ),
               ),
               if (hasMoreEvents)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Center(child: CircularProgressIndicator()),
+                Column(
+                  children: List.generate(4, (_) => EventCard.skeleton()),
                 ),
               SizedBox(height: Navbar.height(context) + 10),
             ],
