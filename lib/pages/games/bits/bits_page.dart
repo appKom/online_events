@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:online/pages/games/bits/bits_card.dart';
 
-import '/components/online_scaffold.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'bits_model.dart';
@@ -11,8 +10,6 @@ import 'bits_model.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:online/components/animated_button.dart';
 import 'package:online/theme/themed_icon.dart';
-
-import 'game_over_page.dart';
 
 class BitsGame extends StatefulWidget {
   final List<String> playerNames;
@@ -31,8 +28,29 @@ class _BitsGameState extends State<BitsGame> {
   @override
   void initState() {
     super.initState();
-    _shuffledPages = generateBitsModelsWithRandomPlayer().toList()..shuffle();
+    _shuffledPages = _shuffleExceptRyggTilRygg(
+        generateBitsModelsWithRandomPlayer().toList(), 'Rygg til rygg');
     _currentLength = _shuffledPages.length;
+  }
+
+  List<BitsModel> _shuffleExceptRyggTilRygg(
+      List<BitsModel> models, String specifiedHeader) {
+    final random = Random();
+
+    List<BitsModel> specifiedModels =
+        models.where((m) => m.header == specifiedHeader).toList();
+
+    List<BitsModel> otherModels =
+        models.where((m) => m.header != specifiedHeader).toList();
+    otherModels.shuffle(random);
+
+    if (specifiedModels.isEmpty || otherModels.isEmpty) {
+      return [...specifiedModels, ...otherModels];
+    }
+    int insertIndex = random.nextInt(otherModels.length + 1);
+    otherModels.insertAll(insertIndex, specifiedModels);
+
+    return otherModels;
   }
 
   Iterable<BitsModel> generateBitsModelsWithRandomPlayer() sync* {
@@ -172,6 +190,39 @@ const bitsPages = [
   BitsModel(
     header: 'Togafest',
     body: 'Random må bruke et håndkle som toga resten av spillet',
+  ),
+  BitsModel(
+      header: 'Rygg til rygg',
+      body:
+          'Dere kan nå sette dere ned. Det laget med flest poeng kan dele ut 10 slurker til motstanderlaget'),
+  BitsModel(
+    header: 'Rygg til rygg',
+    body: 'Hvem stjeler mest fra kiosken?',
+  ),
+  BitsModel(
+    header: 'Rygg til rygg',
+    body: 'Hvem tenker høyest om seg selv?',
+  ),
+  BitsModel(
+    header: 'Rygg til rygg',
+    body: 'Hvem syntes den selv er morsomst?',
+  ),
+  BitsModel(
+    header: 'Rygg til rygg',
+    body: 'Hvem er mest på A4?',
+  ),
+  BitsModel(
+    header: 'Rygg til rygg',
+    body: 'Hvem får på mest?',
+  ),
+  BitsModel(
+    header: 'Rygg til rygg',
+    body: 'Hvem er litt for glad i flaska?',
+  ),
+  BitsModel(
+    header: 'Rygg til rygg',
+    body:
+        'Random og Random2 stå rygg til rygg.  Ta en slurk hver gang dere tror påstanden gjelder dere.  Dersom kun en drikker, får dere et poeng, dersom begge drikker eller ingen, så får tilskuernepoeng!.',
   ),
   BitsModel(
     header: 'Immball',
