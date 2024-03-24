@@ -14,25 +14,17 @@ class EventsPage extends StatefulWidget {
 
 class EventsPageState extends State<EventsPage> {
   int currentPage = 1;
-  bool hasMoreEvents = true;
 
   Future<void> fetchMoreEvents() async {
-    if (!hasMoreEvents) return;
-
     final moreEventsPage =
         await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
     final events = Client.eventsCache.value.toList();
-    final now = DateTime.now();
+    ;
 
     if (mounted) {
       setState(() {
         if (moreEventsPage != null) {
           for (var event in moreEventsPage) {
-            final eventStartDate = DateTime.parse(event.startDate);
-            if (eventStartDate.isBefore(now)) {
-              hasMoreEvents = false;
-              break;
-            }
             if (!events.any((existingEvent) => existingEvent.id == event.id)) {
               events.add(event);
             }
@@ -57,9 +49,20 @@ class EventsPageState extends State<EventsPage> {
     final now = DateTime.now();
 
     final futureEvents = Client.eventsCache.value.where((event) {
-      final eventDate = DateTime.parse(event.endDate);
-      return eventDate.isAfter(now);
+      final tommorow = DateTime.now().add(const Duration(days: 1));
+      final eventDate = DateTime.parse(event.startDate);
+      return eventDate.isAfter(tommorow);
     }).toList();
+
+    final pastEvents = Client.eventsCache.value.where((event) {
+      final startDate = DateTime.parse(event.startDate);
+      return startDate.isBefore(now);
+    }).toList()
+      ..sort((a, b) {
+        final aStartDate = DateTime.parse(a.startDate);
+        final bStartDate = DateTime.parse(b.startDate);
+        return bStartDate.compareTo(aStartDate);
+      });
 
     return Padding(
       padding: EdgeInsets.only(
@@ -92,9 +95,33 @@ class EventsPageState extends State<EventsPage> {
                   ),
                 ),
               ),
-              if (hasMoreEvents)
+              if (pastEvents.isEmpty)
                 Column(
-                  children: List.generate(4, (_) => EventCard.skeleton()),
+                  children: List.generate(2, (_) => EventCard.skeleton()),
+                ),
+              if (pastEvents.isNotEmpty) const SizedBox(height: 24),
+              if (pastEvents.isNotEmpty)
+                Text(
+                  'Tidligere Arrangementer',
+                  style: OnlineTheme.header(),
+                ),
+              if (pastEvents.isNotEmpty) const SizedBox(height: 24),
+              if (pastEvents.isNotEmpty)
+                SizedBox(
+                  height: 100.0 * pastEvents.length,
+                  child: ListView.builder(
+                    itemCount: pastEvents.length,
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (c, i) => EventCard(
+                      model: pastEvents[i],
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 24),
+              if (pastEvents.isNotEmpty)
+                Column(
+                  children: List.generate(2, (_) => EventCard.skeleton()),
                 ),
               SizedBox(height: Navbar.height(context) + 10),
             ],
