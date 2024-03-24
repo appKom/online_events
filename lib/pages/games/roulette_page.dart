@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 
@@ -47,74 +46,60 @@ final challenges = [
   Challenge(
     title: 'Kategorier',
     description:
-        'Velg en kategori. Alle må si noe i kategorien helt til én ikke kommer på noe. Denne personen får 3 poeng.',
+        'Velg en kategori. Alle må si noe i kategorien helt til én ikke kommer på noe. Denne personen får 3 slurker.',
   ),
   Challenge(
     title: '6 minutes',
     description:
-        'Finn en Spotify-liste, sett på en timer og gjett hvilken sang som spiller. Hvis du gjetter sangen gir du telefonen til nestemann. Hvis du gjetter artist og navn kan du dele ut poeng. Hvis tiden går ut på deg får du 10 poeng.',
+        'Finn en Spotify-liste, sett på en timer og gjett hvilken sang som spiller. Hvis du gjetter sangen gir du telefonen til nestemann. Hvis du gjetter artist og navn kan du dele ut slurker. Hvis tiden går ut på deg får du 10 slurker.',
   ),
   Challenge(
     title: '''C'mon catch up!''',
     description:
-        '10 poeng til personen med færrest poeng. Personen får dele ut 5 nye poeng til en annen de mener trenger dem.',
+        '10 slurker til personen med færrest slurker. Personen får dele ut 5 nye slurker til en annen de mener trenger dem.',
   ),
   Challenge(
-    title: 'Poeng-politiet',
+    title: 'Slurke-politiet',
     description:
-        'Poeng-politiet banker på døra! De gir ut 5 poeng til alle med en drikke i hånda.',
+        'Slurke-politiet banker på døra! De gir ut 5 slurker til alle med en drikke i hånda.',
   ),
   Challenge(
     title: '''Rattlin' Bog''',
     description: '''Sett på Rattlin' Bog og håp noen kan reglene!''',
   ),
   Challenge(
-    title: 'Poeng-bonanza!',
-    description: 'Alle får 3 poeng.',
+    title: 'Slurke-bonanza!',
+    description: 'Alle får 3 slurker.',
   ),
   Challenge(
     title: 'Singel-livet',
     description:
-        'Alle som ikke har kjæreste får 2 poeng, men kan gi bort 1 av dem til en som fortjener det 🥰',
-  ),
-  Challenge(
-    title: 'Komité-Vors',
-    description:
-        'Hvis du er i en komité får du 1 poeng. Hvis du er i Appkom får du 2. Er du Dotkommer får du 3!',
+        'Alle som ikke har kjæreste får 2 slurker, men kan gi bort 1 av dem til en som fortjener det 🥰',
   ),
   Challenge(
     title: 'Jeg har aldri',
     description:
-        'Ta en runde der alle sier noe de "aldri" har gjort. De som har gjort det får 1 poeng.',
+        'Ta en runde der alle sier noe de "aldri" har gjort. De som har gjort det får 1 slurk.',
   ),
   Challenge(
     title: 'Opus',
     description:
-        'Sett på Opus på Spotify og spill terningleken. Trill helt til du får en 6-er. Da får du 1 poeng og kan gi mobilen videre. Hvis beaten dropper mens du har mobilen taper du. Legg til flere mobiler for mer moro!\n\nPro-tip: Online-appen har innebygd terning',
-  ),
-  Challenge(
-    title: 'Kahoot!',
-    description:
-        'Hvis du har eller har hatt en klasse med Alf Inge Wang får du 1 poeng.',
+        'Sett på Opus på Spotify og spill terningleken. Trill helt til du får en 6-er. Da får du 1 slurk og kan gi mobilen videre. Hvis beaten dropper mens du har mobilen taper du. Legg til flere mobiler for mer moro!\n\nPro-tip: Online-appen har innebygd terning',
   ),
   Challenge(
     title: 'Party Magician',
     description:
-        'Gjør ditt kuleste partytriks og velg 2 personer som hver får 5 poeng. Har du ingen partytriks får du 10 poeng.',
+        'Gjør ditt kuleste partytriks og velg 2 personer som hver får 5 slurker. Har du ingen partytriks får du 10 slurker.',
   ),
   Challenge(
-    title: 'Poeng-venner!',
+    title: 'Slurke-venner!',
     description:
-        'Du og personen 5 til høyre for deg er nå poeng-venner! Hver gang en får poeng får begge poeng.',
+        'Du og personen 5 til høyre for deg er nå slurke-venner! Hver gang en får slurk får begge en slurk.',
   ),
-  // Challenge(
-  //   title: 'Uteligger',
-  //   description: 'Pekelek: Hvem i rommet kler seg mest som en uteligger. Uteliggeren får 5 poeng.',
-  // ),
   Challenge(
     title: 'Kjendis',
     description:
-        'Pekelek: Hvem i rommet ligner mest på en kjendis? Alle fans (de som pekte på kjendisen) får 5 poeng!',
+        'Pekelek: Hvem i rommet ligner mest på en kjendis? Alle fans (de som pekte på kjendisen) får 5 slurker!',
   ),
 ];
 
@@ -139,18 +124,27 @@ class RouletteState extends State<Roulette> {
   @override
   void initState() {
     super.initState();
+    challengePool = List.of(challenges);
 
-    challengePool = challenges.sample(20);
+    _buildFortuneItems();
+  }
+
+  void _buildFortuneItems() {
+    fortuneList.clear();
+    int nonLamboCount = 0;
 
     for (int i = 0; i < challengePool.length; i++) {
       late final FortuneItemStyle color;
 
-      if (i == 0) {
+      if (challengePool[i].title == 'LAMBO') {
         color = green;
-      } else if (i % 2 == 0) {
-        color = red;
       } else {
-        color = black;
+        if (nonLamboCount % 2 == 0) {
+          color = red;
+        } else {
+          color = black;
+        }
+        nonLamboCount++;
       }
 
       fortuneList.add(
@@ -163,6 +157,13 @@ class RouletteState extends State<Roulette> {
         ),
       );
     }
+  }
+
+  void _removeSelectedAndRebuild(int selectedIndex) {
+    setState(() {
+      challengePool.removeAt(selectedIndex);
+      _buildFortuneItems();
+    });
   }
 
   int index = 0;
@@ -193,9 +194,13 @@ class RouletteState extends State<Roulette> {
                     angle: isMobile ? pi / 2 : 0,
                     child: FortuneWheel(
                       onAnimationEnd: () {
+                        final selectedTitle = challengePool[index].title;
+                        final selectedDescription =
+                            challengePool[index].description;
+                        _removeSelectedAndRebuild(index);
                         RouletteOverlay(
-                          title: challengePool[index].title,
-                          description: challengePool[index].description,
+                          title: selectedTitle,
+                          description: selectedDescription,
                         ).show(context);
                       },
                       alignment: Alignment.center,
@@ -208,7 +213,8 @@ class RouletteState extends State<Roulette> {
                         curve: Curves.decelerate,
                       ),
                       onFling: () {
-                        _selected.add(random.nextInt(challenges.length));
+                        int nextIndex = random.nextInt(challengePool.length);
+                        _selected.add(nextIndex);
                       },
                       onFocusItemChanged: (value) {
                         index = value;
