@@ -60,6 +60,41 @@ class BitsHomePageState extends State<BitsHomePage> {
     );
   }
 
+  OverlayEntry? _overlayEntry;
+
+  void showErrorTop(String message) {
+    _overlayEntry?.remove();
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).padding.top + 160,
+        left: 20,
+        right: 20,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              gradient: OnlineTheme.redGradient,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              message,
+              style: OnlineTheme.textStyle(size: 20),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+
+    Future.delayed(const Duration(seconds: 5), () {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    });
+  }
+
   void _addPlayerField() {
     setState(() {
       if (playerNumbers.length < 11) {
@@ -88,7 +123,14 @@ class BitsHomePageState extends State<BitsHomePage> {
   }
 
   void _startGame() {
-    List<String> playerNames = controllers.map((c) => c.text).toList();
+    bool anyFieldEmpty =
+        controllers.any((controller) => controller.text.trim().isEmpty);
+
+    if (anyFieldEmpty) {
+      return showErrorTop("Deltakerfeltene må være fylt ut");
+    }
+
+    List<String> playerNames = controllers.map((c) => c.text.trim()).toList();
     AppNavigator.globalNavigateTo(BitsGame(playerNames: playerNames));
   }
 
