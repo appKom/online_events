@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/models/event_model.dart';
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
@@ -11,40 +12,11 @@ import '/theme/theme.dart';
 import 'article_carousel.dart';
 import 'bedpres.dart';
 import 'info_page.dart';
-// import 'new_update_popup.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
-
-  // void _showUpdatePopup(BuildContext context) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   bool shouldShowPopup = prefs.getBool('showUpdatePopup') ?? true;
-
-  //   if (shouldShowPopup) {
-  //     showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return Dialog(
-  //           shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.circular(12.0)),
-  //           child: const NewUpdatePopup(),
-  //         );
-  //       },
-  //     );
-  //   }
-  // }
-
   @override
   Widget content(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _showUpdatePopup(context);
-    // });
-    final now = DateTime.now();
-    final futureEvents = Client.eventsCache.value.where((event) {
-      final eventDate = DateTime.parse(event.endDate);
-      return eventDate.isAfter(now);
-    }).toList();
-
     final padding =
         MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
@@ -61,38 +33,34 @@ class HomePage extends ScrollablePage {
                 'Kommende Arrangementer',
                 style: OnlineTheme.header(),
               ),
-              // AnimatedButton(
-              //   onTap: () {
-              //     AppNavigator.navigateToPage(const InfoPage());
-              //   },
-              //   childBuilder: (context, hover, pointerDown) {
-              //     return const Icon(
-              //       Icons.info_outline,
-              //       color: OnlineTheme.white,
-              //       size: 25,
-              //     );
-              //   },
-              // ),
             ],
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 24),
-            height: 100 * 4,
-            child: ValueListenableBuilder(
+            child: ValueListenableBuilder<Set<EventModel>>(
               valueListenable: Client.eventsCache,
-              builder: (context, events, child) {
-                if (events.isEmpty) {
+              builder: (context, Set<EventModel> eventSet, child) {
+                final tommorow = DateTime.now().add(Duration(days: 1));
+                final futureEvents = eventSet.where((event) {
+                  final eventDate = DateTime.parse(event.startDate);
+                  return eventDate.isAfter(tommorow);
+                }).toList();
+
+                if (futureEvents.isEmpty) {
                   return Column(
                     children: List.generate(4, (_) => EventCard.skeleton()),
                   );
                 }
 
-                return ListView.builder(
-                  itemCount: 4,
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (c, i) => EventCard(
-                    model: futureEvents.elementAt(i),
+                return SizedBox(
+                  height: 400,
+                  child: ListView.builder(
+                    itemCount: futureEvents.length,
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => EventCard(
+                      model: futureEvents[index],
+                    ),
                   ),
                 );
               },
