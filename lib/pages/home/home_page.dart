@@ -40,10 +40,10 @@ class HomePage extends ScrollablePage {
             child: ValueListenableBuilder<Set<EventModel>>(
               valueListenable: Client.eventsCache,
               builder: (context, Set<EventModel> eventSet, child) {
-                final tommorow = DateTime.now().add(const Duration(days: 1));
+                final today = DateTime.now();
                 final futureEvents = eventSet.where((event) {
-                  final eventDate = DateTime.parse(event.startDate);
-                  return eventDate.isAfter(tommorow);
+                  final eventDate = DateTime.parse(event.endDate);
+                  return eventDate.isAfter(today);
                 }).toList();
 
                 if (futureEvents.isEmpty) {

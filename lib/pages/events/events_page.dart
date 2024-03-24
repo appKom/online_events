@@ -30,9 +30,9 @@ class EventsPageState extends State<EventsPage> {
             }
           }
           events.sort((a, b) {
-            final aStartDate = DateTime.parse(a.startDate);
-            final bStartDate = DateTime.parse(b.startDate);
-            return aStartDate.compareTo(bStartDate);
+            final aEndDate = DateTime.parse(a.endDate);
+            final bEndDate = DateTime.parse(b.endDate);
+            return aEndDate.compareTo(bEndDate);
           });
           Client.eventsCache.value = Set.from(events);
         }
@@ -49,19 +49,19 @@ class EventsPageState extends State<EventsPage> {
     final now = DateTime.now();
 
     final futureEvents = Client.eventsCache.value.where((event) {
-      final tommorow = DateTime.now().add(const Duration(days: 1));
-      final eventDate = DateTime.parse(event.startDate);
-      return eventDate.isAfter(tommorow);
+      final today = DateTime.now();
+      final eventDate = DateTime.parse(event.endDate);
+      return eventDate.isAfter(today);
     }).toList();
 
     final pastEvents = Client.eventsCache.value.where((event) {
-      final startDate = DateTime.parse(event.startDate);
-      return startDate.isBefore(now);
+      final endDate = DateTime.parse(event.endDate);
+      return endDate.isBefore(now);
     }).toList()
       ..sort((a, b) {
-        final aStartDate = DateTime.parse(a.startDate);
-        final bStartDate = DateTime.parse(b.startDate);
-        return bStartDate.compareTo(aStartDate);
+        final aEndDate = DateTime.parse(a.endDate);
+        final bEndDate = DateTime.parse(b.endDate);
+        return bEndDate.compareTo(aEndDate);
       });
 
     return Padding(
@@ -69,7 +69,9 @@ class EventsPageState extends State<EventsPage> {
           left: padding.left, right: padding.right, top: padding.top),
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+          double triggerFetchMoreThreshold =
+              scrollInfo.metrics.maxScrollExtent * 0.6;
+          if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold) {
             fetchMoreEvents();
           }
           return true;
