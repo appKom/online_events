@@ -78,7 +78,7 @@ class OnlineScaffold extends StatelessWidget {
               children: [
                 AnimatedButton(
                   onTap: () {
-                    AppNavigator.navigateToPage(const HomePage());
+                    AppNavigator.replaceWithPage(const HomePage());
                     NavbarState.setActiveHome();
                   },
                   childBuilder: ((context, hover, pointerDown) {
