@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:online/services/app_navigator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../event/event_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/components/skeleton_loader.dart';
@@ -33,7 +35,8 @@ class MyEventsPage extends StatefulWidget {
   const MyEventsPage({super.key});
 
   static Widget skeletonLoader(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding =
+        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     final time = DateTime.now();
     String monthName = norwegianMonths[time.month - 1];
@@ -51,7 +54,9 @@ class MyEventsPage extends StatefulWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
+                Text('$monthName $year',
+                    style: OnlineTheme.textStyle(
+                        size: 16, color: OnlineTheme.white)),
               ],
             ),
           ),
@@ -121,7 +126,8 @@ class MyEventsPageState extends State<MyEventsPage> {
 
   Future<void> fetchMoreEvents() async {
     final offset = eventPageOffset.value;
-    final moreEventsPage1 = await Client.getEvents(pages: [offset + 1, offset + 2]);
+    final moreEventsPage1 =
+        await Client.getEvents(pages: [offset + 1, offset + 2]);
 
     final events = Client.eventsCache.value;
 
@@ -146,7 +152,8 @@ class MyEventsPageState extends State<MyEventsPage> {
 
     final offset = attendancePageOffset.value;
 
-    await Client.getAttendanceEvents(userId: user.id, pageCount: 2, pageOffset: offset);
+    await Client.getAttendanceEvents(
+        userId: user.id, pageCount: 2, pageOffset: offset);
 
     attendancePageOffset.value += 2;
 
@@ -157,7 +164,15 @@ class MyEventsPageState extends State<MyEventsPage> {
     }
   }
 
-  static const List<String> _norwegianWeekDays = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+  static const List<String> _norwegianWeekDays = [
+    'Man',
+    'Tir',
+    'Ons',
+    'Tor',
+    'Fre',
+    'Lør',
+    'Søn'
+  ];
 
   static Widget customDaysOfWeekBuilder(BuildContext context, int i) {
     return Center(
@@ -186,7 +201,8 @@ class MyEventsPageState extends State<MyEventsPage> {
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: onLeftArrowTap,
           ),
-          Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
+          Text('$monthName $year',
+              style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
           IconButton(
             icon: const Icon(Icons.arrow_forward_ios),
             onPressed: onRightArrowTap,
@@ -225,22 +241,25 @@ class MyEventsPageState extends State<MyEventsPage> {
       return MyEventsPage.skeletonLoader(context);
     }
 
-    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding =
+        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     final now = DateTime.now();
 
     final eventAttendances = Client.eventAttendanceCache.value;
 
-    final upcomingEvents =
-        Client.eventsCache.value.where((model) => eventAttendances.any((event) => event.id == model.id)).where((model) {
+    final upcomingEvents = Client.eventsCache.value
+        .where((model) => eventAttendances.any((event) => event.id == model.id))
+        .where((model) {
       final eventDate = DateTime.parse(model.startDate);
       return eventDate.isAfter(now);
     }).toList();
 
     print(upcomingEvents.length);
 
-    final pastEvents =
-        Client.eventsCache.value.where((model) => eventAttendances.any((event) => event.id == model.id)).where((model) {
+    final pastEvents = Client.eventsCache.value
+        .where((model) => eventAttendances.any((event) => event.id == model.id))
+        .where((model) {
       final eventDate = DateTime.parse(model.startDate);
       return eventDate.isBefore(now);
     }).toList();
@@ -252,14 +271,19 @@ class MyEventsPageState extends State<MyEventsPage> {
         final startDate = DateTime.parse(event.startDate).toLocal();
         final endDate = DateTime.parse(event.endDate).toLocal();
         final comparisonDayStart = DateTime(day.year, day.month, day.day);
-        final comparisonDayEnd = DateTime(day.year, day.month, day.day, 23, 59, 59);
+        final comparisonDayEnd =
+            DateTime(day.year, day.month, day.day, 23, 59, 59);
 
-        return (startDate.isAtSameMomentAs(comparisonDayStart) || startDate.isBefore(comparisonDayEnd)) &&
-            (endDate.isAtSameMomentAs(comparisonDayStart) || endDate.isAfter(comparisonDayStart));
+        return (startDate.isAtSameMomentAs(comparisonDayStart) ||
+                startDate.isBefore(comparisonDayEnd)) &&
+            (endDate.isAtSameMomentAs(comparisonDayStart) ||
+                endDate.isAfter(comparisonDayStart));
       }
 
-      selectedEvents.addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
-      selectedEvents.addAll(pastEvents.where((event) => isEventOnDay(event, day)));
+      selectedEvents
+          .addAll(upcomingEvents.where((event) => isEventOnDay(event, day)));
+      selectedEvents
+          .addAll(pastEvents.where((event) => isEventOnDay(event, day)));
 
       return selectedEvents;
     }
@@ -275,12 +299,14 @@ class MyEventsPageState extends State<MyEventsPage> {
               focusedDay: _focusedDay,
               onLeftArrowTap: () {
                 setState(() {
-                  _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
+                  _focusedDay = DateTime(
+                      _focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
                 });
               },
               onRightArrowTap: () {
                 setState(() {
-                  _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
+                  _focusedDay = DateTime(
+                      _focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
                 });
               },
             ),
@@ -305,6 +331,13 @@ class MyEventsPageState extends State<MyEventsPage> {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
                 });
+                List<EventModel> eventsForSelectedDay =
+                    getEventsForDay(selectedDay);
+
+                if (eventsForSelectedDay.isNotEmpty) {
+                  AppNavigator.replaceWithPage(
+                      EventPageDisplay(model: eventsForSelectedDay.first));
+                }
               },
               eventLoader: (day) => getEventsForDay(day),
               calendarBuilders: CalendarBuilders(
@@ -314,11 +347,14 @@ class MyEventsPageState extends State<MyEventsPage> {
                     margin: const EdgeInsets.all(2.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: eventful ? OnlineTheme.green5 : OnlineTheme.darkGray,
+                      color:
+                          eventful ? OnlineTheme.green5 : OnlineTheme.darkGray,
                       shape: BoxShape.rectangle,
                       border: Border.fromBorderSide(
                         BorderSide(
-                          color: eventful ? OnlineTheme.green5.lighten(50) : Colors.white,
+                          color: eventful
+                              ? OnlineTheme.green5.lighten(50)
+                              : Colors.white,
                           width: 2,
                         ),
                       ),
@@ -371,7 +407,8 @@ class MyEventsPageState extends State<MyEventsPage> {
                   shape: BoxShape.rectangle,
                   // color: Colors.grey.shade700,
                   color: OnlineTheme.gray0,
-                  border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray0, width: 2)),
+                  border: Border.fromBorderSide(
+                      BorderSide(color: OnlineTheme.gray0, width: 2)),
                   // border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray9, width: 2)),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
@@ -384,15 +421,18 @@ class MyEventsPageState extends State<MyEventsPage> {
                   shape: BoxShape.rectangle,
                   // color: Colors.grey.shade700,
                   // color: Colors.transparent,
-                  border: Border.fromBorderSide(BorderSide(color: OnlineTheme.white, width: 2)),
+                  border: Border.fromBorderSide(
+                      BorderSide(color: OnlineTheme.white, width: 2)),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
               ),
               headerStyle: const HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
-                leftChevronIcon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                rightChevronIcon: Icon(Icons.arrow_forward_ios, color: Colors.white),
+                leftChevronIcon:
+                    Icon(Icons.arrow_back_ios, color: Colors.white),
+                rightChevronIcon:
+                    Icon(Icons.arrow_forward_ios, color: Colors.white),
                 titleTextStyle: TextStyle(color: Colors.white),
               ),
               daysOfWeekStyle: const DaysOfWeekStyle(
