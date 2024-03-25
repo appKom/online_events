@@ -19,8 +19,7 @@ import 'event_date_formater.dart';
 class NotificationModel {
   static const channelId = "online_events";
   static const channelName = "Online Events";
-  static const channelDescription =
-      "Reminders about event registrations and event starts.";
+  static const channelDescription = "Reminders about event registrations and event starts.";
 
   static const androidPlatformChannelSpecifics = AndroidNotificationDetails(
     channelId,
@@ -42,11 +41,7 @@ class NotificationModel {
 
   late final int id;
 
-  NotificationModel(
-      {required this.time,
-      required this.header,
-      required this.body,
-      required this.id});
+  NotificationModel({required this.time, required this.header, required this.body, required this.id});
 
   tz.TZDateTime zonedTime() {
     return tz.TZDateTime.from(time, tz.local);
@@ -55,10 +50,8 @@ class NotificationModel {
 
 class AttendanceCard extends StatelessWidget {
   AttendanceCard({super.key, required this.event, required this.attendeeInfo})
-      : _notificationPrefKeyBeforeRegistration =
-            'notifyBeforeRegistration_${event.id}',
-        _notificationPrefKeyBeforeEventStart =
-            'notifyBeforeEventStart_${event.id}';
+      : _notificationPrefKeyBeforeRegistration = 'notifyBeforeRegistration_${event.id}',
+        _notificationPrefKeyBeforeEventStart = 'notifyBeforeEventStart_${event.id}';
 
   final EventModel event;
   final AttendeeInfoModel attendeeInfo;
@@ -67,10 +60,8 @@ class AttendanceCard extends StatelessWidget {
 
   Future<void> _loadNotificationPrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    willNotifyBeforeRegistration.value =
-        prefs.getBool(_notificationPrefKeyBeforeRegistration) ?? false;
-    willNotifyBeforeEventStart.value =
-        prefs.getBool(_notificationPrefKeyBeforeEventStart) ?? false;
+    willNotifyBeforeRegistration.value = prefs.getBool(_notificationPrefKeyBeforeRegistration) ?? false;
+    willNotifyBeforeEventStart.value = prefs.getBool(_notificationPrefKeyBeforeEventStart) ?? false;
   }
 
   Future<void> _saveNotificationPref(String key, bool value) async {
@@ -140,8 +131,7 @@ class AttendanceCard extends StatelessWidget {
       await _saveNotificationPref(_notificationPrefKeyBeforeRegistration, true);
       willNotifyBeforeRegistration.value = true;
 
-      final scheduleNotificationDateTime =
-          attendeeInfo.registrationStart.subtract(const Duration(minutes: 15));
+      final scheduleNotificationDateTime = attendeeInfo.registrationStart.subtract(const Duration(minutes: 15));
 
       final notification = NotificationModel(
         id: event.id,
@@ -169,14 +159,12 @@ class AttendanceCard extends StatelessWidget {
         notification.zonedTime(),
         NotificationModel.platformChannelSpecifics,
         androidScheduleMode: AndroidScheduleMode.alarmClock,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       );
     }
 
     Future unregisterNotification() async {
-      await _saveNotificationPref(
-          _notificationPrefKeyBeforeRegistration, false);
+      await _saveNotificationPref(_notificationPrefKeyBeforeRegistration, false);
       willNotifyBeforeRegistration.value = false;
 
       if (Platform.isIOS) {
@@ -242,8 +230,7 @@ class AttendanceCard extends StatelessWidget {
 
       final DateTime parsedStartDate = DateTime.parse(event.startDate);
 
-      final scheduleNotificationDateTime =
-          parsedStartDate.subtract(const Duration(minutes: 60));
+      final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
 
       final notification = NotificationModel(
         id: event.id,
@@ -268,8 +255,7 @@ class AttendanceCard extends StatelessWidget {
         notification.zonedTime(),
         NotificationModel.platformChannelSpecifics,
         androidScheduleMode: AndroidScheduleMode.alarmClock,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       );
     }
 
@@ -321,8 +307,7 @@ class AttendanceCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: color.withOpacity(0.4),
                       borderRadius: BorderRadius.circular(5.0),
-                      border: Border.fromBorderSide(
-                          BorderSide(color: color, width: 2)),
+                      border: Border.fromBorderSide(BorderSide(color: color, width: 2)),
                     ),
                     alignment: Alignment.center,
                     child: Text(
@@ -365,8 +350,7 @@ class AttendanceCard extends StatelessWidget {
               const ThemedIcon(icon: IconType.dateTime, size: 20),
               const SizedBox(width: 8),
               Text(
-                EventDateFormatter.formatEventDates(
-                    event.startDate, event.endDate),
+                EventDateFormatter.formatEventDates(event.startDate, event.endDate),
                 style: OnlineTheme.textStyle(),
               ),
             ],
@@ -388,12 +372,9 @@ class AttendanceCard extends StatelessWidget {
               ],
             ),
           ),
-          if (showCountdownToRegistrationStart())
-            countdownToRegistrationStart(),
+          if (showCountdownToRegistrationStart()) countdownToRegistrationStart(),
           if (showCountdownToEventStart()) countdownToEventStart(),
-          if (attendeeInfo.isAttendee &&
-              DateTime.parse(event.endDate).isAfter(DateTime.now()))
-            notifyAttendance(),
+          if (attendeeInfo.isAttendee && DateTime.parse(event.endDate).isAfter(DateTime.now())) notifyAttendance(),
         ],
       ),
     );

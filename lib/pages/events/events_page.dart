@@ -16,8 +16,7 @@ class EventsPageState extends State<EventsPage> {
   int currentPage = 1;
 
   Future<void> fetchMoreEvents() async {
-    final moreEventsPage =
-        await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
+    final moreEventsPage = await Client.getEvents(pages: [currentPage + 1, currentPage + 2]);
     final events = Client.eventsCache.value.toList();
     ;
 
@@ -44,8 +43,7 @@ class EventsPageState extends State<EventsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     final now = DateTime.now();
 
     final futureEvents = Client.eventsCache.value.where((event) {
@@ -64,13 +62,12 @@ class EventsPageState extends State<EventsPage> {
         return bEndDate.compareTo(aEndDate);
       });
 
-    return Padding(
-      padding: EdgeInsets.only(
-          left: padding.left, right: padding.right, top: padding.top),
+    return Container(
+      color: OnlineTheme.background,
+      padding: EdgeInsets.only(left: padding.left, right: padding.right, top: padding.top),
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
-          double triggerFetchMoreThreshold =
-              scrollInfo.metrics.maxScrollExtent * 0.6;
+          double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.6;
           if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold) {
             fetchMoreEvents();
           }
