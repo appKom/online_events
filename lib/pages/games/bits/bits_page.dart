@@ -28,20 +28,16 @@ class _BitsGameState extends State<BitsGame> {
   @override
   void initState() {
     super.initState();
-    _shuffledPages = _shuffleExceptRyggTilRygg(
-        generateBitsModelsWithRandomPlayer().toList(), 'Rygg til rygg');
+    _shuffledPages = _shuffleExceptRyggTilRygg(generateBitsModelsWithRandomPlayer().toList(), 'Rygg til rygg');
     _currentLength = _shuffledPages.length;
   }
 
-  List<BitsModel> _shuffleExceptRyggTilRygg(
-      List<BitsModel> models, String specifiedHeader) {
+  List<BitsModel> _shuffleExceptRyggTilRygg(List<BitsModel> models, String specifiedHeader) {
     final random = Random();
 
-    List<BitsModel> specifiedModels =
-        models.where((m) => m.header == specifiedHeader).toList();
+    List<BitsModel> specifiedModels = models.where((m) => m.header == specifiedHeader).toList();
 
-    List<BitsModel> otherModels =
-        models.where((m) => m.header != specifiedHeader).toList();
+    List<BitsModel> otherModels = models.where((m) => m.header != specifiedHeader).toList();
     otherModels.shuffle(random);
 
     if (specifiedModels.isEmpty || otherModels.isEmpty) {
@@ -78,12 +74,8 @@ class _BitsGameState extends State<BitsGame> {
           randomPlayer = randomPlayer2 = widget.playerNames.first;
         }
         if (randomPlayer != null && randomPlayer2 != null) {
-          header = header
-              .replaceAll('Random2', randomPlayer2)
-              .replaceAll('Random', randomPlayer);
-          body = body
-              .replaceAll('Random2', randomPlayer2)
-              .replaceAll('Random', randomPlayer);
+          header = header.replaceAll('Random2', randomPlayer2).replaceAll('Random', randomPlayer);
+          body = body.replaceAll('Random2', randomPlayer2).replaceAll('Random', randomPlayer);
         }
       }
 
@@ -171,21 +163,20 @@ class _BitsGameState extends State<BitsGame> {
 const bitsPages = [
   BitsModel(
     header: 'Random',
-    body:
-        'Vi vet alle at du liker å få på. Ta en slurk for hver person i rommet du har ligget med',
+    body: 'Vi vet alle at du liker å få på. Ta en slurk for hver person i rommet du har ligget med.',
   ),
   BitsModel(
     header: 'Random',
-    body: 'Velg to "fadderbarn" som tar en slurk hver gang du gjør det"',
+    body: 'Velg to "fadderbarn" som tar en slurk hver gang du gjør det.',
   ),
   BitsModel(
     header: 'Fadderuke',
     body:
-        'Random lengter tilbake til fadderuken. For å bringe tilbake de gode minnene, må Random si en fun fact om alle i rommet',
+        'Random lengter tilbake til fadderuken. For å bringe tilbake de gode minnene, må Random si en funfact om alle i rommet.',
   ),
   BitsModel(
     header: 'Lambo!',
-    body: 'Random må ta en lambo, alle synger!',
+    body: 'Random må ta en lambo. Alle synger!',
   ),
   BitsModel(
     header: 'Togafest',
@@ -193,8 +184,7 @@ const bitsPages = [
   ),
   BitsModel(
       header: 'Rygg til rygg',
-      body:
-          'Dere kan nå sette dere ned. Det laget med flest poeng kan dele ut 10 slurker til motstander-laget'),
+      body: 'Dere kan nå sette dere ned. Det laget med flest poeng kan dele ut 10 slurker til motstanderlaget.'),
   BitsModel(
     header: 'Rygg til rygg',
     body: 'Hvem stjeler mest fra kiosken?',
@@ -226,11 +216,11 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'Immball',
-    body: 'Random "Av med buksene" Ta av et valgfritt plagg',
+    body: 'Random "Av med buksene". Ta av et valgfritt plagg',
   ),
   BitsModel(
     header: 'Pekelek',
-    body: 'Hvem startet å få poeng i yngst alder?',
+    body: 'Hvem startet å drikke i yngst alder?',
   ),
   BitsModel(
     header: 'Kontoret',
@@ -242,20 +232,19 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'Blåtur',
-    body: 'Blåturen tar Random til et ukjent sted, ta noen andres glass',
+    body: 'Blåturen tar Random til et ukjent sted. Ta noen andres glass.',
   ),
   BitsModel(
     header: 'Random',
-    body:
-        'Vi vet du avslutter festen først, hvem i rommet ønsker du å avslutte festen med?',
+    body: 'Vi vet du avslutter festen først, hvem i rommet ønsker du å avslutte festen med?',
   ),
   BitsModel(
     header: 'Surfetur med X-sport',
-    body: 'Random blir tatt av en bølge, hvis hvordan du surfer',
+    body: 'Random blir tatt av en bølge. Vis hvordan du surfer.',
   ),
   BitsModel(
     header: 'Bedpres',
-    body: 'Random kan gi ut 5 bonger (bong = slurk)',
+    body: 'Random kan gi ut 5 bonger. (bong = slurk)',
   ),
   BitsModel(
     header: 'Slurk eller sannhet',
@@ -267,24 +256,23 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'Julebord',
-    body:
-        'Random må holde en tale i to minutter, Random fortell hvorfor du har fortjent å være årets nisse',
+    body: 'Random må holde en tale i to minutter. Fortell hvorfor du har fortjent å være årets nisse',
   ),
   BitsModel(
     header: 'Oktoberfest',
-    body: 'Random fullfør det du har i hånden',
+    body: 'Random fullfør det du har i hånden.',
   ),
   BitsModel(
     header: 'Pekelek',
-    body: 'Hvem tar best lambo? Gjerne demonstrer',
+    body: 'Hvem tar best lambo? Gjerne demonstrer.',
   ),
   BitsModel(
     header: 'OW er nede',
-    body: 'Random må ta 5 slurker for å få OW opp igjen',
+    body: 'Random må ta 5 slurker for å få OW opp igjen.',
   ),
   BitsModel(
     header: 'Pekelek',
-    body: 'Hvem havner oftest på legevakten',
+    body: 'Hvem havner oftest på legevakten?',
   ),
   BitsModel(
     header: 'Swap',
@@ -296,31 +284,27 @@ const bitsPages = [
   ),
   BitsModel(
     header: 'Random',
-    body:
-        'Vi vet alle at du knuser flest hjerter, ta en slurk for alle du har ligget med i år',
+    body: 'Vi vet alle at du knuser flest hjerter, ta en slurk for alle du har ligget med i år.',
   ),
   BitsModel(
-    header: 'Vinter OL',
-    body:
-        'Random ble forkjølet etter vinter OL, fullfør glasset for å lindre halsbetennelsen',
+    header: 'Vinter-OL',
+    body: 'Random ble forkjølet etter vinter-OL. Fullfør glasset for å lindre halsbetennelsen.',
   ),
   BitsModel(
     header: 'Pekelek',
-    body: 'Hvem stjeler mest fra kiosken, ',
+    body: 'Hvem stjeler mest fra kiosken?',
   ),
   BitsModel(
     header: 'Gammel og Ung',
-    body:
-        'Eldste og yngste i rommet kan dele ut halvparten av alderen sin i slurker',
+    body: 'Eldste og yngste i rommet kan dele ut halvparten av alderen sin i slurker.',
   ),
   BitsModel(
     header: 'Kok',
-    body:
-        'Random blir tatt for kok, del glasset ditt med Random2 for å vise at du er angrer deg',
+    body: 'Random blir tatt for kok, del glasset ditt med Random2 for å vise at du er angrer deg.',
   ),
   BitsModel(
     header: 'Eksamensfest',
-    body: 'Alle tar 3 slurker for å feire at dere er ferdig med eksamen',
+    body: 'Alle tar 3 slurker for å feire at dere er ferdig med eksamen.',
   ),
   BitsModel(
     header: 'Random har rizz',

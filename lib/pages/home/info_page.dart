@@ -12,8 +12,7 @@ class InfoPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -72,8 +71,7 @@ class InfoPage extends ScrollablePage {
                 decoration: BoxDecoration(
                   color: OnlineTheme.yellow.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(5.0),
-                  border: const Border.fromBorderSide(
-                      BorderSide(color: OnlineTheme.yellow, width: 2)),
+                  border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
                 ),
                 child: Text(
                   'Gi Tilbakemelding!',

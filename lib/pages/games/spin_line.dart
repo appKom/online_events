@@ -14,8 +14,7 @@ class SpinLine extends StatefulWidget {
   SpinLineState createState() => SpinLineState();
 }
 
-class SpinLineState extends State<SpinLine>
-    with SingleTickerProviderStateMixin {
+class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
   final random = Random();
@@ -71,44 +70,49 @@ class SpinLineState extends State<SpinLine>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: OnlineTheme.background,
-      body: Stack(
-        children: [
-          Center(
-            child: AnimatedBuilder(
-              animation: controller,
-              builder: (context, child) {
-                return AnimatedButton(onTap: () {
-                  if (!controller.isAnimating) {
-                    spin();
-                  }
-                }, childBuilder: (context, hover, pointerDown) {
-                  return Transform.rotate(
-                    angle: rotation,
-                    child: SvgPicture.asset(
-                      'assets/svg/online_hvit_o.svg',
-                      height: 300,
-                    ),
-                  );
-                });
-              },
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+
+    return Container(
+      color: OnlineTheme.background,
+      child: Padding(
+        padding: padding,
+        child: Stack(
+          children: [
+            Center(
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (context, child) {
+                  return AnimatedButton(onTap: () {
+                    if (!controller.isAnimating) {
+                      spin();
+                    }
+                  }, childBuilder: (context, hover, pointerDown) {
+                    return Transform.rotate(
+                      angle: rotation,
+                      child: SvgPicture.asset(
+                        'assets/svg/online_hvit_o.svg',
+                        height: 300,
+                      ),
+                    );
+                  });
+                },
+              ),
             ),
-          ),
-          Positioned(
-            top: 30,
-            right: 30,
-            child: AnimatedButton(onTap: () {
-              AppNavigator.pop();
-            }, childBuilder: (context, hover, pointerDown) {
-              return const Icon(
-                Icons.close_outlined,
-                color: OnlineTheme.white,
-                size: 30,
-              );
-            }),
-          ),
-        ],
+            Positioned(
+              top: padding.right,
+              right: 0,
+              child: AnimatedButton(onTap: () {
+                AppNavigator.pop();
+              }, childBuilder: (context, hover, pointerDown) {
+                return const Icon(
+                  Icons.close_outlined,
+                  color: OnlineTheme.white,
+                  size: 32,
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }

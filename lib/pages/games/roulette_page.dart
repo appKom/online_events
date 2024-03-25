@@ -60,8 +60,7 @@ final challenges = [
   ),
   Challenge(
     title: 'Slurke-politiet',
-    description:
-        'Slurke-politiet banker på døra! De gir ut 5 slurker til alle med en drikke i hånda.',
+    description: 'Slurke-politiet banker på døra! De gir ut 5 slurker til alle med en drikke i hånda.',
   ),
   Challenge(
     title: '''Rattlin' Bog''',
@@ -73,13 +72,11 @@ final challenges = [
   ),
   Challenge(
     title: 'Singel-livet',
-    description:
-        'Alle som ikke har kjæreste får 2 slurker, men kan gi bort 1 av dem til en som fortjener det 🥰',
+    description: 'Alle som ikke har kjæreste får 2 slurker, men kan gi bort 1 av dem til en som fortjener det 🥰',
   ),
   Challenge(
     title: 'Jeg har aldri',
-    description:
-        'Ta en runde der alle sier noe de "aldri" har gjort. De som har gjort det får 1 slurk.',
+    description: 'Ta en runde der alle sier noe de "aldri" har gjort. De som har gjort det får 1 slurk.',
   ),
   Challenge(
     title: 'Opus',
@@ -93,8 +90,7 @@ final challenges = [
   ),
   Challenge(
     title: 'Slurke-venner!',
-    description:
-        'Du og personen 5 til høyre for deg er nå slurke-venner! Hver gang en får slurk får begge en slurk.',
+    description: 'Du og personen 5 til høyre for deg er nå slurke-venner! Hver gang en får slurk får begge en slurk.',
   ),
   Challenge(
     title: 'Kjendis',
@@ -173,72 +169,72 @@ class RouletteState extends State<Roulette> {
   Widget build(BuildContext context) {
     const size = 900.0;
 
-    final windowWidth = MediaQuery.of(context).size.width;
+    final query = MediaQuery.of(context);
+    final windowWidth = query.size.width;
     final isMobile = OnlineTheme.isMobile(context);
+
+    final padding = query.padding;
 
     return Container(
       color: OnlineTheme.background,
-      child: Center(
-        child: Stack(
-          alignment: isMobile ? Alignment.centerLeft : Alignment.centerLeft,
-          children: [
-            Positioned(
-              width: size,
-              height: size,
-              left: isMobile ? -550 : windowWidth / 2 - size / 2,
-              child: ClipRect(
-                child: OverflowBox(
-                  maxWidth: size,
-                  maxHeight: size,
-                  child: Transform.rotate(
-                    angle: isMobile ? pi / 2 : 0,
-                    child: FortuneWheel(
-                      onAnimationEnd: () {
-                        final selectedTitle = challengePool[index].title;
-                        final selectedDescription =
-                            challengePool[index].description;
-                        _removeSelectedAndRebuild(index);
-                        RouletteOverlay(
-                          title: selectedTitle,
-                          description: selectedDescription,
-                        ).show(context);
-                      },
-                      alignment: Alignment.center,
-                      hapticImpact: HapticImpact.light,
-                      animateFirst: false,
-                      selected: _selected.stream,
-                      items: fortuneList,
-                      physics: CircularPanPhysics(
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.decelerate,
-                      ),
-                      onFling: () {
-                        int nextIndex = random.nextInt(challengePool.length);
-                        _selected.add(nextIndex);
-                      },
-                      onFocusItemChanged: (value) {
-                        index = value;
-                      },
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: [
+          Positioned(
+            width: size,
+            height: size,
+            left: isMobile ? -550 : windowWidth / 2 - size / 2,
+            child: ClipRect(
+              child: OverflowBox(
+                maxWidth: size,
+                maxHeight: size,
+                child: Transform.rotate(
+                  angle: isMobile ? pi / 2 : 0,
+                  child: FortuneWheel(
+                    onAnimationEnd: () {
+                      final selectedTitle = challengePool[index].title;
+                      final selectedDescription = challengePool[index].description;
+                      _removeSelectedAndRebuild(index);
+                      RouletteOverlay(
+                        title: selectedTitle,
+                        description: selectedDescription,
+                      ).show(context);
+                    },
+                    alignment: Alignment.center,
+                    hapticImpact: HapticImpact.light,
+                    animateFirst: false,
+                    selected: _selected.stream,
+                    items: fortuneList,
+                    physics: CircularPanPhysics(
+                      duration: const Duration(seconds: 1),
+                      curve: Curves.decelerate,
                     ),
+                    onFling: () {
+                      int nextIndex = random.nextInt(challengePool.length);
+                      _selected.add(nextIndex);
+                    },
+                    onFocusItemChanged: (value) {
+                      index = value;
+                    },
                   ),
                 ),
               ),
             ),
-            Positioned(
-              top: 30,
-              right: 30,
-              child: AnimatedButton(onTap: () {
-                AppNavigator.pop();
-              }, childBuilder: (context, hover, pointerDown) {
-                return const Icon(
-                  Icons.close_outlined,
-                  color: OnlineTheme.white,
-                  size: 30,
-                );
-              }),
-            ),
-          ],
-        ),
+          ),
+          Positioned(
+            top: padding.top + padding.right,
+            right: OnlineTheme.horizontalPadding.right,
+            child: AnimatedButton(onTap: () {
+              AppNavigator.pop();
+            }, childBuilder: (context, hover, pointerDown) {
+              return const Icon(
+                Icons.close_outlined,
+                color: OnlineTheme.white,
+                size: 32,
+              );
+            }),
+          ),
+        ],
       ),
     );
   }

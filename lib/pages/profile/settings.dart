@@ -30,8 +30,7 @@ class SettingsPageState extends State<SettingsPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       eventCategories.keys.forEach((category) {
-        eventCategories[category] =
-            (prefs.getBool(category) ?? eventCategories[category])!;
+        eventCategories[category] = (prefs.getBool(category) ?? eventCategories[category])!;
       });
     });
   }
@@ -61,12 +60,12 @@ class SettingsPageState extends State<SettingsPage> {
       topicName = '4';
     }
 
-    if (subscribed == true && topicName != null) {
+    if (subscribed == true) {
       messaging.subscribeToTopic(topicName);
-      print("Subscribed to ${topicName}");
-    } else if (subscribed == false && topicName != null) {
+      print("Subscribed to $topicName");
+    } else if (subscribed == false) {
       messaging.unsubscribeFromTopic(topicName);
-      print("Unsubscribed to ${topicName}");
+      print("Unsubscribed to $topicName");
     }
   }
 

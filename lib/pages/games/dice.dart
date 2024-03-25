@@ -23,8 +23,7 @@ class StatefulDice extends StatefulWidget {
   StatefulDiceState createState() => StatefulDiceState();
 }
 
-class StatefulDiceState extends State<StatefulDice>
-    with SingleTickerProviderStateMixin {
+class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderStateMixin {
   int _diceRoll = 1;
   late AnimationController _animationController;
   final _random = Random();
@@ -67,66 +66,64 @@ class StatefulDiceState extends State<StatefulDice>
 
     _animationController.reset();
     _step = 0;
-    _animationController.duration =
-        Duration(milliseconds: 300 + Random().nextInt(700));
+    _animationController.duration = Duration(milliseconds: 300 + Random().nextInt(700));
     _direction = Random().nextBool() ? 1 : -1;
     _animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
     return Scaffold(
       backgroundColor: OnlineTheme.background,
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: SizedBox.square(
-                  dimension: 250,
-                  child: AnimatedBuilder(
-                    animation: _animationController,
-                    builder: (context, child) {
-                      return Transform.rotate(
-                        angle: _direction *
-                            pi *
-                            2 *
-                            Curves.decelerate
-                                .transform(_animationController.value),
-                        child: AnimatedButton(
-                          scale: 0.8,
-                          onTap: rollDice,
-                          childBuilder: (context, hover, pointerDown) {
-                            return CustomPaint(
-                              painter: DicePainter(
-                                  repaint: _animationController,
-                                  dice: _diceRoll),
-                              size: const Size.square(200),
-                            );
-                          },
-                        ),
-                      );
-                    },
+      body: Padding(
+        padding: padding,
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: SizedBox.square(
+                    dimension: 250,
+                    child: AnimatedBuilder(
+                      animation: _animationController,
+                      builder: (context, child) {
+                        return Transform.rotate(
+                          angle: _direction * pi * 2 * Curves.decelerate.transform(_animationController.value),
+                          child: AnimatedButton(
+                            scale: 0.8,
+                            onTap: rollDice,
+                            childBuilder: (context, hover, pointerDown) {
+                              return CustomPaint(
+                                painter: DicePainter(repaint: _animationController, dice: _diceRoll),
+                                size: const Size.square(200),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Positioned(
-            top: 30,
-            right: 30,
-            child: AnimatedButton(onTap: () {
-              AppNavigator.pop();
-            }, childBuilder: (context, hover, pointerDown) {
-              return const Icon(
-                Icons.close_outlined,
-                color: OnlineTheme.white,
-                size: 30,
-              );
-            }),
-          ),
-        ],
+              ],
+            ),
+            Positioned(
+              top: padding.right,
+              right: 0,
+              child: AnimatedButton(onTap: () {
+                AppNavigator.pop();
+              }, childBuilder: (context, hover, pointerDown) {
+                return const Icon(
+                  Icons.close_outlined,
+                  color: OnlineTheme.white,
+                  size: 32,
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -147,8 +144,7 @@ class DicePainter extends CustomPainter {
       ..color = OnlineTheme.white;
 
     canvas.drawRRect(
-      RRect.fromRectAndRadius(
-          Rect.fromLTWH(0, 0, dimension, dimension), Radius.circular(radius)),
+      RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, dimension, dimension), Radius.circular(radius)),
       paint,
     );
 
