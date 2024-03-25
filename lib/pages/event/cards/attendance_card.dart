@@ -391,7 +391,9 @@ class AttendanceCard extends StatelessWidget {
           if (showCountdownToRegistrationStart())
             countdownToRegistrationStart(),
           if (showCountdownToEventStart()) countdownToEventStart(),
-          if (attendeeInfo.isAttendee) notifyAttendance(),
+          if (attendeeInfo.isAttendee &&
+              DateTime.parse(event.endDate).isAfter(DateTime.now()))
+            notifyAttendance(),
         ],
       ),
     );
