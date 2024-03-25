@@ -252,14 +252,18 @@ class MyEventsPageState extends State<MyEventsPage> {
       return eventDate.isAfter(now);
     }).toList();
 
-    print(upcomingEvents.length);
-
     final pastEvents = Client.eventsCache.value
         .where((model) => eventAttendances.any((event) => event.id == model.id))
         .where((model) {
       final eventDate = DateTime.parse(model.startDate);
       return eventDate.isBefore(now);
     }).toList();
+
+    pastEvents.sort((a, b) {
+      final aEndDate = DateTime.parse(a.endDate);
+      final bEndDate = DateTime.parse(b.endDate);
+      return bEndDate.compareTo(aEndDate);
+    });
 
     List<EventModel> getEventsForDay(DateTime day) {
       List<EventModel> selectedEvents = [];
