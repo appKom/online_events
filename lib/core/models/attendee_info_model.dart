@@ -10,7 +10,6 @@ class AttendeeInfoModel {
   final List<int> ruleBundles;
   final int numberOnWaitlist;
   final int numberOfSeatsTaken;
-  final String hasPostponedRegistration;
   final bool isMarked;
   final bool isSuspended;
   final Eligibility isEligibleForSignup;
@@ -33,7 +32,6 @@ class AttendeeInfoModel {
       ruleBundles: [],
       numberOnWaitlist: 0,
       numberOfSeatsTaken: 0,
-      hasPostponedRegistration: '',
       isMarked: false,
       isSuspended: false,
       isEligibleForSignup: Eligibility.withDefaults(),
@@ -55,7 +53,6 @@ class AttendeeInfoModel {
     required this.ruleBundles,
     required this.numberOnWaitlist,
     required this.numberOfSeatsTaken,
-    required this.hasPostponedRegistration,
     required this.isMarked,
     required this.isSuspended,
     required this.isEligibleForSignup,
@@ -85,7 +82,6 @@ class AttendeeInfoModel {
           : [],
       numberOnWaitlist: json['number_on_waitlist'] ?? 0,
       numberOfSeatsTaken: json['number_of_seats_taken'] ?? 0,
-      hasPostponedRegistration: json['has_postponed_registration'] ?? false,
       isMarked: json['is_marked'] ?? false,
       isSuspended: json['is_suspended'] ?? false,
       isEligibleForSignup:
