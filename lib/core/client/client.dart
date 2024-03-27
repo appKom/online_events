@@ -56,15 +56,18 @@ abstract class Client {
   static int? expiresIn;
 
   static Future<void> launchInBrowser(String url) async {
-    if (!await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)) {
+    if (!await launchUrl(Uri.parse(url),
+        mode: LaunchMode.externalApplication)) {
       throw 'Unable to open $url';
     }
   }
 
   static ValueNotifier<Set<EventModel>> eventsCache = ValueNotifier({});
+  static ValueNotifier<Set<EventModel>> eventsIdsCache = ValueNotifier({});
   static ValueNotifier<UserModel?> userCache = ValueNotifier(null);
 
-  static Future<Set<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
+  static Future<Set<EventModel>?> getEvents(
+      {List<int> pages = const [1, 2, 3, 4]}) async {
     Set<EventModel> allEvents = {};
 
     for (int page in pages) {
@@ -72,9 +75,12 @@ abstract class Client {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+        final responseBody =
+            utf8.decode(response.bodyBytes, allowMalformed: true);
         final jsonResponse = jsonDecode(responseBody);
-        final events = jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
+        final events = jsonResponse['results']
+            .map<EventModel>((eventJson) => EventModel.fromJson(eventJson))
+            .toList();
 
         allEvents.addAll(events);
       }
@@ -86,6 +92,43 @@ abstract class Client {
     }
 
     return allEvents;
+  }
+
+  static Future<Set<EventModel>?> getEventsWithIds(
+      {List<int> eventIds = const []}) async {
+    Set<EventModel> eventsWithId = {};
+
+    var futures = eventIds.map((eventId) {
+      String url = '$endpoint/api/v1/event/events/$eventId';
+      return http.get(Uri.parse(url)).then((response) {
+        if (response.statusCode == 200) {
+          final responseBody =
+              utf8.decode(response.bodyBytes, allowMalformed: true);
+          final jsonResponse = jsonDecode(responseBody);
+          return EventModel.fromJson(jsonResponse);
+        } else {
+          return null;
+        }
+      }).catchError((error) {
+        print('Error fetching event with id $eventId: $error');
+        return null;
+      });
+    });
+
+    final results = await Future.wait(futures);
+
+    for (var event in results) {
+      if (event != null) {
+        eventsWithId.add(event);
+      }
+    }
+
+    if (eventsWithId.isNotEmpty) {
+      eventsIdsCache.value = Set.from(eventsIdsCache.value)
+        ..addAll(eventsWithId);
+    }
+
+    return eventsWithId;
   }
 
   static Future<UserModel?> getUserProfile() async {
@@ -103,7 +146,8 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
       userCache.value = UserModel.fromJson(jsonResponse);
       return userCache.value;
@@ -112,7 +156,8 @@ abstract class Client {
     return null;
   }
 
-  static final ValueNotifier<Set<EventAttendanceModel>> eventAttendanceCache = ValueNotifier({});
+  static final ValueNotifier<Set<EventAttendanceModel>> eventAttendanceCache =
+      ValueNotifier({});
 
   /// Get all events that user has attended or is attending
   static Future<List<EventAttendanceModel>> getAttendanceEvents({
@@ -143,13 +188,17 @@ abstract class Client {
 
       final body = utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResults = jsonDecode(body)['results'];
-      results.addAll(jsonResults.map<EventAttendanceModel>((json) => EventAttendanceModel.fromJson(json)).toList());
+      results.addAll(jsonResults
+          .map<EventAttendanceModel>(
+              (json) => EventAttendanceModel.fromJson(json))
+          .toList());
     }
 
     print(results.length);
 
     if (results.isNotEmpty) {
-      eventAttendanceCache.value = Set.from(eventAttendanceCache.value)..addAll(results);
+      eventAttendanceCache.value = Set.from(eventAttendanceCache.value)
+        ..addAll(results);
     }
 
     return results;
@@ -171,7 +220,8 @@ abstract class Client {
     }
   }
 
-  static Future<AttendeeInfoModel?> getEventAttendanceLoggedIn(int eventId) async {
+  static Future<AttendeeInfoModel?> getEventAttendanceLoggedIn(
+      int eventId) async {
     final accessToken = Authenticator.credentials?.accessToken;
 
     if (accessToken == null) return null;
@@ -199,7 +249,8 @@ abstract class Client {
 
     if (accessToken == null) return null;
 
-    final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
+    final url =
+        '$endpoint/api/v1/event/attendance-events/$eventId/public-attendees/';
 
     final response = await http.get(
       Uri.parse(url),
@@ -209,10 +260,13 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody) as List;
 
-      return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
+      return jsonResponse
+          .map<AttendeesList>((json) => AttendeesList.fromJson(json))
+          .toList();
     } else {
       return [];
     }
@@ -223,7 +277,8 @@ abstract class Client {
 
     if (accessToken == null) return [];
 
-    final url = '$endpoint/api/v1/event/attendance-events/$eventId/public-on-waitlist/';
+    final url =
+        '$endpoint/api/v1/event/attendance-events/$eventId/public-on-waitlist/';
 
     final response = await http.get(
       Uri.parse(url),
@@ -233,10 +288,13 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody) as List;
 
-      return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
+      return jsonResponse
+          .map<AttendeesList>((json) => AttendeesList.fromJson(json))
+          .toList();
     } else {
       return [];
     }
@@ -258,15 +316,20 @@ abstract class Client {
     return articles;
   }
 
-  static Future<List<T>?> fetch<T>(String url, T Function(Map<String, dynamic> json) jsonReviver) async {
+  static Future<List<T>?> fetch<T>(
+      String url, T Function(Map<String, dynamic> json) jsonReviver) async {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
       final jsonResponse = jsonDecode(responseBody);
 
       // DO NOT CHANGE. HOLY LINE
-      return jsonResponse['results'].map((json) => jsonReviver(json)).cast<T>().toList();
+      return jsonResponse['results']
+          .map((json) => jsonReviver(json))
+          .cast<T>()
+          .toList();
     }
 
     return null;

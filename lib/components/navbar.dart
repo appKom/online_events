@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online/pages/events/feed_page.dart';
 
 import '../pages/games/games_page.dart';
 import '../pages/login/login_page.dart';
@@ -33,7 +34,7 @@ class Navbar extends StatefulWidget {
 
   static void _navigateEvents() {
     if (Authenticator.isLoggedIn()) {
-      AppNavigator.replaceWithPage(const MyEventsPageDisplay());
+      AppNavigator.replaceWithPage(const FeedPageDisplay());
     } else {
       AppNavigator.replaceWithPage(const NotLoggedInPage());
     }
@@ -143,7 +144,8 @@ class NavbarState extends State<Navbar> {
     return Container(
       decoration: BoxDecoration(
         color: OnlineTheme.background.withOpacity(0.9),
-        border: const Border(top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        border: const Border(
+            top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
