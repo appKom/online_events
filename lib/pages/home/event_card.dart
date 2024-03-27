@@ -41,8 +41,8 @@ class EventCard extends StatelessWidget {
     DateFormat outputDayFormat = DateFormat("dd");
     DateFormat outputMonthFormat = DateFormat("MMMM");
 
-    DateTime startDateTime = inputFormat.parse(startDate, true).toLocal();
-    DateTime endDateTime = inputFormat.parse(endDate, true).toLocal();
+    DateTime startDateTime = inputFormat.parse(startDate, true);
+    DateTime endDateTime = inputFormat.parse(endDate, true);
 
     String translateMonth(String month) {
       return monthsNorwegian[month] ?? month;
@@ -50,6 +50,7 @@ class EventCard extends StatelessWidget {
 
     String startDay = outputDayFormat.format(startDateTime);
     String endDay = outputDayFormat.format(endDateTime);
+    print('Event ${model.title} $startDay, $endDay');
     String startMonth = translateMonth(outputMonthFormat.format(startDateTime));
     String endMonth = translateMonth(outputMonthFormat.format(endDateTime));
 

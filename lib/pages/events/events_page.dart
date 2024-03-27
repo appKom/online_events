@@ -27,12 +27,10 @@ class EventsPageState extends State<EventsPage> {
       if (mounted) {
         setState(() {
           if (moreEventsPage != null) {
-            print('Fetched more events from page $nextPage');
             for (var event in moreEventsPage) {
               if (!events
                   .any((existingEvent) => existingEvent.id == event.id)) {
                 events.add(event);
-                print('Added event ${event.id}');
               }
             }
             events.sort((a, b) {
