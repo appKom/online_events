@@ -14,32 +14,41 @@ class EventsPage extends StatefulWidget {
 
 class EventsPageState extends State<EventsPage> {
   int currentPage = 1;
+  bool isFetching = false;
 
   Future<void> fetchMoreEvents() async {
-    final moreEventsPage = await Client.getEvents(pages: [currentPage + 1]);
-    final events = Client.eventsCache.value.toList();
-    ;
+    if (isFetching) return;
+    isFetching = true;
+    final nextPage = currentPage + 1;
+    try {
+      final moreEventsPage = await Client.getEvents(pages: [nextPage]);
+      final events = Client.eventsCache.value.toList();
 
-    if (mounted) {
-      setState(() {
-        if (moreEventsPage != null) {
-          print('Fetched more events');
-          for (var event in moreEventsPage) {
-            if (!events.any((existingEvent) => existingEvent.id == event.id)) {
-              events.add(event);
-              print('Added event ${event.id}');
+      if (mounted) {
+        setState(() {
+          if (moreEventsPage != null) {
+            print('Fetched more events from page $nextPage');
+            for (var event in moreEventsPage) {
+              if (!events
+                  .any((existingEvent) => existingEvent.id == event.id)) {
+                events.add(event);
+                print('Added event ${event.id}');
+              }
             }
+            events.sort((a, b) {
+              final aEndDate = DateTime.parse(a.endDate);
+              final bEndDate = DateTime.parse(b.endDate);
+              return aEndDate.compareTo(bEndDate);
+            });
+            Client.eventsCache.value = Set.from(events);
           }
-          events.sort((a, b) {
-            final aEndDate = DateTime.parse(a.endDate);
-            final bEndDate = DateTime.parse(b.endDate);
-            return aEndDate.compareTo(bEndDate);
-          });
-          Client.eventsCache.value = Set.from(events);
-        }
-
-        currentPage += 1;
-      });
+          currentPage = nextPage;
+        });
+      }
+    } catch (e) {
+      print("Failed to fetch events: $e");
+    } finally {
+      isFetching = false;
     }
   }
 
