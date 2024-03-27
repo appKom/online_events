@@ -33,30 +33,35 @@ class BitsHomePageState extends State<BitsHomePage> {
   }
 
   Widget _buildPlayerField(int number) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: controllers[number - 1],
-            decoration: InputDecoration(
-              labelText: 'Deltaker $number',
-              labelStyle: const TextStyle(color: OnlineTheme.white),
-              enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: OnlineTheme.white),
+    final padding = MediaQuery.of(context).padding +
+        const EdgeInsets.symmetric(horizontal: 25);
+    return Padding(
+      padding: padding,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: controllers[number - 1],
+              decoration: InputDecoration(
+                labelText: 'Deltaker $number',
+                labelStyle: const TextStyle(color: OnlineTheme.white),
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: OnlineTheme.white),
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: OnlineTheme.white),
+                ),
               ),
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: OnlineTheme.white),
-              ),
+              style: OnlineTheme.textStyle(),
             ),
-            style: OnlineTheme.textStyle(),
           ),
-        ),
-        if (number > 2 && number == playerNumbers.last)
-          IconButton(
-            icon: const Icon(Icons.close, color: OnlineTheme.white),
-            onPressed: () => _removePlayerField(number),
-          ),
-      ],
+          if (number > 2 && number == playerNumbers.last)
+            IconButton(
+              icon: const Icon(Icons.close, color: OnlineTheme.white),
+              onPressed: () => _removePlayerField(number),
+            ),
+        ],
+      ),
     );
   }
 

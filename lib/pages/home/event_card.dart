@@ -50,7 +50,6 @@ class EventCard extends StatelessWidget {
 
     String startDay = outputDayFormat.format(startDateTime);
     String endDay = outputDayFormat.format(endDateTime);
-    print('Event ${model.title} $startDay, $endDay');
     String startMonth = translateMonth(outputMonthFormat.format(startDateTime));
     String endMonth = translateMonth(outputMonthFormat.format(endDateTime));
 
