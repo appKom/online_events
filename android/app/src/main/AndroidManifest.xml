@@ -30,8 +30,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="ntnu.online.app"
-                    android:host="login-callback" />
+                    android:scheme="https"
+                    android:host="ntnu.online.app" />
             </intent-filter>
 
         </activity>

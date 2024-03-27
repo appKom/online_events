@@ -20,11 +20,16 @@ class HundredQuestionsInfo extends StaticPage {
 
   @override
   Widget content(BuildContext context) {
+    List<String> shuffledQuestions = List.from(questions)..shuffle();
+
     return Container(
       padding: MediaQuery.of(context).padding,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [OnlineTheme.hundredGradientStartColor, OnlineTheme.hundredGradientEndColor],
+          colors: [
+            OnlineTheme.hundredGradientStartColor,
+            OnlineTheme.hundredGradientEndColor
+          ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           stops: [0.1, 0.9],
@@ -45,10 +50,10 @@ class HundredQuestionsInfo extends StaticPage {
             height: 430,
             child: Swiper(
               onTap: onTap,
-              itemCount: questions.length,
+              itemCount: shuffledQuestions.length,
               itemWidth: MediaQuery.of(context).size.width,
               itemHeight: MediaQuery.of(context).size.height,
-              index: questions.length - 1,
+              index: shuffledQuestions.length - 1,
               allowImplicitScrolling: true,
               loop: false,
               layout: SwiperLayout.TINDER,
@@ -56,8 +61,8 @@ class HundredQuestionsInfo extends StaticPage {
               itemBuilder: (context, index) {
                 return Center(
                   child: CustomCard(
-                    name: questions[index],
-                    index: questions.length - index,
+                    name: shuffledQuestions[index],
+                    index: shuffledQuestions.length - index,
                   ),
                 );
               },
