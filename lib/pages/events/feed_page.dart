@@ -86,7 +86,6 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedPageState extends State<FeedPage> {
-  static final ValueNotifier<int> attendancePageOffset = ValueNotifier(0);
   bool _isLoading = true;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
@@ -95,27 +94,31 @@ class FeedPageState extends State<FeedPage> {
   List<EventModel> allAttendedEvents = [];
   List<EventModel> upcomingEvents = [];
   List<EventModel> pastEvents = [];
+  int numberOfPages = 1;
+  bool isFetching = false;
 
   @override
   void initState() {
     super.initState();
-    fetchAttendeeInfo();
+    fetchAttendeeInfo(pageCount: numberOfPages);
   }
 
-  Future<void> fetchAttendeeInfo() async {
+  Future<void> fetchAttendeeInfo({
+    required int pageCount,
+  }) async {
+    if (isFetching) return;
+    isFetching = true;
     final user = Client.userCache.value;
 
     if (user == null) return;
 
-    final offset = attendancePageOffset.value;
-    await Client.getAttendanceEvents(
-        userId: user.id, pageCount: 2, pageOffset: offset);
-    attendancePageOffset.value += 2;
+    await Client.getAttendanceEvents(userId: user.id, pageCount: pageCount);
 
     for (final event in Client.eventAttendanceCache.value) {
       attendedEventIds.add(event.id);
     }
-
+    numberOfPages += 1;
+    // print('Number of pages is: $numberOfPages');
     Set<EventModel>? fetchedEvents =
         await Client.getEventsWithIds(eventIds: attendedEventIds);
     if (fetchedEvents != null) {
@@ -127,6 +130,7 @@ class FeedPageState extends State<FeedPage> {
         _isLoading = false;
       });
     }
+    isFetching = false;
   }
 
   static const List<String> _norwegianWeekDays = [
@@ -245,180 +249,203 @@ class FeedPageState extends State<FeedPage> {
         MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     return Padding(
       padding: padding,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 24),
-            _customHeaderWidget(
-              focusedDay: _focusedDay,
-              onLeftArrowTap: () {
-                setState(() {
-                  _focusedDay = DateTime(
-                      _focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
-                });
-              },
-              onRightArrowTap: () {
-                setState(() {
-                  _focusedDay = DateTime(
-                      _focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
-                });
-              },
-            ),
-            buildCustomWeekdayHeaders(),
-            TableCalendar(
-              headerVisible: false,
-              daysOfWeekVisible: false,
-              calendarFormat: CalendarFormat.month,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              availableCalendarFormats: const {CalendarFormat.month: ''},
-              onPageChanged: (focusedDay) {
-                setState(() {
-                  _focusedDay = focusedDay;
-                });
-              },
-              focusedDay: _focusedDay,
-              firstDay: DateTime(2000),
-              lastDay: DateTime(2100),
-              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-              onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                });
-                List<EventModel> eventsForSelectedDay =
-                    getEventsForDay(selectedDay);
-
-                if (eventsForSelectedDay.isNotEmpty) {
-                  AppNavigator.navigateToPage(
-                      EventPageDisplay(model: eventsForSelectedDay.first));
-                }
-              },
-              eventLoader: (day) => getEventsForDay(day),
-              calendarBuilders: CalendarBuilders(
-                selectedBuilder: (context, date, focusedDay) {
-                  final eventful = getEventsForDay(date).isNotEmpty;
-                  return Container(
-                    margin: const EdgeInsets.all(2.0),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color:
-                          eventful ? OnlineTheme.green5 : OnlineTheme.darkGray,
-                      shape: BoxShape.rectangle,
-                      border: Border.fromBorderSide(
-                        BorderSide(
-                          color: eventful
-                              ? OnlineTheme.green5.lighten(50)
-                              : Colors.white,
-                          width: 2,
-                        ),
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    ),
-                    child: Text(
-                      date.day.toString(),
-                      style: OnlineTheme.textStyle(weight: 5),
-                    ),
-                  );
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          double triggerFetchMoreThreshold =
+              scrollInfo.metrics.maxScrollExtent * 0.95;
+          if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold) {
+            fetchAttendeeInfo(pageCount: numberOfPages);
+          }
+          return true;
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 24),
+              _customHeaderWidget(
+                focusedDay: _focusedDay,
+                onLeftArrowTap: () {
+                  setState(() {
+                    _focusedDay = DateTime(_focusedDay.year,
+                        _focusedDay.month - 1, _focusedDay.day);
+                  });
                 },
-                defaultBuilder: (context, date, _) {
-                  final events = getEventsForDay(date);
+                onRightArrowTap: () {
+                  setState(() {
+                    _focusedDay = DateTime(_focusedDay.year,
+                        _focusedDay.month + 1, _focusedDay.day);
+                  });
+                },
+              ),
+              buildCustomWeekdayHeaders(),
+              TableCalendar(
+                headerVisible: false,
+                daysOfWeekVisible: false,
+                calendarFormat: CalendarFormat.month,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                availableCalendarFormats: const {CalendarFormat.month: ''},
+                onPageChanged: (focusedDay) {
+                  setState(() {
+                    _focusedDay = focusedDay;
+                  });
+                },
+                focusedDay: _focusedDay,
+                firstDay: DateTime(2000),
+                lastDay: DateTime(2100),
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                  List<EventModel> eventsForSelectedDay =
+                      getEventsForDay(selectedDay);
 
-                  // TODO: Waitlist = Gul, Registered = Grønn
-
-                  if (events.isNotEmpty) {
+                  if (eventsForSelectedDay.isNotEmpty) {
+                    AppNavigator.navigateToPage(
+                        EventPageDisplay(model: eventsForSelectedDay.first));
+                  }
+                },
+                eventLoader: (day) => getEventsForDay(day),
+                calendarBuilders: CalendarBuilders(
+                  selectedBuilder: (context, date, focusedDay) {
+                    final eventful = getEventsForDay(date).isNotEmpty;
                     return Container(
-                      margin: const EdgeInsets.all(4.0),
+                      margin: const EdgeInsets.all(2.0),
                       alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: OnlineTheme.green5,
+                      decoration: BoxDecoration(
+                        color: eventful
+                            ? OnlineTheme.green5
+                            : OnlineTheme.darkGray,
                         shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.fromBorderSide(
+                          BorderSide(
+                            color: eventful
+                                ? OnlineTheme.green5.lighten(50)
+                                : Colors.white,
+                            width: 2,
+                          ),
+                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
                       ),
                       child: Text(
                         date.day.toString(),
                         style: OnlineTheme.textStyle(weight: 5),
                       ),
                     );
-                  } else {
-                    return Container(
-                      margin: const EdgeInsets.all(4.0),
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: OnlineTheme.darkGray,
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
-                      child: Text(
-                        date.day.toString(),
-                        style: OnlineTheme.textStyle(),
-                      ),
-                    );
-                  }
-                },
-              ),
-              calendarStyle: const CalendarStyle(
-                todayDecoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  // color: Colors.grey.shade700,
-                  color: OnlineTheme.gray0,
-                  border: Border.fromBorderSide(
-                      BorderSide(color: OnlineTheme.gray0, width: 2)),
-                  // border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray9, width: 2)),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                markerDecoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  // color: OnlineTheme.green5,
-                  color: Colors.transparent,
-                ),
-                selectedDecoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  // color: Colors.grey.shade700,
-                  // color: Colors.transparent,
-                  border: Border.fromBorderSide(
-                      BorderSide(color: OnlineTheme.white, width: 2)),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-              ),
-              headerStyle: const HeaderStyle(
-                formatButtonVisible: false,
-                titleCentered: true,
-                leftChevronIcon:
-                    Icon(Icons.arrow_back_ios, color: Colors.white),
-                rightChevronIcon:
-                    Icon(Icons.arrow_forward_ios, color: Colors.white),
-                titleTextStyle: TextStyle(color: Colors.white),
-              ),
-              daysOfWeekStyle: const DaysOfWeekStyle(
-                weekendStyle: TextStyle(color: OnlineTheme.white),
-                weekdayStyle: TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(height: 24 + 24),
-            Text('Mine Arrangementer', style: OnlineTheme.header()),
-            _buildEventList(upcomingEvents),
-            const SizedBox(height: 24 + 24),
-            Text('Tidligere Arrangementer', style: OnlineTheme.header()),
-            _buildEventList(pastEvents),
-            const SizedBox(height: 24),
-            const SizedBox(height: 24),
-          ],
-        ),
-      ),
-    );
-  }
+                  },
+                  defaultBuilder: (context, date, _) {
+                    final events = getEventsForDay(date);
 
-  Widget _buildEventList(List<EventModel> events) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      height: 100.0 * events.length,
-      child: ListView.builder(
-        itemCount: events.length,
-        padding: EdgeInsets.zero,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => EventCard(
-          model: events[index],
+                    // TODO: Waitlist = Gul, Registered = Grønn
+
+                    if (events.isNotEmpty) {
+                      return Container(
+                        margin: const EdgeInsets.all(4.0),
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: OnlineTheme.green5,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: Text(
+                          date.day.toString(),
+                          style: OnlineTheme.textStyle(weight: 5),
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        margin: const EdgeInsets.all(4.0),
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: OnlineTheme.darkGray,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: Text(
+                          date.day.toString(),
+                          style: OnlineTheme.textStyle(),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                calendarStyle: const CalendarStyle(
+                  todayDecoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    // color: Colors.grey.shade700,
+                    color: OnlineTheme.gray0,
+                    border: Border.fromBorderSide(
+                        BorderSide(color: OnlineTheme.gray0, width: 2)),
+                    // border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray9, width: 2)),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
+                  markerDecoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    // color: OnlineTheme.green5,
+                    color: Colors.transparent,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    // color: Colors.grey.shade700,
+                    // color: Colors.transparent,
+                    border: Border.fromBorderSide(
+                        BorderSide(color: OnlineTheme.white, width: 2)),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
+                ),
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                  leftChevronIcon:
+                      Icon(Icons.arrow_back_ios, color: Colors.white),
+                  rightChevronIcon:
+                      Icon(Icons.arrow_forward_ios, color: Colors.white),
+                  titleTextStyle: TextStyle(color: Colors.white),
+                ),
+                daysOfWeekStyle: const DaysOfWeekStyle(
+                  weekendStyle: TextStyle(color: OnlineTheme.white),
+                  weekdayStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 24 + 24),
+              Text('Mine Arrangementer', style: OnlineTheme.header()),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                height: 100.0 * upcomingEvents.length,
+                child: ListView.builder(
+                  itemCount: upcomingEvents.length,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) => EventCard(
+                    model: upcomingEvents[index],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24 + 24),
+              Text('Tidligere Arrangementer', style: OnlineTheme.header()),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                height: 100.0 * pastEvents.length,
+                child: ListView.builder(
+                  itemCount: pastEvents.length,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) => EventCard(
+                    model: pastEvents[index],
+                  ),
+                ),
+              ),
+              if (pastEvents.isNotEmpty)
+                Column(
+                  children: List.generate(2, (_) => EventCard.skeleton()),
+                ),
+              const SizedBox(height: 24),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );

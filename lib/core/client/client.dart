@@ -162,15 +162,14 @@ abstract class Client {
   /// Get all events that user has attended or is attending
   static Future<List<EventAttendanceModel>> getAttendanceEvents({
     required int userId,
-    int pageCount = 2,
-    int pageOffset = 0,
+    required int pageCount,
   }) async {
     final accessToken = Authenticator.credentials?.accessToken;
 
     if (accessToken == null) return [];
 
     final urls = List.generate(pageCount, (i) {
-      return '$endpoint/api/v1/event/attendees/?page=${pageOffset + i + 1}&ordering=-id&user=$userId';
+      return '$endpoint/api/v1/event/attendees/?page=${i + 1}&ordering=-id&user=$userId';
     });
 
     final responses = await Future.wait(
@@ -193,8 +192,6 @@ abstract class Client {
               (json) => EventAttendanceModel.fromJson(json))
           .toList());
     }
-
-    print(results.length);
 
     if (results.isNotEmpty) {
       eventAttendanceCache.value = Set.from(eventAttendanceCache.value)
