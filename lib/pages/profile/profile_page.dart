@@ -44,7 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     fetchUserProfile();
 
-    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
+    final client = Client()
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject(dotenv.env['PROJECT_ID']);
 
     storage = Storage(client);
     database = Databases(client);
@@ -60,9 +62,14 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> fetchUserProfile() async {
     UserModel? profile = await io.Client.getUserProfile();
-    if (profile != null) {
+    if (profile != null && mounted) {
       setState(() {
         // TODO: Can this be done in a better way? setState rebuilds the whole widget.
       });
@@ -211,16 +218,19 @@ class _ProfilePageState extends State<ProfilePage> {
     final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     if (isIOS) {
-      showCupertinoDialog(context: context, builder: (context) => cupertionDeleteDialog());
+      showCupertinoDialog(
+          context: context, builder: (context) => cupertionDeleteDialog());
     } else {
-      showDialog(context: context, builder: (context) => materialDeleteDialog());
+      showDialog(
+          context: context, builder: (context) => materialDeleteDialog());
     }
   }
 
   Widget cupertionDeleteDialog() {
     return CupertinoAlertDialog(
       title: const Text('Bekreft sletting'),
-      content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
+      content:
+          const Text('Er du sikker på at du vil slette brukerdataene dine?'),
       actions: [
         CupertinoDialogAction(
           child: const Text('Avbryt'),
@@ -240,7 +250,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget materialDeleteDialog() {
     return AlertDialog(
       title: const Text('Bekreft sletting'),
-      content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
+      content:
+          const Text('Er du sikker på at du vil slette brukerdataene dine?'),
       actions: [
         TextButton(
           onPressed: () {
@@ -296,7 +307,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       'https://cloud.appwrite.io/v1/storage/buckets/${dotenv.env['USER_BUCKET_ID']}/files/${user.username}/view?project=${dotenv.env['PROJECT_ID']}&mode=public',
                   fit: BoxFit.cover,
                   height: 240,
-                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
                   errorWidget: (context, url, error) => Image.asset(
                     'assets/images/default_profile_picture.png',
                     fit: BoxFit.cover,
@@ -332,9 +344,11 @@ class _ProfilePageState extends State<ProfilePage> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SkeletonLoader(width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
+          SkeletonLoader(
+              width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
           const SizedBox(width: 10),
-          SkeletonLoader(width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
+          SkeletonLoader(
+              width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
         ],
       );
     }
@@ -460,7 +474,8 @@ class _ProfilePageState extends State<ProfilePage> {
               children: List.generate(
                 count,
                 (i) {
-                  final color = i < progress ? OnlineTheme.yellow : OnlineTheme.darkGray;
+                  final color =
+                      i < progress ? OnlineTheme.yellow : OnlineTheme.darkGray;
 
                   return Expanded(
                     child: Padding(
@@ -526,8 +541,10 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SkeletonLoader(width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
-          SkeletonLoader(width: 150, height: 24, borderRadius: BorderRadius.circular(5)),
+          SkeletonLoader(
+              width: 100, height: 24, borderRadius: BorderRadius.circular(5)),
+          SkeletonLoader(
+              width: 150, height: 24, borderRadius: BorderRadius.circular(5)),
         ],
       ),
     );
@@ -535,7 +552,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding =
+        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     final isIos = Theme.of(context).platform == TargetPlatform.iOS;
 
     return FutureBuilder(
@@ -597,12 +615,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                 decoration: BoxDecoration(
                                   color: OnlineTheme.red.withOpacity(0.4),
                                   borderRadius: OnlineTheme.buttonRadius,
-                                  border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                                  border: const Border.fromBorderSide(
+                                      BorderSide(
+                                          color: OnlineTheme.red, width: 2)),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Slett Bruker',
-                                    style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+                                    style: OnlineTheme.textStyle(
+                                        weight: 5, color: OnlineTheme.red),
                                   ),
                                 ),
                               );
@@ -624,13 +645,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                   color: OnlineTheme.yellow.darken(40),
                                   borderRadius: OnlineTheme.buttonRadius,
                                   border: const Border.fromBorderSide(
-                                    BorderSide(color: OnlineTheme.yellow, width: 2),
+                                    BorderSide(
+                                        color: OnlineTheme.yellow, width: 2),
                                   ),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Logg Ut',
-                                    style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
+                                    style: OnlineTheme.textStyle(
+                                        weight: 5, color: OnlineTheme.yellow),
                                   ),
                                 ),
                               );

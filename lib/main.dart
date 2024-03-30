@@ -59,7 +59,9 @@ Future main() async {
     await Client.getUserProfile();
   }
   //No await here, because it's not necessary to wait for this to finish
-  fetchAttendeeInfo();
+  if (Authenticator.isLoggedIn()) {
+    fetchAttendeeInfo();
+  }
 }
 
 Future _configureFirebase() async {
@@ -99,6 +101,8 @@ Future<void> fetchAttendeeInfo() async {
   if (fetchedEvents != null) {
     allAttendedEvents = fetchedEvents.toList();
   }
+
+  Client.eventAttendanceCache.value.clear();
 }
 
 class OnlineApp extends StatelessWidget {

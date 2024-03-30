@@ -26,6 +26,8 @@ final List<String> norwegianMonths = [
   'Desember'
 ];
 
+int whatAttendencePageShouldBeFetched = 2;
+
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
 
@@ -93,8 +95,9 @@ class FeedPageState extends State<FeedPage> {
 
   List<EventModel> upcomingEvents = [];
   List<EventModel> pastEvents = [];
-  int whatPageShouldBeFetched = 2;
+
   bool isFetching = false;
+  bool hasMoreEventsToFetch = true;
 
   @override
   void initState() {
@@ -102,6 +105,7 @@ class FeedPageState extends State<FeedPage> {
     //If attended events has not yet been fetched, it wil fetch the first page, else it will display the events without loading
     if (allAttendedEvents.isEmpty) {
       fetchAttendeeInfo(pageCount: 1);
+      isLoading = true;
     }
     isLoading = false;
   }
@@ -111,22 +115,36 @@ class FeedPageState extends State<FeedPage> {
   }) async {
     if (isFetching) return;
     isFetching = true;
+    if (!hasMoreEventsToFetch) return;
     final user = Client.userCache.value;
 
     if (user == null) return;
     List<int> attendedEventIds = [];
-
+    print('Fetching from page: $pageCount');
     await Client.getAttendanceEvents(userId: user.id, pageCount: pageCount);
 
-    for (final event in Client.eventAttendanceCache.value) {
-      attendedEventIds.add(event.id);
+    final events = Client.eventAttendanceCache.value;
+    if (events.isNotEmpty) {
+      for (final event in events) {
+        attendedEventIds.add(event.id);
+      }
     }
-    whatPageShouldBeFetched += 1;
-    // print('Number of pages is: $whatPageShouldBeFetched');
-    Set<EventModel>? fetchedEvents =
-        await Client.getEventsWithIds(eventIds: attendedEventIds);
-    if (fetchedEvents != null) {
-      allAttendedEvents = fetchedEvents.toList();
+    whatAttendencePageShouldBeFetched += 1;
+    if (attendedEventIds.isNotEmpty) {
+      print('Fetching events with ids: $attendedEventIds');
+      Set<EventModel>? fetchedEvents =
+          await Client.getEventsWithIds(eventIds: attendedEventIds);
+      if (fetchedEvents != null) {
+        allAttendedEvents = fetchedEvents.toList();
+        Set<int> fetchedEventIds = fetchedEvents.map((e) => e.id).toSet();
+        attendedEventIds.removeWhere((id) => fetchedEventIds.contains(id));
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          hasMoreEventsToFetch = false;
+        });
+      }
     }
 
     if (mounted) {
@@ -134,6 +152,7 @@ class FeedPageState extends State<FeedPage> {
         isLoading = false;
       });
     }
+    Client.eventAttendanceCache.value.clear();
     isFetching = false;
   }
 
@@ -257,8 +276,9 @@ class FeedPageState extends State<FeedPage> {
         onNotification: (ScrollNotification scrollInfo) {
           double triggerFetchMoreThreshold =
               scrollInfo.metrics.maxScrollExtent * 0.95;
-          if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold) {
-            fetchAttendeeInfo(pageCount: whatPageShouldBeFetched);
+          if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold &&
+              hasMoreEventsToFetch) {
+            fetchAttendeeInfo(pageCount: whatAttendencePageShouldBeFetched);
           }
           return true;
         },
@@ -442,7 +462,7 @@ class FeedPageState extends State<FeedPage> {
                   ),
                 ),
               ),
-              if (pastEvents.isNotEmpty)
+              if (pastEvents.isNotEmpty && hasMoreEventsToFetch)
                 Column(
                   children: List.generate(2, (_) => EventCard.skeleton()),
                 ),

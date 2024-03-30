@@ -182,14 +182,19 @@ abstract class Client {
 
     final body = utf8.decode(response.bodyBytes, allowMalformed: true);
     final jsonResults = jsonDecode(body)['results'];
-    results.addAll(jsonResults
-        .map<EventAttendanceModel>(
-            (json) => EventAttendanceModel.fromJson(json))
-        .toList());
 
-    if (results.isNotEmpty) {
-      eventAttendanceCache.value = Set.from(eventAttendanceCache.value)
-        ..addAll(results);
+    if (jsonResults != null) {
+      for (var json in jsonResults) {
+        var event = EventAttendanceModel.fromJson(json);
+        if (!eventAttendanceCache.value
+            .any((cachedEvent) => cachedEvent.id == event.id)) {
+          results.add(event);
+        }
+      }
+      if (results.isNotEmpty) {
+        eventAttendanceCache.value = Set.from(eventAttendanceCache.value)
+          ..addAll(results);
+      }
     }
 
     return results;
