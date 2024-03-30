@@ -14,7 +14,6 @@ import 'core/models/event_model.dart';
 import 'firebase_options.dart';
 
 List<EventModel> allAttendedEvents = [];
-List<int> attendedEventIds = [];
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -59,6 +58,7 @@ Future main() async {
   if (Authenticator.isLoggedIn()) {
     await Client.getUserProfile();
   }
+  //No await here, because it's not necessary to wait for this to finish
   fetchAttendeeInfo();
 }
 
@@ -86,8 +86,9 @@ Future<void> fetchAttendeeInfo() async {
   final user = Client.userCache.value;
 
   if (user == null) return;
+  List<int> attendedEventIds = [];
 
-  await Client.getAttendanceEventsStart(userId: user.id);
+  await Client.getAttendanceEvents(userId: user.id, pageCount: 1);
 
   for (final event in Client.eventAttendanceCache.value) {
     attendedEventIds.add(event.id);

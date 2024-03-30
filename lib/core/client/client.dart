@@ -168,48 +168,8 @@ abstract class Client {
 
     if (accessToken == null) return [];
 
-    final urls = List.generate(pageCount, (i) {
-      return '$endpoint/api/v1/event/attendees/?page=${i + 1}&ordering=-id&user=$userId';
-    });
-
-    final responses = await Future.wait(
-      urls.map(
-        (url) => http.get(Uri.parse(url), headers: {
-          'Authorization': 'Bearer $accessToken',
-        }),
-      ),
-    );
-
-    final results = <EventAttendanceModel>[];
-
-    for (final response in responses) {
-      if (response.statusCode != 200) continue;
-
-      final body = utf8.decode(response.bodyBytes, allowMalformed: true);
-      final jsonResults = jsonDecode(body)['results'];
-      results.addAll(jsonResults
-          .map<EventAttendanceModel>(
-              (json) => EventAttendanceModel.fromJson(json))
-          .toList());
-    }
-
-    if (results.isNotEmpty) {
-      eventAttendanceCache.value = Set.from(eventAttendanceCache.value)
-        ..addAll(results);
-    }
-
-    return results;
-  }
-
-  static Future<List<EventAttendanceModel>> getAttendanceEventsStart({
-    required int userId,
-  }) async {
-    final accessToken = Authenticator.credentials?.accessToken;
-
-    if (accessToken == null) return [];
-
     final url =
-        '$endpoint/api/v1/event/attendees/?page=1&ordering=-id&user=$userId';
+        '$endpoint/api/v1/event/attendees/?page=$pageCount&ordering=-id&user=$userId';
 
     final response = await http.get(
       Uri.parse(url),

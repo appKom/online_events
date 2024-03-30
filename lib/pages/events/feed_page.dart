@@ -91,15 +91,15 @@ class FeedPageState extends State<FeedPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
-  List<int> attendedEventIds = [];
   List<EventModel> upcomingEvents = [];
   List<EventModel> pastEvents = [];
-  int numberOfPages = 2;
+  int whatPageShouldBeFetched = 2;
   bool isFetching = false;
 
   @override
   void initState() {
     super.initState();
+    //If attended events has not yet been fetched, it wil fetch the first page, else it will display the events without loading
     if (allAttendedEvents.isEmpty) {
       fetchAttendeeInfo(pageCount: 1);
     }
@@ -114,14 +114,15 @@ class FeedPageState extends State<FeedPage> {
     final user = Client.userCache.value;
 
     if (user == null) return;
+    List<int> attendedEventIds = [];
 
     await Client.getAttendanceEvents(userId: user.id, pageCount: pageCount);
 
     for (final event in Client.eventAttendanceCache.value) {
       attendedEventIds.add(event.id);
     }
-    numberOfPages += 1;
-    // print('Number of pages is: $numberOfPages');
+    whatPageShouldBeFetched += 1;
+    // print('Number of pages is: $whatPageShouldBeFetched');
     Set<EventModel>? fetchedEvents =
         await Client.getEventsWithIds(eventIds: attendedEventIds);
     if (fetchedEvents != null) {
@@ -257,7 +258,7 @@ class FeedPageState extends State<FeedPage> {
           double triggerFetchMoreThreshold =
               scrollInfo.metrics.maxScrollExtent * 0.95;
           if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold) {
-            fetchAttendeeInfo(pageCount: numberOfPages);
+            fetchAttendeeInfo(pageCount: whatPageShouldBeFetched);
           }
           return true;
         },
