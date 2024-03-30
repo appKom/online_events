@@ -129,7 +129,7 @@ class EventsPageState extends State<EventsPage> {
                     ),
                   ),
                 ),
-              const SizedBox(height: 24),
+              if (pastEvents.isNotEmpty) const SizedBox(height: 24),
               if (pastEvents.isNotEmpty)
                 Column(
                   children: List.generate(2, (_) => EventCard.skeleton()),

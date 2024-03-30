@@ -201,6 +201,40 @@ abstract class Client {
     return results;
   }
 
+  static Future<List<EventAttendanceModel>> getAttendanceEventsStart({
+    required int userId,
+  }) async {
+    final accessToken = Authenticator.credentials?.accessToken;
+
+    if (accessToken == null) return [];
+
+    final url =
+        '$endpoint/api/v1/event/attendees/?page=1&ordering=-id&user=$userId';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    final results = <EventAttendanceModel>[];
+
+    final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+    final jsonResults = jsonDecode(body)['results'];
+    results.addAll(jsonResults
+        .map<EventAttendanceModel>(
+            (json) => EventAttendanceModel.fromJson(json))
+        .toList());
+
+    if (results.isNotEmpty) {
+      eventAttendanceCache.value = Set.from(eventAttendanceCache.value)
+        ..addAll(results);
+    }
+
+    return results;
+  }
+
   static Future<AttendeeInfoModel?> getEventAttendance(int eventId) async {
     final url = '$endpoint/api/v1/event/attendance-events/$eventId/';
 

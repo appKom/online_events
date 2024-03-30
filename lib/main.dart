@@ -10,7 +10,11 @@ import '/services/authenticator.dart';
 import '/services/env.dart';
 import '/services/secure_storage.dart';
 import 'core/client/client.dart';
+import 'core/models/event_model.dart';
 import 'firebase_options.dart';
+
+List<EventModel> allAttendedEvents = [];
+List<int> attendedEventIds = [];
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -55,6 +59,7 @@ Future main() async {
   if (Authenticator.isLoggedIn()) {
     await Client.getUserProfile();
   }
+  fetchAttendeeInfo();
 }
 
 Future _configureFirebase() async {
@@ -75,6 +80,24 @@ Future _configureFirebase() async {
 
   await messaging.subscribeToTopic('allUsers');
   await FirebaseMessaging.instance.getToken();
+}
+
+Future<void> fetchAttendeeInfo() async {
+  final user = Client.userCache.value;
+
+  if (user == null) return;
+
+  await Client.getAttendanceEventsStart(userId: user.id);
+
+  for (final event in Client.eventAttendanceCache.value) {
+    attendedEventIds.add(event.id);
+  }
+  // print('Number of pages is: $numberOfPages');
+  Set<EventModel>? fetchedEvents =
+      await Client.getEventsWithIds(eventIds: attendedEventIds);
+  if (fetchedEvents != null) {
+    allAttendedEvents = fetchedEvents.toList();
+  }
 }
 
 class OnlineApp extends StatelessWidget {

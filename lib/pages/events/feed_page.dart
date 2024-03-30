@@ -9,6 +9,7 @@ import '../../services/app_navigator.dart';
 import '../../theme/theme.dart';
 import '../event/event_page.dart';
 import '../home/event_card.dart';
+import '../../main.dart';
 
 final List<String> norwegianMonths = [
   'Januar',
@@ -86,21 +87,23 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedPageState extends State<FeedPage> {
-  bool _isLoading = true;
+  bool isLoading = true;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
   List<int> attendedEventIds = [];
-  List<EventModel> allAttendedEvents = [];
   List<EventModel> upcomingEvents = [];
   List<EventModel> pastEvents = [];
-  int numberOfPages = 1;
+  int numberOfPages = 2;
   bool isFetching = false;
 
   @override
   void initState() {
     super.initState();
-    fetchAttendeeInfo(pageCount: numberOfPages);
+    if (allAttendedEvents.isEmpty) {
+      fetchAttendeeInfo(pageCount: 1);
+    }
+    isLoading = false;
   }
 
   Future<void> fetchAttendeeInfo({
@@ -127,7 +130,7 @@ class FeedPageState extends State<FeedPage> {
 
     if (mounted) {
       setState(() {
-        _isLoading = false;
+        isLoading = false;
       });
     }
     isFetching = false;
@@ -241,7 +244,7 @@ class FeedPageState extends State<FeedPage> {
       return selectedEvents;
     }
 
-    if (_isLoading) {
+    if (isLoading || allAttendedEvents.isEmpty) {
       return FeedPage.skeletonLoader(context);
     }
 
@@ -412,8 +415,8 @@ class FeedPageState extends State<FeedPage> {
               ),
               const SizedBox(height: 24 + 24),
               Text('Mine Arrangementer', style: OnlineTheme.header()),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
+              SizedBox(
+                // margin: const EdgeInsets.symmetric(vertical: 10),
                 height: 100.0 * upcomingEvents.length,
                 child: ListView.builder(
                   itemCount: upcomingEvents.length,
@@ -426,8 +429,8 @@ class FeedPageState extends State<FeedPage> {
               ),
               const SizedBox(height: 24 + 24),
               Text('Tidligere Arrangementer', style: OnlineTheme.header()),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
+              SizedBox(
+                // margin: const EdgeInsets.symmetric(vertical: 10),
                 height: 100.0 * pastEvents.length,
                 child: ListView.builder(
                   itemCount: pastEvents.length,
