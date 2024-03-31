@@ -10,7 +10,7 @@ import 'calendar_card.dart';
 import 'calendar_skeleton.dart';
 
 // Don't remove
-int whatAttendencePageShouldBeFetched = 1;
+int whatAttendencePageShouldBeFetched = 2;
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -34,7 +34,10 @@ class FeedPageState extends State<FeedPage> {
     super.initState();
     //If attended events has not yet been fetched, it wil fetch the first page, else it will display the events without loading
     if (allAttendedEvents.isEmpty) {
-      fetchAttendeeInfo(pageCount: 1);
+      fetchAttendeeInfo(
+        pageCount: 1,
+        shouldUpdatePageCount: false,
+      );
       isLoading = true;
     } else {
       isLoading = false;
@@ -43,6 +46,7 @@ class FeedPageState extends State<FeedPage> {
 
   Future<void> fetchAttendeeInfo({
     required int pageCount,
+    required bool shouldUpdatePageCount,
   }) async {
     if (isFetching) return;
     isFetching = true;
@@ -60,6 +64,7 @@ class FeedPageState extends State<FeedPage> {
         attendedEventIds.add(event.id);
       }
     }
+    print('attended event ids: $attendedEventIds');
     if (attendedEventIds.isNotEmpty) {
       Set<EventModel>? fetchedEvents =
           await Client.getEventsWithIds(eventIds: attendedEventIds);
@@ -91,7 +96,9 @@ class FeedPageState extends State<FeedPage> {
     }
     Client.eventAttendanceCache.value.clear();
     isFetching = false;
-    whatAttendencePageShouldBeFetched += 1;
+    if (shouldUpdatePageCount) {
+      whatAttendencePageShouldBeFetched += 1;
+    }
   }
 
   @override
@@ -131,7 +138,9 @@ class FeedPageState extends State<FeedPage> {
               scrollInfo.metrics.maxScrollExtent * 0.95;
           if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold &&
               hasMoreEventsToFetch) {
-            fetchAttendeeInfo(pageCount: whatAttendencePageShouldBeFetched);
+            fetchAttendeeInfo(
+                pageCount: whatAttendencePageShouldBeFetched,
+                shouldUpdatePageCount: true);
           }
           return true;
         },
