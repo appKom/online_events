@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:online/core/models/hobby_model.dart';
+import 'package:online/core/models/user_search_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/event_model.dart';
@@ -154,6 +155,36 @@ abstract class Client {
       return userCache.value;
     }
 
+    return null;
+  }
+
+  static Future<UserSearchModel?> searchUserProfile({
+    required String search,
+  }) async {
+    final accessToken = Authenticator.credentials?.accessToken;
+
+    if (accessToken == null) return null;
+
+    final url = '$endpoint/api/v1/profile/search/?search=$search';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody =
+          utf8.decode(response.bodyBytes, allowMalformed: true);
+      final jsonResponse = jsonDecode(responseBody);
+
+      if (jsonResponse['results'] != null &&
+          jsonResponse['results'].isNotEmpty) {
+        final firstResult = jsonResponse['results'][0];
+        return UserSearchModel.fromJson(firstResult);
+      }
+    }
     return null;
   }
 

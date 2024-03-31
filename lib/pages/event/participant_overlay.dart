@@ -1,12 +1,11 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:online/components/navbar.dart';
+import 'package:online/pages/event/view_participant.dart';
 import 'package:online/services/authenticator.dart';
 import 'package:online/theme/themed_icon.dart';
 import '../../components/animated_button.dart';
 import '../../services/app_navigator.dart';
-import '../profile/profile_page.dart';
 import '/dark_overlay.dart';
 
 import '/components/separator.dart';
@@ -209,48 +208,58 @@ class ParticipantOverlay extends DarkOverlay {
 
                   return SizedBox(
                     height: 40,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        indexLabel(index, color),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  attendee.fullName,
-                                  style: OnlineTheme.textStyle(
-                                    color: color,
-                                    weight: weight,
-                                    size: 15,
+                    child: AnimatedButton(onTap: () {
+                      String formattedSearch =
+                          attendee.fullName.replaceAll(' ', '+');
+                      AppNavigator.pop();
+                      AppNavigator.navigateToPage(ViewParticipantDisplay(
+                        search: formattedSearch,
+                        model: model,
+                      ));
+                    }, childBuilder: (context, hover, pointerDown) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          indexLabel(index, color),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    attendee.fullName,
+                                    style: OnlineTheme.textStyle(
+                                      color: color,
+                                      weight: weight,
+                                      size: 15,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              if (role == Role.verified)
-                                const SizedBox(width: 5),
-                              if (role == Role.verified)
-                                ThemedIcon(
-                                    icon: IconType.badgeCheck,
-                                    color: color,
-                                    size: 16),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 70,
-                          child: Text(
-                            '${attendee.yearOfStudy}. klasse', // Takes less space than 'klasse'
-                            style: OnlineTheme.textStyle(
-                              color: color,
-                              weight: weight,
-                              size: 15,
+                                if (role == Role.verified)
+                                  const SizedBox(width: 5),
+                                if (role == Role.verified)
+                                  ThemedIcon(
+                                      icon: IconType.badgeCheck,
+                                      color: color,
+                                      size: 16),
+                              ],
                             ),
-                            textAlign: TextAlign.right,
                           ),
-                        ),
-                      ],
-                    ),
+                          SizedBox(
+                            width: 70,
+                            child: Text(
+                              '${attendee.yearOfStudy}. klasse', // Takes less space than 'klasse'
+                              style: OnlineTheme.textStyle(
+                                color: color,
+                                weight: weight,
+                                size: 15,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
                   );
                 },
               );
