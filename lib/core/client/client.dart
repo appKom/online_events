@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:online/core/models/hobby_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/event_model.dart';
@@ -329,5 +330,47 @@ abstract class Client {
     }
 
     return null;
+  }
+
+  static ValueNotifier<Set<HobbyModel>> hobbiesCache = ValueNotifier({});
+
+  static Future<void> getHobbies() async {
+    Set<HobbyModel> allHobbies = {};
+
+    String initialUrl = '$endpoint/api/v1/hobbys/?page=1';
+    var initialResponse = await http.get(Uri.parse(initialUrl));
+    if (initialResponse.statusCode == 200) {
+      final initialResponseBody =
+          utf8.decode(initialResponse.bodyBytes, allowMalformed: true);
+      final initialJsonResponse = jsonDecode(initialResponseBody);
+      final totalCount = initialJsonResponse['count'];
+      final pageSize = initialJsonResponse['results'].length;
+      final pageCount = (totalCount / pageSize).ceil();
+
+      List<int> pages = List.generate(pageCount, (index) => index + 1);
+
+      var futures = pages.map((page) {
+        String url = '$endpoint/api/v1/hobbys/?page=$page';
+        return http.get(Uri.parse(url));
+      }).toList();
+
+      var responses = await Future.wait(futures);
+
+      for (var response in responses) {
+        if (response.statusCode == 200) {
+          final responseBody =
+              utf8.decode(response.bodyBytes, allowMalformed: true);
+          final jsonResponse = jsonDecode(responseBody);
+          final hobbies = jsonResponse['results']
+              .map<HobbyModel>((hobbyJson) => HobbyModel.fromJson(hobbyJson))
+              .toList();
+
+          allHobbies.addAll(hobbies);
+        }
+      }
+      if (allHobbies.isNotEmpty) {
+        hobbiesCache.value = Set.from(hobbiesCache.value)..addAll(allHobbies);
+      }
+    }
   }
 }

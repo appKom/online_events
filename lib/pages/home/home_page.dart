@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online/pages/home/hobbies.dart';
 
 import '../../core/models/event_model.dart';
 import '../events/events_page.dart';
@@ -103,6 +104,14 @@ class HomePage extends ScrollablePage {
             builder: (context, events, child) {
               if (events.isEmpty) return Bedpres.skeleton(context);
               return Bedpres(models: events);
+            },
+          ),
+          const SizedBox(height: 24 + 24),
+          ValueListenableBuilder(
+            valueListenable: Client.hobbiesCache,
+            builder: (context, hobbies, child) {
+              if (hobbies.isEmpty) return Hobbies.skeleton(context);
+              return Hobbies(hobbies: hobbies);
             },
           ),
           const SizedBox(height: 24 + 24),

@@ -29,6 +29,7 @@ class FeedPageState extends State<FeedPage> {
   bool isFetching = false;
   bool hasMoreEventsToFetch = true;
   bool hasAttendedAnyEvent = true;
+  bool reloading = false;
 
   @override
   void initState() {
@@ -101,6 +102,18 @@ class FeedPageState extends State<FeedPage> {
     }
   }
 
+  Future<void> fetchReload({
+    required int pageCount,
+    required bool shouldUpdatePageCount,
+  }) async {
+    await fetchAttendeeInfo(
+        pageCount: pageCount, shouldUpdatePageCount: shouldUpdatePageCount);
+
+    setState(() {
+      reloading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -149,6 +162,8 @@ class FeedPageState extends State<FeedPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 24),
+              if (reloading) const CircularProgressIndicator(),
+              if (reloading) const SizedBox(height: 24),
               CalendarCard(
                   upcomingEvents: upcomingEvents, pastEvents: pastEvents),
               const SizedBox(height: 24 + 24),
@@ -157,8 +172,8 @@ class FeedPageState extends State<FeedPage> {
                   Text('Mine Arrangementer', style: OnlineTheme.header()),
                   const Spacer(),
                   AnimatedButton(onTap: () {
-                    fetchAttendeeInfo(
-                        pageCount: 1, shouldUpdatePageCount: false);
+                    fetchReload(pageCount: 1, shouldUpdatePageCount: false);
+                    if (mounted) setState(() => reloading = true);
                   }, childBuilder: (context, hover, pointerDown) {
                     return const Icon(
                       Icons.refresh_outlined,

@@ -58,6 +58,8 @@ Future main() async {
   if (Authenticator.isLoggedIn()) {
     await Client.getUserProfile();
   }
+  Client.getHobbies();
+
   //No await here, because it's not necessary to wait for this to finish
   if (Authenticator.isLoggedIn()) {
     fetchAttendeeInfo();
