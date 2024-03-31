@@ -1,7 +1,12 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:online/components/navbar.dart';
+import 'package:online/services/authenticator.dart';
 import 'package:online/theme/themed_icon.dart';
+import '../../components/animated_button.dart';
+import '../../services/app_navigator.dart';
+import '../profile/profile_page.dart';
 import '/dark_overlay.dart';
 
 import '/components/separator.dart';
@@ -47,7 +52,8 @@ class ParticipantOverlay extends DarkOverlay {
         child: Column(
           children: [
             buildList('Påmeldte', attendeesFuture),
-            buildList('Venteliste', waitlistFuture),
+            if (Authenticator.isLoggedIn())
+              buildList('Venteliste', waitlistFuture),
           ],
         ),
       ),
@@ -140,16 +146,52 @@ class ParticipantOverlay extends DarkOverlay {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return progressIndicator();
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}', style: OnlineTheme.textStyle());
+              return Text('Error: ${snapshot.error}',
+                  style: OnlineTheme.textStyle());
             } else {
               final sortedAttendees = snapshot.data!;
 
               if (sortedAttendees.isEmpty) {
-                return Text(
-                  'Ingen',
-                  style: OnlineTheme.textStyle(size: 15),
-                  textAlign: TextAlign.center,
-                );
+                if (!Authenticator.isLoggedIn()) {
+                  return Column(
+                    children: [
+                      Text(
+                        'Logg inn for å se påmeldte',
+                        style: OnlineTheme.textStyle(size: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      AnimatedButton(
+                        onTap: login,
+                        childBuilder: (context, hover, pointerDown) {
+                          return Container(
+                            height: OnlineTheme.buttonHeight,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: OnlineTheme.green.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(5),
+                              border: const Border.fromBorderSide(BorderSide(
+                                  color: OnlineTheme.green, width: 2)),
+                            ),
+                            child: Text(
+                              'Logg Inn',
+                              style: OnlineTheme.textStyle(
+                                  color: OnlineTheme.green, weight: 5),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  );
+                } else {
+                  return Text(
+                    'Ingen',
+                    style: OnlineTheme.textStyle(size: 15),
+                    textAlign: TextAlign.center,
+                  );
+                }
               }
 
               return ListView.separated(
@@ -185,8 +227,13 @@ class ParticipantOverlay extends DarkOverlay {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              if (role == Role.verified) const SizedBox(width: 5),
-                              if (role == Role.verified) ThemedIcon(icon: IconType.badgeCheck, color: color, size: 16),
+                              if (role == Role.verified)
+                                const SizedBox(width: 5),
+                              if (role == Role.verified)
+                                ThemedIcon(
+                                    icon: IconType.badgeCheck,
+                                    color: color,
+                                    size: 16),
                             ],
                           ),
                         ),
@@ -212,5 +259,14 @@ class ParticipantOverlay extends DarkOverlay {
         ),
       ],
     );
+  }
+
+  Future login() async {
+    final response = await Authenticator.login();
+
+    if (response != null) {
+      AppNavigator.pop();
+      // AppNavigator.replaceWithPage(const ProfilePage());
+    }
   }
 }
