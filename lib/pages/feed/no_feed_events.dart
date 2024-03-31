@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '/theme/theme.dart';
-import 'feed_page.dart';
+import 'calendar_card.dart';
 
 class NoFeedEvents extends StatefulWidget {
   const NoFeedEvents({
