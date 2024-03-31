@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online/components/online_scaffold.dart';
 import 'package:online/pages/feed/no_feed_events.dart';
+import '../../components/animated_button.dart';
 import '../../core/client/client.dart';
 import '../../core/models/event_model.dart';
 import '../../theme/theme.dart';
@@ -48,9 +49,8 @@ class FeedPageState extends State<FeedPage> {
     required int pageCount,
     required bool shouldUpdatePageCount,
   }) async {
-    if (isFetching) return;
+    if (isFetching || !hasMoreEventsToFetch) return;
     isFetching = true;
-    if (!hasMoreEventsToFetch) return;
     final user = Client.userCache.value;
 
     if (user == null) return;
@@ -64,7 +64,7 @@ class FeedPageState extends State<FeedPage> {
         attendedEventIds.add(event.id);
       }
     }
-    print('attended event ids: $attendedEventIds');
+    // print('fetching ids: $attendedEventIds');
     if (attendedEventIds.isNotEmpty) {
       Set<EventModel>? fetchedEvents =
           await Client.getEventsWithIds(eventIds: attendedEventIds);
@@ -152,7 +152,23 @@ class FeedPageState extends State<FeedPage> {
               CalendarCard(
                   upcomingEvents: upcomingEvents, pastEvents: pastEvents),
               const SizedBox(height: 24 + 24),
-              Text('Mine Arrangementer', style: OnlineTheme.header()),
+              Row(
+                children: [
+                  Text('Mine Arrangementer', style: OnlineTheme.header()),
+                  const Spacer(),
+                  AnimatedButton(onTap: () {
+                    fetchAttendeeInfo(
+                        pageCount: 1, shouldUpdatePageCount: false);
+                  }, childBuilder: (context, hover, pointerDown) {
+                    return const Icon(
+                      Icons.refresh_outlined,
+                      color: OnlineTheme.white,
+                      size: 32,
+                    );
+                  }),
+                ],
+              ),
+              const SizedBox(height: 24),
               SizedBox(
                 // margin: const EdgeInsets.symmetric(vertical: 10),
                 height: 100.0 * upcomingEvents.length,
@@ -167,6 +183,7 @@ class FeedPageState extends State<FeedPage> {
               ),
               const SizedBox(height: 24 + 24),
               Text('Tidligere Arrangementer', style: OnlineTheme.header()),
+              const SizedBox(height: 24),
               SizedBox(
                 // margin: const EdgeInsets.symmetric(vertical: 10),
                 height: 100.0 * pastEvents.length,
