@@ -337,7 +337,7 @@ abstract class Client {
   static Future<void> getHobbies() async {
     Set<HobbyModel> allHobbies = {};
 
-    String initialUrl = '$endpoint/api/v1/hobbys/?page=1';
+    String initialUrl = '$endpoint/api/v1/hobbys/?ordering=-priority&page=1';
     var initialResponse = await http.get(Uri.parse(initialUrl));
     if (initialResponse.statusCode == 200) {
       final initialResponseBody =

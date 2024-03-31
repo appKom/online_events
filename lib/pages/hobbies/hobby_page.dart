@@ -27,15 +27,18 @@ class HobbyPage extends ScrollablePage {
     }
 
     // Load cover image
-    return CachedNetworkImage(
-      imageUrl: hobby.image!.original,
-      fit: BoxFit.cover,
-      height: 240,
-      placeholder: (context, url) => const SkeletonLoader(height: 240),
-      errorWidget: (context, url, error) => SvgPicture.asset(
-        'assets/svg/online_hvit_o.svg',
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: CachedNetworkImage(
+        imageUrl: hobby.image!.original,
         fit: BoxFit.cover,
         height: 240,
+        placeholder: (context, url) => const SkeletonLoader(height: 240),
+        errorWidget: (context, url, error) => SvgPicture.asset(
+          'assets/svg/online_hvit_o.svg',
+          fit: BoxFit.cover,
+          height: 240,
+        ),
       ),
     );
   }
