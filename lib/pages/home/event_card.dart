@@ -170,12 +170,15 @@ class EventCard extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
-      child: CachedNetworkImage(
-        imageUrl: model.images.first.md,
-        fit: BoxFit.cover,
-        placeholder: (context, url) =>
-            const SkeletonLoader(width: 100, height: 100),
-        errorWidget: (context, url, error) => defaultWithBorder(),
+      child: Container(
+        color: OnlineTheme.white,
+        child: CachedNetworkImage(
+          imageUrl: model.images.first.md,
+          fit: BoxFit.cover,
+          placeholder: (context, url) =>
+              const SkeletonLoader(width: 100, height: 100),
+          errorWidget: (context, url, error) => defaultWithBorder(),
+        ),
       ),
     );
   }
