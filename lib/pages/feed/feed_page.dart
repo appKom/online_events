@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online/components/online_scaffold.dart';
+import 'package:online/pages/feed/no_feed_events.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../components/skeleton_loader.dart';
@@ -98,6 +99,7 @@ class FeedPageState extends State<FeedPage> {
 
   bool isFetching = false;
   bool hasMoreEventsToFetch = true;
+  bool hasAttendedAnyEvent = true;
 
   @override
   void initState() {
@@ -120,7 +122,6 @@ class FeedPageState extends State<FeedPage> {
 
     if (user == null) return;
     List<int> attendedEventIds = [];
-    print('Fetching from page: $pageCount');
     await Client.getAttendanceEvents(userId: user.id, pageCount: pageCount);
 
     final events = Client.eventAttendanceCache.value;
@@ -129,9 +130,8 @@ class FeedPageState extends State<FeedPage> {
         attendedEventIds.add(event.id);
       }
     }
-    whatAttendencePageShouldBeFetched += 1;
+
     if (attendedEventIds.isNotEmpty) {
-      print('Fetching events with ids: $attendedEventIds');
       Set<EventModel>? fetchedEvents =
           await Client.getEventsWithIds(eventIds: attendedEventIds);
       if (fetchedEvents != null) {
@@ -146,7 +146,15 @@ class FeedPageState extends State<FeedPage> {
         });
       }
     }
-
+    if (pageCount == 1 &&
+        attendedEventIds.isEmpty &&
+        allAttendedEvents.isEmpty) {
+      if (mounted) {
+        setState(() {
+          hasAttendedAnyEvent = false;
+        });
+      }
+    }
     if (mounted) {
       setState(() {
         isLoading = false;
@@ -154,6 +162,7 @@ class FeedPageState extends State<FeedPage> {
     }
     Client.eventAttendanceCache.value.clear();
     isFetching = false;
+    whatAttendencePageShouldBeFetched += 1;
   }
 
   static const List<String> _norwegianWeekDays = [
@@ -262,6 +271,10 @@ class FeedPageState extends State<FeedPage> {
           .addAll(pastEvents.where((event) => isEventOnDay(event, day)));
 
       return selectedEvents;
+    }
+
+    if (hasAttendedAnyEvent == false) {
+      return const NoFeedEvents();
     }
 
     if (isLoading || allAttendedEvents.isEmpty) {

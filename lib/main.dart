@@ -102,6 +102,7 @@ Future<void> fetchAttendeeInfo() async {
     allAttendedEvents = fetchedEvents.toList();
   }
 
+  //Temporary solution to prevent duplicate fetching
   Client.eventAttendanceCache.value.clear();
 }
 

@@ -2,6 +2,9 @@ import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:online/services/env.dart';
 
+import '../core/client/client.dart';
+import '../main.dart';
+
 abstract class Authenticator {
   static Auth0? auth0;
   static Credentials? credentials;
@@ -63,5 +66,7 @@ abstract class Authenticator {
 
     credentials = null;
     loggedIn.value = false;
+    allAttendedEvents.clear();
+    Client.eventsIdsCache.value.clear();
   }
 }
