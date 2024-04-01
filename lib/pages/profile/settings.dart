@@ -84,16 +84,14 @@ class SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 10),
           Column(
             children: eventCategories.keys.map((String key) {
-              return Card(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: OnlineTheme.buttonRadius,
-                ),
+              return Container(
                 color: OnlineTheme.background,
                 child: CheckboxListTile(
-                  title: Text(key, style: OnlineTheme.subHeader()),
+                  title: Text(key, style: OnlineTheme.textStyle()),
                   value: eventCategories[key],
                   activeColor: Colors.green,
                   checkColor: Colors.white,
+                  contentPadding: const EdgeInsets.all(0),
                   onChanged: (bool? value) {
                     _handleSubscription(key, value);
                   },
@@ -101,7 +99,6 @@ class SettingsPageState extends State<SettingsPage> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 24),
         ],
       ),
     );

@@ -4,7 +4,6 @@ import 'package:online/pages/feed/feed_page.dart';
 import '../pages/games/games_page.dart';
 import '../pages/login/login_page.dart';
 import '../pages/profile/profile_page.dart';
-import '/pages/events/my_events_page.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';
@@ -144,8 +143,7 @@ class NavbarState extends State<Navbar> {
     return Container(
       decoration: BoxDecoration(
         color: OnlineTheme.background.withOpacity(0.9),
-        border: const Border(
-            top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        border: const Border(top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
