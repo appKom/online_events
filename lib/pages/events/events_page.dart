@@ -5,6 +5,8 @@ import '/core/client/client.dart';
 import '/pages/home/event_card.dart';
 import '/theme/theme.dart';
 
+int currentPage = 1;
+
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key});
 
@@ -13,7 +15,6 @@ class EventsPage extends StatefulWidget {
 }
 
 class EventsPageState extends State<EventsPage> {
-  int currentPage = 1;
   bool isFetching = false;
 
   Future<void> fetchMoreEvents() async {
@@ -23,6 +24,7 @@ class EventsPageState extends State<EventsPage> {
     try {
       final moreEventsPage = await Client.getEvents(pages: [nextPage]);
       final events = Client.eventsCache.value.toList();
+      print('fecthing events from page $nextPage');
 
       if (mounted) {
         setState(() {
