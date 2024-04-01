@@ -14,7 +14,7 @@ class SettingsPage extends StatefulWidget {
 
 class SettingsPageState extends State<SettingsPage> {
   Map<String, bool> eventCategories = {
-    'Bedriftspresentasjoner': false,
+    'Bedpresser': false,
     'Kurs': false,
     'Sosialt': false,
     'Annet': false,
@@ -30,7 +30,8 @@ class SettingsPageState extends State<SettingsPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       eventCategories.keys.forEach((category) {
-        eventCategories[category] = (prefs.getBool(category) ?? eventCategories[category])!;
+        eventCategories[category] =
+            (prefs.getBool(category) ?? eventCategories[category])!;
       });
     });
   }
@@ -50,7 +51,7 @@ class SettingsPageState extends State<SettingsPage> {
 
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     String? topicName;
-    if (category == 'Bedriftspresentasjoner') {
+    if (category == 'Bedpresser') {
       topicName = '2';
     } else if (category == 'Kurs') {
       topicName = '3';
