@@ -14,7 +14,7 @@ class SettingsPage extends StatefulWidget {
 
 class SettingsPageState extends State<SettingsPage> {
   Map<String, bool> eventCategories = {
-    'Bedpresser': false,
+    'Bedriftspresentasjoner': false,
     'Kurs': false,
     'Sosialt': false,
     'Annet': false,
@@ -51,7 +51,7 @@ class SettingsPageState extends State<SettingsPage> {
 
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     String? topicName;
-    if (category == 'Bedpresser') {
+    if (category == 'Bedriftspresentasjoner') {
       topicName = '2';
     } else if (category == 'Kurs') {
       topicName = '3';
