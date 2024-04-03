@@ -38,10 +38,15 @@ class _ProfilePageState extends State<ProfilePage> {
   File? _imageFile;
   late Databases database;
   PixelUserClass? pixelUserData;
+  UserModel? theUser;
 
   @override
   void initState() {
     super.initState();
+    if (io.Client.userCache.value != null) {
+      theUser = io.Client.userCache.value!;
+      return;
+    }
     fetchUserProfile();
 
     final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
@@ -69,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
     UserModel? profile = await io.Client.getUserProfile();
     if (profile != null && mounted) {
       setState(() {
-        // TODO: Can this be done in a better way? setState rebuilds the whole widget.
+        theUser = profile;
       });
 
       await saveUserProfileToDatabase(profile);
@@ -546,110 +551,108 @@ class _ProfilePageState extends State<ProfilePage> {
     return FutureBuilder(
       future: appTrackingPermission(isIos),
       builder: (context, privacySnapshot) {
-        return FutureBuilder(
-          future: io.Client.getUserProfile(),
-          builder: (context, userSnapshot) {
-            final user = userSnapshot.data;
+        return RefreshIndicator(
+          onRefresh: () async {
+            fetchUserProfile();
+          },
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: padding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 24),
+                  profileHeader(theUser),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    child: Center(
+                      child: ValueListenableBuilder(
+                        valueListenable: acceptedPrivacy,
+                        builder: (context, accepted, child) {
+                          return AnimatedButton(
+                            onTap: () async {
+                              if (!accepted) return;
 
-            return SingleChildScrollView(
-              child: Padding(
-                padding: padding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 24),
-                    profileHeader(user),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: Center(
-                        child: ValueListenableBuilder(
-                          valueListenable: acceptedPrivacy,
-                          builder: (context, accepted, child) {
-                            return AnimatedButton(
-                              onTap: () async {
-                                if (!accepted) return;
-
-                                await pickImage(ImageSource.gallery);
-                                if (_imageFile != null) {
-                                  await uploadImage(user);
-                                }
-                              },
-                              childBuilder: (context, hover, pointerDown) {
-                                return profilePicture(user);
-                              },
+                              await pickImage(ImageSource.gallery);
+                              if (_imageFile != null) {
+                                await uploadImage(theUser);
+                              }
+                            },
+                            childBuilder: (context, hover, pointerDown) {
+                              return profilePicture(theUser);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  bioCard(theUser),
+                  const SizedBox(height: 24),
+                  contactCard(theUser),
+                  const SizedBox(height: 24),
+                  studyCard(theUser),
+                  const SizedBox(height: 24),
+                  const SettingsPage(),
+                  const SizedBox(height: 24 + 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AnimatedButton(
+                          onTap: () => initiateDeletion(context),
+                          childBuilder: (context, hover, pointerDown) {
+                            return Container(
+                              height: OnlineTheme.buttonHeight,
+                              decoration: BoxDecoration(
+                                color: OnlineTheme.red.withOpacity(0.4),
+                                borderRadius: OnlineTheme.buttonRadius,
+                                border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Slett Bruker',
+                                  style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
+                                ),
+                              ),
                             );
                           },
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                    bioCard(user),
-                    const SizedBox(height: 24),
-                    contactCard(user),
-                    const SizedBox(height: 24),
-                    studyCard(user),
-                    const SizedBox(height: 24),
-                    const SettingsPage(),
-                    const SizedBox(height: 24 + 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AnimatedButton(
-                            onTap: () => initiateDeletion(context),
-                            childBuilder: (context, hover, pointerDown) {
-                              return Container(
-                                height: OnlineTheme.buttonHeight,
-                                decoration: BoxDecoration(
-                                  color: OnlineTheme.red.withOpacity(0.4),
-                                  borderRadius: OnlineTheme.buttonRadius,
-                                  border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: AnimatedButton(
+                          onTap: () async {
+                            await Authenticator.logout();
+                            // AppNavigator.replaceWithPage(const LoginPage());
+                            Navbar.navigateTo(NavbarPage.home);
+                          },
+                          childBuilder: (context, hover, pointerDown) {
+                            return Container(
+                              height: OnlineTheme.buttonHeight,
+                              decoration: BoxDecoration(
+                                color: OnlineTheme.yellow.darken(40),
+                                borderRadius: OnlineTheme.buttonRadius,
+                                border: const Border.fromBorderSide(
+                                  BorderSide(color: OnlineTheme.yellow, width: 2),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    'Slett Bruker',
-                                    style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
-                                  ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Logg Ut',
+                                  style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: AnimatedButton(
-                            onTap: () async {
-                              await Authenticator.logout();
-                              // AppNavigator.replaceWithPage(const LoginPage());
-                              Navbar.navigateTo(NavbarPage.home);
-                            },
-                            childBuilder: (context, hover, pointerDown) {
-                              return Container(
-                                height: OnlineTheme.buttonHeight,
-                                decoration: BoxDecoration(
-                                  color: OnlineTheme.yellow.darken(40),
-                                  borderRadius: OnlineTheme.buttonRadius,
-                                  border: const Border.fromBorderSide(
-                                    BorderSide(color: OnlineTheme.yellow, width: 2),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Logg Ut',
-                                    style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );

@@ -38,8 +38,7 @@ abstract class Authenticator {
 
   static Future<Credentials?> login() async {
     if (auth0 == null) {
-      throw Exception(
-          'Auth0 has not been initialized! Please call Authenticator.initialize() first.');
+      throw Exception('Auth0 has not been initialized! Please call Authenticator.initialize() first.');
     }
 
     try {
@@ -55,8 +54,7 @@ abstract class Authenticator {
 
   static Future<void> logout() async {
     if (auth0 == null) {
-      throw Exception(
-          'Auth0 has not been initialized! Please call Authenticator.initialize() first.');
+      throw Exception('Auth0 has not been initialized! Please call Authenticator.initialize() first.');
     }
 
     await auth0!.webAuthentication().logout();
@@ -70,5 +68,6 @@ abstract class Authenticator {
     //Remove attended Events from cache when logging out
     allAttendedEvents.clear();
     Client.eventsIdsCache.value.clear();
+    Client.userCache.value = null;
   }
 }
