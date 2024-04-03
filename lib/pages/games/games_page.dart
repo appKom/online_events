@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:online/pages/games/hundred_questions/hundred_questions_page.dart';
+import 'package:online/pages/games/oddsen/oddsen_page.dart';
+import 'package:online/pages/games/power_snake/power_snake.dart';
 import 'package:online/pages/games/roulette_page.dart';
 
 import '/components/animated_button.dart';
@@ -17,8 +19,7 @@ class GamesPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -38,6 +39,20 @@ class GamesPage extends ScrollablePage {
                 imageSource: 'assets/images/diceHeader.jpg',
                 onTap: () {
                   AppNavigator.globalNavigateTo(const DicePage());
+                },
+              ),
+              GameCard(
+                name: 'Oddsen',
+                imageSource: 'assets/images/oddsen.png',
+                onTap: () {
+                  AppNavigator.globalNavigateTo(const OddsenPage());
+                },
+              ),
+              GameCard(
+                name: 'Power Snake',
+                imageSource: 'assets/images/oddsen.png',
+                onTap: () {
+                  AppNavigator.globalNavigateTo(SnakeGame());
                 },
               ),
               GameCard(
@@ -127,8 +142,7 @@ class GameCard extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom:
-                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                      bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
                     ),
                   ),
                   child: AspectRatio(
