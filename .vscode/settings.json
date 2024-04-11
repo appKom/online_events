@@ -1,4 +1,5 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "java.compile.nullAnalysis.mode": "automatic",
   "conventionalCommits.scopes": ["rouletteWheel"],
   "java.configuration.updateBuildConfiguration": "automatic",

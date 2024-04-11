@@ -30,8 +30,7 @@ class SettingsPageState extends State<SettingsPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       eventCategories.keys.forEach((category) {
-        eventCategories[category] =
-            (prefs.getBool(category) ?? eventCategories[category])!;
+        eventCategories[category] = (prefs.getBool(category) ?? eventCategories[category])!;
       });
     });
   }

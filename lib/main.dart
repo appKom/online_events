@@ -15,12 +15,10 @@ import 'firebase_options.dart';
 
 List<EventModel> allAttendedEvents = [];
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 // Initialization settings for Android
-const initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
 // Initialization settings for iOS
 const initializationSettingsIOS = DarwinInitializationSettings(
@@ -92,14 +90,13 @@ Future<void> fetchAttendeeInfo() async {
   if (user == null) return;
   List<int> attendedEventIds = [];
 
-  await Client.getAttendanceEvents(userId: user.id, pageCount: 1);
+  await Client.getAttendanceEvents(userId: user.id, page: 1);
 
   for (final event in Client.eventAttendanceCache.value) {
     attendedEventIds.add(event.id);
   }
   // print('Number of pages is: $numberOfPages');
-  Set<EventModel>? fetchedEvents =
-      await Client.getEventsWithIds(eventIds: attendedEventIds);
+  Set<EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
   if (fetchedEvents != null) {
     allAttendedEvents = fetchedEvents.toList();
   }

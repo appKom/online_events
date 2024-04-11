@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:online/components/online_scaffold.dart';
 import 'package:online/pages/feed/no_feed_events.dart';
-import '../../components/animated_button.dart';
-import '../../core/client/client.dart';
-import '../../core/models/event_model.dart';
-import '../../theme/theme.dart';
+import '/components/animated_button.dart';
+import '/core/client/client.dart';
+import '/core/models/event_model.dart';
+import '/theme/theme.dart';
 import '../home/event_card.dart';
-import '../../main.dart';
+import '/main.dart';
 import 'calendar_card.dart';
 import 'calendar_skeleton.dart';
 
@@ -37,7 +37,7 @@ class FeedPageState extends State<FeedPage> {
     //If attended events has not yet been fetched, it wil fetch the first page, else it will display the events without loading
     if (allAttendedEvents.isEmpty) {
       fetchAttendeeInfo(
-        pageCount: 1,
+        page: 1,
         shouldUpdatePageCount: false,
       );
       isLoading = true;
@@ -47,7 +47,7 @@ class FeedPageState extends State<FeedPage> {
   }
 
   Future<void> fetchAttendeeInfo({
-    required int pageCount,
+    required int page,
     required bool shouldUpdatePageCount,
   }) async {
     if (isFetching || !hasMoreEventsToFetch) return;
@@ -57,7 +57,7 @@ class FeedPageState extends State<FeedPage> {
     if (user == null) return;
     List<int> attendedEventIds = [];
 
-    await Client.getAttendanceEvents(userId: user.id, pageCount: pageCount);
+    await Client.getAttendanceEvents(userId: user.id, page: page);
 
     final events = Client.eventAttendanceCache.value;
     if (events.isNotEmpty) {
@@ -67,8 +67,7 @@ class FeedPageState extends State<FeedPage> {
     }
     // print('fetching ids: $attendedEventIds');
     if (attendedEventIds.isNotEmpty) {
-      Set<EventModel>? fetchedEvents =
-          await Client.getEventsWithIds(eventIds: attendedEventIds);
+      Set<EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
       if (fetchedEvents != null) {
         allAttendedEvents = fetchedEvents.toList();
         Set<int> fetchedEventIds = fetchedEvents.map((e) => e.id).toSet();
@@ -81,9 +80,7 @@ class FeedPageState extends State<FeedPage> {
         });
       }
     }
-    if (pageCount == 1 &&
-        attendedEventIds.isEmpty &&
-        allAttendedEvents.isEmpty) {
+    if (page == 1 && attendedEventIds.isEmpty && allAttendedEvents.isEmpty) {
       if (mounted) {
         setState(() {
           hasAttendedAnyEvent = false;
@@ -106,8 +103,7 @@ class FeedPageState extends State<FeedPage> {
     required int pageCount,
     required bool shouldUpdatePageCount,
   }) async {
-    await fetchAttendeeInfo(
-        pageCount: pageCount, shouldUpdatePageCount: shouldUpdatePageCount);
+    await fetchAttendeeInfo(page: pageCount, shouldUpdatePageCount: shouldUpdatePageCount);
 
     setState(() {
       reloading = false;
@@ -141,19 +137,14 @@ class FeedPageState extends State<FeedPage> {
       return skeletonLoader(context);
     }
 
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     return Padding(
       padding: padding,
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
-          double triggerFetchMoreThreshold =
-              scrollInfo.metrics.maxScrollExtent * 0.95;
-          if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold &&
-              hasMoreEventsToFetch) {
-            fetchAttendeeInfo(
-                pageCount: whatAttendencePageShouldBeFetched,
-                shouldUpdatePageCount: true);
+          double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.95;
+          if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold && hasMoreEventsToFetch) {
+            fetchAttendeeInfo(page: whatAttendencePageShouldBeFetched, shouldUpdatePageCount: true);
           }
           return true;
         },
@@ -164,8 +155,7 @@ class FeedPageState extends State<FeedPage> {
               const SizedBox(height: 24),
               if (reloading) const CircularProgressIndicator(),
               if (reloading) const SizedBox(height: 24),
-              CalendarCard(
-                  upcomingEvents: upcomingEvents, pastEvents: pastEvents),
+              CalendarCard(upcomingEvents: upcomingEvents, pastEvents: pastEvents),
               const SizedBox(height: 24 + 24),
               Row(
                 children: [
