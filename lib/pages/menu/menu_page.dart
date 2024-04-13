@@ -171,15 +171,26 @@ class _MenuPageState extends State<MenuPage> {
                           AnimatedButton(onTap: () {
                             AppNavigator.navigateToPage(const InfoPage());
                           }, childBuilder: (context, hover, pointerDown) {
-                            return Text(
-                              "Om Online Appen",
-                              style: OnlineTheme.textStyle(),
+                            return Row(
+                              children: [
+                                const Icon(
+                                  Icons.info_outline,
+                                  color: OnlineTheme.white,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "Om Online Appen",
+                                  style: OnlineTheme.textStyle(),
+                                ),
+                              ],
                             );
                           }),
                         ],
                       ),
                       const SizedBox(
-                        height: 24,
+                        height: 32,
                       ),
                       Row(
                         children: [
@@ -189,9 +200,18 @@ class _MenuPageState extends State<MenuPage> {
                           AnimatedButton(onTap: () {
                             io.Client.launchInBrowser('https://forms.gle/xUTTN95CuWtSbNCS7');
                           }, childBuilder: (context, hover, pointerDown) {
-                            return Text(
-                              "Rapporter en bug",
-                              style: OnlineTheme.textStyle(),
+                            return Row(
+                              children: [
+                                const Icon(
+                                  Icons.bug_report_outlined,
+                                  color: OnlineTheme.white,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  "Rapporter en bug",
+                                  style: OnlineTheme.textStyle(),
+                                ),
+                              ],
                             );
                           }),
                         ],
@@ -225,15 +245,24 @@ class _MenuPageState extends State<MenuPage> {
                           AnimatedButton(onTap: () {
                             io.Client.launchInBrowser('https://online.ntnu.no/profile/settings/userdata');
                           }, childBuilder: (context, hover, pointerDown) {
-                            return Text(
-                              "Last ned brukerdata",
-                              style: OnlineTheme.textStyle(),
+                            return Row(
+                              children: [
+                                const Icon(
+                                  Icons.download_outlined,
+                                  color: OnlineTheme.white,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  "Last ned brukerdata",
+                                  style: OnlineTheme.textStyle(),
+                                ),
+                              ],
                             );
                           }),
                         ],
                       ),
                       const SizedBox(
-                        height: 24,
+                        height: 32,
                       ),
                       Row(
                         children: [
@@ -243,9 +272,18 @@ class _MenuPageState extends State<MenuPage> {
                           AnimatedButton(onTap: () {
                             initiateDeletion(context);
                           }, childBuilder: (context, hover, pointerDown) {
-                            return Text(
-                              "Slett brukerdata",
-                              style: OnlineTheme.textStyle(),
+                            return Row(
+                              children: [
+                                const Icon(
+                                  Icons.delete_forever_outlined,
+                                  color: OnlineTheme.white,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  "Slett brukerdata",
+                                  style: OnlineTheme.textStyle(),
+                                ),
+                              ],
                             );
                           }),
                         ],
