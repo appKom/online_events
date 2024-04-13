@@ -33,6 +33,8 @@ enum IconType {
   dices,
   dicesFilled,
   cross,
+  menu,
+  menuFilled,
 }
 
 class ThemedIcon extends StatelessWidget {

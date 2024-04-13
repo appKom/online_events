@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:online/pages/feed/feed_page.dart';
+import 'package:online/pages/menu/menu_page.dart';
 
 import '../pages/games/games_page.dart';
 import '../pages/login/login_page.dart';
-import '../pages/profile/profile_page.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';
@@ -15,7 +15,7 @@ enum NavbarPage {
   home,
   events,
   games,
-  profile,
+  menu,
 }
 
 class Navbar extends StatefulWidget {
@@ -45,12 +45,8 @@ class Navbar extends StatefulWidget {
     NavbarState.selected.value = 2;
   }
 
-  static void _navigateProfile() {
-    if (Authenticator.isLoggedIn()) {
-      AppNavigator.replaceWithPage(const ProfilePageDisplay());
-    } else {
-      AppNavigator.replaceWithPage(const LoginPage());
-    }
+  static void _navigateMenu() {
+    AppNavigator.replaceWithPage(const MenuPage());
     NavbarState.selected.value = 3;
   }
 
@@ -62,8 +58,8 @@ class Navbar extends StatefulWidget {
         return _navigateEvents();
       case NavbarPage.games:
         return _navigateGames();
-      case NavbarPage.profile:
-        return _navigateProfile();
+      case NavbarPage.menu:
+        return _navigateMenu();
     }
   }
 
@@ -78,7 +74,7 @@ class NavbarState extends State<Navbar> {
     selected.value = 0;
   }
 
-  static void setActiveProfile() {
+  static void setActiveMenu() {
     selected.value = 3;
   }
 
@@ -99,9 +95,9 @@ class NavbarState extends State<Navbar> {
       onPressed: Navbar._navigateGames,
     ),
     NavbarButton(
-      icon: IconType.user,
-      activeIcon: IconType.userFilled,
-      onPressed: Navbar._navigateProfile,
+      icon: IconType.menu,
+      activeIcon: IconType.menuFilled,
+      onPressed: Navbar._navigateMenu,
     ),
   ];
 

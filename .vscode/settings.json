@@ -3,5 +3,8 @@
   "java.compile.nullAnalysis.mode": "automatic",
   "conventionalCommits.scopes": ["rouletteWheel"],
   "java.configuration.updateBuildConfiguration": "automatic",
-  "cmake.sourceDirectory": "/opt/online_events/linux"
+  "cmake.sourceDirectory": "/opt/online_events/linux",
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  }
 }

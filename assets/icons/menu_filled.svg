@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0,0,256,256" width="150px" height="150px">
+    <g fill="#fbb758" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+        stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+        style="mix-blend-mode: normal">
+        <g transform="scale(5.12,5.12)">
+            <path d="M0,7.5v5h50v-5zM0,22.5v5h50v-5zM0,37.5v5h50v-5z"></path>
+        </g>
+    </g>
+</svg>
