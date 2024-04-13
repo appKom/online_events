@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/animated_button.dart';
 import '../../theme/theme.dart';
 import '../event/cards/event_card.dart';
 
@@ -69,6 +73,48 @@ class SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  void _showInfoAndroid() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Automatiske varslinger"),
+          content: const Text(
+              "Huk av for de type arrangementer du ønsker å motta varslinger for. Du vil motta varslinger 15 minutter før påmeldingsstart for arrangementene."),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Lukk"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showInfoDialogIOS() {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text("Automatiske varslinger"),
+          content: const Text(
+              "Huk av for de type arrangementer du ønsker å motta varslinger for. Du vil motta varslinger 15 minutter før påmeldingsstart for arrangementene."),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: const Text("Lukk"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return OnlineCard(
@@ -76,9 +122,29 @@ class SettingsPageState extends State<SettingsPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Varslinger', style: OnlineTheme.header()),
+          Row(
+            children: [
+              Text('Varslinger', style: OnlineTheme.header()),
+              const SizedBox(
+                width: 8,
+              ),
+              AnimatedButton(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    if (Platform.isAndroid) {
+                      _showInfoAndroid();
+                    }
+                    if (Platform.isIOS) {
+                      _showInfoDialogIOS();
+                    }
+                  },
+                  childBuilder: (context, hover, pointerDown) {
+                    return const Icon(
+                      Icons.info_outline,
+                      color: OnlineTheme.white,
+                    );
+                  }),
+            ],
           ),
           const SizedBox(height: 10),
           Column(

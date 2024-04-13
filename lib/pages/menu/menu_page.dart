@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/home/info_page.dart';
 import 'package:online/pages/menu/profile_card.dart';
-import 'package:online/pages/profile/settings.dart';
+import 'package:online/pages/menu/settings.dart';
 
 import '../../components/animated_button.dart';
 import '../../components/navbar.dart';

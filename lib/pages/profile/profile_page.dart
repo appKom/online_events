@@ -11,7 +11,7 @@ import 'package:online/components/navbar.dart';
 import 'package:online/components/skeleton_loader.dart';
 import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/login/login_page.dart';
-import 'package:online/pages/profile/settings.dart';
+import 'package:online/pages/menu/settings.dart';
 import 'package:online/theme/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -592,33 +592,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   contactCard(theUser),
                   const SizedBox(height: 24),
                   studyCard(theUser),
-                  const SizedBox(height: 24),
-                  const SettingsPage(),
+                  // const SizedBox(height: 24),
+                  // const SettingsPage(),
                   const SizedBox(height: 24 + 24),
                   Row(
                     children: [
-                      Expanded(
-                        child: AnimatedButton(
-                          onTap: () => initiateDeletion(context),
-                          childBuilder: (context, hover, pointerDown) {
-                            return Container(
-                              height: OnlineTheme.buttonHeight,
-                              decoration: BoxDecoration(
-                                color: OnlineTheme.red.withOpacity(0.4),
-                                borderRadius: OnlineTheme.buttonRadius,
-                                border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Slett Bruker',
-                                  style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.red),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 10),
                       Expanded(
                         child: AnimatedButton(
                           onTap: () async {
