@@ -10,6 +10,7 @@ import 'package:online/pages/menu/settings.dart';
 
 import '../../components/animated_button.dart';
 import '../../components/navbar.dart';
+import '../../components/online_scaffold.dart';
 import '../../core/client/client.dart' as io;
 import '../../core/models/user_model.dart';
 import '../../services/app_navigator.dart';
@@ -131,7 +132,7 @@ class _MenuPageState extends State<MenuPage> {
     final response = await Authenticator.login();
 
     if (response != null) {
-      AppNavigator.replaceWithPage(const ProfilePageDisplay());
+      AppNavigator.replaceWithPage(const MenuPageDisplay());
       NavbarState.setActiveMenu();
     }
   }
@@ -223,7 +224,7 @@ class _MenuPageState extends State<MenuPage> {
               ),
             ),
             const SizedBox(
-              height: 12,
+              height: 24,
             ),
             OnlineCard(
               child: ExpansionTile(
@@ -364,5 +365,14 @@ class _MenuPageState extends State<MenuPage> {
         ),
       ),
     );
+  }
+}
+
+class MenuPageDisplay extends StaticPage {
+  const MenuPageDisplay({super.key});
+
+  @override
+  Widget content(BuildContext context) {
+    return const MenuPage();
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online/pages/events/calendar_card_events.dart';
+import 'package:online/pages/feed/calendar_card.dart';
 
 import '/components/navbar.dart';
 import '/core/client/client.dart';
@@ -30,8 +32,7 @@ class EventsPageState extends State<EventsPage> {
         setState(() {
           if (moreEventsPage != null) {
             for (var event in moreEventsPage) {
-              if (!events
-                  .any((existingEvent) => existingEvent.id == event.id)) {
+              if (!events.any((existingEvent) => existingEvent.id == event.id)) {
                 events.add(event);
               }
             }
@@ -54,8 +55,7 @@ class EventsPageState extends State<EventsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     final now = DateTime.now();
 
     final futureEvents = Client.eventsCache.value.where((event) {
@@ -76,12 +76,10 @@ class EventsPageState extends State<EventsPage> {
 
     return Container(
       color: OnlineTheme.background,
-      padding: EdgeInsets.only(
-          left: padding.left, right: padding.right, top: padding.top),
+      padding: EdgeInsets.only(left: padding.left, right: padding.right, top: padding.top),
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
-          double triggerFetchMoreThreshold =
-              scrollInfo.metrics.maxScrollExtent * 0.95;
+          double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.95;
           if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold) {
             fetchMoreEvents();
           }
@@ -91,6 +89,10 @@ class EventsPageState extends State<EventsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(
+                height: 24,
+              ),
+              CalendarCardEvents(upcomingEvents: futureEvents, pastEvents: pastEvents),
               const SizedBox(height: 24),
               Text(
                 'Kommende Arrangementer',

@@ -46,7 +46,7 @@ class Navbar extends StatefulWidget {
   }
 
   static void _navigateMenu() {
-    AppNavigator.replaceWithPage(const MenuPage());
+    AppNavigator.replaceWithPage(const MenuPageDisplay());
     NavbarState.selected.value = 3;
   }
 
