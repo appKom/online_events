@@ -157,12 +157,24 @@ class CalendarCardEventsState extends State<CalendarCardEvents> {
           eventLoader: (day) => getEventsForDay(day),
           calendarBuilders: CalendarBuilders(
             selectedBuilder: (context, date, focusedDay) {
+              final events = getEventsForDay(date);
               final eventful = getEventsForDay(date).isNotEmpty;
+              Color determineColor(EventModel event) {
+                switch (event.eventType) {
+                  case 2:
+                    return Colors.red;
+                  case 3:
+                    return Colors.blue;
+                  default:
+                    return OnlineTheme.green5;
+                }
+              }
+
               return Container(
                 margin: const EdgeInsets.all(2.0),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: eventful ? OnlineTheme.green5 : OnlineTheme.darkGray,
+                  color: eventful ? determineColor(events.first) : OnlineTheme.darkGray,
                   shape: BoxShape.rectangle,
                   border: Border.fromBorderSide(
                     BorderSide(
@@ -172,9 +184,18 @@ class CalendarCardEventsState extends State<CalendarCardEvents> {
                   ),
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                 ),
-                child: Text(
-                  date.day.toString(),
-                  style: OnlineTheme.textStyle(weight: 5),
+                child: Column(
+                  children: [
+                    Text(
+                      date.day.toString(),
+                      style: OnlineTheme.textStyle(weight: 5),
+                    ),
+                    Text(
+                      events.first.title,
+                      style: OnlineTheme.textStyle(size: 10),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
               );
             },
@@ -235,21 +256,16 @@ class CalendarCardEventsState extends State<CalendarCardEvents> {
           calendarStyle: const CalendarStyle(
             todayDecoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              // color: Colors.grey.shade700,
               color: OnlineTheme.gray0,
               border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray0, width: 2)),
-              // border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray9, width: 2)),
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),
             markerDecoration: BoxDecoration(
               shape: BoxShape.circle,
-              // color: OnlineTheme.green5,
               color: Colors.transparent,
             ),
             selectedDecoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              // color: Colors.grey.shade700,
-              // color: Colors.transparent,
               border: Border.fromBorderSide(BorderSide(color: OnlineTheme.white, width: 2)),
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),
