@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online/components/animated_button.dart';
 import 'package:online/components/online_scaffold.dart';
@@ -8,7 +6,6 @@ import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/profile/profile_page.dart';
 import 'package:online/services/app_navigator.dart';
 import 'package:online/services/authenticator.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../core/client/client.dart';
 import '../../theme/theme.dart';

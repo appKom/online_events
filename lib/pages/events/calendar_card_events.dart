@@ -170,34 +170,36 @@ class CalendarCardEventsState extends State<CalendarCardEvents> {
                 }
               }
 
-              return Container(
-                margin: const EdgeInsets.all(2.0),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: eventful ? determineColor(events.first) : OnlineTheme.darkGray,
-                  shape: BoxShape.rectangle,
-                  border: Border.fromBorderSide(
-                    BorderSide(
-                      color: eventful ? OnlineTheme.green5.lighten(50) : Colors.white,
-                      width: 2,
+              if (eventful) {
+                return Container(
+                  margin: const EdgeInsets.all(2.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: eventful ? determineColor(events.first) : OnlineTheme.darkGray,
+                    shape: BoxShape.rectangle,
+                    border: Border.fromBorderSide(
+                      BorderSide(
+                        color: eventful ? OnlineTheme.green5.lighten(50) : Colors.white,
+                        width: 2,
+                      ),
                     ),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      date.day.toString(),
-                      style: OnlineTheme.textStyle(weight: 5),
-                    ),
-                    Text(
-                      events.first.title,
-                      style: OnlineTheme.textStyle(size: 10),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              );
+                  child: Column(
+                    children: [
+                      Text(
+                        date.day.toString(),
+                        style: OnlineTheme.textStyle(weight: 5),
+                      ),
+                      // Text(
+                      //   events.first.title,
+                      //   style: OnlineTheme.textStyle(size: 10),
+                      //   overflow: TextOverflow.ellipsis,
+                      // ),
+                    ],
+                  ),
+                );
+              }
             },
             defaultBuilder: (context, date, _) {
               final events = getEventsForDay(date);
@@ -228,11 +230,11 @@ class CalendarCardEventsState extends State<CalendarCardEvents> {
                         date.day.toString(),
                         style: OnlineTheme.textStyle(weight: 5),
                       ),
-                      Text(
-                        events.first.title,
-                        style: OnlineTheme.textStyle(size: 10),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      // Text(
+                      //   events.first.title,
+                      //   style: OnlineTheme.textStyle(size: 10),
+                      //   overflow: TextOverflow.ellipsis,
+                      // ),
                     ],
                   ),
                 );

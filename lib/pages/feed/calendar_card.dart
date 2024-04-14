@@ -25,8 +25,7 @@ class CalendarCard extends StatefulWidget {
   final List<EventModel> upcomingEvents;
   final List<EventModel> pastEvents;
 
-  const CalendarCard(
-      {super.key, required this.upcomingEvents, required this.pastEvents});
+  const CalendarCard({super.key, required this.upcomingEvents, required this.pastEvents});
 
   @override
   CalendarCardState createState() => CalendarCardState();
@@ -36,15 +35,7 @@ class CalendarCardState extends State<CalendarCard> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
-  static const List<String> _norwegianWeekDays = [
-    'Man',
-    'Tir',
-    'Ons',
-    'Tor',
-    'Fre',
-    'Lør',
-    'Søn'
-  ];
+  static const List<String> _norwegianWeekDays = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
 
   static Widget customDaysOfWeekBuilder(BuildContext context, int i) {
     return Center(
@@ -72,8 +63,7 @@ class CalendarCardState extends State<CalendarCard> {
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: onLeftArrowTap,
           ),
-          Text('$monthName $year',
-              style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
+          Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
           IconButton(
             icon: const Icon(Icons.arrow_forward_ios),
             onPressed: onRightArrowTap,
@@ -110,19 +100,14 @@ class CalendarCardState extends State<CalendarCard> {
         final startDate = DateTime.parse(event.startDate).toLocal();
         final endDate = DateTime.parse(event.endDate).toLocal();
         final comparisonDayStart = DateTime(day.year, day.month, day.day);
-        final comparisonDayEnd =
-            DateTime(day.year, day.month, day.day, 23, 59, 59);
+        final comparisonDayEnd = DateTime(day.year, day.month, day.day, 23, 59, 59);
 
-        return (startDate.isAtSameMomentAs(comparisonDayStart) ||
-                startDate.isBefore(comparisonDayEnd)) &&
-            (endDate.isAtSameMomentAs(comparisonDayStart) ||
-                endDate.isAfter(comparisonDayStart));
+        return (startDate.isAtSameMomentAs(comparisonDayStart) || startDate.isBefore(comparisonDayEnd)) &&
+            (endDate.isAtSameMomentAs(comparisonDayStart) || endDate.isAfter(comparisonDayStart));
       }
 
-      selectedEvents.addAll(
-          widget.upcomingEvents.where((event) => isEventOnDay(event, day)));
-      selectedEvents
-          .addAll(widget.pastEvents.where((event) => isEventOnDay(event, day)));
+      selectedEvents.addAll(widget.upcomingEvents.where((event) => isEventOnDay(event, day)));
+      selectedEvents.addAll(widget.pastEvents.where((event) => isEventOnDay(event, day)));
 
       return selectedEvents;
     }
@@ -133,14 +118,12 @@ class CalendarCardState extends State<CalendarCard> {
           focusedDay: _focusedDay,
           onLeftArrowTap: () {
             setState(() {
-              _focusedDay = DateTime(
-                  _focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
+              _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
             });
           },
           onRightArrowTap: () {
             setState(() {
-              _focusedDay = DateTime(
-                  _focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
+              _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
             });
           },
         ),
@@ -165,12 +148,10 @@ class CalendarCardState extends State<CalendarCard> {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay;
             });
-            List<EventModel> eventsForSelectedDay =
-                getEventsForDay(selectedDay);
+            List<EventModel> eventsForSelectedDay = getEventsForDay(selectedDay);
 
             if (eventsForSelectedDay.isNotEmpty) {
-              AppNavigator.navigateToPage(
-                  EventPageDisplay(model: eventsForSelectedDay.first));
+              AppNavigator.navigateToPage(EventPageDisplay(model: eventsForSelectedDay.first));
             }
           },
           eventLoader: (day) => getEventsForDay(day),
@@ -185,9 +166,7 @@ class CalendarCardState extends State<CalendarCard> {
                   shape: BoxShape.rectangle,
                   border: Border.fromBorderSide(
                     BorderSide(
-                      color: eventful
-                          ? OnlineTheme.green5.lighten(50)
-                          : Colors.white,
+                      color: eventful ? OnlineTheme.green5.lighten(50) : Colors.white,
                       width: 2,
                     ),
                   ),
@@ -240,8 +219,7 @@ class CalendarCardState extends State<CalendarCard> {
               shape: BoxShape.rectangle,
               // color: Colors.grey.shade700,
               color: OnlineTheme.gray0,
-              border: Border.fromBorderSide(
-                  BorderSide(color: OnlineTheme.gray0, width: 2)),
+              border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray0, width: 2)),
               // border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray9, width: 2)),
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),
@@ -254,8 +232,7 @@ class CalendarCardState extends State<CalendarCard> {
               shape: BoxShape.rectangle,
               // color: Colors.grey.shade700,
               // color: Colors.transparent,
-              border: Border.fromBorderSide(
-                  BorderSide(color: OnlineTheme.white, width: 2)),
+              border: Border.fromBorderSide(BorderSide(color: OnlineTheme.white, width: 2)),
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),
           ),
@@ -263,8 +240,7 @@ class CalendarCardState extends State<CalendarCard> {
             formatButtonVisible: false,
             titleCentered: true,
             leftChevronIcon: Icon(Icons.arrow_back_ios, color: Colors.white),
-            rightChevronIcon:
-                Icon(Icons.arrow_forward_ios, color: Colors.white),
+            rightChevronIcon: Icon(Icons.arrow_forward_ios, color: Colors.white),
             titleTextStyle: TextStyle(color: Colors.white),
           ),
           daysOfWeekStyle: const DaysOfWeekStyle(
