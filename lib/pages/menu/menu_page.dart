@@ -307,61 +307,57 @@ class _MenuPageState extends State<MenuPage> {
             if (Authenticator.isLoggedIn())
               SizedBox(
                 height: 40,
-                child: Expanded(
-                  child: AnimatedButton(
-                    onTap: () async {
-                      await Authenticator.logout();
-                      // AppNavigator.replaceWithPage(const LoginPage());
-                      Navbar.navigateTo(NavbarPage.home);
-                    },
-                    childBuilder: (context, hover, pointerDown) {
-                      return Container(
-                        height: OnlineTheme.buttonHeight,
-                        decoration: BoxDecoration(
-                          color: OnlineTheme.yellow.darken(40),
-                          borderRadius: OnlineTheme.buttonRadius,
-                          border: const Border.fromBorderSide(
-                            BorderSide(color: OnlineTheme.yellow, width: 2),
-                          ),
+                child: AnimatedButton(
+                  onTap: () async {
+                    await Authenticator.logout();
+                    // AppNavigator.replaceWithPage(const LoginPage());
+                    Navbar.navigateTo(NavbarPage.home);
+                  },
+                  childBuilder: (context, hover, pointerDown) {
+                    return Container(
+                      height: OnlineTheme.buttonHeight,
+                      decoration: BoxDecoration(
+                        color: OnlineTheme.yellow.darken(40),
+                        borderRadius: OnlineTheme.buttonRadius,
+                        border: const Border.fromBorderSide(
+                          BorderSide(color: OnlineTheme.yellow, width: 2),
                         ),
-                        child: Center(
-                          child: Text(
-                            'Logg Ut',
-                            style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
-                          ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Logg Ut',
+                          style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             if (!Authenticator.isLoggedIn())
               SizedBox(
                 height: 40,
-                child: Expanded(
-                  child: AnimatedButton(
-                    onTap: () async {
-                      login();
-                    },
-                    childBuilder: (context, hover, pointerDown) {
-                      return Container(
-                        height: OnlineTheme.buttonHeight,
-                        decoration: BoxDecoration(
-                          color: OnlineTheme.green.darken(40),
-                          borderRadius: OnlineTheme.buttonRadius,
-                          border: const Border.fromBorderSide(
-                            BorderSide(color: OnlineTheme.green, width: 2),
-                          ),
+                child: AnimatedButton(
+                  onTap: () async {
+                    login();
+                  },
+                  childBuilder: (context, hover, pointerDown) {
+                    return Container(
+                      height: OnlineTheme.buttonHeight,
+                      decoration: BoxDecoration(
+                        color: OnlineTheme.green.darken(40),
+                        borderRadius: OnlineTheme.buttonRadius,
+                        border: const Border.fromBorderSide(
+                          BorderSide(color: OnlineTheme.green, width: 2),
                         ),
-                        child: Center(
-                          child: Text(
-                            'Logg Inn',
-                            style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
-                          ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Logg Inn',
+                          style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             const SizedBox(
