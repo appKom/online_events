@@ -22,7 +22,9 @@ class ProfileCard extends StaticPage {
       return AnimatedButton(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            AppNavigator.navigateToPage(const ProfilePageDisplay());
+            if (Authenticator.isLoggedIn()) {
+              AppNavigator.navigateToPage(const ProfilePageDisplay());
+            }
           },
           childBuilder: (context, hover, pointerDown) {
             return SizedBox(

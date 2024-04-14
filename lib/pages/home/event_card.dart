@@ -53,8 +53,7 @@ class EventCard extends StatelessWidget {
     String startMonth = translateMonth(outputMonthFormat.format(startDateTime));
     String endMonth = translateMonth(outputMonthFormat.format(endDateTime));
 
-    if (startDateTime.year == endDateTime.year &&
-        startDateTime.month == endDateTime.month) {
+    if (startDateTime.year == endDateTime.year && startDateTime.month == endDateTime.month) {
       if (startDateTime.day == endDateTime.day) {
         return '$startDay. $startMonth';
       } else {
@@ -156,11 +155,11 @@ class EventCard extends StatelessWidget {
   Widget defaultWithBorder() {
     return Container(
       decoration: const BoxDecoration(
-        border: Border.fromBorderSide(
-          BorderSide(width: 2, color: OnlineTheme.grayBorder),
-        ),
-        borderRadius: OnlineTheme.buttonRadius,
-      ),
+          border: Border.fromBorderSide(
+            BorderSide(width: 2, color: OnlineTheme.grayBorder),
+          ),
+          borderRadius: OnlineTheme.buttonRadius,
+          color: OnlineTheme.background),
       child: const ImageDefault(),
     );
   }
@@ -175,8 +174,7 @@ class EventCard extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: model.images.first.md,
           fit: BoxFit.cover,
-          placeholder: (context, url) =>
-              const SkeletonLoader(width: 100, height: 100),
+          placeholder: (context, url) => const SkeletonLoader(width: 100, height: 100),
           errorWidget: (context, url, error) => defaultWithBorder(),
         ),
       ),
@@ -217,8 +215,7 @@ class EventCard extends StatelessWidget {
                             children: [
                               IconLabel(
                                 icon: IconType.dateTime,
-                                label: formatDateSpan(
-                                    model.startDate, model.endDate),
+                                label: formatDateSpan(model.startDate, model.endDate),
                                 color: OnlineTheme.lightGray,
                                 fontWeight: 5,
                               ),

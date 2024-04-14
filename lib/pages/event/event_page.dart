@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
 import 'package:http/http.dart' as http;
@@ -66,8 +67,7 @@ class _EventPageState extends State<EventPage> {
     final event = int.tryParse(parts[2]) ?? 0;
     final approved = parts[3].toLowerCase() == 'true';
 
-    const url =
-        'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
+    const url = 'https://old.online.ntnu.no/api/v1/event/attendees/register-attendance/';
 
     final body = {
       'rfid': rfid,
@@ -85,16 +85,15 @@ class _EventPageState extends State<EventPage> {
     if (response.statusCode == 201) {
       print('Attendance registered successfully!');
     } else {
-      print(
-          'Failed to register attendance. Status code: ${response.statusCode}');
+      print('Failed to register attendance. Status code: ${response.statusCode}');
     }
   }
 
   Widget coverImage() {
     if (widget.model.images.isEmpty) {
-      return const AspectRatio(
+      return AspectRatio(
         aspectRatio: 16 / 9,
-        child: ImageDefault(),
+        child: Container(color: OnlineTheme.background, child: const ImageDefault()),
       );
     }
 
@@ -139,8 +138,7 @@ class _EventPageState extends State<EventPage> {
                   style: OnlineTheme.header(),
                 ),
                 const SizedBox(height: 24),
-                AttendanceCard(
-                    event: widget.model, attendeeInfo: attendeeInfoModel),
+                AttendanceCard(event: widget.model, attendeeInfo: attendeeInfoModel),
                 const SizedBox(height: 24),
                 EventDescriptionCard(
                   description: widget.model.description,
