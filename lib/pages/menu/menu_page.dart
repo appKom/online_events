@@ -156,6 +156,9 @@ class _MenuPageState extends State<MenuPage> {
             const SizedBox(height: 24),
             OnlineCard(
               child: ExpansionTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
+                ),
                 title: Text("Hjelp og støtte", style: OnlineTheme.textStyle()),
                 leading: SvgPicture.asset("assets/icons/help.svg", color: OnlineTheme.white),
                 trailing: SvgPicture.asset("assets/icons/down_arrow.svg", color: OnlineTheme.white),
@@ -228,6 +231,9 @@ class _MenuPageState extends State<MenuPage> {
             ),
             OnlineCard(
               child: ExpansionTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
+                ),
                 title: Text("Innstillinger og personvern", style: OnlineTheme.textStyle()),
                 leading: SvgPicture.asset("assets/icons/settings.svg", color: OnlineTheme.white),
                 trailing: SvgPicture.asset("assets/icons/down_arrow.svg", color: OnlineTheme.white),

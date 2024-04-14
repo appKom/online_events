@@ -30,12 +30,18 @@ class ProfileCard extends StaticPage {
                 child: Stack(
                   children: [
                     Positioned(
-                        top: 10,
-                        left: 70,
-                        child: Text(
-                          "${Client.userCache.value?.firstName} ${Client.userCache.value?.lastName}",
-                          style: OnlineTheme.textStyle(),
-                        )),
+                      top: 10,
+                      left: 70,
+                      child: ValueListenableBuilder(
+                        valueListenable: Client.userCache,
+                        builder: (contex, value, child) {
+                          return Text(
+                            "${value?.firstName} ${value?.lastName}",
+                            style: OnlineTheme.textStyle(),
+                          );
+                        },
+                      ),
+                    ),
                     Positioned(
                         left: 0,
                         child: ClipOval(

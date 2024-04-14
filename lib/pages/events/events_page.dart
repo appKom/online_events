@@ -89,10 +89,10 @@ class EventsPageState extends State<EventsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(
-                height: 24,
-              ),
-              CalendarCardEvents(upcomingEvents: futureEvents, pastEvents: pastEvents),
+              // const SizedBox(
+              //   height: 24,
+              // ),
+              // CalendarCardEvents(upcomingEvents: futureEvents, pastEvents: pastEvents),
               const SizedBox(height: 24),
               Text(
                 'Kommende Arrangementer',
