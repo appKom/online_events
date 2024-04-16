@@ -66,37 +66,39 @@ class ProfileCard extends StaticPage {
           });
     } else {
       return AnimatedButton(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            AppNavigator.navigateToPage(const ProfilePageDisplay());
-          },
-          childBuilder: (context, hover, pointerDown) {
-            return SizedBox(
-              height: 100,
-              child: OnlineCard(
-                child: Stack(
-                  children: [
-                    Positioned(
-                        top: 10,
-                        left: 70,
-                        child: Text(
-                          "Du er ikke innlogget",
-                          style: OnlineTheme.textStyle(),
-                        )),
-                    Positioned(
-                        left: 0,
-                        child: ClipOval(
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Image.asset('assets/images/default_profile_picture.png'),
-                          ),
-                        ))
-                  ],
-                ),
+        behavior: HitTestBehavior.opaque,
+        onTap: Authenticator.isLoggedIn()
+            ? () {
+                if (Authenticator.isLoggedIn()) {
+                  AppNavigator.navigateToPage(const ProfilePageDisplay());
+                } else {}
+              }
+            : null,
+        childBuilder: (context, hover, pointerDown) {
+          return SizedBox(
+            height: 100,
+            child: OnlineCard(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipOval(
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Image.asset('assets/images/default_profile_picture.png'),
+                    ),
+                  ),
+                  const SizedBox(width: 24),
+                  Text(
+                    "Du er ikke logget inn",
+                    style: OnlineTheme.textStyle(),
+                  ),
+                ],
               ),
-            );
-          });
+            ),
+          );
+        },
+      );
     }
   }
 }

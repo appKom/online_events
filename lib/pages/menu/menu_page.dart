@@ -1,12 +1,14 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/home/info_page.dart';
 import 'package:online/pages/menu/profile_card.dart';
 import 'package:online/pages/menu/settings.dart';
+import 'package:online/services/env.dart';
+import 'package:online/theme/themed_icon.dart';
 
 import '../../components/animated_button.dart';
 import '../../components/navbar.dart';
@@ -35,7 +37,7 @@ class _MenuPageState extends State<MenuPage> {
   void initState() {
     super.initState();
 
-    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(dotenv.env['PROJECT_ID']);
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(Env.get('PROJECT_ID'));
 
     storage = Storage(client);
     database = Databases(client);
@@ -109,21 +111,21 @@ class _MenuPageState extends State<MenuPage> {
     String fileName = userModel.username;
     try {
       await database.deleteDocument(
-        collectionId: dotenv.env['USER_COLLECTION_ID']!,
+        collectionId: Env.get('USER_COLLECTION_ID'),
         documentId: userModel.username,
-        databaseId: dotenv.env['USER_DATABASE_ID']!,
+        databaseId: Env.get('USER_DATABASE_ID'),
       );
     } catch (e) {
       print('Error fetching document data: $e');
     }
 
     await storage.getFile(
-      bucketId: dotenv.env['USER_BUCKET_ID']!,
+      bucketId: Env.get('USER_BUCKET_ID'),
       fileId: fileName,
     );
 
     await storage.deleteFile(
-      bucketId: dotenv.env['USER_BUCKET_ID']!,
+      bucketId: Env.get('USER_BUCKET_ID'),
       fileId: fileName,
     );
   }
@@ -159,19 +161,17 @@ class _MenuPageState extends State<MenuPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0),
                 ),
+                tilePadding: EdgeInsets.zero,
                 title: Text("Hjelp og støtte", style: OnlineTheme.textStyle()),
-                leading: SvgPicture.asset("assets/icons/help.svg", color: OnlineTheme.white),
+                leading: const ThemedIcon(icon: IconType.users, color: OnlineTheme.white, size: 24),
                 trailing: SvgPicture.asset("assets/icons/down_arrow.svg", color: OnlineTheme.white),
-                children: <Widget>[
+                children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       Row(
                         children: [
-                          const SizedBox(
-                            width: 57,
-                          ),
                           AnimatedButton(onTap: () {
                             AppNavigator.navigateToPage(const InfoPage());
                           }, childBuilder: (context, hover, pointerDown) {
@@ -198,9 +198,6 @@ class _MenuPageState extends State<MenuPage> {
                       ),
                       Row(
                         children: [
-                          const SizedBox(
-                            width: 57,
-                          ),
                           AnimatedButton(onTap: () {
                             io.Client.launchInBrowser('https://forms.gle/xUTTN95CuWtSbNCS7');
                           }, childBuilder: (context, hover, pointerDown) {
@@ -220,7 +217,6 @@ class _MenuPageState extends State<MenuPage> {
                           }),
                         ],
                       ),
-                      const SizedBox(height: 24),
                     ],
                   )
                 ],
@@ -234,68 +230,55 @@ class _MenuPageState extends State<MenuPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0),
                 ),
+                backgroundColor: Colors.red,
+                tilePadding: EdgeInsets.zero,
                 title: Text("Innstillinger og personvern", style: OnlineTheme.textStyle()),
-                leading: SvgPicture.asset("assets/icons/settings.svg", color: OnlineTheme.white),
+                leading: const ThemedIcon(icon: IconType.settings, color: OnlineTheme.white, size: 24),
                 trailing: SvgPicture.asset("assets/icons/down_arrow.svg", color: OnlineTheme.white),
-                children: <Widget>[
+                children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 57,
-                          ),
-                          AnimatedButton(onTap: () {
-                            io.Client.launchInBrowser('https://online.ntnu.no/profile/settings/userdata');
-                          }, childBuilder: (context, hover, pointerDown) {
-                            return Row(
-                              children: [
-                                const Icon(
-                                  Icons.download_outlined,
-                                  color: OnlineTheme.white,
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  "Last ned brukerdata",
-                                  style: OnlineTheme.textStyle(),
-                                ),
-                              ],
-                            );
-                          }),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 57,
-                          ),
-                          AnimatedButton(onTap: () {
-                            initiateDeletion(context);
-                          }, childBuilder: (context, hover, pointerDown) {
-                            return Row(
-                              children: [
-                                const Icon(
-                                  Icons.delete_forever_outlined,
-                                  color: OnlineTheme.white,
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  "Slett brukerdata",
-                                  style: OnlineTheme.textStyle(),
-                                ),
-                              ],
-                            );
-                          }),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
+                      AnimatedButton(onTap: () {
+                        io.Client.launchInBrowser('https://online.ntnu.no/profile/settings/userdata');
+                      }, childBuilder: (context, hover, pointerDown) {
+                        return Row(
+                          children: [
+                            const SizedBox(width: 4),
+                            const ThemedIcon(
+                              icon: IconType.download,
+                              color: OnlineTheme.white,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              "Last ned brukerdata",
+                              style: OnlineTheme.textStyle(),
+                            ),
+                          ],
+                        );
+                      }),
+                      const SizedBox(height: 32),
+                      AnimatedButton(onTap: () {
+                        initiateDeletion(context);
+                      }, childBuilder: (context, hover, pointerDown) {
+                        return Row(
+                          children: [
+                            const SizedBox(width: 3),
+                            const ThemedIcon(
+                              icon: IconType.trash,
+                              color: OnlineTheme.white,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 9),
+                            Text(
+                              "Slett brukerdata",
+                              style: OnlineTheme.textStyle(),
+                            ),
+                          ],
+                        );
+                      }),
                     ],
                   )
                 ],

@@ -5,6 +5,6 @@
   "java.configuration.updateBuildConfiguration": "automatic",
   "cmake.sourceDirectory": "/opt/online_events/linux",
   "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml"
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
   }
 }

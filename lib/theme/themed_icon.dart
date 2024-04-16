@@ -35,6 +35,8 @@ enum IconType {
   cross,
   menu,
   menuFilled,
+  trash,
+  download,
 }
 
 class ThemedIcon extends StatelessWidget {
