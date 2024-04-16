@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:online/pages/events/calendar_card_events.dart';
-import 'package:online/pages/feed/calendar_card.dart';
 
 import '/components/navbar.dart';
 import '/core/client/client.dart';

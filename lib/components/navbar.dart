@@ -3,7 +3,6 @@ import 'package:online/pages/feed/feed_page.dart';
 import 'package:online/pages/menu/menu_page.dart';
 
 import '../pages/games/games_page.dart';
-import '../pages/login/login_page.dart';
 import '/pages/events/not_logged_in_page.dart';
 import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';

@@ -19,7 +19,6 @@ import '../../services/app_navigator.dart';
 import '../../services/authenticator.dart';
 import '../../theme/theme.dart';
 import '../profile/delete_user.dart';
-import '../profile/profile_page.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -230,7 +229,6 @@ class _MenuPageState extends State<MenuPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0),
                 ),
-                backgroundColor: Colors.red,
                 tilePadding: EdgeInsets.zero,
                 title: Text("Innstillinger og personvern", style: OnlineTheme.textStyle()),
                 leading: const ThemedIcon(icon: IconType.settings, color: OnlineTheme.white, size: 24),
