@@ -181,7 +181,7 @@ class _MenuPageState extends State<MenuPage> {
                                   color: OnlineTheme.white,
                                 ),
                                 const SizedBox(
-                                  width: 5,
+                                  width: 17,
                                 ),
                                 Text(
                                   "Om Online Appen",
@@ -206,7 +206,7 @@ class _MenuPageState extends State<MenuPage> {
                                   Icons.bug_report_outlined,
                                   color: OnlineTheme.white,
                                 ),
-                                const SizedBox(width: 5),
+                                const SizedBox(width: 17),
                                 Text(
                                   "Rapporter en bug",
                                   style: OnlineTheme.textStyle(),
@@ -243,13 +243,12 @@ class _MenuPageState extends State<MenuPage> {
                       }, childBuilder: (context, hover, pointerDown) {
                         return Row(
                           children: [
-                            const SizedBox(width: 4),
                             const ThemedIcon(
                               icon: IconType.download,
                               color: OnlineTheme.white,
                               size: 18,
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 17),
                             Text(
                               "Last ned brukerdata",
                               style: OnlineTheme.textStyle(),
@@ -263,13 +262,12 @@ class _MenuPageState extends State<MenuPage> {
                       }, childBuilder: (context, hover, pointerDown) {
                         return Row(
                           children: [
-                            const SizedBox(width: 3),
                             const ThemedIcon(
                               icon: IconType.trash,
                               color: OnlineTheme.white,
                               size: 20,
                             ),
-                            const SizedBox(width: 9),
+                            const SizedBox(width: 17),
                             Text(
                               "Slett brukerdata",
                               style: OnlineTheme.textStyle(),
