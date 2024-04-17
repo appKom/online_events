@@ -17,8 +17,7 @@ class HomePage extends ScrollablePage {
   const HomePage({super.key});
   @override
   Widget content(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -51,9 +50,14 @@ class HomePage extends ScrollablePage {
                     children: List.generate(4, (_) => EventCard.skeleton()),
                   );
                 }
+                double eventHeight = 400;
+
+                if (futureEvents.length < 4) {
+                  eventHeight = futureEvents.length * 100;
+                }
 
                 return SizedBox(
-                  height: 400,
+                  height: eventHeight,
                   child: ListView.builder(
                     itemCount: futureEvents.length,
                     padding: EdgeInsets.zero,
@@ -120,10 +124,8 @@ class HomePage extends ScrollablePage {
           ValueListenableBuilder(
             valueListenable: Client.articlesCache,
             builder: (context, articles, child) {
-              if (articles.isEmpty)
-                return Center(child: ArticleCarousel.skeleton(context));
-              return Center(
-                  child: ArticleCarousel(articles: articles.take(3).toList()));
+              if (articles.isEmpty) return Center(child: ArticleCarousel.skeleton(context));
+              return Center(child: ArticleCarousel(articles: articles.take(3).toList()));
             },
           ),
           const SizedBox(height: 24 + 24),
@@ -138,8 +140,7 @@ class HomePage extends ScrollablePage {
                 decoration: BoxDecoration(
                   color: OnlineTheme.yellow.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(5.0),
-                  border: const Border.fromBorderSide(
-                      BorderSide(color: OnlineTheme.yellow, width: 2)),
+                  border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
                 ),
                 child: Text(
                   'Om Online-Appen',
