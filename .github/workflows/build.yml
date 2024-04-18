@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.x'  # Specify your Flutter version
+          flutter-version: '3.16.9'  # Specify your Flutter version
 
       - run: flutter pub get 
       - run: flutter build apk # Build an Android APK (or 'flutter build ipa' for iOS)
