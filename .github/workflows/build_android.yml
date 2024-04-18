@@ -1,7 +1,10 @@
 name: Build Android Release
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main, production ]
+  pull_request:
+    branches: [ main, production ]
 
 jobs:
   build:
