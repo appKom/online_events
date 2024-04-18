@@ -10,11 +10,17 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest  # You can use macOS for iOS builds too
 
+
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.16.9'  # Specify your Flutter version
+
+      - uses: actions/setup-java@v3 # Add this section
+        with:
+          distribution: 'temurin' # Adopt or Zulu are other good options
+          java-version: '17' 
 
       - run: flutter pub get 
       - run: flutter build apk # Build an Android APK (or 'flutter build ipa' for iOS)
