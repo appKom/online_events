@@ -1,32 +1,20 @@
-name: Android Release
+name: Build and Test
 
 on:
   push:
-    branches: [ main, production ]
+    branches: [ main, production ]   # Adjust trigger branches as needed
   pull_request:
-    branches: [ main, production ]
+    branches: [ main, production ] 
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build_and_test:
+    runs-on: ubuntu-latest  # You can use macOS for iOS builds too
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: setup Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
-    
-    - uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.9"
-          channel: 'stable'
+          flutter-version: '3.3.x'  # Specify your Flutter version
 
-    - name: Get dependencies
-        run: flutter pub get
-
-    - name: Start release build
-        run: flutter build appbundle
-
+      - run: flutter pub get 
+      - run: flutter build apk # Build an Android APK (or 'flutter build ipa' for iOS)
