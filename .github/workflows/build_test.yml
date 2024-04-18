@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.x' # Your desired Flutter version
+          flutter-version: '3.16.9'
 
       - run: flutter pub get
       - run: flutter format --set-exit-if-changed .
