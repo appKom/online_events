@@ -42,7 +42,8 @@ abstract class Authenticator {
     }
 
     try {
-      final response = await auth0!.webAuthentication().login();
+      final scheme = Env.get('AUTH_SCHEMA');
+      final response = await auth0!.webAuthentication(scheme: scheme).login();
       await auth0!.credentialsManager.storeCredentials(response);
       loggedIn.value = true;
       return credentials = response;
@@ -57,7 +58,8 @@ abstract class Authenticator {
       throw Exception('Auth0 has not been initialized! Please call Authenticator.initialize() first.');
     }
 
-    await auth0!.webAuthentication().logout();
+    final scheme = Env.get('AUTH_SCHEMA');
+    await auth0!.webAuthentication(scheme: scheme).logout();
     // await auth0!.credentialsManager.clearCredentials();
 
     // TODO: Should we clear the credentials?
