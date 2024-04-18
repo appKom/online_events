@@ -1,7 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "java.compile.nullAnalysis.mode": "automatic",
-  "conventionalCommits.scopes": ["rouletteWheel"],
+  "conventionalCommits.scopes": ["rouletteWheel", "workflow"],
   "java.configuration.updateBuildConfiguration": "automatic",
   "cmake.sourceDirectory": "/opt/online_events/linux",
   "[xml]": {
