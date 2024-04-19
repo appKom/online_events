@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:online/main.dart';
@@ -19,7 +20,7 @@ import 'event_date_formater.dart';
 class NotificationModel {
   static const channelId = "online_events";
   static const channelName = "Online Events";
-  static const channelDescription = "Reminders about event registrations and event starts.";
+  static const channelDescription = "Reminders about widget.event registrations and widget.event starts.";
 
   static const androidPlatformChannelSpecifics = AndroidNotificationDetails(
     channelId,
@@ -48,20 +49,50 @@ class NotificationModel {
   }
 }
 
-class AttendanceCard extends StatelessWidget {
-  AttendanceCard({super.key, required this.event, required this.attendeeInfo})
-      : _notificationPrefKeyBeforeRegistration = 'notifyBeforeRegistration_${event.id}',
-        _notificationPrefKeyBeforeEventStart = 'notifyBeforeEventStart_${event.id}';
-
+class AttendanceCard extends StatefulWidget {
   final EventModel event;
   final AttendeeInfoModel attendeeInfo;
-  final String _notificationPrefKeyBeforeRegistration;
-  final String _notificationPrefKeyBeforeEventStart;
+
+  const AttendanceCard({Key? key, required this.event, required this.attendeeInfo}) : super(key: key);
+
+  @override
+  _AttendanceCardState createState() => _AttendanceCardState();
+}
+
+class _AttendanceCardState extends State<AttendanceCard> {
+  late final String _notificationPrefKeyBeforeRegistration;
+  late final String _notificationPrefKeyBeforeEventStart;
+  bool isAlreadyNotified = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationPrefKeyBeforeRegistration = 'notifyBeforeRegistration_${widget.event.id}';
+    _notificationPrefKeyBeforeEventStart = 'notifyBeforeEventStart_${widget.event.id}';
+    _loadNotificationPrefs();
+  }
 
   Future<void> _loadNotificationPrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     willNotifyBeforeRegistration.value = prefs.getBool(_notificationPrefKeyBeforeRegistration) ?? false;
     willNotifyBeforeEventStart.value = prefs.getBool(_notificationPrefKeyBeforeEventStart) ?? false;
+    eventCategories.keys.forEach((category) {
+      eventCategories[category] = prefs.getBool(category) ?? false;
+    });
+
+    if (widget.event.eventType == 2 && prefs.getBool('Bedriftspresentasjoner') == true) {
+      isAlreadyNotified = true;
+    } else if (widget.event.eventType == 3 && prefs.getBool('Kurs') == true) {
+      isAlreadyNotified = true;
+    } else if (widget.event.eventType == 1 && prefs.getBool('Sosialt') == true) {
+      isAlreadyNotified = true;
+    } else if (widget.event.eventType != 1 &&
+        widget.event.eventType != 2 &&
+        widget.event.eventType != 3 &&
+        prefs.getBool('Annet') == true) {
+      isAlreadyNotified = true;
+    }
+    print('isAlreadyNotified: $isAlreadyNotified');
   }
 
   Future<void> _saveNotificationPref(String key, bool value) async {
@@ -71,7 +102,7 @@ class AttendanceCard extends StatelessWidget {
 
   bool showCountdownToRegistrationStart() {
     // Registration has started - no need for a countdown
-    if (DateTime.now().isAfter(attendeeInfo.registrationStart)) return false;
+    if (DateTime.now().isAfter(widget.attendeeInfo.registrationStart)) return false;
 
     return true;
   }
@@ -85,18 +116,19 @@ class AttendanceCard extends StatelessWidget {
           style: OnlineTheme.textStyle(weight: 5),
         ),
         const SizedBox(height: 10),
-        EventCardCountdown(eventTime: attendeeInfo.registrationStart),
+        EventCardCountdown(eventTime: widget.attendeeInfo.registrationStart),
         const SizedBox(height: 24),
-        notifyEventRegistration(),
+        if (isAlreadyNotified == false) notifyEventRegistration(),
+        if (isAlreadyNotified) isAlreadyNotifiedWidget(),
       ],
     );
   }
 
   bool showCountdownToEventStart() {
-    final eventDateTime = DateTime.parse(event.startDate);
+    final eventDateTime = DateTime.parse(widget.event.startDate);
 
     // Registration is still open - don't show countdown yet
-    if (attendeeInfo.registrationEnd.isAfter((DateTime.now()))) return false;
+    if (widget.attendeeInfo.registrationEnd.isAfter((DateTime.now()))) return false;
 
     // Event has already started
     if (DateTime.now().isAfter(eventDateTime)) return false;
@@ -105,7 +137,7 @@ class AttendanceCard extends StatelessWidget {
   }
 
   Widget countdownToEventStart() {
-    final eventDateTime = DateTime.parse(event.startDate);
+    final eventDateTime = DateTime.parse(widget.event.startDate);
 
     return Column(
       children: [
@@ -126,18 +158,103 @@ class AttendanceCard extends StatelessWidget {
 
   final ValueNotifier<bool> willNotifyBeforeRegistration = ValueNotifier(false);
 
+  final Map<String, bool> eventCategories = {
+    'Bedriftspresentasjoner': false,
+    'Kurs': false,
+    'Sosialt': false,
+    'Annet': false,
+  };
+  void _showInfoAndroid() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Automatiske varslinger"),
+          content: const Text(
+              "Du har huket av for automatiske varslinger for denne typen arrangementer. Du vil motta varsling 15 minutter før påmeldingsstart for arrangementet. "),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Lukk"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showInfoDialogIOS() {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text("Automatiske varslinger"),
+          content: const Text(
+              "Du har huket av for automatiske varslinger for denne typen arrangementer. Du vil motta varsling 15 minutter før påmeldingsstart for arrangementet."),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: const Text("Lukk"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget isAlreadyNotifiedWidget() {
+    return Stack(children: [
+      Container(
+        height: OnlineTheme.buttonHeight,
+        decoration: BoxDecoration(
+          color: OnlineTheme.green.withOpacity(0.4),
+          borderRadius: BorderRadius.circular(5.0),
+          border: const Border.fromBorderSide(
+            BorderSide(color: OnlineTheme.green, width: 2),
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          'Du blir varslet',
+          style: OnlineTheme.textStyle(
+            weight: 5,
+            color: OnlineTheme.green,
+          ),
+        ),
+      ),
+      Positioned(
+        top: 7.5,
+        right: 5,
+        child: AnimatedButton(onTap: () {
+          if (Platform.isAndroid) {
+            _showInfoAndroid();
+          }
+          if (Platform.isIOS) {
+            _showInfoDialogIOS();
+          }
+        }, childBuilder: (context, hover, pointerDown) {
+          return const Icon(Icons.info_outlined, color: OnlineTheme.white, size: 24);
+        }),
+      )
+    ]);
+  }
+
   Widget notifyEventRegistration() {
     Future registerNotification() async {
       await _saveNotificationPref(_notificationPrefKeyBeforeRegistration, true);
       willNotifyBeforeRegistration.value = true;
 
-      final scheduleNotificationDateTime = attendeeInfo.registrationStart.subtract(const Duration(minutes: 15));
+      final scheduleNotificationDateTime = widget.attendeeInfo.registrationStart.subtract(const Duration(minutes: 15));
 
       final notification = NotificationModel(
-        id: event.id,
+        id: widget.event.id,
         time: scheduleNotificationDateTime,
         header: 'Påmelding Snart!',
-        body: 'Påmelding til ${event.title} starter om 15 minutter.',
+        body: 'Påmelding til ${widget.event.title} starter om 15 minutter.',
       );
 
       if (Platform.isIOS) {
@@ -180,7 +297,7 @@ class AttendanceCard extends StatelessWidget {
 
       if (Platform.isAndroid) print("Varsling Av");
 
-      await flutterLocalNotificationsPlugin.cancel(event.id);
+      await flutterLocalNotificationsPlugin.cancel(widget.event.id);
     }
 
     return ValueListenableBuilder(
@@ -228,15 +345,15 @@ class AttendanceCard extends StatelessWidget {
       await _saveNotificationPref(_notificationPrefKeyBeforeEventStart, true);
       willNotifyBeforeEventStart.value = true;
 
-      final DateTime parsedStartDate = DateTime.parse(event.startDate);
+      final DateTime parsedStartDate = DateTime.parse(widget.event.startDate);
 
       final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
 
       final notification = NotificationModel(
-        id: event.id,
+        id: widget.event.id,
         time: scheduleNotificationDateTime,
         header: 'Arrangement starter snart!',
-        body: '${event.title} starter om 1 time.',
+        body: '${widget.event.title} starter om 1 time.',
       );
 
       flutterLocalNotificationsPlugin.show(
@@ -280,7 +397,7 @@ class AttendanceCard extends StatelessWidget {
         notificationDetails,
       );
 
-      await flutterLocalNotificationsPlugin.cancel(event.id);
+      await flutterLocalNotificationsPlugin.cancel(widget.event.id);
     }
 
     return Column(
@@ -350,7 +467,7 @@ class AttendanceCard extends StatelessWidget {
               const ThemedIcon(icon: IconType.dateTime, size: 20),
               const SizedBox(width: 8),
               Text(
-                EventDateFormatter.formatEventDates(event.startDate, event.endDate),
+                EventDateFormatter.formatEventDates(widget.event.startDate, widget.event.endDate),
                 style: OnlineTheme.textStyle(),
               ),
             ],
@@ -365,7 +482,7 @@ class AttendanceCard extends StatelessWidget {
                 const ThemedIcon(icon: IconType.location, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  event.location,
+                  widget.event.location,
                   style: OnlineTheme.textStyle(),
                   softWrap: true,
                 ),
@@ -374,7 +491,8 @@ class AttendanceCard extends StatelessWidget {
           ),
           if (showCountdownToRegistrationStart()) countdownToRegistrationStart(),
           if (showCountdownToEventStart()) countdownToEventStart(),
-          if (attendeeInfo.isAttendee && DateTime.parse(event.endDate).isAfter(DateTime.now())) notifyAttendance(),
+          if (widget.attendeeInfo.isAttendee && DateTime.parse(widget.event.endDate).isAfter(DateTime.now()))
+            notifyAttendance(),
         ],
       ),
     );
