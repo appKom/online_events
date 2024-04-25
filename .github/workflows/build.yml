@@ -23,9 +23,9 @@ jobs:
           java-version: '17' 
 
       name: Build
+      - run: flutter pub get 
+      - run: flutter build apk
       env:
         ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }} 
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      - run: flutter pub get 
-      - run: flutter build apk --dart-define=ANDROID_API_KEY=${{ secrets.ANDROID_API_KEY }} --dart-define=DATABASE_URL=${{ secrets.DATABASE_URL }}
 
