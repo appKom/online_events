@@ -21,8 +21,7 @@ jobs:
         with:
           distribution: 'temurin' # Adopt or Zulu are other good options
           java-version: '17' 
-
-      name: Build
+          
       - run: flutter pub get 
       - run: flutter build apk
       env:
