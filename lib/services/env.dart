@@ -1,17 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Utility class for getting environment variables found in `lib/.env`.
 abstract class Env {
-  /// Initialize the Env utility class
   static Future initialize() async {
-    await dotenv.load(fileName: 'lib/.env');
+    // Attempt to load from .env file
+    final file = File('lib/.env');
+    if (await file.exists()) {
+      dotenv.load(fileName: file.path);
+    }
   }
 
-  /// Get `value` of environment variable with name `key`.
-  ///
-  /// Example: `URL='ntnu.online.app'`
   static String get(String key) {
-    if (!dotenv.isInitialized) throw Exception('Env has not been initialized! Please call Env.initialize() first.');
-    return dotenv.get(key);
+    // Check .env first
+    if (dotenv.isEveryDefined([key])) {
+      return dotenv.get(key);
+    }
+
+    // Fallback to platform environment variables (GitHub secrets)
+    final value = Platform.environment[key];
+    if (value == null) throw Exception('Environment variable "$key" not found!');
+    return value;
   }
 }
