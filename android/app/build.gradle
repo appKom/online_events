@@ -56,11 +56,11 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
         targetSdk 34
-        versionCode 7
+        versionCode 8
         versionName '1.0.7'
         minSdkVersion 21
         multiDexEnabled true
-        manifestPlaceholders += [auth0Domain: "auth.online.ntnu.no", auth0Scheme: "https"]
+        manifestPlaceholders += [auth0Domain: "auth.online.ntnu.no", auth0Scheme: "ntnu.online.app"]
     }
 
     signingConfigs {

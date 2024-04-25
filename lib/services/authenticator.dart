@@ -1,6 +1,7 @@
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:online/services/env.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../core/client/client.dart';
 import '../main.dart';
@@ -42,7 +43,8 @@ abstract class Authenticator {
     }
 
     try {
-      final response = await auth0!.webAuthentication().login();
+      //final scheme = dotenv.env['AUTH0_CUSTOM_SCHEME'];
+      final response = await auth0!.webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME']).login();
       await auth0!.credentialsManager.storeCredentials(response);
       loggedIn.value = true;
       return credentials = response;
@@ -57,7 +59,7 @@ abstract class Authenticator {
       throw Exception('Auth0 has not been initialized! Please call Authenticator.initialize() first.');
     }
 
-    await auth0!.webAuthentication().logout();
+    await auth0!.webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME']).logout();
     // await auth0!.credentialsManager.clearCredentials();
 
     // TODO: Should we clear the credentials?
