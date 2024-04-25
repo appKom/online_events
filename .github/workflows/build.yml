@@ -22,5 +22,10 @@ jobs:
           distribution: 'temurin' # Adopt or Zulu are other good options
           java-version: '17' 
 
+      name: Build
+      env:
+        ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }} 
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - run: flutter pub get 
-      - run: flutter build apk # Build an Android APK (or 'flutter build ipa' for iOS)
+      - run: flutter build apk --dart-define=ANDROID_API_KEY=${{ secrets.ANDROID_API_KEY }} --dart-define=DATABASE_URL=${{ secrets.DATABASE_URL }}
+
