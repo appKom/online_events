@@ -2,29 +2,33 @@ name: Build and Test
 
 on:
   push:
-    branches: [ main, production ]   # Adjust trigger branches as needed
+    branches: [ main, production ] 
   pull_request:
     branches: [ main, production ] 
 
 jobs:
   build_and_test:
-    runs-on: ubuntu-latest  # You can use macOS for iOS builds too
-
+    runs-on: ubuntu-latest 
 
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.9'  # Specify your Flutter version
+          flutter-version: '3.16.9'  
 
-      - uses: actions/setup-java@v3 # Add this section
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
         with:
-          distribution: 'temurin' # Adopt or Zulu are other good options
-          java-version: '17' 
-          
-      - run: flutter pub get 
-      - run: flutter build apk
-      env:
-        ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }} 
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-flutter-pub-cache-${{ hashFiles('pubspec.yaml') }}
 
+      - uses: actions/setup-java@v3 
+        with:
+          distribution: 'temurin' 
+          java-version: '17' 
+
+      - run: flutter pub get 
+      - run: flutter build apk 
+        env:
+          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }} 
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
