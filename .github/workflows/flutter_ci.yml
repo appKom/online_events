@@ -1,0 +1,42 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - prod
+  pull_request:
+    branches:
+      - prod
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.0.x"
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build ios --release --no-codesign
+
+  deploy:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.P12_FILE_BASE64 }}
+          p12-password: ${{ secrets.P12_PASSWORD }}
+      - run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${{ secrets.MOBILEPROVISION_BASE64 }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+      - run: flutter build ios --release --build-number $GITHUB_RUN_NUMBER
+      - uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-path: "build/ios/ipa/*.ipa"
+          issuer-id: ${{ secrets.APPLE_ISSUER_ID }}
+          key-id: ${{ secrets.APPLE_KEY_ID }}
+          private-key: ${{ secrets.APPLE_PRIVATE_KEY }}
+          app-id: "ntnu.online.app"
