@@ -17,7 +17,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
           LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
-        run: echo $KEY_PROPERTIES | base64 --decode > key.properties && echo $LOCAL_PROPERTIES | base64 --decode > local.properties
+        run: echo $KEY_PROPERTIES | base64 --decode > key.properties | echo $LOCAL_PROPERTIES | base64 --decode > local.properties
       
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
