@@ -11,12 +11,13 @@ jobs:
     runs-on: ubuntu-latest 
 
     steps:
-      - name: Decode key.properties
+      - name: Decode key.properties and local.properties
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }} 
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
-        run: echo $KEY_PROPERTIES | base64 --decode > key.properties
+          LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
+        run: echo $KEY_PROPERTIES | base64 --decode > android/key.properties && echo $LOCAL_PROPERTIES | base64 --decode > android/local.properties
       
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
