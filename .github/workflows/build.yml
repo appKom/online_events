@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-latest 
 
     steps:
+      - name: Decode key.properties
+        env:
+          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }} 
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
+        run: echo $KEY_PROPERTIES | base64 --decode > secrets.properties
+      
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
@@ -26,6 +33,3 @@ jobs:
 
       - run: flutter pub get 
       - run: flutter build appbundle
-        env:
-          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }} 
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
