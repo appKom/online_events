@@ -207,40 +207,35 @@ class _AttendanceCardState extends State<AttendanceCard> {
   }
 
   Widget isAlreadyNotifiedWidget() {
-    return Stack(children: [
-      Container(
-        height: OnlineTheme.buttonHeight,
-        decoration: BoxDecoration(
-          color: OnlineTheme.green.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(5.0),
-          border: const Border.fromBorderSide(
-            BorderSide(color: OnlineTheme.green, width: 2),
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          'Du blir varslet',
-          style: OnlineTheme.textStyle(
-            weight: 5,
-            color: OnlineTheme.green,
-          ),
+    String eventType = '';
+
+    if (widget.event.eventTypeDisplay == 'Kurs') {
+      eventType = 'for alle kurs';
+    } else if (widget.event.eventTypeDisplay == 'Bedriftspresentasjoner') {
+      eventType = 'for alle bedpresser';
+    } else if (widget.event.eventTypeDisplay == 'Sosialt') {
+      eventType = 'for sosiale arrangementer';
+    } else {
+      eventType = 'for arrangementet';
+    }
+    return Container(
+      height: OnlineTheme.buttonHeight,
+      decoration: BoxDecoration(
+        color: OnlineTheme.gray15.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(5.0),
+        border: const Border.fromBorderSide(
+          BorderSide(color: OnlineTheme.gray15, width: 2),
         ),
       ),
-      Positioned(
-        top: 7.5,
-        right: 5,
-        child: AnimatedButton(onTap: () {
-          if (Platform.isAndroid) {
-            _showInfoAndroid();
-          }
-          if (Platform.isIOS) {
-            _showInfoDialogIOS();
-          }
-        }, childBuilder: (context, hover, pointerDown) {
-          return const Icon(Icons.info_outlined, color: OnlineTheme.white, size: 24);
-        }),
-      )
-    ]);
+      alignment: Alignment.center,
+      child: Text(
+        'Varsling på ${eventType.toLowerCase()}',
+        style: OnlineTheme.textStyle(
+          weight: 5,
+          color: OnlineTheme.white,
+        ),
+      ),
+    );
   }
 
   Widget notifyEventRegistration() {
