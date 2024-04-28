@@ -16,7 +16,6 @@ jobs:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }} 
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
-          LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
         run:
           echo $KEY_PROPERTIES | base64 --decode > key.properties 
           echo "key.properties contents:"
