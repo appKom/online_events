@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 class NoAnimationPageRoute<T> extends MaterialPageRoute<T> {
   NoAnimationPageRoute({required super.builder, super.settings});
@@ -37,7 +38,7 @@ abstract class AppNavigator {
   }
 
   static void navigateToPage(Widget page) {
-    final route = MaterialPageRoute(
+    final route = SwipeablePageRoute(
       builder: (context) => page,
     );
 
