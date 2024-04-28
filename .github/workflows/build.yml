@@ -17,9 +17,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
         run:
-          echo $KEY_PROPERTIES | base64 --decode > key.properties 
-          echo "key.properties contents:"
-          cat key.properties
+          echo $KEY_PROPERTIES | base64 --decode > key.properties | echo "key.properties contents:" | cat key.properties
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
