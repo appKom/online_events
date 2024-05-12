@@ -61,7 +61,8 @@ class OnlineScaffold extends StatelessWidget {
         shape: Border(bottom: BorderSide(width: 1, color: OnlineTheme.current.border)),
         backgroundColor: OnlineTheme.current.bg.withOpacity(0.9),
         elevation: 0,
-        flexibleSpace: Container(
+        scrolledUnderElevation: 0,
+        flexibleSpace: Padding(
           padding: EdgeInsets.only(
             left: padding.left + 25,
             right: padding.right + 25,
