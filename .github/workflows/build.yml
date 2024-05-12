@@ -1,0 +1,61 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, production ] 
+  pull_request:
+    branches: [ main, production ] 
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest 
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        
+      - name: Create .env File
+        run: |
+          mkdir -p lib
+          touch lib/.env
+          echo "COVERALLS_TOKEN=${{ secrets.COVERALLS_TOKEN }}" >> lib/.env
+          echo "KEYCHAIN_GROUP_ID=${{ secrets.KEYCHAIN_GROUP_ID }}" >> lib/.env
+          echo "WEB_API_KEY=${{ secrets.WEB_API_KEY }}" >> lib/.env
+          echo "ANDROID_API_KEY=${{ secrets.ANDROID_API_KEY }}" >> lib/.env
+          echo "IOS_API_KEY=${{ secrets.IOS_API_KEY }}" >> lib/.env
+          echo "MAC_API_KEY=${{ secrets.MAC_API_KEY }}" >> lib/.env
+          echo "PROJECT_ID=${{ secrets.PROJECT_ID }}" >> lib/.env
+          echo "PIXEL_DATABASE_ID=${{ secrets.PIXEL_DATABASE_ID }}" >> lib/.env
+          echo "PIXEL_COLLECTION_ID=${{ secrets.PIXEL_COLLECTION_ID }}" >> lib/.env
+          echo "PIXEL_BUCKET_ID=${{ secrets.PIXEL_BUCKET_ID }}" >> lib/.env
+          echo "USER_DATABASE_ID=${{ secrets.USER_DATABASE_ID }}" >> lib/.env
+          echo "USER_COLLECTION_ID=${{ secrets.USER_COLLECTION_ID }}" >> lib/.env
+          echo "USER_BUCKET_ID=${{ secrets.USER_BUCKET_ID }}" >> lib/.env
+          echo "AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }}" >> lib/.env
+          echo "AUTH_CLIENT_ID=${{ secrets.AUTH_CLIENT_ID }}" >> lib/.env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> lib/.env
+
+
+      - name: Decode key.properties
+        env:
+          KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
+        run: |
+          echo $KEY_PROPERTIES | base64 --decode > key.properties | echo "key.properties contents:" | cat key.properties
+          cat key.properties
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.9'  
+        
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+
+      - uses: actions/setup-java@v3 
+        with:
+          distribution: 'temurin' 
+          java-version: '17' 
+
+      - name: Install dependencies and build
+        run: |
+          flutter pub get 
+          flutter build appbundle --debug
