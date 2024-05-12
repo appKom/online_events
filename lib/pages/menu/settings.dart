@@ -147,18 +147,15 @@ class SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 10),
           Column(
             children: eventCategories.keys.map((String key) {
-              return Container(
-                color: OnlineTheme.current.bg,
-                child: CheckboxListTile(
-                  title: Text(key, style: OnlineTheme.textStyle()),
-                  value: eventCategories[key],
-                  activeColor: OnlineTheme.current.pos,
-                  checkColor: OnlineTheme.current.fg,
-                  contentPadding: const EdgeInsets.all(0),
-                  onChanged: (bool? value) {
-                    _handleSubscription(key, value);
-                  },
-                ),
+              return CheckboxListTile(
+                title: Text(key, style: OnlineTheme.textStyle()),
+                value: eventCategories[key],
+                activeColor: OnlineTheme.current.pos,
+                checkColor: OnlineTheme.current.fg,
+                contentPadding: const EdgeInsets.all(0),
+                onChanged: (bool? value) {
+                  _handleSubscription(key, value);
+                },
               );
             }).toList(),
           ),
