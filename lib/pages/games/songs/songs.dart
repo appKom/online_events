@@ -10,6 +10,7 @@ import '/theme/theme.dart';
 import 'fader_abraham.dart';
 import 'lambo.dart';
 import 'nu_klinger.dart';
+import 'we_like_to_drink.dart';
 
 class DrikkeSanger extends StatelessWidget {
   const DrikkeSanger({super.key, required this.carouselOptions});
@@ -69,6 +70,13 @@ class DrikkeSanger extends StatelessWidget {
               imageSource: 'assets/images/faderabraham.png',
               onTap: () => AppNavigator.navigateToPage(
                 const FaderAbrahamPage(),
+              ),
+            ),
+            SongCard(
+              name: 'We like to drink with',
+              imageSource: 'assets/images/we_like_to_drink.png',
+              onTap: () => AppNavigator.navigateToPage(
+                const WeLikeToDrinkPage(),
               ),
             ),
           ],
