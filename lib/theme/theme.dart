@@ -99,11 +99,8 @@ final darkTheme = ThemeConfig(
 sealed class OnlineTheme {
   static final current = darkTheme;
 
-  static const blue1 = Color(0xFF0D2546);
+  static const blueBg = Color(0xFF0D2546);
   static const blue2 = Color.fromARGB(255, 119, 178, 255);
-  static const blue3 = Color(0xFF0D2546);
-  static const blue4 = Color(0xFF0047AB);
-  static const onlineBlue = Color(0xFF0B5374);
 
   static const purple1 = Color(0xFFAB18C8);
 
@@ -112,8 +109,6 @@ sealed class OnlineTheme {
   static const gray9 = Color(0xFFB7BBC3);
   static const gray15 = Color(0xFF4C566A); // Only used once by skeleton loader
   static const gray16 = Color(0xFF797979); // Only used once by skeleton loader
-
-  // static const grayBorder = Color(0xFF22272F);
 
   static const hundredPrimaryTextColor = Color(0xFF414C6B);
   static const hundredSecondaryTextColor = Color(0xFFE4979E);
@@ -160,8 +155,8 @@ sealed class OnlineTheme {
   static const blueGradient = LinearGradient(
     colors: [
       OnlineTheme.blue2,
-      OnlineTheme.blue4,
-    ], // Blue gradient for "Se Påmeldte"
+      OnlineTheme.blueBg,
+    ],
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
   );

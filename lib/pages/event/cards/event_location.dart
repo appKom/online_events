@@ -23,7 +23,7 @@ class EventLocation extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: OnlineTheme.blue1, // Blue background for the icon
+                color: OnlineTheme.blueBg, // Blue background for the icon
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(

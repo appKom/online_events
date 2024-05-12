@@ -152,8 +152,8 @@ class SettingsPageState extends State<SettingsPage> {
                 child: CheckboxListTile(
                   title: Text(key, style: OnlineTheme.textStyle()),
                   value: eventCategories[key],
-                  activeColor: Colors.green,
-                  checkColor: Colors.white,
+                  activeColor: OnlineTheme.current.pos,
+                  checkColor: OnlineTheme.current.fg,
                   contentPadding: const EdgeInsets.all(0),
                   onChanged: (bool? value) {
                     _handleSubscription(key, value);

@@ -148,74 +148,72 @@ class FeedPageState extends State<FeedPage> {
           }
           return true;
         },
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 24),
-              if (reloading) const CircularProgressIndicator(),
-              if (reloading) const SizedBox(height: 24),
-              CalendarCard(upcomingEvents: upcomingEvents, pastEvents: pastEvents),
-              const SizedBox(height: 24 + 24),
-              Row(
-                children: [
-                  Text('Mine Arrangementer', style: OnlineTheme.header()),
-                  const Spacer(),
-                  AnimatedButton(onTap: () {
-                    fetchReload(pageCount: 1, shouldUpdatePageCount: false);
-                    if (mounted) setState(() => reloading = true);
-                  }, childBuilder: (context, hover, pointerDown) {
-                    return Icon(
-                      Icons.refresh_outlined,
-                      color: OnlineTheme.current.fg,
-                      size: 32,
-                    );
-                  }),
-                ],
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                // margin: const EdgeInsets.symmetric(vertical: 10),
-                height: 100.0 * upcomingEvents.length,
-                child: ListView.builder(
-                  itemCount: upcomingEvents.length,
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => EventCard(
-                    model: upcomingEvents[index],
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 24),
+            if (reloading) const CircularProgressIndicator(),
+            if (reloading) const SizedBox(height: 24),
+            CalendarCard(upcomingEvents: upcomingEvents, pastEvents: pastEvents),
+            const SizedBox(height: 24 + 24),
+            Row(
+              children: [
+                Text('Mine Arrangementer', style: OnlineTheme.header()),
+                const Spacer(),
+                AnimatedButton(onTap: () {
+                  fetchReload(pageCount: 1, shouldUpdatePageCount: false);
+                  if (mounted) setState(() => reloading = true);
+                }, childBuilder: (context, hover, pointerDown) {
+                  return Icon(
+                    Icons.refresh_outlined,
+                    color: OnlineTheme.current.fg,
+                    size: 32,
+                  );
+                }),
+              ],
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              // margin: const EdgeInsets.symmetric(vertical: 10),
+              height: 100.0 * upcomingEvents.length,
+              child: ListView.builder(
+                itemCount: upcomingEvents.length,
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) => EventCard(
+                  model: upcomingEvents[index],
                 ),
               ),
-              const SizedBox(height: 24 + 24),
-              Text('Tidligere Arrangementer', style: OnlineTheme.header()),
-              const SizedBox(height: 24),
-              SizedBox(
-                // margin: const EdgeInsets.symmetric(vertical: 10),
-                height: 100.0 * pastEvents.length,
-                child: ListView.builder(
-                  itemCount: pastEvents.length,
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => EventCard(
-                    model: pastEvents[index],
-                  ),
+            ),
+            const SizedBox(height: 24 + 24),
+            Text('Tidligere Arrangementer', style: OnlineTheme.header()),
+            const SizedBox(height: 24),
+            SizedBox(
+              // margin: const EdgeInsets.symmetric(vertical: 10),
+              height: 100.0 * pastEvents.length,
+              child: ListView.builder(
+                itemCount: pastEvents.length,
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) => EventCard(
+                  model: pastEvents[index],
                 ),
               ),
-              if (pastEvents.isNotEmpty && hasMoreEventsToFetch)
-                Column(
-                  children: List.generate(2, (_) => EventCard.skeleton()),
-                ),
-              const SizedBox(height: 24),
-              const SizedBox(height: 24),
-            ],
-          ),
+            ),
+            if (pastEvents.isNotEmpty && hasMoreEventsToFetch)
+              Column(
+                children: List.generate(2, (_) => EventCard.skeleton()),
+              ),
+            const SizedBox(height: 24),
+            const SizedBox(height: 24),
+          ],
         ),
       ),
     );
   }
 }
 
-class FeedPageDisplay extends StaticPage {
+class FeedPageDisplay extends ScrollablePage {
   const FeedPageDisplay({super.key});
 
   @override

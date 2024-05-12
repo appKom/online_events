@@ -144,211 +144,209 @@ class _MenuPageState extends State<MenuPage> {
 
     return Padding(
       padding: padding,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 24,
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 24,
+          ),
+          const ProfileCard(),
+          const SizedBox(
+            height: 24,
+          ),
+          const SettingsPage(),
+          const SizedBox(height: 24),
+          OnlineCard(
+            child: ExpansionTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+              ),
+              tilePadding: EdgeInsets.zero,
+              title: Text("Hjelp og støtte", style: OnlineTheme.textStyle()),
+              leading: ThemedIcon(icon: IconType.users, size: 24),
+              trailing: ThemedIcon(icon: IconType.downArrow, size: 24),
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        AnimatedButton(onTap: () {
+                          AppNavigator.navigateToPage(const InfoPage());
+                        }, childBuilder: (context, hover, pointerDown) {
+                          return Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                color: OnlineTheme.current.fg,
+                              ),
+                              const SizedBox(
+                                width: 17,
+                              ),
+                              Text(
+                                "Om Online Appen",
+                                style: OnlineTheme.textStyle(),
+                              ),
+                            ],
+                          );
+                        }),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    Row(
+                      children: [
+                        AnimatedButton(onTap: () {
+                          io.Client.launchInBrowser('https://forms.gle/xUTTN95CuWtSbNCS7');
+                        }, childBuilder: (context, hover, pointerDown) {
+                          return Row(
+                            children: [
+                              Icon(
+                                Icons.bug_report_outlined,
+                                color: OnlineTheme.current.fg,
+                              ),
+                              const SizedBox(width: 17),
+                              Text(
+                                "Rapporter en bug",
+                                style: OnlineTheme.textStyle(),
+                              ),
+                            ],
+                          );
+                        }),
+                      ],
+                    ),
+                  ],
+                )
+              ],
             ),
-            const ProfileCard(),
-            const SizedBox(
-              height: 24,
-            ),
-            const SettingsPage(),
-            const SizedBox(height: 24),
-            OnlineCard(
-              child: ExpansionTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                tilePadding: EdgeInsets.zero,
-                title: Text("Hjelp og støtte", style: OnlineTheme.textStyle()),
-                leading: ThemedIcon(icon: IconType.users, size: 24),
-                trailing: ThemedIcon(icon: IconType.downArrow, size: 24),
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      Row(
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          OnlineCard(
+            child: ExpansionTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+              ),
+              tilePadding: EdgeInsets.zero,
+              title: Text("Innstillinger og personvern", style: OnlineTheme.textStyle()),
+              leading: ThemedIcon(icon: IconType.settings, size: 24),
+              trailing: ThemedIcon(icon: IconType.downArrow, size: 24),
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16),
+                    AnimatedButton(onTap: () {
+                      io.Client.launchInBrowser('https://online.ntnu.no/profile/settings/userdata');
+                    }, childBuilder: (context, hover, pointerDown) {
+                      return Row(
                         children: [
-                          AnimatedButton(onTap: () {
-                            AppNavigator.navigateToPage(const InfoPage());
-                          }, childBuilder: (context, hover, pointerDown) {
-                            return Row(
-                              children: [
-                                Icon(
-                                  Icons.info_outline,
-                                  color: OnlineTheme.current.fg,
-                                ),
-                                const SizedBox(
-                                  width: 17,
-                                ),
-                                Text(
-                                  "Om Online Appen",
-                                  style: OnlineTheme.textStyle(),
-                                ),
-                              ],
-                            );
-                          }),
+                          ThemedIcon(
+                            icon: IconType.download,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 22),
+                          Text(
+                            "Last ned brukerdata",
+                            style: OnlineTheme.textStyle(),
+                          ),
                         ],
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Row(
+                      );
+                    }),
+                    const SizedBox(height: 32),
+                    AnimatedButton(onTap: () {
+                      initiateDeletion(context);
+                    }, childBuilder: (context, hover, pointerDown) {
+                      return Row(
                         children: [
-                          AnimatedButton(onTap: () {
-                            io.Client.launchInBrowser('https://forms.gle/xUTTN95CuWtSbNCS7');
-                          }, childBuilder: (context, hover, pointerDown) {
-                            return Row(
-                              children: [
-                                Icon(
-                                  Icons.bug_report_outlined,
-                                  color: OnlineTheme.current.fg,
-                                ),
-                                const SizedBox(width: 17),
-                                Text(
-                                  "Rapporter en bug",
-                                  style: OnlineTheme.textStyle(),
-                                ),
-                              ],
-                            );
-                          }),
+                          ThemedIcon(
+                            icon: IconType.trash,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 20),
+                          Text(
+                            "Slett brukerdata",
+                            style: OnlineTheme.textStyle(),
+                          ),
                         ],
+                      );
+                    }),
+                  ],
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          if (Authenticator.isLoggedIn())
+            SizedBox(
+              height: 40,
+              child: AnimatedButton(
+                onTap: () async {
+                  await Authenticator.logout();
+                  // AppNavigator.replaceWithPage(const LoginPage());
+                  Navbar.navigateTo(NavbarPage.home);
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return Container(
+                    height: OnlineTheme.buttonHeight,
+                    decoration: BoxDecoration(
+                      color: theme.primaryBg,
+                      borderRadius: OnlineTheme.buttonRadius,
+                      border: Border.fromBorderSide(
+                        BorderSide(color: theme.primary, width: 2),
                       ),
-                    ],
-                  )
-                ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Logg Ut',
+                        style: OnlineTheme.textStyle(weight: 5, color: theme.primaryFg),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-            const SizedBox(
-              height: 24,
-            ),
-            OnlineCard(
-              child: ExpansionTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                tilePadding: EdgeInsets.zero,
-                title: Text("Innstillinger og personvern", style: OnlineTheme.textStyle()),
-                leading: ThemedIcon(icon: IconType.settings, size: 24),
-                trailing: ThemedIcon(icon: IconType.downArrow, size: 24),
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      AnimatedButton(onTap: () {
-                        io.Client.launchInBrowser('https://online.ntnu.no/profile/settings/userdata');
-                      }, childBuilder: (context, hover, pointerDown) {
-                        return Row(
-                          children: [
-                            ThemedIcon(
-                              icon: IconType.download,
-                              size: 18,
-                            ),
-                            const SizedBox(width: 22),
-                            Text(
-                              "Last ned brukerdata",
-                              style: OnlineTheme.textStyle(),
-                            ),
-                          ],
-                        );
-                      }),
-                      const SizedBox(height: 32),
-                      AnimatedButton(onTap: () {
-                        initiateDeletion(context);
-                      }, childBuilder: (context, hover, pointerDown) {
-                        return Row(
-                          children: [
-                            ThemedIcon(
-                              icon: IconType.trash,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 20),
-                            Text(
-                              "Slett brukerdata",
-                              style: OnlineTheme.textStyle(),
-                            ),
-                          ],
-                        );
-                      }),
-                    ],
-                  )
-                ],
+          if (!Authenticator.isLoggedIn())
+            SizedBox(
+              height: 40,
+              child: AnimatedButton(
+                onTap: () async {
+                  login();
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return Container(
+                    height: OnlineTheme.buttonHeight,
+                    decoration: BoxDecoration(
+                      color: theme.posBg,
+                      borderRadius: OnlineTheme.buttonRadius,
+                      border: Border.fromBorderSide(
+                        BorderSide(color: theme.pos, width: 2),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Logg Inn',
+                        style: OnlineTheme.textStyle(weight: 5, color: theme.posFg),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-            const SizedBox(
-              height: 24,
-            ),
-            if (Authenticator.isLoggedIn())
-              SizedBox(
-                height: 40,
-                child: AnimatedButton(
-                  onTap: () async {
-                    await Authenticator.logout();
-                    // AppNavigator.replaceWithPage(const LoginPage());
-                    Navbar.navigateTo(NavbarPage.home);
-                  },
-                  childBuilder: (context, hover, pointerDown) {
-                    return Container(
-                      height: OnlineTheme.buttonHeight,
-                      decoration: BoxDecoration(
-                        color: theme.primaryBg,
-                        borderRadius: OnlineTheme.buttonRadius,
-                        border: Border.fromBorderSide(
-                          BorderSide(color: theme.primary, width: 2),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Logg Ut',
-                          style: OnlineTheme.textStyle(weight: 5, color: theme.primaryFg),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            if (!Authenticator.isLoggedIn())
-              SizedBox(
-                height: 40,
-                child: AnimatedButton(
-                  onTap: () async {
-                    login();
-                  },
-                  childBuilder: (context, hover, pointerDown) {
-                    return Container(
-                      height: OnlineTheme.buttonHeight,
-                      decoration: BoxDecoration(
-                        color: theme.posBg,
-                        borderRadius: OnlineTheme.buttonRadius,
-                        border: Border.fromBorderSide(
-                          BorderSide(color: theme.pos, width: 2),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Logg Inn',
-                          style: OnlineTheme.textStyle(weight: 5, color: theme.posFg),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            const SizedBox(
-              height: 24,
-            ),
-          ],
-        ),
+          const SizedBox(
+            height: 24,
+          ),
+        ],
       ),
     );
   }
 }
 
-class MenuPageDisplay extends StaticPage {
+class MenuPageDisplay extends ScrollablePage {
   const MenuPageDisplay({super.key});
 
   @override
