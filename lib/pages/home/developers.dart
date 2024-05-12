@@ -73,20 +73,22 @@ class DeveloperCarousel extends StatelessWidget {
   );
 
   Widget roleBadge(String role) {
+    final theme = OnlineTheme.current;
+
     return Container(
       height: 30,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: OnlineTheme.yellow.darken(40),
+        color: theme.primaryBg,
         borderRadius: OnlineTheme.buttonRadius,
-        border: const Border.fromBorderSide(
-          BorderSide(color: OnlineTheme.yellow, width: 2),
+        border: Border.fromBorderSide(
+          BorderSide(color: theme.primary, width: 2),
         ),
       ),
       child: Center(
         child: Text(
           role,
-          style: OnlineTheme.textStyle(weight: 5, size: 14, color: OnlineTheme.yellow),
+          style: OnlineTheme.textStyle(weight: 5, size: 14, color: theme.primaryFg),
         ),
       ),
     );

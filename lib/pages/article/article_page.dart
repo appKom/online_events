@@ -76,10 +76,7 @@ class ArticlePage extends ScrollablePage {
     return OnlineCard(
       child: Column(
         children: [
-          IconLabel(
-              icon: IconType.script,
-              iconSize: 18,
-              label: article.authors.replaceAll(', ', ',\n')),
+          IconLabel(icon: IconType.script, iconSize: 18, label: article.authors.replaceAll(', ', ',\n')),
           const SizedBox(height: 16),
           IconLabel(icon: IconType.dateTime, label: dateToString()),
         ],
@@ -87,24 +84,30 @@ class ArticlePage extends ScrollablePage {
     );
   }
 
-  static final markdownTheme = MarkdownStyleSheet(
-    p: OnlineTheme.textStyle(color: OnlineTheme.white),
-    h1: const TextStyle(color: OnlineTheme.white),
-    h2: const TextStyle(color: OnlineTheme.white),
-    h3: const TextStyle(color: OnlineTheme.white),
-    h4: const TextStyle(color: OnlineTheme.white),
-    h5: const TextStyle(color: OnlineTheme.white),
-    h6: const TextStyle(color: OnlineTheme.white),
-  );
+  static MarkdownStyleSheet markdownTheme() {
+    final theme = OnlineTheme.current;
+
+    return MarkdownStyleSheet(
+      p: OnlineTheme.textStyle(color: theme.fg),
+      h1: TextStyle(color: theme.fg),
+      h2: TextStyle(color: theme.fg),
+      h3: TextStyle(color: theme.fg),
+      h4: TextStyle(color: theme.fg),
+      h5: TextStyle(color: theme.fg),
+      h6: TextStyle(color: theme.fg),
+    );
+  }
 
   Widget articleCard(BuildContext context) {
+    final mdTheme = markdownTheme();
+
     return OnlineCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           MarkdownBody(
             data: '${article.ingress}\n',
-            styleSheet: markdownTheme,
+            styleSheet: mdTheme,
             onTapLink: (text, href, title) {
               if (href == null) return;
               Client.launchInBrowser(href);
@@ -112,7 +115,7 @@ class ArticlePage extends ScrollablePage {
           ),
           MarkdownBody(
             data: article.content,
-            styleSheet: markdownTheme,
+            styleSheet: mdTheme,
             onTapLink: (text, href, title) {
               if (href == null) return;
               Client.launchInBrowser(href);
@@ -148,8 +151,7 @@ class ArticlePage extends ScrollablePage {
                 Text('Les Mer', style: OnlineTheme.header()),
                 const SizedBox(height: 24),
                 ArticleCarousel(
-                  articles: Client.articlesCache.value.toList()
-                    ..removeWhere((a) => a.heading == article.heading),
+                  articles: Client.articlesCache.value.toList()..removeWhere((a) => a.heading == article.heading),
                 ),
                 const SizedBox(height: 24),
               ],

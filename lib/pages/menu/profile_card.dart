@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online/components/animated_button.dart';
 import 'package:online/components/online_scaffold.dart';
 import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/profile/profile_page.dart';
 import 'package:online/services/app_navigator.dart';
 import 'package:online/services/authenticator.dart';
+import 'package:online/theme/themed_icon.dart';
 
 import '../../core/client/client.dart';
 import '../../theme/theme.dart';
@@ -54,10 +54,7 @@ class ProfileCard extends StaticPage {
                     Positioned(
                       top: 10,
                       right: 10,
-                      child: SvgPicture.asset(
-                        "assets/icons/down_arrow.svg",
-                        color: OnlineTheme.white,
-                      ),
+                      child: ThemedIcon(icon: IconType.downArrow, size: 24),
                     ),
                   ],
                 ),

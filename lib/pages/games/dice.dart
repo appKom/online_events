@@ -76,7 +76,7 @@ class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderSta
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Scaffold(
-      backgroundColor: OnlineTheme.background,
+      backgroundColor: OnlineTheme.current.bg,
       body: Padding(
         padding: padding,
         child: Stack(
@@ -115,9 +115,9 @@ class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderSta
               child: AnimatedButton(onTap: () {
                 AppNavigator.pop();
               }, childBuilder: (context, hover, pointerDown) {
-                return const Icon(
+                return Icon(
                   Icons.close_outlined,
-                  color: OnlineTheme.white,
+                  color: OnlineTheme.current.fg,
                   size: 32,
                 );
               }),
@@ -141,14 +141,14 @@ class DicePainter extends CustomPainter {
 
     final paint = Paint()
       ..style = PaintingStyle.fill
-      ..color = OnlineTheme.white;
+      ..color = OnlineTheme.current.fg;
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, dimension, dimension), Radius.circular(radius)),
       paint,
     );
 
-    paint.color = OnlineTheme.background;
+    paint.color = OnlineTheme.current.bg;
 
     final center = dimension / 2;
     final inset1 = (dimension / 5) + radius / 2;

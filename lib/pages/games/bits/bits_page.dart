@@ -148,7 +148,7 @@ class _BitsGameState extends State<BitsGame> {
             onTap: AppNavigator.pop,
             scale: 0.9,
             childBuilder: (context, hover, pointerDown) {
-              return const ThemedIcon(
+              return ThemedIcon(
                 icon: IconType.cross,
                 size: 24,
               );

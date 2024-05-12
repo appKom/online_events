@@ -5,7 +5,6 @@ import 'package:online/services/authenticator.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/pages/pixel/cards/description_card.dart';
@@ -165,15 +164,16 @@ class PixelPageState extends State<PixelPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = OnlineTheme.current;
+
     if (Authenticator.isLoggedIn()) {
       return Scaffold(
-        backgroundColor: OnlineTheme.background,
+        backgroundColor: theme.bg,
         body: RefreshIndicator(
           onRefresh: refreshPage,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: OnlineHeader.height(context) + 20),
               Center(
                 child: Row(
                   children: [
@@ -189,9 +189,9 @@ class PixelPageState extends State<PixelPage> {
                               additive: true,
                             ),
                         childBuilder: (context, hover, pointerDown) {
-                          return const Icon(
+                          return Icon(
                             Icons.info_outline,
-                            color: OnlineTheme.white,
+                            color: theme.fg,
                           );
                         })
                   ],
@@ -218,7 +218,7 @@ class PixelPageState extends State<PixelPage> {
                         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Container(
                               height: 50,
-                              decoration: const BoxDecoration(color: OnlineTheme.background),
+                              decoration: BoxDecoration(color: theme.bg),
                               child: WhoPostedCard(
                                   post: post,
                                   nameBeforeComma: nameBeforeComma,

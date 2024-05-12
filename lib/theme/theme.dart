@@ -1,9 +1,103 @@
 import 'package:flutter/material.dart';
 
+class ThemeConfig {
+  /// Background
+  final Color bg;
+
+  // Foreground
+  final Color fg;
+
+  final Color muted;
+  final Color mutedForeground;
+
+  final Color popoverBarrier;
+  final Color popover;
+  final Color popoverFg;
+
+  final Color card;
+  final Color cardFg;
+
+  final Color border;
+
+  final Color primary;
+  final Color primaryBg;
+  final Color primaryFg;
+
+  /// Positive
+  final Color pos;
+
+  /// Positive background
+  final Color posBg;
+
+  /// Positive foreground
+  final Color posFg;
+
+  final Color wait;
+  final Color waitBg;
+  final Color waitFg;
+
+  /// Negative
+  final Color neg;
+
+  /// Negative background
+  final Color negBg;
+
+  /// Negative foreground
+  final Color negFg;
+
+  ThemeConfig({
+    required this.bg,
+    required this.fg,
+    required this.muted,
+    required this.mutedForeground,
+    required this.popover,
+    required this.popoverFg,
+    required this.card,
+    required this.cardFg,
+    required this.popoverBarrier,
+    required this.border,
+    required this.primary,
+    required this.primaryBg,
+    required this.primaryFg,
+    required this.pos,
+    required this.posBg,
+    required this.posFg,
+    required this.wait,
+    required this.waitBg,
+    required this.waitFg,
+    required this.neg,
+    required this.negBg,
+    required this.negFg,
+  });
+}
+
+final darkTheme = ThemeConfig(
+  bg: const Color.fromRGBO(18, 18, 18, 1),
+  fg: const Color.fromRGBO(250, 250, 250, 1),
+  muted: const Color.fromRGBO(25, 25, 25, 1),
+  mutedForeground: const Color.fromRGBO(163, 163, 163, 1),
+  popoverBarrier: const Color.fromRGBO(5, 5, 5, 0.8),
+  popover: const Color.fromRGBO(20, 20, 20, 0.9),
+  popoverFg: const Color.fromRGBO(250, 250, 250, 1),
+  card: const Color.fromRGBO(15, 15, 15, 1),
+  cardFg: const Color.fromRGBO(250, 250, 250, 1),
+  border: const Color.fromRGBO(38, 38, 38, 1),
+  primary: const Color.fromRGBO(250, 183, 89, 1),
+  primaryBg: const Color.fromRGBO(254, 185, 47, 1).darken(50),
+  primaryFg: const Color.fromRGBO(250, 183, 89, 1),
+  wait: const Color.fromRGBO(250, 183, 89, 1),
+  waitBg: const Color.fromRGBO(254, 185, 47, 1).darken(50),
+  waitFg: const Color.fromRGBO(250, 183, 89, 1),
+  pos: const Color.fromRGBO(50, 200, 80, 1),
+  posBg: const Color.fromRGBO(50, 200, 80, 1).darken(60),
+  posFg: const Color.fromRGBO(50, 200, 80, 1),
+  neg: const Color.fromRGBO(220, 50, 80, 1),
+  negBg: const Color.fromRGBO(220, 50, 80, 1).darken(60),
+  negFg: const Color.fromRGBO(220, 50, 80, 1),
+);
+
 sealed class OnlineTheme {
-  // Colors
-  static const background = Color(0xFF050505);
-  static const white = Color(0xFFFFFFFF);
+  static final current = darkTheme;
 
   static const blue1 = Color(0xFF0D2546);
   static const blue2 = Color.fromARGB(255, 119, 178, 255);
@@ -11,23 +105,7 @@ sealed class OnlineTheme {
   static const blue4 = Color(0xFF0047AB);
   static const onlineBlue = Color(0xFF0B5374);
 
-  static const green = Color.fromRGBO(50, 200, 80, 1);
-
-  static const green1 = Color.fromARGB(255, 37, 208, 171);
-  static const green2 = Color.fromARGB(255, 4, 49, 44);
-  static const green3 = Color(0xFF83AF89);
-  static const green4 = Color(0xFF1E3822);
-  static const green5 = Color(0xFF09AA09);
-
-  static const red = Color.fromRGBO(220, 50, 80, 1);
-  static const red1 = Color(0xFFF43145);
-
-  static const yellow = Color(0xFFFAB759);
-
   static const purple1 = Color(0xFFAB18C8);
-
-  static const lightGray = Color(0xFFD0D0D0);
-  static const darkGray = Color(0xFF151520);
 
   static const gray0 = Color(0xFF22272F);
   static const gray8 = Color(0xFFA6ABB5);
@@ -129,18 +207,21 @@ sealed class OnlineTheme {
   }
 
   static TextStyle header() => textStyle(size: 20, weight: 6);
-  static TextStyle subHeader([Color? color]) =>
-      textStyle(size: 16, weight: 6, color: color ?? white);
+  static TextStyle subHeader([Color? color]) => textStyle(
+        size: 16,
+        weight: 6,
+        color: color ?? current.fg,
+      );
 
   static TextStyle textStyle({
-    Color color = white,
+    Color? color,
     int weight = 4,
     double size = 16,
     double height = 1.5,
   }) {
     return TextStyle(
       fontFamily: font,
-      color: color,
+      color: color ?? current.fg,
       fontWeight: _translateWeight(weight),
       fontSize: size,
       height: height,

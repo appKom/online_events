@@ -165,9 +165,9 @@ class FeedPageState extends State<FeedPage> {
                     fetchReload(pageCount: 1, shouldUpdatePageCount: false);
                     if (mounted) setState(() => reloading = true);
                   }, childBuilder: (context, hover, pointerDown) {
-                    return const Icon(
+                    return Icon(
                       Icons.refresh_outlined,
-                      color: OnlineTheme.white,
+                      color: OnlineTheme.current.fg,
                       size: 32,
                     );
                   }),

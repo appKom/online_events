@@ -33,9 +33,9 @@ class SettingsPageState extends State<SettingsPage> {
   Future<void> _loadPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      eventCategories.keys.forEach((category) {
+      for (var category in eventCategories.keys) {
         eventCategories[category] = (prefs.getBool(category) ?? eventCategories[category])!;
-      });
+      }
     });
   }
 
@@ -66,10 +66,8 @@ class SettingsPageState extends State<SettingsPage> {
 
     if (subscribed == true) {
       messaging.subscribeToTopic(topicName);
-      print("Subscribed to $topicName");
     } else if (subscribed == false) {
       messaging.unsubscribeFromTopic(topicName);
-      print("Unsubscribed to $topicName");
     }
   }
 
@@ -139,9 +137,9 @@ class SettingsPageState extends State<SettingsPage> {
                     }
                   },
                   childBuilder: (context, hover, pointerDown) {
-                    return const Icon(
+                    return Icon(
                       Icons.info_outline,
-                      color: OnlineTheme.white,
+                      color: OnlineTheme.current.fg,
                     );
                   }),
             ],
@@ -150,7 +148,7 @@ class SettingsPageState extends State<SettingsPage> {
           Column(
             children: eventCategories.keys.map((String key) {
               return Container(
-                color: OnlineTheme.background,
+                color: OnlineTheme.current.bg,
                 child: CheckboxListTile(
                   title: Text(key, style: OnlineTheme.textStyle()),
                   value: eventCategories[key],

@@ -63,7 +63,7 @@ class CalendarCardState extends State<CalendarCard> {
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: onLeftArrowTap,
           ),
-          Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
+          Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.current.fg)),
           IconButton(
             icon: const Icon(Icons.arrow_forward_ios),
             onPressed: onRightArrowTap,
@@ -111,6 +111,8 @@ class CalendarCardState extends State<CalendarCard> {
 
       return selectedEvents;
     }
+
+    final theme = OnlineTheme.current;
 
     return Column(
       children: [
@@ -162,11 +164,11 @@ class CalendarCardState extends State<CalendarCard> {
                 margin: const EdgeInsets.all(2.0),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: eventful ? OnlineTheme.green5 : OnlineTheme.darkGray,
+                  color: eventful ? theme.pos : theme.card,
                   shape: BoxShape.rectangle,
                   border: Border.fromBorderSide(
                     BorderSide(
-                      color: eventful ? OnlineTheme.green5.lighten(50) : Colors.white,
+                      color: eventful ? theme.pos : theme.fg,
                       width: 2,
                     ),
                   ),
@@ -187,10 +189,10 @@ class CalendarCardState extends State<CalendarCard> {
                 return Container(
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: OnlineTheme.green5,
+                  decoration: BoxDecoration(
+                    color: theme.pos,
                     shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Text(
                     date.day.toString(),
@@ -201,10 +203,10 @@ class CalendarCardState extends State<CalendarCard> {
                 return Container(
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: OnlineTheme.darkGray,
+                  decoration: BoxDecoration(
+                    color: theme.card,
                     shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Text(
                     date.day.toString(),
@@ -214,16 +216,16 @@ class CalendarCardState extends State<CalendarCard> {
               }
             },
           ),
-          calendarStyle: const CalendarStyle(
+          calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
               shape: BoxShape.rectangle,
               // color: Colors.grey.shade700,
-              color: OnlineTheme.gray0,
-              border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray0, width: 2)),
+              color: theme.border,
+              border: Border.fromBorderSide(BorderSide(color: theme.muted, width: 2)),
               // border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray9, width: 2)),
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
             ),
-            markerDecoration: BoxDecoration(
+            markerDecoration: const BoxDecoration(
               shape: BoxShape.circle,
               // color: OnlineTheme.green5,
               color: Colors.transparent,
@@ -232,20 +234,20 @@ class CalendarCardState extends State<CalendarCard> {
               shape: BoxShape.rectangle,
               // color: Colors.grey.shade700,
               // color: Colors.transparent,
-              border: Border.fromBorderSide(BorderSide(color: OnlineTheme.white, width: 2)),
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+              border: Border.fromBorderSide(BorderSide(color: OnlineTheme.current.fg, width: 2)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
             ),
           ),
-          headerStyle: const HeaderStyle(
+          headerStyle: HeaderStyle(
             formatButtonVisible: false,
             titleCentered: true,
-            leftChevronIcon: Icon(Icons.arrow_back_ios, color: Colors.white),
-            rightChevronIcon: Icon(Icons.arrow_forward_ios, color: Colors.white),
-            titleTextStyle: TextStyle(color: Colors.white),
+            leftChevronIcon: Icon(Icons.arrow_back_ios, color: theme.fg),
+            rightChevronIcon: Icon(Icons.arrow_forward_ios, color: theme.fg),
+            titleTextStyle: TextStyle(color: theme.fg),
           ),
-          daysOfWeekStyle: const DaysOfWeekStyle(
-            weekendStyle: TextStyle(color: OnlineTheme.white),
-            weekdayStyle: TextStyle(color: Colors.white),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekendStyle: TextStyle(color: theme.fg),
+            weekdayStyle: TextStyle(color: theme.fg),
           ),
         ),
       ],

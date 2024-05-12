@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:online/pages/home/hobbies.dart';
 
-import '../../core/models/event_model.dart';
 import '../events/events_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
+import '/core/models/event_model.dart';
 import '/pages/home/event_card.dart';
+import '/pages/home/hobbies.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'article_carousel.dart';
@@ -18,6 +18,8 @@ class HomePage extends ScrollablePage {
   @override
   Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+
+    final theme = OnlineTheme.current;
 
     return Padding(
       padding: padding,
@@ -88,11 +90,11 @@ class HomePage extends ScrollablePage {
                         'MER',
                         style: OnlineTheme.textStyle(weight: 5),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 2),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
                         child: Icon(
                           Icons.navigate_next,
-                          color: OnlineTheme.white,
+                          color: OnlineTheme.current.fg,
                           size: 20,
                         ),
                       ),
@@ -138,50 +140,20 @@ class HomePage extends ScrollablePage {
                 height: 40,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: OnlineTheme.yellow.withOpacity(0.4),
+                  color: theme.primaryBg,
                   borderRadius: BorderRadius.circular(5.0),
-                  border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+                  border: Border.fromBorderSide(BorderSide(color: theme.primary, width: 2)),
                 ),
                 child: Text(
                   'Om Online-Appen',
                   style: OnlineTheme.textStyle(
                     weight: 5,
-                    color: OnlineTheme.yellow,
+                    color: theme.primaryFg,
                   ),
                 ),
               );
             },
           ),
-          // const SizedBox(height: 24),
-          // AnimatedButton(
-          //   onTap: () async {
-          //     final events = await Client.getAttendanceEvents(userId: Client.userCache.value!.id, pageCount: 2);
-
-          //     for (final event in events) {
-          //       print('${event.id}: ${event.timestamp}');
-          //     }
-
-          //     print(events.length);
-          //   },
-          //   childBuilder: (context, hover, pointerDown) {
-          //     return Container(
-          //       height: 40,
-          //       alignment: Alignment.center,
-          //       decoration: BoxDecoration(
-          //         color: OnlineTheme.yellow.withOpacity(0.4),
-          //         borderRadius: BorderRadius.circular(5.0),
-          //         border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
-          //       ),
-          //       child: Text(
-          //         'Test',
-          //         style: OnlineTheme.textStyle(
-          //           weight: 5,
-          //           color: OnlineTheme.yellow,
-          //         ),
-          //       ),
-          //     );
-          //   },
-          // ),
           const SizedBox(height: 24),
         ],
       ),

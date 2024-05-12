@@ -44,13 +44,13 @@ class HobbyPage extends ScrollablePage {
   }
 
   static final markdownTheme = MarkdownStyleSheet(
-    p: OnlineTheme.textStyle(color: OnlineTheme.white),
-    h1: const TextStyle(color: OnlineTheme.white),
-    h2: const TextStyle(color: OnlineTheme.white),
-    h3: const TextStyle(color: OnlineTheme.white),
-    h4: const TextStyle(color: OnlineTheme.white),
-    h5: const TextStyle(color: OnlineTheme.white),
-    h6: const TextStyle(color: OnlineTheme.white),
+    p: OnlineTheme.textStyle(color: OnlineTheme.current.fg),
+    h1: TextStyle(color: OnlineTheme.current.fg),
+    h2: TextStyle(color: OnlineTheme.current.fg),
+    h3: TextStyle(color: OnlineTheme.current.fg),
+    h4: TextStyle(color: OnlineTheme.current.fg),
+    h5: TextStyle(color: OnlineTheme.current.fg),
+    h6: TextStyle(color: OnlineTheme.current.fg),
   );
 
   Widget articleCard(BuildContext context) {

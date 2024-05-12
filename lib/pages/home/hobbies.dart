@@ -3,14 +3,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:online/pages/hobbies/hobby_page.dart';
 
-import '../../components/animated_button.dart';
-import '../../components/image_default.dart';
-import '../../components/skeleton_loader.dart';
-import '../../core/models/hobby_model.dart';
-import '../../services/app_navigator.dart';
-import '../../theme/theme.dart';
+import '/components/animated_button.dart';
+import '/components/image_default.dart';
+import '/components/skeleton_loader.dart';
+import '/core/models/hobby_model.dart';
+import '/pages/hobbies/hobby_page.dart';
+import '/services/app_navigator.dart';
+import '/theme/theme.dart';
 
 class Hobbies extends StatelessWidget {
   const Hobbies({
@@ -48,9 +48,8 @@ class Hobbies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<HobbyModel> interesseGrupper = hobbies
-        .where((hobby) => hobby.active && !hobby.title.contains("[inaktiv]"))
-        .toList();
+    List<HobbyModel> interesseGrupper =
+        hobbies.where((hobby) => hobby.active && !hobby.title.contains("[inaktiv]")).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -115,7 +114,7 @@ class HobbiesCard extends StatelessWidget {
     if (model.image?.original == null) {
       return ClipOval(
         child: Container(
-          color: OnlineTheme.background,
+          color: OnlineTheme.current.bg,
           child: const ClipOval(
             child: SizedBox(
               height: 150,
@@ -129,7 +128,7 @@ class HobbiesCard extends StatelessWidget {
 
     return ClipOval(
       child: Container(
-        color: OnlineTheme.white,
+        color: OnlineTheme.current.fg,
         child: ClipOval(
           child: SizedBox(
             height: 150,
@@ -159,23 +158,20 @@ class HobbiesCard extends StatelessWidget {
   }
 
   Widget typeBadge() {
+    final theme = OnlineTheme.current;
+
     return Container(
       height: 30,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: model.active
-            ? OnlineTheme.green.withOpacity(0.4)
-            : OnlineTheme.red1.withOpacity(0.4),
+        color: model.active ? theme.posBg : theme.negBg,
         borderRadius: BorderRadius.circular(5.0),
-        border: Border.fromBorderSide(BorderSide(
-            color: model.active ? OnlineTheme.green : OnlineTheme.red1,
-            width: 2)),
+        border: Border.fromBorderSide(BorderSide(color: model.active ? theme.pos : theme.neg, width: 2)),
       ),
       child: Center(
         child: Text(
           model.active ? 'Aktiv' : 'Inaktiv',
-          style: OnlineTheme.textStyle(
-              weight: 5, size: 14, color: OnlineTheme.white),
+          style: OnlineTheme.textStyle(weight: 5, size: 14, color: model.active ? theme.posFg : theme.negFg),
         ),
       ),
     );

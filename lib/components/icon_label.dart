@@ -13,16 +13,16 @@ class IconLabel extends StatelessWidget {
 
   final MainAxisAlignment alignment;
 
-  const IconLabel({
+  IconLabel({
     super.key,
     required this.icon,
     required this.label,
-    this.color = OnlineTheme.white,
+    Color? color,
     this.fontSize = 16,
     this.iconSize = 20,
     this.fontWeight = 4,
     this.alignment = MainAxisAlignment.start,
-  });
+  }) : color = color ?? OnlineTheme.current.fg;
 
   @override
   Widget build(BuildContext context) {

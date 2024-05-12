@@ -28,6 +28,8 @@ class LoginPage extends StaticPage {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     final isIos = Theme.of(context).platform == TargetPlatform.iOS;
 
+    final theme = OnlineTheme.current;
+
     return FutureBuilder(
       future: appTrackingPermission(isIos),
       builder: (context, snapshot) {
@@ -48,13 +50,13 @@ class LoginPage extends StaticPage {
                     height: OnlineTheme.buttonHeight,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: OnlineTheme.green.withOpacity(0.4),
+                      color: theme.posBg,
                       borderRadius: BorderRadius.circular(5),
-                      border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
+                      border: Border.fromBorderSide(BorderSide(color: theme.pos, width: 2)),
                     ),
                     child: Text(
                       'Logg Inn',
-                      style: OnlineTheme.textStyle(color: OnlineTheme.green, weight: 5),
+                      style: OnlineTheme.textStyle(color: theme.posFg, weight: 5),
                     ),
                   );
                 },

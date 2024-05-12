@@ -33,8 +33,10 @@ class BitsHomePageState extends State<BitsHomePage> {
   }
 
   Widget _buildPlayerField(int number) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    final theme = OnlineTheme.current;
+
     return Padding(
       padding: padding,
       child: Row(
@@ -44,12 +46,12 @@ class BitsHomePageState extends State<BitsHomePage> {
               controller: controllers[number - 1],
               decoration: InputDecoration(
                 labelText: 'Deltaker $number',
-                labelStyle: const TextStyle(color: OnlineTheme.white),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: OnlineTheme.white),
+                labelStyle: TextStyle(color: theme.fg),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: theme.fg),
                 ),
-                focusedBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: OnlineTheme.white),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: theme.fg),
                 ),
               ),
               style: OnlineTheme.textStyle(),
@@ -57,7 +59,7 @@ class BitsHomePageState extends State<BitsHomePage> {
           ),
           if (number > 2 && number == playerNumbers.last)
             IconButton(
-              icon: const Icon(Icons.close, color: OnlineTheme.white),
+              icon: Icon(Icons.close, color: theme.fg),
               onPressed: () => _removePlayerField(number),
             ),
         ],
@@ -122,14 +124,12 @@ class BitsHomePageState extends State<BitsHomePage> {
   }
 
   bool get _shouldShowStartButton {
-    int filledFields =
-        controllers.where((c) => c.text.trim().isNotEmpty).length;
+    int filledFields = controllers.where((c) => c.text.trim().isNotEmpty).length;
     return filledFields >= 2;
   }
 
   void _startGame() {
-    bool anyFieldEmpty =
-        controllers.any((controller) => controller.text.trim().isEmpty);
+    bool anyFieldEmpty = controllers.any((controller) => controller.text.trim().isEmpty);
 
     if (anyFieldEmpty) {
       return showErrorTop("Deltakerfeltene må være fylt ut");
@@ -141,18 +141,17 @@ class BitsHomePageState extends State<BitsHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    final theme = OnlineTheme.current;
+
     return Scaffold(
       body: Stack(
         children: [
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  OnlineTheme.purple1,
-                  Color.fromARGB(255, 225, 10, 189)
-                ],
+                colors: [OnlineTheme.purple1, Color.fromARGB(255, 225, 10, 189)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 stops: [0.1, 0.9],
@@ -169,9 +168,9 @@ class BitsHomePageState extends State<BitsHomePage> {
                   AnimatedButton(onTap: () {
                     AppNavigator.pop();
                   }, childBuilder: (context, hover, pointerDown) {
-                    return const Icon(
+                    return Icon(
                       Icons.close_outlined,
-                      color: OnlineTheme.white,
+                      color: theme.fg,
                       size: 30,
                     );
                   }),
@@ -201,24 +200,19 @@ class BitsHomePageState extends State<BitsHomePage> {
                           },
                           childBuilder: (context, hover, pointerDown) {
                             return Padding(
-                              padding: EdgeInsets.only(
-                                  left: padding.left, right: padding.right),
+                              padding: EdgeInsets.only(left: padding.left, right: padding.right),
                               child: Container(
                                 height: 40,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 248, 98, 6)
-                                      .withOpacity(0.4),
+                                  color: Color.fromARGB(255, 248, 98, 6).withOpacity(0.4),
                                   borderRadius: BorderRadius.circular(5.0),
-                                  border: const Border.fromBorderSide(
-                                      BorderSide(
-                                          color: OnlineTheme.white, width: 2)),
+                                  border: Border.fromBorderSide(BorderSide(color: theme.fg, width: 2)),
                                 ),
                                 child: Text(
                                   'Legg til spiller',
                                   style: OnlineTheme.textStyle(
                                     weight: 5,
-                                    color: OnlineTheme.white,
                                   ),
                                 ),
                               ),
@@ -235,23 +229,20 @@ class BitsHomePageState extends State<BitsHomePage> {
                           },
                           childBuilder: (context, hover, pointerDown) {
                             return Padding(
-                              padding: EdgeInsets.only(
-                                  left: padding.left, right: padding.right),
+                              padding: EdgeInsets.only(left: padding.left, right: padding.right),
                               child: Container(
                                 height: OnlineTheme.buttonHeight,
                                 decoration: BoxDecoration(
-                                  color: OnlineTheme.green1.darken(40),
+                                  color: theme.posBg,
                                   borderRadius: OnlineTheme.buttonRadius,
-                                  border: const Border.fromBorderSide(
-                                    BorderSide(
-                                        color: OnlineTheme.green1, width: 2),
+                                  border: Border.fromBorderSide(
+                                    BorderSide(color: theme.pos, width: 2),
                                   ),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Start Spillet',
-                                    style: OnlineTheme.textStyle(
-                                        weight: 5, color: OnlineTheme.white),
+                                    style: OnlineTheme.textStyle(weight: 5, color: theme.fg),
                                   ),
                                 ),
                               ),

@@ -73,7 +73,7 @@ class EventsPageState extends State<EventsPage> {
       });
 
     return Container(
-      color: OnlineTheme.background,
+      color: OnlineTheme.current.bg,
       padding: EdgeInsets.only(left: padding.left, right: padding.right, top: padding.top),
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/pages/pixel/models/pixel_user_class.dart';
@@ -54,7 +53,6 @@ class ViewPixelUserState extends State<ViewPixelUser> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: OnlineHeader.height(context) + 50),
         Text(
           '${userData?.firstName} ${userData?.lastName}',
           style: OnlineTheme.textStyle(size: 32),

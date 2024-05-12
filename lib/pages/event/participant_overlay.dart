@@ -83,7 +83,7 @@ class ParticipantOverlay extends DarkOverlay {
   Color getColor(Role role) {
     switch (role) {
       case Role.none:
-        return OnlineTheme.white;
+        return OnlineTheme.current.fg;
       case Role.verified:
         return OnlineTheme.blue2;
     }
@@ -114,11 +114,11 @@ class ParticipantOverlay extends DarkOverlay {
   }
 
   Widget progressIndicator() {
-    return const Center(
+    return Center(
       child: SizedBox.square(
         dimension: 25,
         child: CircularProgressIndicator(
-          color: OnlineTheme.white,
+          color: OnlineTheme.current.fg,
           strokeWidth: 2,
         ),
       ),
@@ -126,6 +126,8 @@ class ParticipantOverlay extends DarkOverlay {
   }
 
   Widget buildList<T>(String header, Future<List<AttendeesList>?> listFuture) {
+    final theme = OnlineTheme.current;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -166,13 +168,13 @@ class ParticipantOverlay extends DarkOverlay {
                             height: OnlineTheme.buttonHeight,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: OnlineTheme.green.withOpacity(0.4),
+                              color: theme.posBg,
                               borderRadius: BorderRadius.circular(5),
-                              border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
+                              border: Border.fromBorderSide(BorderSide(color: theme.pos, width: 2)),
                             ),
                             child: Text(
                               'Logg Inn',
-                              style: OnlineTheme.textStyle(color: OnlineTheme.green, weight: 5),
+                              style: OnlineTheme.textStyle(color: theme.posFg, weight: 5),
                             ),
                           );
                         },

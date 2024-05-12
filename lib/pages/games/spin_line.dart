@@ -73,7 +73,7 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Container(
-      color: OnlineTheme.background,
+      color: OnlineTheme.current.bg,
       child: Padding(
         padding: padding,
         child: Stack(
@@ -104,9 +104,9 @@ class SpinLineState extends State<SpinLine> with SingleTickerProviderStateMixin 
               child: AnimatedButton(onTap: () {
                 AppNavigator.pop();
               }, childBuilder: (context, hover, pointerDown) {
-                return const Icon(
+                return Icon(
                   Icons.close_outlined,
-                  color: OnlineTheme.white,
+                  color: OnlineTheme.current.fg,
                   size: 32,
                 );
               }),

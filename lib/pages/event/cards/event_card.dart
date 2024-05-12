@@ -12,9 +12,16 @@ class OnlineCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: OnlineTheme.background.lighten(20),
+        color: OnlineTheme.current.card,
         border: Border.all(color: OnlineTheme.grayBorder),
         borderRadius: BorderRadius.circular(8),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.25),
+            offset: Offset(0, 4),
+            blurRadius: 4,
+          ),
+        ],
       ),
       child: child,
     );

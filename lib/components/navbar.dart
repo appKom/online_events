@@ -121,7 +121,7 @@ class NavbarState extends State<Navbar> {
                   key: UniqueKey(),
                   icon: active ? _buttons[i].activeIcon : _buttons[i].icon,
                   size: 24,
-                  color: active ? OnlineTheme.yellow : OnlineTheme.white,
+                  color: active ? OnlineTheme.current.primary : OnlineTheme.current.fg,
                 ),
               ),
             ),
@@ -137,7 +137,7 @@ class NavbarState extends State<Navbar> {
 
     return Container(
       decoration: BoxDecoration(
-        color: OnlineTheme.background.withOpacity(0.9),
+        color: OnlineTheme.current.bg.withOpacity(0.9),
         border: const Border(top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
       ),
       child: Row(

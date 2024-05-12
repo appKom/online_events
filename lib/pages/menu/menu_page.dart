@@ -1,8 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/home/info_page.dart';
 import 'package:online/pages/menu/profile_card.dart';
@@ -141,6 +139,9 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+
+    final theme = OnlineTheme.current;
+
     return Padding(
       padding: padding,
       child: SingleChildScrollView(
@@ -162,8 +163,8 @@ class _MenuPageState extends State<MenuPage> {
                 ),
                 tilePadding: EdgeInsets.zero,
                 title: Text("Hjelp og støtte", style: OnlineTheme.textStyle()),
-                leading: const ThemedIcon(icon: IconType.users, color: OnlineTheme.white, size: 24),
-                trailing: SvgPicture.asset("assets/icons/down_arrow.svg", color: OnlineTheme.white),
+                leading: ThemedIcon(icon: IconType.users, size: 24),
+                trailing: ThemedIcon(icon: IconType.downArrow, size: 24),
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -176,9 +177,9 @@ class _MenuPageState extends State<MenuPage> {
                           }, childBuilder: (context, hover, pointerDown) {
                             return Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.info_outline,
-                                  color: OnlineTheme.white,
+                                  color: OnlineTheme.current.fg,
                                 ),
                                 const SizedBox(
                                   width: 17,
@@ -202,9 +203,9 @@ class _MenuPageState extends State<MenuPage> {
                           }, childBuilder: (context, hover, pointerDown) {
                             return Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.bug_report_outlined,
-                                  color: OnlineTheme.white,
+                                  color: OnlineTheme.current.fg,
                                 ),
                                 const SizedBox(width: 17),
                                 Text(
@@ -231,8 +232,8 @@ class _MenuPageState extends State<MenuPage> {
                 ),
                 tilePadding: EdgeInsets.zero,
                 title: Text("Innstillinger og personvern", style: OnlineTheme.textStyle()),
-                leading: const ThemedIcon(icon: IconType.settings, color: OnlineTheme.white, size: 24),
-                trailing: SvgPicture.asset("assets/icons/down_arrow.svg", color: OnlineTheme.white),
+                leading: ThemedIcon(icon: IconType.settings, size: 24),
+                trailing: ThemedIcon(icon: IconType.downArrow, size: 24),
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -243,9 +244,8 @@ class _MenuPageState extends State<MenuPage> {
                       }, childBuilder: (context, hover, pointerDown) {
                         return Row(
                           children: [
-                            const ThemedIcon(
+                            ThemedIcon(
                               icon: IconType.download,
-                              color: OnlineTheme.white,
                               size: 18,
                             ),
                             const SizedBox(width: 22),
@@ -262,9 +262,8 @@ class _MenuPageState extends State<MenuPage> {
                       }, childBuilder: (context, hover, pointerDown) {
                         return Row(
                           children: [
-                            const ThemedIcon(
+                            ThemedIcon(
                               icon: IconType.trash,
-                              color: OnlineTheme.white,
                               size: 20,
                             ),
                             const SizedBox(width: 20),
@@ -296,16 +295,16 @@ class _MenuPageState extends State<MenuPage> {
                     return Container(
                       height: OnlineTheme.buttonHeight,
                       decoration: BoxDecoration(
-                        color: OnlineTheme.yellow.darken(40),
+                        color: theme.primaryBg,
                         borderRadius: OnlineTheme.buttonRadius,
-                        border: const Border.fromBorderSide(
-                          BorderSide(color: OnlineTheme.yellow, width: 2),
+                        border: Border.fromBorderSide(
+                          BorderSide(color: theme.primary, width: 2),
                         ),
                       ),
                       child: Center(
                         child: Text(
                           'Logg Ut',
-                          style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
+                          style: OnlineTheme.textStyle(weight: 5, color: theme.primaryFg),
                         ),
                       ),
                     );
@@ -323,16 +322,16 @@ class _MenuPageState extends State<MenuPage> {
                     return Container(
                       height: OnlineTheme.buttonHeight,
                       decoration: BoxDecoration(
-                        color: OnlineTheme.green.darken(40),
+                        color: theme.posBg,
                         borderRadius: OnlineTheme.buttonRadius,
-                        border: const Border.fromBorderSide(
-                          BorderSide(color: OnlineTheme.green, width: 2),
+                        border: Border.fromBorderSide(
+                          BorderSide(color: theme.pos, width: 2),
                         ),
                       ),
                       child: Center(
                         child: Text(
                           'Logg Inn',
-                          style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
+                          style: OnlineTheme.textStyle(weight: 5, color: theme.posFg),
                         ),
                       ),
                     );

@@ -139,8 +139,7 @@ jeg vet hvor jeg er deilig
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding +
-        const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Padding(
       padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom),
@@ -167,19 +166,17 @@ jeg vet hvor jeg er deilig
                 const SizedBox(height: 24),
                 MarkdownBody(
                   data: _getText(),
-                  styleSheet:
-                      MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+                  styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
                     p: OnlineTheme.textStyle(),
-                    h1: const TextStyle(color: OnlineTheme.white),
-                    h2: const TextStyle(color: OnlineTheme.white),
-                    h3: const TextStyle(color: OnlineTheme.white),
-                    h4: const TextStyle(color: OnlineTheme.white),
-                    h5: const TextStyle(color: OnlineTheme.white),
-                    h6: const TextStyle(color: OnlineTheme.white),
+                    h1: TextStyle(color: OnlineTheme.current.fg),
+                    h2: TextStyle(color: OnlineTheme.current.fg),
+                    h3: TextStyle(color: OnlineTheme.current.fg),
+                    h4: TextStyle(color: OnlineTheme.current.fg),
+                    h5: TextStyle(color: OnlineTheme.current.fg),
+                    h6: TextStyle(color: OnlineTheme.current.fg),
                     horizontalRuleDecoration: const BoxDecoration(
                       border: Border(
-                        top:
-                            BorderSide(width: 1, color: OnlineTheme.grayBorder),
+                        top: BorderSide(width: 1, color: OnlineTheme.grayBorder),
                       ),
                     ),
                   ),

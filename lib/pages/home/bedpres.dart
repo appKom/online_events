@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:online/components/icon_label.dart';
 import 'package:online/components/image_default.dart';
 import 'package:online/services/app_navigator.dart';
@@ -160,9 +159,9 @@ class BedpresCard extends StatelessWidget {
   BoxDecoration badgeDecoration(int eventType) {
     if (eventType == 2) {
       return BoxDecoration(
-        color: OnlineTheme.red.darken(40),
+        color: OnlineTheme.current.negBg,
         borderRadius: OnlineTheme.buttonRadius,
-        border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.red, width: 2)),
+        border: Border.fromBorderSide(BorderSide(color: OnlineTheme.current.neg, width: 2)),
       );
     }
 
@@ -179,11 +178,11 @@ class BedpresCard extends StatelessWidget {
   Color getColor(int eventType) {
     switch (eventType) {
       case 2:
-        return OnlineTheme.red;
+        return OnlineTheme.current.neg;
       case 3:
         return OnlineTheme.blue2;
       default:
-        return OnlineTheme.white;
+        return OnlineTheme.current.fg;
     }
   }
 
@@ -239,14 +238,11 @@ class BedpresCard extends StatelessWidget {
                       child: AspectRatio(
                         aspectRatio: 16 / 9,
                         child: model.images.isNotEmpty
-                            ? Container(
-                                color: OnlineTheme.white,
-                                child: CachedNetworkImage(
-                                  imageUrl: model.images.first.md,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => const SkeletonLoader(),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                                ),
+                            ? CachedNetworkImage(
+                                imageUrl: model.images.first.md,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const SkeletonLoader(),
+                                errorWidget: (context, url, error) => const Icon(Icons.error),
                               )
                             : const ImageDefault(),
                       ),

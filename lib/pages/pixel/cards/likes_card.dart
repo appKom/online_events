@@ -121,7 +121,7 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
                       height: 35,
                       width: 35,
                       decoration: BoxDecoration(
-                        color: OnlineTheme.white,
+                        color: OnlineTheme.current.fg,
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
@@ -135,7 +135,7 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         iconSize: 24,
-                        icon: const Icon(Icons.delete, color: OnlineTheme.background),
+                        icon: Icon(Icons.delete, color: OnlineTheme.current.muted),
                         onPressed: () async {
                           try {
                             widget.onDeletePost(widget.post.id);

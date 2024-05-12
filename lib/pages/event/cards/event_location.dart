@@ -26,11 +26,11 @@ class EventLocation extends StatelessWidget {
                 color: OnlineTheme.blue1, // Blue background for the icon
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Center(
+              child: Center(
                 child: Icon(
                   Icons.location_on_outlined,
                   size: 20, // Adjust the size of the icon as needed
-                  color: OnlineTheme.white, // White icon color
+                  color: OnlineTheme.current.fg,
                 ),
               ),
             ),

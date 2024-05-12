@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 
 import '/components/animated_button.dart';
 import '/components/navbar.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart' as io;
 import '/pages/pixel/pixel.dart';
@@ -171,14 +170,16 @@ class UploadPageState extends State<UploadPage> {
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+
+    final theme = OnlineTheme.current;
+
     return Scaffold(
-      backgroundColor: OnlineTheme.background,
+      backgroundColor: OnlineTheme.current.bg,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: padding.left, right: padding.right),
           child: Column(
             children: <Widget>[
-              SizedBox(height: OnlineHeader.height(context) + 20),
               Row(
                 children: [
                   IconButton(
@@ -202,16 +203,16 @@ class UploadPageState extends State<UploadPage> {
               ),
               TextFormField(
                 controller: _titleController,
-                style: OnlineTheme.textStyle(color: OnlineTheme.white),
+                style: OnlineTheme.textStyle(color: theme.fg),
                 decoration: InputDecoration(
                   labelText: 'Beskrivelse',
-                  labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                  hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: OnlineTheme.white),
+                  labelStyle: OnlineTheme.textStyle(color: theme.fg),
+                  hintStyle: OnlineTheme.textStyle(color: theme.fg),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: theme.fg),
                   ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: OnlineTheme.white),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: theme.fg),
                   ),
                 ),
                 maxLength: 500,

@@ -27,26 +27,28 @@ class RegistrationCard extends StatelessWidget {
     String badgeText;
     Color color;
 
+    final theme = OnlineTheme.current;
+
     switch (statusCode) {
       case 502:
         badgeText = 'Stengt';
-        color = OnlineTheme.red;
+        color = theme.neg;
         break;
       case 404 || 200 || 201 || 210 || 211 || 212 || 213:
         badgeText = 'Åpen';
-        color = OnlineTheme.green;
+        color = theme.pos;
         break;
       case 420 || 421 || 422 || 423 || 401 || 402:
         badgeText = 'Utsatt';
-        color = OnlineTheme.yellow;
+        color = theme.wait;
         break;
       case 411 || 410 || 412 || 413 || 400 || 400 || 403 || 405:
         badgeText = 'Umulig';
-        color = OnlineTheme.red;
+        color = theme.neg;
         break;
       default:
         badgeText = 'Ikke Åpen';
-        color = OnlineTheme.red;
+        color = theme.neg;
     }
 
     return SizedBox(

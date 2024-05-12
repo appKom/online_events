@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
 import 'package:http/http.dart' as http;
@@ -93,14 +92,14 @@ class _EventPageState extends State<EventPage> {
     if (widget.model.images.isEmpty) {
       return AspectRatio(
         aspectRatio: 16 / 9,
-        child: Container(color: OnlineTheme.background, child: const ImageDefault()),
+        child: Container(color: OnlineTheme.current.bg, child: const ImageDefault()),
       );
     }
 
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: Container(
-        color: OnlineTheme.white,
+        color: OnlineTheme.current.fg,
         child: CachedNetworkImage(
           imageUrl: widget.model.images.first.original,
           fit: BoxFit.cover,

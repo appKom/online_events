@@ -33,8 +33,7 @@ class NoFeedEventsState extends State<NoFeedEvents> {
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: onLeftArrowTap,
           ),
-          Text('$monthName $year',
-              style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.white)),
+          Text('$monthName $year', style: OnlineTheme.textStyle(size: 16, color: OnlineTheme.current.fg)),
           IconButton(
             icon: const Icon(Icons.arrow_forward_ios),
             onPressed: onRightArrowTap,
@@ -44,15 +43,7 @@ class NoFeedEventsState extends State<NoFeedEvents> {
     );
   }
 
-  static const List<String> _norwegianWeekDays = [
-    'Man',
-    'Tir',
-    'Ons',
-    'Tor',
-    'Fre',
-    'Lør',
-    'Søn'
-  ];
+  static const List<String> _norwegianWeekDays = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
 
   static Widget customDaysOfWeekBuilder(BuildContext context, int i) {
     return Center(
@@ -83,6 +74,8 @@ class NoFeedEventsState extends State<NoFeedEvents> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = OnlineTheme.current;
+
     return Padding(
       padding: MediaQuery.of(context).padding + OnlineTheme.horizontalPadding,
       child: SingleChildScrollView(
@@ -94,14 +87,12 @@ class NoFeedEventsState extends State<NoFeedEvents> {
               focusedDay: _focusedDay,
               onLeftArrowTap: () {
                 setState(() {
-                  _focusedDay = DateTime(
-                      _focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
+                  _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
                 });
               },
               onRightArrowTap: () {
                 setState(() {
-                  _focusedDay = DateTime(
-                      _focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
+                  _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
                 });
               },
             ),
@@ -132,16 +123,16 @@ class NoFeedEventsState extends State<NoFeedEvents> {
                   return Container(
                     margin: const EdgeInsets.all(2.0),
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: OnlineTheme.darkGray,
+                    decoration: BoxDecoration(
+                      color: theme.bg,
                       shape: BoxShape.rectangle,
                       border: Border.fromBorderSide(
                         BorderSide(
-                          color: Colors.white,
+                          color: theme.fg,
                           width: 2,
                         ),
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
                     ),
                     child: Text(
                       date.day.toString(),
@@ -153,10 +144,10 @@ class NoFeedEventsState extends State<NoFeedEvents> {
                   return Container(
                     margin: const EdgeInsets.all(4.0),
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: OnlineTheme.darkGray,
+                    decoration: BoxDecoration(
+                      color: OnlineTheme.current.card,
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
                     ),
                     child: Text(
                       date.day.toString(),
@@ -165,42 +156,35 @@ class NoFeedEventsState extends State<NoFeedEvents> {
                   );
                 },
               ),
-              calendarStyle: const CalendarStyle(
+              calendarStyle: CalendarStyle(
                 todayDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  // color: Colors.grey.shade700,
-                  color: OnlineTheme.gray0,
-                  border: Border.fromBorderSide(
-                      BorderSide(color: OnlineTheme.gray0, width: 2)),
-                  // border: Border.fromBorderSide(BorderSide(color: OnlineTheme.gray9, width: 2)),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: theme.card,
+                  border: Border.fromBorderSide(BorderSide(color: theme.border, width: 2)),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
                 ),
-                markerDecoration: BoxDecoration(
+                markerDecoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  // color: OnlineTheme.green5,
                   color: Colors.transparent,
                 ),
                 selectedDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  // color: Colors.grey.shade700,
-                  // color: Colors.transparent,
-                  border: Border.fromBorderSide(
-                      BorderSide(color: OnlineTheme.white, width: 2)),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  border: Border.fromBorderSide(BorderSide(color: OnlineTheme.current.fg, width: 2)),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
                 ),
               ),
-              headerStyle: const HeaderStyle(
+              headerStyle: HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
-                leftChevronIcon:
-                    Icon(Icons.arrow_back_ios, color: Colors.white),
-                rightChevronIcon:
-                    Icon(Icons.arrow_forward_ios, color: Colors.white),
-                titleTextStyle: TextStyle(color: Colors.white),
+                leftChevronIcon: Icon(Icons.arrow_back_ios, color: theme.fg),
+                rightChevronIcon: Icon(Icons.arrow_forward_ios, color: theme.fg),
+                titleTextStyle: TextStyle(
+                  color: theme.fg,
+                ),
               ),
-              daysOfWeekStyle: const DaysOfWeekStyle(
-                weekendStyle: TextStyle(color: OnlineTheme.white),
-                weekdayStyle: TextStyle(color: Colors.white),
+              daysOfWeekStyle: DaysOfWeekStyle(
+                weekendStyle: TextStyle(color: theme.fg),
+                weekdayStyle: TextStyle(color: theme.fg),
               ),
             ),
             const SizedBox(height: 48),

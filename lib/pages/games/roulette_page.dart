@@ -102,16 +102,16 @@ final challenges = [
 class RouletteState extends State<Roulette> {
   final StreamController<int> _selected = StreamController<int>();
 
-  static const red = FortuneItemStyle(
-    color: OnlineTheme.red,
+  static final red = FortuneItemStyle(
+    color: OnlineTheme.current.neg,
   );
 
-  static const green = FortuneItemStyle(
-    color: OnlineTheme.green,
+  static final green = FortuneItemStyle(
+    color: OnlineTheme.current.pos,
   );
 
-  static const black = FortuneItemStyle(
-    color: OnlineTheme.darkGray,
+  static final black = FortuneItemStyle(
+    color: OnlineTheme.current.card,
   );
 
   final fortuneList = List<FortuneItem>.empty(growable: true);
@@ -176,7 +176,7 @@ class RouletteState extends State<Roulette> {
     final padding = query.padding;
 
     return Container(
-      color: OnlineTheme.background,
+      color: OnlineTheme.current.bg,
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
@@ -227,9 +227,9 @@ class RouletteState extends State<Roulette> {
             child: AnimatedButton(onTap: () {
               AppNavigator.pop();
             }, childBuilder: (context, hover, pointerDown) {
-              return const Icon(
+              return Icon(
                 Icons.close_outlined,
-                color: OnlineTheme.white,
+                color: OnlineTheme.current.fg,
                 size: 32,
               );
             }),

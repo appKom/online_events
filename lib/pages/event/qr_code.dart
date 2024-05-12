@@ -40,7 +40,7 @@ class QRCode extends DarkOverlay {
                       child: AnimatedButton(
                         childBuilder: (context, hover, pointerDown) {
                           return QrImageView(
-                            backgroundColor: OnlineTheme.white,
+                            backgroundColor: OnlineTheme.current.fg,
                             data: qrData,
                             version: QrVersions.auto,
                             size: maxSize - padding.horizontal - 50,

@@ -53,7 +53,7 @@ class AttendanceCard extends StatefulWidget {
   final EventModel event;
   final AttendeeInfoModel attendeeInfo;
 
-  const AttendanceCard({Key? key, required this.event, required this.attendeeInfo}) : super(key: key);
+  const AttendanceCard({super.key, required this.event, required this.attendeeInfo});
 
   @override
   _AttendanceCardState createState() => _AttendanceCardState();
@@ -76,9 +76,9 @@ class _AttendanceCardState extends State<AttendanceCard> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     willNotifyBeforeRegistration.value = prefs.getBool(_notificationPrefKeyBeforeRegistration) ?? false;
     willNotifyBeforeEventStart.value = prefs.getBool(_notificationPrefKeyBeforeEventStart) ?? false;
-    eventCategories.keys.forEach((category) {
+    for (var category in eventCategories.keys) {
       eventCategories[category] = prefs.getBool(category) ?? false;
-    });
+    }
 
     if (widget.event.eventType == 2 && prefs.getBool('Bedriftspresentasjoner') == true) {
       isAlreadyNotified = true;
@@ -232,7 +232,7 @@ class _AttendanceCardState extends State<AttendanceCard> {
         'Varsling på ${eventType.toLowerCase()}',
         style: OnlineTheme.textStyle(
           weight: 5,
-          color: OnlineTheme.white,
+          color: OnlineTheme.current.fg,
         ),
       ),
     );
@@ -295,10 +295,15 @@ class _AttendanceCardState extends State<AttendanceCard> {
       await flutterLocalNotificationsPlugin.cancel(widget.event.id);
     }
 
+    final theme = OnlineTheme.current;
+
     return ValueListenableBuilder(
         valueListenable: willNotifyBeforeRegistration,
         builder: (context, willNotify, child) {
-          final color = willNotify ? OnlineTheme.red : OnlineTheme.yellow;
+          final bg = willNotify ? theme.negBg : theme.waitBg;
+          final border = willNotify ? theme.neg : theme.wait;
+          final fg = willNotify ? theme.negFg : theme.waitFg;
+
           final text = willNotify ? 'Ikke Varsle Meg' : 'Varsle Før Påmelding';
 
           return AnimatedButton(
@@ -313,10 +318,10 @@ class _AttendanceCardState extends State<AttendanceCard> {
               return Container(
                 height: OnlineTheme.buttonHeight,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.4),
+                  color: bg,
                   borderRadius: BorderRadius.circular(5.0),
                   border: Border.fromBorderSide(
-                    BorderSide(color: color, width: 2),
+                    BorderSide(color: border, width: 2),
                   ),
                 ),
                 alignment: Alignment.center,
@@ -324,7 +329,7 @@ class _AttendanceCardState extends State<AttendanceCard> {
                   text,
                   style: OnlineTheme.textStyle(
                     weight: 5,
-                    color: color,
+                    color: fg,
                   ),
                 ),
               );
@@ -395,6 +400,8 @@ class _AttendanceCardState extends State<AttendanceCard> {
       await flutterLocalNotificationsPlugin.cancel(widget.event.id);
     }
 
+    final theme = OnlineTheme.current;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -402,7 +409,9 @@ class _AttendanceCardState extends State<AttendanceCard> {
         ValueListenableBuilder(
             valueListenable: willNotifyBeforeEventStart,
             builder: (context, willNotify, child) {
-              final color = willNotify ? OnlineTheme.red : OnlineTheme.yellow;
+              final bg = willNotify ? theme.negBg : theme.waitBg;
+              final border = willNotify ? theme.neg : theme.wait;
+              final fg = willNotify ? theme.negFg : theme.waitFg;
               final text = willNotify ? 'Ikke Varsle Meg' : 'Varsle Før Start';
 
               return AnimatedButton(
@@ -417,16 +426,16 @@ class _AttendanceCardState extends State<AttendanceCard> {
                   return Container(
                     height: OnlineTheme.buttonHeight,
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.4),
+                      color: bg,
                       borderRadius: BorderRadius.circular(5.0),
-                      border: Border.fromBorderSide(BorderSide(color: color, width: 2)),
+                      border: Border.fromBorderSide(BorderSide(color: border, width: 2)),
                     ),
                     alignment: Alignment.center,
                     child: Text(
                       text,
                       style: OnlineTheme.textStyle(
                         weight: 5,
-                        color: color,
+                        color: fg,
                       ),
                     ),
                   );
@@ -459,7 +468,7 @@ class _AttendanceCardState extends State<AttendanceCard> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const ThemedIcon(icon: IconType.dateTime, size: 20),
+              ThemedIcon(icon: IconType.dateTime, size: 20),
               const SizedBox(width: 8),
               Text(
                 EventDateFormatter.formatEventDates(widget.event.startDate, widget.event.endDate),
@@ -474,7 +483,7 @@ class _AttendanceCardState extends State<AttendanceCard> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const ThemedIcon(icon: IconType.location, size: 20),
+                ThemedIcon(icon: IconType.location, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   widget.event.location,

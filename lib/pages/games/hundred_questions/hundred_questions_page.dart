@@ -26,10 +26,7 @@ class HundredQuestionsInfo extends StaticPage {
       padding: MediaQuery.of(context).padding,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            OnlineTheme.hundredGradientStartColor,
-            OnlineTheme.hundredGradientEndColor
-          ],
+          colors: [OnlineTheme.hundredGradientStartColor, OnlineTheme.hundredGradientEndColor],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           stops: [0.1, 0.9],
@@ -72,7 +69,7 @@ class HundredQuestionsInfo extends StaticPage {
             onTap: AppNavigator.pop,
             scale: 0.9,
             childBuilder: (context, hover, pointerDown) {
-              return const ThemedIcon(
+              return ThemedIcon(
                 icon: IconType.cross,
                 size: 24,
               );

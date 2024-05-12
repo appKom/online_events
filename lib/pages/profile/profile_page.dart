@@ -11,7 +11,6 @@ import 'package:online/components/navbar.dart';
 import 'package:online/components/skeleton_loader.dart';
 import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/login/login_page.dart';
-import 'package:online/pages/menu/settings.dart';
 import 'package:online/theme/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -470,7 +469,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: List.generate(
                 count,
                 (i) {
-                  final color = i < progress ? OnlineTheme.yellow : OnlineTheme.darkGray;
+                  final color = i < progress ? OnlineTheme.current.primary : OnlineTheme.current.muted;
 
                   return Expanded(
                     child: Padding(
@@ -523,7 +522,7 @@ class _ProfilePageState extends State<ProfilePage> {
             header,
             style: OnlineTheme.header(),
           ),
-          const ThemedIcon(icon: IconType.userEdit, size: 18),
+          ThemedIcon(icon: IconType.userEdit, size: 18),
         ],
       ),
     );
@@ -605,19 +604,21 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navbar.navigateTo(NavbarPage.home);
                           },
                           childBuilder: (context, hover, pointerDown) {
+                            final theme = OnlineTheme.current;
+
                             return Container(
                               height: OnlineTheme.buttonHeight,
                               decoration: BoxDecoration(
-                                color: OnlineTheme.yellow.darken(40),
+                                color: theme.primaryBg,
                                 borderRadius: OnlineTheme.buttonRadius,
-                                border: const Border.fromBorderSide(
-                                  BorderSide(color: OnlineTheme.yellow, width: 2),
+                                border: Border.fromBorderSide(
+                                  BorderSide(color: theme.primary, width: 2),
                                 ),
                               ),
                               child: Center(
                                 child: Text(
                                   'Logg Ut',
-                                  style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.yellow),
+                                  style: OnlineTheme.textStyle(weight: 5, color: theme.primaryFg),
                                 ),
                               ),
                             );

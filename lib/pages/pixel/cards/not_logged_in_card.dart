@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/theme/theme.dart';
 
 class NotLoggedInCard extends StatelessWidget {
@@ -17,7 +16,6 @@ class NotLoggedInCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: OnlineHeader.height(context)),
             Center(
               child: Text(
                 'Du må være inlogget for å se Pixel',

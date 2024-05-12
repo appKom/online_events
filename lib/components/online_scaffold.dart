@@ -15,7 +15,7 @@ abstract class ScrollablePage extends OnlinePage {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: OnlineTheme.background,
+      color: OnlineTheme.current.bg,
       child: SingleChildScrollView(
         padding: EdgeInsets.zero,
         child: Column(
@@ -35,7 +35,7 @@ abstract class StaticPage extends OnlinePage {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: OnlineTheme.background,
+      color: OnlineTheme.current.bg,
       child: content(context),
     );
   }
@@ -51,17 +51,15 @@ abstract class OnlinePage extends StatelessWidget {
 class OnlineScaffold extends StatelessWidget {
   const OnlineScaffold({super.key});
 
-  static ValueNotifier<OnlinePage> page =
-      ValueNotifier(const LoadingPageDisplay());
+  static ValueNotifier<OnlinePage> page = ValueNotifier(const LoadingPageDisplay());
 
   PreferredSize onlineHeader(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
     return PreferredSize(
       preferredSize: const Size.fromHeight(75),
       child: AppBar(
-        shape: const Border(
-            bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
-        backgroundColor: OnlineTheme.background.withOpacity(0.9),
+        shape: const Border(bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        backgroundColor: OnlineTheme.current.bg.withOpacity(0.9),
         elevation: 0,
         flexibleSpace: Container(
           padding: EdgeInsets.only(
@@ -98,8 +96,7 @@ class OnlineScaffold extends StatelessWidget {
                   return SvgPicture.asset(
                     'assets/svg/bekk.svg',
                     height: 36,
-                    colorFilter: const ColorFilter.mode(
-                        OnlineTheme.white, BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(OnlineTheme.current.fg, BlendMode.srcIn),
                   );
                 }),
               ],
@@ -114,13 +111,12 @@ class OnlineScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: onlineHeader(context),
-      backgroundColor: OnlineTheme.background,
+      backgroundColor: OnlineTheme.current.bg,
       extendBodyBehindAppBar: true,
       body: Navigator(
         key: AppNavigator.onlineNavigator,
         initialRoute: '/',
-        onGenerateInitialRoutes:
-            (NavigatorState navigator, String initialRouteName) {
+        onGenerateInitialRoutes: (NavigatorState navigator, String initialRouteName) {
           return [
             MaterialPageRoute(builder: (context) => const HomePage()),
           ];

@@ -32,29 +32,31 @@ class EventParticipants extends StatelessWidget {
   /// If the badge is yellow, you are on a waitlist.
   /// If the badge is gray, you are neither.
   ({Color border, Color fill, Color icon}) yourStatus() {
+    final theme = OnlineTheme.current;
+
     // You are on the waitlist
     if (attendeeInfoModel.isOnWaitlist) {
       return (
-        border: OnlineTheme.yellow,
-        fill: OnlineTheme.yellow.withOpacity(0.4),
-        icon: OnlineTheme.yellow,
+        border: theme.wait,
+        fill: theme.waitBg,
+        icon: theme.waitFg,
       );
     }
 
     // You are registered
     if (attendeeInfoModel.isAttendee) {
       return (
-        border: OnlineTheme.green,
-        fill: OnlineTheme.green.withOpacity(0.4),
-        icon: OnlineTheme.green,
+        border: theme.pos,
+        fill: theme.posBg,
+        icon: theme.posFg,
       );
     }
 
     // You are neither registered nor on the waitlist
     return (
-      border: OnlineTheme.white,
-      fill: OnlineTheme.background,
-      icon: OnlineTheme.white,
+      border: theme.fg,
+      fill: theme.bg,
+      icon: theme.fg,
     );
   }
 

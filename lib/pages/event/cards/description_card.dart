@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import '../../../core/client/client.dart';
+import '/core/client/client.dart';
 import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
 
@@ -74,12 +74,12 @@ class DescriptionCardState extends State<EventDescriptionCard> {
           data: _getText(),
           styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
             p: OnlineTheme.textStyle(),
-            h1: const TextStyle(color: OnlineTheme.white),
-            h2: const TextStyle(color: OnlineTheme.white),
-            h3: const TextStyle(color: OnlineTheme.white),
-            h4: const TextStyle(color: OnlineTheme.white),
-            h5: const TextStyle(color: OnlineTheme.white),
-            h6: const TextStyle(color: OnlineTheme.white),
+            h1: TextStyle(color: OnlineTheme.current.fg),
+            h2: TextStyle(color: OnlineTheme.current.fg),
+            h3: TextStyle(color: OnlineTheme.current.fg),
+            h4: TextStyle(color: OnlineTheme.current.fg),
+            h5: TextStyle(color: OnlineTheme.current.fg),
+            h6: TextStyle(color: OnlineTheme.current.fg),
           ),
           onTapLink: (text, href, title) {
             if (href == null) return;
@@ -89,7 +89,7 @@ class DescriptionCardState extends State<EventDescriptionCard> {
         const SizedBox(height: 10),
         Text(
           _isExpanded ? 'Vis mindre' : 'Vis mer',
-          style: OnlineTheme.textStyle(color: OnlineTheme.yellow),
+          style: OnlineTheme.textStyle(color: OnlineTheme.current.primary),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

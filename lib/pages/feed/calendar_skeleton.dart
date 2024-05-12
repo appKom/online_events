@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../components/skeleton_loader.dart';
-import '../../theme/theme.dart';
+import '/components/skeleton_loader.dart';
+import '/theme/theme.dart';
 import 'calendar_card.dart';
 
 Widget skeletonLoader(BuildContext context) {
-  final padding =
-      MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+  final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
   final time = DateTime.now();
   String monthName = norwegianMonths[time.month - 1];
@@ -24,9 +23,7 @@ Widget skeletonLoader(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('$monthName $year',
-                  style: OnlineTheme.textStyle(
-                      size: 16, color: OnlineTheme.white)),
+              Text('$monthName $year', style: OnlineTheme.textStyle(size: 16)),
             ],
           ),
         ),

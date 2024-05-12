@@ -37,15 +37,16 @@ enum IconType {
   menuFilled,
   trash,
   download,
+  downArrow,
 }
 
 class ThemedIcon extends StatelessWidget {
-  const ThemedIcon({
+  ThemedIcon({
     super.key,
     required this.icon,
     required this.size,
-    this.color = OnlineTheme.white,
-  });
+    Color? color,
+  }) : color = color ?? OnlineTheme.current.fg;
 
   final IconType icon;
   final Color color;

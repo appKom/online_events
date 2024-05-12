@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:online/services/app_navigator.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/pages/pixel/models/user_post.dart';
 import '/theme/theme.dart';
@@ -53,9 +52,8 @@ class LikedByPageState extends State<LikeByPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: OnlineTheme.background,
+      backgroundColor: OnlineTheme.current.bg,
       body: Column(children: [
-        SizedBox(height: OnlineHeader.height(context) + 20),
         Center(
           child: Row(
             children: [

@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart' as io;
 import '/pages/pixel/models/user_post.dart';
@@ -153,7 +152,7 @@ class CommentPageState extends State<CommentPage> {
     final userProfile = io.Client.userCache.value;
 
     return Scaffold(
-      backgroundColor: OnlineTheme.background,
+      backgroundColor: OnlineTheme.current.bg,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -163,7 +162,6 @@ class CommentPageState extends State<CommentPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: OnlineHeader.height(context) - 10),
                     Row(
                       children: [
                         IconButton(
@@ -267,7 +265,7 @@ class CommentPageState extends State<CommentPage> {
                                   ),
                                   if (userProfile!.ntnuUsername == username)
                                     IconButton(
-                                      icon: const Icon(Icons.delete, color: OnlineTheme.white),
+                                      icon: Icon(Icons.delete, color: OnlineTheme.current.fg),
                                       onPressed: () async {
                                         await deleteComment(index);
                                       },
@@ -290,19 +288,19 @@ class CommentPageState extends State<CommentPage> {
                 right: 10,
                 bottom: 80 + MediaQuery.of(context).padding.bottom,
               ),
-              color: OnlineTheme.background,
+              color: OnlineTheme.current.bg,
               child: TextFormField(
                 controller: _titleController,
-                style: OnlineTheme.textStyle(color: OnlineTheme.white),
+                style: OnlineTheme.textStyle(color: OnlineTheme.current.fg),
                 decoration: InputDecoration(
                   labelText: 'Skriv en kommentar',
-                  labelStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                  hintStyle: OnlineTheme.textStyle(color: OnlineTheme.white),
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: OnlineTheme.white),
+                  labelStyle: OnlineTheme.textStyle(color: OnlineTheme.current.fg),
+                  hintStyle: OnlineTheme.textStyle(color: OnlineTheme.current.fg),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: OnlineTheme.current.fg),
                   ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: OnlineTheme.white),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: OnlineTheme.current.fg),
                   ),
                 ),
                 maxLength: 350,

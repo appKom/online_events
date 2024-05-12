@@ -126,6 +126,8 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   }
 
   Widget registerButton() {
+    final theme = OnlineTheme.current;
+
     return AnimatedButton(
       onTap: () {
         Client.launchInBrowser('https://online.ntnu.no/events/${widget.model.id}');
@@ -137,13 +139,13 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             // gradient: OnlineTheme.greenGradient,
-            color: OnlineTheme.green.withOpacity(0.4),
+            color: theme.posBg,
             borderRadius: BorderRadius.circular(5),
-            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.green, width: 2)),
+            border: Border.fromBorderSide(BorderSide(color: theme.pos, width: 2)),
           ),
           child: Text(
             'Meld På',
-            style: OnlineTheme.textStyle(weight: 5, color: OnlineTheme.green),
+            style: OnlineTheme.textStyle(weight: 5, color: theme.posFg),
           ),
         );
       },
@@ -209,8 +211,14 @@ class _EventCardButtonsState extends State<EventCardButtons> {
 
   // TODO: At the moment, there are no cases where button will be shown when disabled, but maybe one day
   Widget unregisterButton(bool enabled) {
-    final fill = enabled ? OnlineTheme.red.withOpacity(0.4) : Colors.transparent;
-    final border = enabled ? OnlineTheme.red : OnlineTheme.grayBorder;
+    // final fill = enabled ? OnlineTheme.red.withOpacity(0.4) : Colors.transparent;
+    // final border = enabled ? OnlineTheme.red : OnlineTheme.grayBorder;
+
+    final theme = OnlineTheme.current;
+
+    final bg = enabled ? theme.negBg : theme.muted;
+    final border = enabled ? theme.neg : theme.muted;
+    final fg = enabled ? theme.negFg : theme.mutedForeground;
 
     return AnimatedButton(
       onTap: enabled ? showUnregisterDialog : null,
@@ -221,14 +229,14 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
-            color: fill,
+            color: bg,
             border: Border.fromBorderSide(BorderSide(color: border, width: 2)),
           ),
           child: Text(
             'Meld Av',
             style: OnlineTheme.textStyle(
               weight: 5,
-              color: border,
+              color: fg,
             ),
           ),
         );
@@ -237,6 +245,8 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   }
 
   Widget waitlistButton() {
+    final theme = OnlineTheme.current;
+
     return AnimatedButton(
       onTap: () {
         Client.launchInBrowser('https://online.ntnu.no/events/${widget.model.id}');
@@ -247,15 +257,15 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           height: 40,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: OnlineTheme.yellow.withOpacity(0.4),
+            color: theme.waitBg,
             borderRadius: BorderRadius.circular(5.0),
-            border: const Border.fromBorderSide(BorderSide(color: OnlineTheme.yellow, width: 2)),
+            border: Border.fromBorderSide(BorderSide(color: theme.wait, width: 2)),
           ),
           child: Text(
             'Meld På Venteliste',
             style: OnlineTheme.textStyle(
               weight: 5,
-              color: OnlineTheme.yellow,
+              color: theme.waitFg,
             ),
           ),
         );

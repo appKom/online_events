@@ -154,12 +154,12 @@ class EventCard extends StatelessWidget {
 
   Widget defaultWithBorder() {
     return Container(
-      decoration: const BoxDecoration(
-          border: Border.fromBorderSide(
+      decoration: BoxDecoration(
+          border: const Border.fromBorderSide(
             BorderSide(width: 2, color: OnlineTheme.grayBorder),
           ),
           borderRadius: OnlineTheme.buttonRadius,
-          color: OnlineTheme.background),
+          color: OnlineTheme.current.bg),
       child: const ImageDefault(),
     );
   }
@@ -170,7 +170,7 @@ class EventCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: Container(
-        color: OnlineTheme.white,
+        color: OnlineTheme.current.fg,
         child: CachedNetworkImage(
           imageUrl: model.images.first.md,
           fit: BoxFit.cover,
@@ -216,13 +216,13 @@ class EventCard extends StatelessWidget {
                               IconLabel(
                                 icon: IconType.dateTime,
                                 label: formatDateSpan(model.startDate, model.endDate),
-                                color: OnlineTheme.lightGray,
+                                color: OnlineTheme.current.mutedForeground,
                                 fontWeight: 5,
                               ),
                               IconLabel(
                                 icon: IconType.usersFilled,
                                 label: participants(),
-                                color: OnlineTheme.lightGray,
+                                color: OnlineTheme.current.mutedForeground,
                                 iconSize: 16,
                               ),
                             ],
@@ -251,7 +251,7 @@ class EventCard extends StatelessWidget {
     return Text(
       shortenName(),
       style: OnlineTheme.textStyle(
-        color: OnlineTheme.white,
+        color: OnlineTheme.current.fg,
         weight: 6,
       ),
       overflow: TextOverflow.ellipsis,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '/components/animated_button.dart';
-import '/components/online_header.dart';
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
 
@@ -13,14 +12,13 @@ class BytesHomePage extends ScrollablePage {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
     return Container(
-      color: OnlineTheme.green4,
+      color: OnlineTheme.current.pos,
       child: Padding(
         padding: EdgeInsets.only(left: padding.left, right: padding.right),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: OnlineHeader.height(context) + 40),
               Text(
                 'Velkommen til Bytes <3',
                 style: OnlineTheme.header(),
@@ -45,7 +43,7 @@ class BytesHomePage extends ScrollablePage {
                         return Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: OnlineTheme.red1,
+                            color: OnlineTheme.current.neg,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
