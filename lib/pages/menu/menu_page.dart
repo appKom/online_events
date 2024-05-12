@@ -248,7 +248,7 @@ class _MenuPageState extends State<MenuPage> {
                               color: OnlineTheme.white,
                               size: 18,
                             ),
-                            const SizedBox(width: 17),
+                            const SizedBox(width: 22),
                             Text(
                               "Last ned brukerdata",
                               style: OnlineTheme.textStyle(),
@@ -267,7 +267,7 @@ class _MenuPageState extends State<MenuPage> {
                               color: OnlineTheme.white,
                               size: 20,
                             ),
-                            const SizedBox(width: 17),
+                            const SizedBox(width: 20),
                             Text(
                               "Slett brukerdata",
                               style: OnlineTheme.textStyle(),
