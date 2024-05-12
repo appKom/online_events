@@ -83,9 +83,9 @@ Og de moret seg og sang; “Høyre arm, venstre arm, høyre fot, venstre fot, ru
                     h4: TextStyle(color: OnlineTheme.current.fg),
                     h5: TextStyle(color: OnlineTheme.current.fg),
                     h6: TextStyle(color: OnlineTheme.current.fg),
-                    horizontalRuleDecoration: const BoxDecoration(
+                    horizontalRuleDecoration: BoxDecoration(
                       border: Border(
-                        top: BorderSide(width: 1, color: OnlineTheme.grayBorder),
+                        top: BorderSide(width: 1, color: OnlineTheme.current.border),
                       ),
                     ),
                   ),

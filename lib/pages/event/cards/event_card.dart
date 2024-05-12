@@ -13,7 +13,7 @@ class OnlineCard extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: OnlineTheme.current.card,
-        border: Border.all(color: OnlineTheme.grayBorder),
+        border: Border.all(color: OnlineTheme.current.border),
         borderRadius: BorderRadius.circular(8),
         boxShadow: const [
           BoxShadow(

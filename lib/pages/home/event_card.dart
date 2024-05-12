@@ -155,9 +155,7 @@ class EventCard extends StatelessWidget {
   Widget defaultWithBorder() {
     return Container(
       decoration: BoxDecoration(
-          border: const Border.fromBorderSide(
-            BorderSide(width: 2, color: OnlineTheme.grayBorder),
-          ),
+          border: Border.fromBorderSide(BorderSide(width: 2, color: OnlineTheme.current.border)),
           borderRadius: OnlineTheme.buttonRadius,
           color: OnlineTheme.current.bg),
       child: const ImageDefault(),

@@ -17,8 +17,7 @@ class GamesPage extends ScrollablePage {
 
   @override
   Widget content(BuildContext context) {
-    final padding =
-        MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
       padding: padding,
@@ -113,11 +112,11 @@ class GameCard extends StatelessWidget {
         return Container(
           width: 250,
           height: 200,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border.fromBorderSide(
-              BorderSide(width: 2, color: OnlineTheme.grayBorder),
+              BorderSide(width: 2, color: OnlineTheme.current.border),
             ),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -125,11 +124,8 @@ class GameCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom:
-                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
-                    ),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(width: 2, color: OnlineTheme.current.border)),
                   ),
                   child: AspectRatio(
                     aspectRatio: 16 / 9,

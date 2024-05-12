@@ -90,10 +90,8 @@ for en glad studentertid. :|
                     h4: TextStyle(color: OnlineTheme.current.fg),
                     h5: TextStyle(color: OnlineTheme.current.fg),
                     h6: TextStyle(color: OnlineTheme.current.fg),
-                    horizontalRuleDecoration: const BoxDecoration(
-                      border: Border(
-                        top: BorderSide(width: 1, color: OnlineTheme.grayBorder),
-                      ),
+                    horizontalRuleDecoration: BoxDecoration(
+                      border: Border(top: BorderSide(width: 1, color: OnlineTheme.current.border)),
                     ),
                   ),
                 ),

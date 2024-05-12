@@ -47,8 +47,7 @@ class ArticleCarousel extends StatelessWidget {
     final day = date.day;
     final dayString = day.toString().padLeft(2, '0');
 
-    final month =
-        date.month - 1; // Months go from 1-12 but we need an index of 0-11
+    final month = date.month - 1; // Months go from 1-12 but we need an index of 0-11
     final monthString = months[month];
 
     return '$dayString. $monthString';
@@ -87,13 +86,11 @@ class ArticleCarousel extends StatelessWidget {
         return Container(
           width: 250,
           height: 300,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border.fromBorderSide(
-              BorderSide(width: 2, color: OnlineTheme.grayBorder),
+              BorderSide(width: 2, color: OnlineTheme.current.border),
             ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -101,11 +98,8 @@ class ArticleCarousel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom:
-                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
-                    ),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(width: 2, color: OnlineTheme.current.border)),
                   ),
                   child: AspectRatio(
                     aspectRatio: 16 / 9,

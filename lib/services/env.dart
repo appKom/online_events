@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Utility class for getting environment variables found in `lib/.env`.

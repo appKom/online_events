@@ -164,7 +164,7 @@ class CalendarCardState extends State<CalendarCard> {
                 margin: const EdgeInsets.all(2.0),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: eventful ? theme.pos : theme.card,
+                  color: eventful ? theme.posBg : theme.card,
                   shape: BoxShape.rectangle,
                   border: Border.fromBorderSide(
                     BorderSide(
@@ -190,8 +190,9 @@ class CalendarCardState extends State<CalendarCard> {
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: theme.pos,
+                    color: theme.posBg,
                     shape: BoxShape.rectangle,
+                    border: Border.all(color: theme.pos, width: 2),
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Text(

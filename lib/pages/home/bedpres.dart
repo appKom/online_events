@@ -216,13 +216,11 @@ class BedpresCard extends StatelessWidget {
             Container(
               width: 250,
               height: 300,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border.fromBorderSide(
-                  BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                  BorderSide(width: 2, color: OnlineTheme.current.border),
                 ),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
@@ -230,9 +228,9 @@ class BedpresCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                          bottom: BorderSide(width: 2, color: OnlineTheme.current.bg),
                         ),
                       ),
                       child: AspectRatio(

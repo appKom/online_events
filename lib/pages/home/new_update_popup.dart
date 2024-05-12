@@ -59,10 +59,8 @@ Vi har nå lagt til flere sanger i sangboken vår. Sjekk ut "Himmelseng" og "Kam
                     h4: TextStyle(color: fg),
                     h5: TextStyle(color: fg),
                     h6: TextStyle(color: fg),
-                    horizontalRuleDecoration: const BoxDecoration(
-                      border: Border(
-                        top: BorderSide(width: 1, color: OnlineTheme.grayBorder),
-                      ),
+                    horizontalRuleDecoration: BoxDecoration(
+                      border: Border(top: BorderSide(width: 1, color: OnlineTheme.current.border)),
                     ),
                   ),
                 ),

@@ -113,7 +113,7 @@ sealed class OnlineTheme {
   static const gray15 = Color(0xFF4C566A); // Only used once by skeleton loader
   static const gray16 = Color(0xFF797979); // Only used once by skeleton loader
 
-  static const grayBorder = Color(0xFF22272F);
+  // static const grayBorder = Color(0xFF22272F);
 
   static const hundredPrimaryTextColor = Color(0xFF414C6B);
   static const hundredSecondaryTextColor = Color(0xFFE4979E);

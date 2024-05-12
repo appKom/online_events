@@ -100,9 +100,9 @@ class HobbiesCard extends StatelessWidget {
 
   Widget defaultWithBorder() {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border.fromBorderSide(
-          BorderSide(width: 2, color: OnlineTheme.grayBorder),
+          BorderSide(width: 2, color: OnlineTheme.current.border),
         ),
         borderRadius: OnlineTheme.buttonRadius,
       ),

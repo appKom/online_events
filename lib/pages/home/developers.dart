@@ -32,13 +32,11 @@ class DeveloperCarousel extends StatelessWidget {
         Container(
           width: 200,
           height: 200,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border.fromBorderSide(
-              BorderSide(width: 2, color: OnlineTheme.grayBorder),
+              BorderSide(width: 2, color: OnlineTheme.current.border),
             ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),

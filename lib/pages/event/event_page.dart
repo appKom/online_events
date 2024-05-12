@@ -119,9 +119,9 @@ class _EventPageState extends State<EventPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                bottom: BorderSide(width: 2, color: OnlineTheme.current.border),
               ),
             ),
             child: coverImage(),

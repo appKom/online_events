@@ -98,21 +98,18 @@ class SongCard extends StatelessWidget {
         return Container(
           width: 250,
           height: 200,
-          decoration: const BoxDecoration(
-            border: Border.fromBorderSide(
-              BorderSide(width: 2, color: OnlineTheme.grayBorder),
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+          decoration: BoxDecoration(
+            border: Border.fromBorderSide(BorderSide(width: 2, color: OnlineTheme.current.border)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Column(
               children: [
                 Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
-                      bottom:
-                          BorderSide(width: 2, color: OnlineTheme.grayBorder),
+                      bottom: BorderSide(width: 2, color: OnlineTheme.current.bg),
                     ),
                   ),
                   child: AspectRatio(

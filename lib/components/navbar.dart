@@ -138,7 +138,7 @@ class NavbarState extends State<Navbar> {
     return Container(
       decoration: BoxDecoration(
         color: OnlineTheme.current.bg.withOpacity(0.9),
-        border: const Border(top: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        border: Border(top: BorderSide(width: 1, color: OnlineTheme.current.bg)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -58,7 +58,7 @@ class OnlineScaffold extends StatelessWidget {
     return PreferredSize(
       preferredSize: const Size.fromHeight(75),
       child: AppBar(
-        shape: const Border(bottom: BorderSide(width: 1, color: OnlineTheme.grayBorder)),
+        shape: Border(bottom: BorderSide(width: 1, color: OnlineTheme.current.border)),
         backgroundColor: OnlineTheme.current.bg.withOpacity(0.9),
         elevation: 0,
         flexibleSpace: Container(
