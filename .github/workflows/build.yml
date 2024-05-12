@@ -36,12 +36,11 @@ jobs:
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> lib/.env
 
 
-      - name: Decode key.properties and local.properties
+      - name: Decode key.properties
         env:
           KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
-        run:
-          echo $KEY_PROPERTIES | base64 --decode > key.properties 
-          echo "key.properties contents:" 
+        run: |
+          echo $KEY_PROPERTIES | base64 --decode > key.properties | echo "key.properties contents:" | cat key.properties
           cat key.properties
 
       - uses: subosito/flutter-action@v2
