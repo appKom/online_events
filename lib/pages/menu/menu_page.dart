@@ -1,22 +1,21 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:online/pages/event/cards/event_card.dart';
-import 'package:online/pages/home/info_page.dart';
-import 'package:online/pages/menu/profile_card.dart';
-import 'package:online/pages/menu/settings.dart';
-import 'package:online/services/env.dart';
-import 'package:online/theme/themed_icon.dart';
 
-import '../../components/animated_button.dart';
-import '../../components/navbar.dart';
-import '../../components/online_scaffold.dart';
-import '../../core/client/client.dart' as io;
-import '../../core/models/user_model.dart';
-import '../../services/app_navigator.dart';
-import '../../services/authenticator.dart';
-import '../../theme/theme.dart';
 import '../profile/delete_user.dart';
+import '/components/animated_button.dart';
+import '/components/online_scaffold.dart';
+import '/core/client/client.dart' as io;
+import '/core/models/user_model.dart';
+import '/pages/event/cards/event_card.dart';
+import '/pages/home/info_page.dart';
+import '/pages/menu/profile_card.dart';
+import '/pages/menu/settings.dart';
+import '/services/app_navigator.dart';
+import '/services/authenticator.dart';
+import '/services/env.dart';
+import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -127,20 +126,9 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Future login() async {
-    final response = await Authenticator.login();
-
-    if (response != null) {
-      AppNavigator.replaceWithPage(const MenuPageDisplay());
-      NavbarState.setActiveMenu();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
-
-    final theme = OnlineTheme.current;
 
     return Padding(
       padding: padding,
@@ -278,65 +266,6 @@ class _MenuPageState extends State<MenuPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
-          if (Authenticator.isLoggedIn())
-            SizedBox(
-              height: 40,
-              child: AnimatedButton(
-                onTap: () async {
-                  await Authenticator.logout();
-                  // AppNavigator.replaceWithPage(const LoginPage());
-                  Navbar.navigateTo(NavbarPage.home);
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    height: OnlineTheme.buttonHeight,
-                    decoration: BoxDecoration(
-                      color: theme.primaryBg,
-                      borderRadius: OnlineTheme.buttonRadius,
-                      border: Border.fromBorderSide(
-                        BorderSide(color: theme.primary, width: 2),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Logg Ut',
-                        style: OnlineTheme.textStyle(weight: 5, color: theme.primaryFg),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          if (!Authenticator.isLoggedIn())
-            SizedBox(
-              height: 40,
-              child: AnimatedButton(
-                onTap: () async {
-                  login();
-                },
-                childBuilder: (context, hover, pointerDown) {
-                  return Container(
-                    height: OnlineTheme.buttonHeight,
-                    decoration: BoxDecoration(
-                      color: theme.posBg,
-                      borderRadius: OnlineTheme.buttonRadius,
-                      border: Border.fromBorderSide(
-                        BorderSide(color: theme.pos, width: 2),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Logg Inn',
-                        style: OnlineTheme.textStyle(weight: 5, color: theme.posFg),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
           const SizedBox(
             height: 24,
           ),

@@ -40,6 +40,7 @@ dependencies:
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.2
   swipeable_page_route: ^0.4.2
+  native_ios_dialog: ^0.2.1
 
 dev_dependencies:
   flutter_test:
