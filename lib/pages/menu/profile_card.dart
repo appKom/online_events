@@ -91,8 +91,6 @@ class ProfileCard extends StaticPage {
   Future<void> _login() async {
     final response = await Authenticator.login();
 
-    await Client.getUserProfile();
-
     if (response != null) {
       AppNavigator.replaceWithPage(const MenuPageDisplay());
       NavbarState.setActiveMenu();

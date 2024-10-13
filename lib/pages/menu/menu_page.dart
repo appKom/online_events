@@ -1,3 +1,4 @@
+import 'package:accordion/accordion.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,10 @@ class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
 
   @override
-  State<MenuPage> createState() => _MenuPageState();
+  State<MenuPage> createState() => MenuPageState();
 }
 
-class _MenuPageState extends State<MenuPage> {
+class MenuPageState extends State<MenuPage> {
   late Storage storage;
   late Databases database;
   UserModel? theUser;
@@ -127,6 +128,165 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  static Widget accordion(String title, Widget icon, List<Widget> children) {
+    return Accordion(
+      headerBackgroundColor: Colors.transparent,
+      contentBackgroundColor: OnlineTheme.current.card,
+      contentBorderWidth: 0,
+      contentHorizontalPadding: 0,
+      leftIcon: icon,
+      scaleWhenAnimating: false,
+      headerPadding: EdgeInsets.zero,
+      paddingListTop: 0,
+      paddingListBottom: 0,
+      paddingListHorizontal: 0,
+      paddingBetweenClosedSections: 0,
+      initialOpeningSequenceDelay: 0,
+      disableScrolling: true,
+      openAndCloseAnimation: true,
+      paddingBetweenOpenSections: 0,
+      contentVerticalPadding: 0,
+      children: [
+        AccordionSection(
+          header: Text(title, style: OnlineTheme.textStyle()),
+          content: Column(
+            children: children,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget helpAndSupportCard() {
+    return OnlineCard(
+      child: accordion(
+        "Hjelp og Støtte",
+        Lucide(LucideIcon.users, size: 24),
+        [
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              AnimatedButton(onTap: () {
+                final url = Uri.parse(_helpUrl);
+                launchUrl(url);
+              }, childBuilder: (context, hover, pointerDown) {
+                return Row(
+                  children: [
+                    Lucide(
+                      LucideIcon.user,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      "Opplevd noe ugreit?",
+                      style: OnlineTheme.textStyle(),
+                    ),
+                  ],
+                );
+              }),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              AnimatedButton(onTap: () {
+                AppNavigator.navigateToPage(const InfoPage());
+              }, childBuilder: (context, hover, pointerDown) {
+                return Row(
+                  children: [
+                    Lucide(
+                      LucideIcon.notebook,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      "Om Online Appen",
+                      style: OnlineTheme.textStyle(),
+                    ),
+                  ],
+                );
+              }),
+            ],
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Row(
+            children: [
+              AnimatedButton(
+                onTap: () {
+                  io.Client.launchInBrowser('https://forms.gle/xUTTN95CuWtSbNCS7');
+                },
+                childBuilder: (context, hover, pointerDown) {
+                  return Row(
+                    children: [
+                      Lucide(
+                        LucideIcon.bug,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        "Rapporter en bug",
+                        style: OnlineTheme.textStyle(),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget settingsAndPrivacyCard() {
+    return OnlineCard(
+      child: accordion(
+        'Din Data',
+        Lucide(LucideIcon.database, size: 24),
+        [
+          const SizedBox(height: 16),
+          AnimatedButton(onTap: () {
+            io.Client.launchInBrowser('https://online.ntnu.no/profile/settings/userdata');
+          }, childBuilder: (context, hover, pointerDown) {
+            return Row(
+              children: [
+                Lucide(
+                  LucideIcon.download,
+                  size: 20,
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  "Last ned brukerdata",
+                  style: OnlineTheme.textStyle(),
+                ),
+              ],
+            );
+          }),
+          const SizedBox(height: 24),
+          AnimatedButton(onTap: () {
+            initiateDeletion(context);
+          }, childBuilder: (context, hover, pointerDown) {
+            return Row(
+              children: [
+                Lucide(
+                  LucideIcon.trash,
+                  size: 20,
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  "Slett brukerdata",
+                  style: OnlineTheme.textStyle(),
+                ),
+              ],
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
   static const _helpUrl =
       "https://docs.google.com/forms/d/e/1FAIpQLScvjEqVsiRIYnVqCNqbH_-nmYk3Ux6la8a7KZzsY3sJDbW-iA/viewform";
 
@@ -147,157 +307,11 @@ class _MenuPageState extends State<MenuPage> {
           ),
           const SettingsPage(),
           const SizedBox(height: 24),
-          OnlineCard(
-            child: ExpansionTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
-              tilePadding: EdgeInsets.zero,
-              title: Text("Hjelp og støtte", style: OnlineTheme.textStyle()),
-              leading: ThemedIcon(icon: IconType.users, size: 24),
-              trailing: ThemedIcon(icon: IconType.downArrow, size: 24),
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        AnimatedButton(onTap: () {
-                          final url = Uri.parse(_helpUrl);
-                          launchUrl(url);
-                        }, childBuilder: (context, hover, pointerDown) {
-                          return Row(
-                            children: [
-                              ThemedIcon(
-                                icon: IconType.user,
-                                size: 24,
-                                color: OnlineTheme.current.fg,
-                              ),
-                              const SizedBox(
-                                width: 17,
-                              ),
-                              Text(
-                                "Opplevd noe ugreit?",
-                                style: OnlineTheme.textStyle(),
-                              ),
-                            ],
-                          );
-                        }),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Row(
-                      children: [
-                        AnimatedButton(onTap: () {
-                          AppNavigator.navigateToPage(const InfoPage());
-                        }, childBuilder: (context, hover, pointerDown) {
-                          return Row(
-                            children: [
-                              Icon(
-                                Icons.info_outline,
-                                color: OnlineTheme.current.fg,
-                              ),
-                              const SizedBox(
-                                width: 17,
-                              ),
-                              Text(
-                                "Om Online Appen",
-                                style: OnlineTheme.textStyle(),
-                              ),
-                            ],
-                          );
-                        }),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Row(
-                      children: [
-                        AnimatedButton(onTap: () {
-                          io.Client.launchInBrowser('https://forms.gle/xUTTN95CuWtSbNCS7');
-                        }, childBuilder: (context, hover, pointerDown) {
-                          return Row(
-                            children: [
-                              Icon(
-                                Icons.bug_report_outlined,
-                                color: OnlineTheme.current.fg,
-                              ),
-                              const SizedBox(width: 17),
-                              Text(
-                                "Rapporter en bug",
-                                style: OnlineTheme.textStyle(),
-                              ),
-                            ],
-                          );
-                        }),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
+          helpAndSupportCard(),
           const SizedBox(
             height: 24,
           ),
-          OnlineCard(
-            child: ExpansionTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
-              tilePadding: EdgeInsets.zero,
-              title: Text("Innstillinger og personvern", style: OnlineTheme.textStyle()),
-              leading: ThemedIcon(icon: IconType.settings, size: 24),
-              trailing: ThemedIcon(icon: IconType.downArrow, size: 24),
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    AnimatedButton(onTap: () {
-                      io.Client.launchInBrowser('https://online.ntnu.no/profile/settings/userdata');
-                    }, childBuilder: (context, hover, pointerDown) {
-                      return Row(
-                        children: [
-                          ThemedIcon(
-                            icon: IconType.download,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 22),
-                          Text(
-                            "Last ned brukerdata",
-                            style: OnlineTheme.textStyle(),
-                          ),
-                        ],
-                      );
-                    }),
-                    const SizedBox(height: 32),
-                    AnimatedButton(onTap: () {
-                      initiateDeletion(context);
-                    }, childBuilder: (context, hover, pointerDown) {
-                      return Row(
-                        children: [
-                          ThemedIcon(
-                            icon: IconType.trash,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 20),
-                          Text(
-                            "Slett brukerdata",
-                            style: OnlineTheme.textStyle(),
-                          ),
-                        ],
-                      );
-                    }),
-                  ],
-                )
-              ],
-            ),
-          ),
+          settingsAndPrivacyCard(),
           const SizedBox(
             height: 24,
           ),

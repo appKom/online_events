@@ -96,19 +96,16 @@ class ParticipantOverlay extends DarkOverlay {
   Widget indexLabel(int index, Color color) {
     final indexStr = (index + 1).toString();
 
-    return Padding(
-      padding: const EdgeInsets.only(right: 10),
-      child: SizedBox(
-        width: 35,
-        child: Text(
-          indexStr,
-          style: OnlineTheme.textStyle(
-            color: color,
-            weight: 7,
-            size: 15,
-          ),
-          textAlign: TextAlign.center,
+    return SizedBox(
+      width: 40,
+      child: Text(
+        indexStr,
+        style: OnlineTheme.textStyle(
+          color: color,
+          weight: 7,
+          size: 15,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -125,9 +122,41 @@ class ParticipantOverlay extends DarkOverlay {
     );
   }
 
-  Widget buildList<T>(String header, Future<List<AttendeesList>?> listFuture) {
+  Widget loginPrompt() {
     final theme = OnlineTheme.current;
+    return Column(
+      children: [
+        Text(
+          'Logg inn for å se påmeldte',
+          style: OnlineTheme.textStyle(size: 15),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(
+          height: 24,
+        ),
+        AnimatedButton(
+          onTap: login,
+          childBuilder: (context, hover, pointerDown) {
+            return Container(
+              height: OnlineTheme.buttonHeight,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: theme.posBg,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.fromBorderSide(BorderSide(color: theme.pos, width: 2)),
+              ),
+              child: Text(
+                'Logg Inn',
+                style: OnlineTheme.textStyle(color: theme.posFg, weight: 5),
+              ),
+            );
+          },
+        )
+      ],
+    );
+  }
 
+  Widget buildList<T>(String header, Future<List<AttendeesList>?> listFuture) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -151,36 +180,7 @@ class ParticipantOverlay extends DarkOverlay {
 
               if (sortedAttendees.isEmpty) {
                 if (!Authenticator.isLoggedIn()) {
-                  return Column(
-                    children: [
-                      Text(
-                        'Logg inn for å se påmeldte',
-                        style: OnlineTheme.textStyle(size: 15),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      AnimatedButton(
-                        onTap: login,
-                        childBuilder: (context, hover, pointerDown) {
-                          return Container(
-                            height: OnlineTheme.buttonHeight,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: theme.posBg,
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.fromBorderSide(BorderSide(color: theme.pos, width: 2)),
-                            ),
-                            child: Text(
-                              'Logg Inn',
-                              style: OnlineTheme.textStyle(color: theme.posFg, weight: 5),
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  );
+                  return loginPrompt();
                 } else {
                   return Text(
                     'Ingen',
@@ -229,9 +229,9 @@ class ParticipantOverlay extends DarkOverlay {
                           ),
                         ),
                         SizedBox(
-                          width: 70,
+                          width: 40,
                           child: Text(
-                            '${attendee.yearOfStudy}. klasse', // Takes less space than 'klasse'
+                            '${attendee.yearOfStudy}. kl', // Takes less space than 'klasse'
                             style: OnlineTheme.textStyle(
                               color: color,
                               weight: weight,

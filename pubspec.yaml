@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.2.2
   swipeable_page_route: ^0.4.2
   native_ios_dialog: ^0.2.1
+  accordion: ^2.6.0
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,7 @@ flutter:
 
   assets:
     - assets/icons/
+    - assets/icons/lucide/
     - assets/images/
     - assets/svg/
     - html/

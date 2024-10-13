@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../components/animated_button.dart';
-import '../../theme/theme.dart';
+import '/pages/menu/menu_page.dart';
+import '/theme/theme.dart';
+import '/theme/themed_icon.dart';
 import '../event/cards/event_card.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -71,95 +69,60 @@ class SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  void _showInfoAndroid() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Automatiske varslinger"),
-          content: const Text(
-              "Huk av for de type arrangementer du ønsker å motta varslinger for. Du vil motta varslinger 15 minutter før påmeldingsstart for arrangementene."),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("Lukk"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showInfoAndroid() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text("Automatiske varslinger"),
+  //         content: const Text(
+  //             "Huk av for de type arrangementer du ønsker å motta varslinger for. Du vil motta varslinger 15 minutter før påmeldingsstart for arrangementene."),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: const Text("Lukk"),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
-  void _showInfoDialogIOS() {
-    showCupertinoDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text("Automatiske varslinger"),
-          content: const Text(
-              "Huk av for de type arrangementer du ønsker å motta varslinger for. Du vil motta varslinger 15 minutter før påmeldingsstart for arrangementene."),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: const Text("Lukk"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showInfoDialogIOS() {
+  //   NativeIosDialog(
+  //     title: "Automatiske varslinger",
+  //     message:
+  //         "Huk av for de arrangementene du ønsker å få varslinger for. Du vil motta varslinger 15 minutter før påmeldingsstart.",
+  //     actions: [
+  //       NativeIosDialogAction(
+  //         text: "Lukk",
+  //         style: NativeIosDialogActionStyle.cancel,
+  //         onPressed: () {},
+  //       ),
+  //     ],
+  //   ).show();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return OnlineCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Text('Varslinger', style: OnlineTheme.header()),
-              const SizedBox(
-                width: 8,
-              ),
-              AnimatedButton(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    if (Platform.isAndroid) {
-                      _showInfoAndroid();
-                    }
-                    if (Platform.isIOS) {
-                      _showInfoDialogIOS();
-                    }
-                  },
-                  childBuilder: (context, hover, pointerDown) {
-                    return Icon(
-                      Icons.info_outline,
-                      color: OnlineTheme.current.fg,
-                    );
-                  }),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Column(
-            children: eventCategories.keys.map((String key) {
-              return CheckboxListTile(
-                title: Text(key, style: OnlineTheme.textStyle()),
-                value: eventCategories[key],
-                activeColor: OnlineTheme.current.pos,
-                checkColor: OnlineTheme.current.fg,
-                contentPadding: const EdgeInsets.all(0),
-                onChanged: (bool? value) {
-                  _handleSubscription(key, value);
-                },
-              );
-            }).toList(),
-          ),
-        ],
+      child: MenuPageState.accordion(
+        "Varslinger",
+        Lucide(LucideIcon.notification, size: 24),
+        eventCategories.keys.map((String key) {
+          return CheckboxListTile(
+            title: Text(key, style: OnlineTheme.textStyle()),
+            value: eventCategories[key],
+            activeColor: OnlineTheme.current.pos,
+            checkColor: OnlineTheme.current.fg,
+            contentPadding: EdgeInsets.zero,
+            onChanged: (bool? value) {
+              _handleSubscription(key, value);
+            },
+          );
+        }).toList(),
       ),
     );
   }
