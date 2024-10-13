@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../profile/delete_user.dart';
 import '/components/animated_button.dart';
@@ -126,6 +127,9 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  static const _helpUrl =
+      "https://docs.google.com/forms/d/e/1FAIpQLScvjEqVsiRIYnVqCNqbH_-nmYk3Ux6la8a7KZzsY3sJDbW-iA/viewform";
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
@@ -157,6 +161,34 @@ class _MenuPageState extends State<MenuPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        AnimatedButton(onTap: () {
+                          final url = Uri.parse(_helpUrl);
+                          launchUrl(url);
+                        }, childBuilder: (context, hover, pointerDown) {
+                          return Row(
+                            children: [
+                              ThemedIcon(
+                                icon: IconType.user,
+                                size: 24,
+                                color: OnlineTheme.current.fg,
+                              ),
+                              const SizedBox(
+                                width: 17,
+                              ),
+                              Text(
+                                "Opplevd noe ugreit?",
+                                style: OnlineTheme.textStyle(),
+                              ),
+                            ],
+                          );
+                        }),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 32,
+                    ),
                     Row(
                       children: [
                         AnimatedButton(onTap: () {
