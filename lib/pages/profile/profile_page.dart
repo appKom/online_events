@@ -144,39 +144,40 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    try {
-      final ImagePicker picker = ImagePicker();
-      final XFile? pickedFile = await picker.pickImage(source: source);
+    // TODO: Re-implement image picker with new version of image cropper
+    // try {
+    //   final ImagePicker picker = ImagePicker();
+    //   final XFile? pickedFile = await picker.pickImage(source: source);
 
-      if (pickedFile != null) {
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-          sourcePath: pickedFile.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-          ],
-          uiSettings: [
-            AndroidUiSettings(
-                toolbarTitle: 'Cropper',
-                toolbarColor: Colors.deepOrange,
-                toolbarWidgetColor: Colors.white,
-                initAspectRatio: CropAspectRatioPreset.original,
-                lockAspectRatio: false),
-            IOSUiSettings(
-              title: 'Cropper',
-            ),
-          ],
-        );
+    //   if (pickedFile != null) {
+    //     CroppedFile? croppedFile = await ImageCropper().cropImage(
+    //       sourcePath: pickedFile.path,
+    //       aspectRatioPresets: [
+    //         CropAspectRatioPreset.square,
+    //       ],
+    //       uiSettings: [
+    //         AndroidUiSettings(
+    //             toolbarTitle: 'Cropper',
+    //             toolbarColor: Colors.deepOrange,
+    //             toolbarWidgetColor: Colors.white,
+    //             initAspectRatio: CropAspectRatioPreset.original,
+    //             lockAspectRatio: false),
+    //         IOSUiSettings(
+    //           title: 'Cropper',
+    //         ),
+    //       ],
+    //     );
 
-        setState(() {
-          if (croppedFile != null) {
-            _imageFile = File(croppedFile.path);
-          }
-        });
-      }
-    } catch (e) {
-      // Handle exceptions related to image picker or cropper
-      print('Error picking and cropping image: $e');
-    }
+    //     setState(() {
+    //       if (croppedFile != null) {
+    //         _imageFile = File(croppedFile.path);
+    //       }
+    //     });
+    //   }
+    // } catch (e) {
+    //   // Handle exceptions related to image picker or cropper
+    //   print('Error picking and cropping image: $e');
+    // }
   }
 
   Future<void> uploadImage(UserModel? userModel) async {

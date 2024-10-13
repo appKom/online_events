@@ -22,9 +22,7 @@ class DeleteUserState extends State<DeleteUser> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height - 150,
         child: InAppWebView(
-          initialUrlRequest: URLRequest(
-            url: Uri.parse("https://online.ntnu.no/profile/settings/userdata"),
-          ),
+          initialUrlRequest: URLRequest(url: WebUri("https://online.ntnu.no/profile/settings/userdata")),
           onWebViewCreated: (controller) {
             webViewController = controller;
           },

@@ -10,6 +10,8 @@ import '/theme/theme.dart';
 class InfoPage extends ScrollablePage {
   const InfoPage({super.key});
 
+  static const _version = '1.1.0';
+
   @override
   Widget content(BuildContext context) {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
@@ -34,7 +36,7 @@ class InfoPage extends ScrollablePage {
               children: [
                 Text("Online-Appen", style: OnlineTheme.textStyle(size: 32)),
                 const SizedBox(height: 10),
-                Text('Versjon 1.0.8', style: OnlineTheme.textStyle(size: 16)),
+                Text('Versjon $_version', style: OnlineTheme.textStyle(size: 16)),
               ],
             ),
           ]),

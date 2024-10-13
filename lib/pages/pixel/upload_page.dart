@@ -38,44 +38,47 @@ class UploadPageState extends State<UploadPage> {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    try {
-      final ImagePicker picker = ImagePicker();
-      final XFile? pickedFile = await picker.pickImage(source: source);
+    // TODO: Re-implement image upload with new version of image cropper
 
-      if (pickedFile != null) {
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-          sourcePath: pickedFile.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9
-          ],
-          uiSettings: [
-            AndroidUiSettings(
-                toolbarTitle: 'Cropper',
-                toolbarColor: Colors.deepOrange,
-                toolbarWidgetColor: Colors.white,
-                initAspectRatio: CropAspectRatioPreset.original,
-                lockAspectRatio: false),
-            IOSUiSettings(
-              title: 'Cropper',
-            ),
-          ],
-        );
+    // try {
+    //   final ImagePicker picker = ImagePicker();
+    //   final XFile? pickedFile = await picker.pickImage(source: source);
 
-        setState(() {
-          if (croppedFile != null) {
-            _selectedImage = File(croppedFile.path);
-            checkIfButtonShouldBeEnabled();
-          }
-        });
-      }
-    } catch (e) {
-      // Handle exceptions related to image picker or cropper
-      print('Error picking and cropping image: $e');
-    }
+    //   if (pickedFile != null) {
+    //     CroppedFile? croppedFile = await ImageCropper().cropImage(
+    //       sourcePath: pickedFile.path,
+
+    //       aspectRatioPresets: [
+    //         CropAspectRatioPreset.square,
+    //         CropAspectRatioPreset.ratio3x2,
+    //         CropAspectRatioPreset.original,
+    //         CropAspectRatioPreset.ratio4x3,
+    //         CropAspectRatioPreset.ratio16x9
+    //       ],
+    //       uiSettings: [
+    //         AndroidUiSettings(
+    //             toolbarTitle: 'Cropper',
+    //             toolbarColor: Colors.deepOrange,
+    //             toolbarWidgetColor: Colors.white,
+    //             initAspectRatio: CropAspectRatioPreset.original,
+    //             lockAspectRatio: false),
+    //         IOSUiSettings(
+    //           title: 'Cropper',
+    //         ),
+    //       ],
+    //     );
+
+    //     setState(() {
+    //       if (croppedFile != null) {
+    //         _selectedImage = File(croppedFile.path);
+    //         checkIfButtonShouldBeEnabled();
+    //       }
+    //     });
+    //   }
+    // } catch (e) {
+    //   // Handle exceptions related to image picker or cropper
+    //   print('Error picking and cropping image: $e');
+    // }
   }
 
   Future<void> uploadImage() async {

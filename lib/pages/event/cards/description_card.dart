@@ -114,7 +114,7 @@ class InAppWebViewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("")),
       body: InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(url)),
+        initialUrlRequest: URLRequest(url: WebUri(url)),
       ),
     );
   }

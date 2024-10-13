@@ -67,7 +67,7 @@ class GameOverPage extends StatelessWidget {
                               height: 40,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 248, 98, 6).withOpacity(0.4),
+                                color: const Color.fromARGB(255, 248, 98, 6).withOpacity(0.4),
                                 borderRadius: BorderRadius.circular(5.0),
                                 border: Border.fromBorderSide(BorderSide(color: theme.fg, width: 2)),
                               ),

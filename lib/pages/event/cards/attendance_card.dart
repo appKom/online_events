@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:online/main.dart';
+import 'package:online/services/app_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -56,10 +56,10 @@ class AttendanceCard extends StatefulWidget {
   const AttendanceCard({super.key, required this.event, required this.attendeeInfo});
 
   @override
-  _AttendanceCardState createState() => _AttendanceCardState();
+  AttendanceCardState createState() => AttendanceCardState();
 }
 
-class _AttendanceCardState extends State<AttendanceCard> {
+class AttendanceCardState extends State<AttendanceCard> {
   late final String _notificationPrefKeyBeforeRegistration;
   late final String _notificationPrefKeyBeforeEventStart;
   bool isAlreadyNotified = false;
@@ -168,16 +168,14 @@ class _AttendanceCardState extends State<AttendanceCard> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Automatiske varslinger"),
-          content: const Text(
+        return const AlertDialog(
+          title: Text("Automatiske varslinger"),
+          content: Text(
               "Du har huket av for automatiske varslinger for denne typen arrangementer. Du vil motta varsling 15 minutter før påmeldingsstart for arrangementet. "),
-          actions: <Widget>[
+          actions: [
             TextButton(
-              child: const Text("Lukk"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: AppNavigator.pop,
+              child: Text("Lukk"),
             ),
           ],
         );
@@ -185,26 +183,26 @@ class _AttendanceCardState extends State<AttendanceCard> {
     );
   }
 
-  void _showInfoDialogIOS() {
-    showCupertinoDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text("Automatiske varslinger"),
-          content: const Text(
-              "Du har huket av for automatiske varslinger for denne typen arrangementer. Du vil motta varsling 15 minutter før påmeldingsstart for arrangementet."),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: const Text("Lukk"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showInfoDialogIOS() {
+  //   showCupertinoDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return CupertinoAlertDialog(
+  //         title: const Text("Automatiske varslinger"),
+  //         content: const Text(
+  //             "Du har huket av for automatiske varslinger for denne typen arrangementer. Du vil motta varsling 15 minutter før påmeldingsstart for arrangementet."),
+  //         actions: <Widget>[
+  //           CupertinoDialogAction(
+  //             child: const Text("Lukk"),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget isAlreadyNotifiedWidget() {
     String eventType = '';

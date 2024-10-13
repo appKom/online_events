@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_recaptcha/flutter_firebase_recaptcha.dart';
 import 'package:http/http.dart' as http;
 
 import '/components/image_default.dart';
@@ -34,8 +33,6 @@ class _EventPageState extends State<EventPage> {
   AttendeeInfoModel attendeeInfoModel;
 
   _EventPageState() : attendeeInfoModel = AttendeeInfoModel.withDefaults();
-
-  late FirebaseRecaptchaVerifierModal recaptchaVerifier;
 
   @override
   void initState() {
