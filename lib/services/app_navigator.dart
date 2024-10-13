@@ -19,7 +19,7 @@ abstract class AppNavigator {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static void navigateToPage(Widget page, {bool withHeaderNavbar = true}) {
-    final route = MaterialPageRoute(
+    final route = SwipeablePageRoute(
       builder: (context) => OnlineScaffold(
         child: page,
         showHeaderNavbar: withHeaderNavbar, // Pass the flag
@@ -60,6 +60,13 @@ abstract class AppNavigator {
     } else {
       navigatorKey.currentState!.pushReplacement(wrappedRoute);
     }
+  }
+
+  static void navigateOverlayPage(Route route) {
+    // Route wrappedRoute;
+    // wrappedRoute = route; // Keep the original route if no header/navbar is required
+
+    navigatorKey.currentState!.push(route);
   }
 
   static void pop() {
