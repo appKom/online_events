@@ -49,9 +49,10 @@ abstract class OnlinePage extends StatelessWidget {
 
 /// Online logo, valgfri header og scrollbart innhold med fade
 class OnlineScaffold extends StatelessWidget {
-  const OnlineScaffold({super.key});
+  final Widget child;
+  final bool showHeaderNavbar; // Flag to control visibility
 
-  static ValueNotifier<OnlinePage> page = ValueNotifier(const LoadingPageDisplay());
+  const OnlineScaffold({super.key, required this.child, this.showHeaderNavbar = true});
 
   PreferredSize onlineHeader(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
@@ -75,6 +76,7 @@ class OnlineScaffold extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Header content (like the logo, buttons)
                 AnimatedButton(
                   onTap: () {
                     AppNavigator.replaceWithPage(const HomePage());
@@ -88,18 +90,22 @@ class OnlineScaffold extends StatelessWidget {
                   }),
                 ),
                 const Spacer(),
-                AnimatedButton(onTap: () {
-                  launchUrl(
-                    Uri.parse('https://bekk.no'),
-                    mode: LaunchMode.externalApplication,
-                  );
-                }, childBuilder: (context, hover, pointerDown) {
-                  return SvgPicture.asset(
-                    'assets/svg/bekk.svg',
-                    height: 36,
-                    colorFilter: ColorFilter.mode(OnlineTheme.current.fg, BlendMode.srcIn),
-                  );
-                }),
+                // External link or other widgets
+                AnimatedButton(
+                  onTap: () {
+                    launchUrl(
+                      Uri.parse('https://bekk.no'),
+                      mode: LaunchMode.externalApplication,
+                    );
+                  },
+                  childBuilder: (context, hover, pointerDown) {
+                    return SvgPicture.asset(
+                      'assets/svg/bekk.svg',
+                      height: 36,
+                      colorFilter: ColorFilter.mode(OnlineTheme.current.fg, BlendMode.srcIn),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -111,20 +117,12 @@ class OnlineScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: onlineHeader(context),
+      appBar: showHeaderNavbar ? onlineHeader(context) : null, // Conditionally show the app bar
       backgroundColor: OnlineTheme.current.bg,
       extendBodyBehindAppBar: true,
-      body: Navigator(
-        key: AppNavigator.onlineNavigator,
-        initialRoute: '/',
-        onGenerateInitialRoutes: (NavigatorState navigator, String initialRouteName) {
-          return [
-            MaterialPageRoute(builder: (context) => const HomePage()),
-          ];
-        },
-      ),
+      body: child, // Render the page content
       extendBody: true,
-      bottomNavigationBar: const Navbar(),
+      bottomNavigationBar: showHeaderNavbar ? const Navbar() : null, // Conditionally show the navbar
     );
   }
 }

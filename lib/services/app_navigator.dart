@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 
+import '/components/online_scaffold.dart';
+
 class NoAnimationPageRoute<T> extends MaterialPageRoute<T> {
   NoAnimationPageRoute({required super.builder, super.settings});
 
@@ -14,46 +16,53 @@ class NoAnimationPageRoute<T> extends MaterialPageRoute<T> {
 
 // This class is a service provider. Helping the user navigate the app is the service it provides.
 abstract class AppNavigator {
-  static GlobalKey<NavigatorState> globalNavigator = GlobalKey<NavigatorState>();
-  static GlobalKey<NavigatorState> onlineNavigator = GlobalKey<NavigatorState>();
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  static const Duration transitionDuration = Duration(milliseconds: 0); // 250
-  static const Duration reverseDuration = Duration(milliseconds: 0); // 250
-
-  static void replaceWithPage(Widget page) {
-    // onlineNavigator.currentState!.pushReplacement(Ma)
-    Route route = NoAnimationPageRoute(
-      builder: (context) => page,
-    );
-
-    onlineNavigator.currentState!.pushAndRemoveUntil(route, (route) => false);
-  }
-
-  static void globalNavigateTo(Widget page) {
+  static void navigateToPage(Widget page, {bool withHeaderNavbar = true}) {
     final route = MaterialPageRoute(
-      builder: (context) => page,
+      builder: (context) => OnlineScaffold(
+        child: page,
+        showHeaderNavbar: withHeaderNavbar, // Pass the flag
+      ),
     );
 
-    globalNavigator.currentState!.push(route);
+    navigatorKey.currentState!.push(route);
   }
 
-  static void navigateToPage(Widget page) {
-    final route = SwipeablePageRoute(
-      builder: (context) => page,
+  static void replaceWithPage(Widget page, {bool withHeaderNavbar = true}) {
+    final route = MaterialPageRoute(
+      builder: (context) => OnlineScaffold(
+        child: page,
+        showHeaderNavbar: withHeaderNavbar, // Pass the flag
+      ),
     );
 
-    onlineNavigator.currentState!.push(route);
+    navigatorKey.currentState!.pushReplacement(route);
   }
 
-  static void navigateToRoute(Route route, {required bool additive}) {
-    if (additive) {
-      globalNavigator.currentState!.push(route);
+  static void navigateToRoute(Route route, {required bool withHeaderNavbar, bool additive = true}) {
+    Route wrappedRoute;
+
+    if (withHeaderNavbar) {
+      // Wrap the existing route's page in OnlineScaffold
+      wrappedRoute = MaterialPageRoute(
+        builder: (context) => OnlineScaffold(
+          child: (route.settings as MaterialPageRoute).builder(context),
+          showHeaderNavbar: withHeaderNavbar,
+        ),
+      );
     } else {
-      globalNavigator.currentState!.pushReplacement(route);
+      wrappedRoute = route; // Keep the original route if no header/navbar is required
+    }
+
+    if (additive) {
+      navigatorKey.currentState!.push(wrappedRoute);
+    } else {
+      navigatorKey.currentState!.pushReplacement(wrappedRoute);
     }
   }
 
   static void pop() {
-    globalNavigator.currentState!.pop();
+    navigatorKey.currentState!.pop();
   }
 }

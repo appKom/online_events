@@ -36,35 +36,35 @@ class GamesPage extends ScrollablePage {
                 name: 'Terning',
                 imageSource: 'assets/images/diceHeader.jpg',
                 onTap: () {
-                  AppNavigator.globalNavigateTo(const DicePage());
+                  AppNavigator.navigateToPage(const DicePage(), withHeaderNavbar: false);
                 },
               ),
               GameCard(
                 name: 'Hundre spørsmål',
                 imageSource: 'assets/images/hundred-questions.png',
                 onTap: () {
-                  AppNavigator.globalNavigateTo(HundredQuestionsInfo());
+                  AppNavigator.navigateToPage(HundredQuestionsInfo(), withHeaderNavbar: false);
                 },
               ),
               GameCard(
                 name: 'SpinLine',
                 imageSource: 'assets/images/SpinLine.png',
                 onTap: () {
-                  AppNavigator.globalNavigateTo(const SpinLinePage());
+                  AppNavigator.navigateToPage(const SpinLinePage(), withHeaderNavbar: false);
                 },
               ),
               GameCard(
                 name: 'Roulette',
                 imageSource: 'assets/images/roulette.png',
                 onTap: () {
-                  AppNavigator.globalNavigateTo(const RoulettePage());
+                  AppNavigator.navigateToPage(const RoulettePage(), withHeaderNavbar: false);
                 },
               ),
               GameCard(
                 name: 'Bits',
                 imageSource: 'assets/images/bits.png',
                 onTap: () {
-                  AppNavigator.globalNavigateTo(const BitsHomePage());
+                  AppNavigator.navigateToPage(const BitsHomePage(), withHeaderNavbar: false);
                 },
               ),
             ],

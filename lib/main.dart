@@ -12,6 +12,7 @@ import '/services/secure_storage.dart';
 import 'core/client/client.dart';
 import 'core/models/event_model.dart';
 import 'firebase_options.dart';
+import '/pages/home/home_page.dart';
 
 List<EventModel> allAttendedEvents = [];
 
@@ -111,10 +112,14 @@ class OnlineApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: AppNavigator.globalNavigator,
+      navigatorKey: AppNavigator.navigatorKey, // Use the single navigator key
       title: 'Online',
       debugShowCheckedModeBanner: false,
-      home: const OnlineScaffold(),
+      home: const OnlineScaffold(
+        child: HomePage(), 
+        showHeaderNavbar: true, // Default to showing header and navbar on HomePage
+      ),
     );
   }
 }
+
