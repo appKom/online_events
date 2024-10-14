@@ -260,7 +260,7 @@ class BedpresCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconLabel(icon: IconType.dateTime, label: formatDate()),
-                          IconLabel(icon: IconType.usersFilled, label: participants(), iconSize: 16),
+                          IconLabel(icon: IconType.users, label: participants(), iconSize: 16),
                         ],
                       ),
                     ),

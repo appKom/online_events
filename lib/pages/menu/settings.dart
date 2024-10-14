@@ -108,22 +108,42 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return OnlineCard(
-      child: MenuPageState.accordion(
-        "Varslinger",
-        Lucide(LucideIcon.notification, size: 24),
-        eventCategories.keys.map((String key) {
-          return CheckboxListTile(
-            title: Text(key, style: OnlineTheme.textStyle()),
-            value: eventCategories[key],
-            activeColor: OnlineTheme.current.pos,
-            checkColor: OnlineTheme.current.fg,
-            contentPadding: EdgeInsets.zero,
-            onChanged: (bool? value) {
-              _handleSubscription(key, value);
-            },
-          );
-        }).toList(),
+      child: Foldout(
+        leading: Padding(padding: EdgeInsets.only(right: 16), child: Lucide(LucideIcon.notification, size: 24)),
+        title: 'Varslinger',
+        children: eventCategories.keys.map(
+          (String key) {
+            return CheckboxListTile(
+              title: Text(key, style: OnlineTheme.textStyle()),
+              value: eventCategories[key],
+              activeColor: OnlineTheme.current.pos,
+              checkColor: OnlineTheme.current.fg,
+              contentPadding: EdgeInsets.zero,
+              onChanged: (bool? value) {
+                _handleSubscription(key, value);
+              },
+            );
+          },
+        ).toList(),
       ),
     );
+    // return OnlineCard(
+    //   child: MenuPageState.accordion(
+    //     "Varslinger",
+    //     Lucide(LucideIcon.notification, size: 24),
+    //     eventCategories.keys.map((String key) {
+    //       return CheckboxListTile(
+    //         title: Text(key, style: OnlineTheme.textStyle()),
+    //         value: eventCategories[key],
+    //         activeColor: OnlineTheme.current.pos,
+    //         checkColor: OnlineTheme.current.fg,
+    //         contentPadding: EdgeInsets.zero,
+    //         onChanged: (bool? value) {
+    //           _handleSubscription(key, value);
+    //         },
+    //       );
+    //     }).toList(),
+    //   ),
+    // );
   }
 }

@@ -97,6 +97,7 @@ enum LucideIcon {
   bug,
   database,
   notification,
+  chevronDown,
 }
 
 class Lucide extends StatelessWidget {

@@ -71,9 +71,9 @@ class ProfileCard extends StaticPage {
                 const SizedBox(width: 24),
                 ValueListenableBuilder(
                   valueListenable: Client.userCache,
-                  builder: (contex, value, child) {
+                  builder: (contex, user, child) {
                     return Text(
-                      "${value?.firstName} ${value?.lastName}",
+                      "${user?.firstName} ${user?.lastName}",
                       style: OnlineTheme.textStyle(),
                     );
                   },

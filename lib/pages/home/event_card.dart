@@ -218,7 +218,7 @@ class EventCard extends StatelessWidget {
                                 fontWeight: 5,
                               ),
                               IconLabel(
-                                icon: IconType.usersFilled,
+                                icon: IconType.users,
                                 label: participants(),
                                 color: OnlineTheme.current.mutedForeground,
                                 iconSize: 16,

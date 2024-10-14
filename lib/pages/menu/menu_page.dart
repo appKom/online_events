@@ -19,6 +19,76 @@ import '/services/env.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 
+class Foldout extends StatefulWidget {
+  final Widget? leading;
+  final Widget? trailing;
+  final String title;
+  final List<Widget> children;
+
+  const Foldout({
+    super.key,
+    required this.title,
+    required this.children,
+    this.leading,
+    this.trailing,
+  });
+
+  @override
+  State<StatefulWidget> createState() => FoldoutState();
+}
+
+class FoldoutState extends State<Foldout> {
+  bool open = false;
+
+  Widget header() {
+    return Listener(
+      onPointerUp: (event) {
+        setState(() {
+          open = !open;
+        });
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          if (widget.leading != null) widget.leading!,
+          Expanded(child: Text(widget.title, style: OnlineTheme.textStyle())),
+          AnimatedRotation(
+            turns: open ? -0.5 : 0,
+            duration: Duration(milliseconds: 100),
+            child: widget.trailing ??
+                Lucide(
+                  LucideIcon.chevronDown,
+                  size: 20,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        header(),
+        ClipRect(
+          child: AnimatedAlign(
+            alignment: open ? Alignment.topCenter : Alignment.topCenter,
+            heightFactor: open ? 1.0 : 0.0,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+            child: Column(
+              children: widget.children,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
 
@@ -128,41 +198,12 @@ class MenuPageState extends State<MenuPage> {
     );
   }
 
-  static Widget accordion(String title, Widget icon, List<Widget> children) {
-    return Accordion(
-      headerBackgroundColor: Colors.transparent,
-      contentBackgroundColor: OnlineTheme.current.card,
-      contentBorderWidth: 0,
-      contentHorizontalPadding: 0,
-      leftIcon: icon,
-      scaleWhenAnimating: false,
-      headerPadding: EdgeInsets.zero,
-      paddingListTop: 0,
-      paddingListBottom: 0,
-      paddingListHorizontal: 0,
-      paddingBetweenClosedSections: 0,
-      initialOpeningSequenceDelay: 0,
-      disableScrolling: true,
-      openAndCloseAnimation: true,
-      paddingBetweenOpenSections: 0,
-      contentVerticalPadding: 0,
-      children: [
-        AccordionSection(
-          header: Text(title, style: OnlineTheme.textStyle()),
-          content: Column(
-            children: children,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget helpAndSupportCard() {
     return OnlineCard(
-      child: accordion(
-        "Hjelp og Støtte",
-        Lucide(LucideIcon.users, size: 24),
-        [
+      child: Foldout(
+        title: "Hjelp og Støtte",
+        leading: Padding(padding: EdgeInsets.only(right: 16), child: Lucide(LucideIcon.users, size: 24)),
+        children: [
           const SizedBox(height: 16),
           Row(
             children: [
@@ -242,10 +283,10 @@ class MenuPageState extends State<MenuPage> {
 
   Widget settingsAndPrivacyCard() {
     return OnlineCard(
-      child: accordion(
-        'Din Data',
-        Lucide(LucideIcon.database, size: 24),
-        [
+      child: Foldout(
+        title: 'Din Data',
+        leading: Padding(padding: EdgeInsets.only(right: 16), child: Lucide(LucideIcon.database, size: 24)),
+        children: [
           const SizedBox(height: 16),
           AnimatedButton(onTap: () {
             io.Client.launchInBrowser('https://online.ntnu.no/profile/settings/userdata');

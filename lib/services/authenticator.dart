@@ -46,9 +46,13 @@ abstract class Authenticator {
       //final scheme = dotenv.env['AUTH0_CUSTOM_SCHEME'];
       final response = await auth0!.webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME']).login();
       await auth0!.credentialsManager.storeCredentials(response);
-      await Client.getUserProfile();
+
       loggedIn.value = true;
-      return credentials = response;
+      credentials = response;
+
+      await Client.getUserProfile();
+
+      return response;
     } catch (e) {
       // User cancelled login
       return null;
