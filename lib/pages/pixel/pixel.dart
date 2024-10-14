@@ -186,6 +186,7 @@ class PixelPageState extends State<PixelPage> {
                     AnimatedButton(
                         onTap: () => AppNavigator.navigateToRoute(
                               InfoPagePixel(),
+                              withHeaderNavbar: true,
                               additive: true,
                             ),
                         childBuilder: (context, hover, pointerDown) {

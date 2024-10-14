@@ -153,7 +153,7 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   }
 
   void showUnregisterDialog() {
-    final context = AppNavigator.globalNavigator.currentContext;
+    final context = AppNavigator.navigatorKey.currentContext;
 
     if (context == null) return;
 

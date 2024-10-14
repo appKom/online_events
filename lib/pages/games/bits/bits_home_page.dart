@@ -136,7 +136,7 @@ class BitsHomePageState extends State<BitsHomePage> {
     }
 
     List<String> playerNames = controllers.map((c) => c.text.trim()).toList();
-    AppNavigator.globalNavigateTo(BitsGame(playerNames: playerNames));
+    AppNavigator.navigateToPage(BitsGame(playerNames: playerNames), withHeaderNavbar: false);
   }
 
   @override
