@@ -166,10 +166,14 @@ class _EventCardButtonsState extends State<EventCardButtons> {
         NativeIosDialogAction(
           text: 'Avbryt',
           style: NativeIosDialogActionStyle.cancel,
+          onPressed: () {},
         ),
         NativeIosDialogAction(
           text: 'Bekreft',
           style: NativeIosDialogActionStyle.destructive,
+          onPressed: () {
+            unregisterForEvent(widget.model.id, context);
+          },
         ),
       ]).show();
     } else {

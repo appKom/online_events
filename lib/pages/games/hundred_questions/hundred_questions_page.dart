@@ -1,8 +1,5 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:online/components/animated_button.dart';
-import 'package:online/services/app_navigator.dart';
-import 'package:online/theme/themed_icon.dart';
 
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';

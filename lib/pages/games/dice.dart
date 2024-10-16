@@ -1,9 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:online/components/navbar.dart';
-import 'package:online/router.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';

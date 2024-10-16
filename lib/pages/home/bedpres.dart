@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:online/components/icon_label.dart';
 import 'package:online/components/image_default.dart';
-import 'package:online/services/app_navigator.dart';
 
-import '../../core/client/client.dart';
-import '../../theme/themed_icon.dart';
 import '/components/animated_button.dart';
 import '/components/skeleton_loader.dart';
 import '/core/models/event_model.dart';
-import '/pages/event/event_page.dart';
 import '/theme/theme.dart';
+import '../../core/client/client.dart';
+import '../../theme/themed_icon.dart';
 
 class Bedpres extends StatelessWidget {
   const Bedpres({

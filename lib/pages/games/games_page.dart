@@ -1,18 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:online/components/navbar.dart';
-import 'package:online/router.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
-import '/pages/games/hundred_questions/hundred_questions_page.dart';
-import '/pages/games/roulette_page.dart';
-import '/pages/games/spin_line_page.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
-import 'bits/bits_home_page.dart';
-import 'dice.dart';
 import 'songs/songs.dart';
 
 class GamesPage extends ScrollablePage {

@@ -64,8 +64,9 @@ abstract class Authenticator {
       throw Exception('Auth0 has not been initialized! Please call Authenticator.initialize() first.');
     }
 
+    // TODO: This throws an error if user cancels - find out if that can be prevented
+
     await auth0!.webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME']).logout();
-    // await auth0!.credentialsManager.clearCredentials();
 
     // TODO: Should we clear the credentials?
 
@@ -74,7 +75,6 @@ abstract class Authenticator {
 
     // Remove attended Events from cache when logging out
     allAttendedEvents.clear();
-    // Client.eventsIdsCache.value.clear();
     Client.userCache.value = null;
   }
 }
