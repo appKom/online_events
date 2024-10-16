@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
-import '/core/client/client.dart';
 import '/components/animated_button.dart';
+import '/core/client/client.dart';
 import '/core/models/article_model.dart';
-import '/pages/article/article_page.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class ViewMoreArticles extends StatelessWidget {
@@ -19,7 +18,7 @@ class ViewMoreArticles extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: Works for the latest article, but if you scroll down on another article,
     //  the article you just read will show up
-    final modelsToShow = Client.articlesCache.value.skip(1).toList();
+    final modelsToShow = Client.articlesCache.value.values.skip(1).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,10 +104,12 @@ class MoreArticleCard extends StatelessWidget {
     return '$dayString. $monthString';
   }
 
-  void showInfo() {
-    AppNavigator.navigateToPage(ArticlePage(
-      article: articleModel,
-    ));
+  void showInfo(BuildContext context) {
+    context.go('/articles/${articleModel.createdDate}');
+
+    // AppNavigator.navigateToPage(ArticlePage(
+    //   article: articleModel,
+    // ));
   }
 
   List<String> splitHeading(String heading) {
@@ -174,7 +175,7 @@ class MoreArticleCard extends StatelessWidget {
         articleModel.authors.length > 28 ? formatAuthors(articleModel.authors) : articleModel.authors;
 
     return AnimatedButton(
-      onTap: showInfo,
+      onTap: () => showInfo(context),
       childBuilder: (context, hover, pointerDown) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(12),

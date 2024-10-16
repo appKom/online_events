@@ -2,28 +2,24 @@ import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:online/components/navbar.dart';
 import 'package:online/components/skeleton_loader.dart';
 import 'package:online/pages/event/cards/event_card.dart';
 import 'package:online/pages/login/login_page.dart';
 import 'package:online/theme/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../pixel/models/pixel_user_class.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/components/separator.dart';
 import '/core/client/client.dart' as io;
 import '/core/models/user_model.dart';
-import '/pages/profile/delete_user.dart';
-import '/services/app_navigator.dart';
 import '/services/authenticator.dart';
 import '/theme/theme.dart';
+import '../pixel/models/pixel_user_class.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -180,107 +176,59 @@ class _ProfilePageState extends State<ProfilePage> {
     // }
   }
 
-  Future<void> uploadImage(UserModel? userModel) async {
-    if (userModel == null) return;
-    if (_imageFile == null) return;
+  // Future<void> uploadImage(UserModel? userModel) async {
+  //   if (userModel == null) return;
+  //   if (_imageFile == null) return;
 
-    String fileName = userModel.username;
+  //   String fileName = userModel.username;
 
-    try {
-      await storage.getFile(
-        bucketId: dotenv.env['USER_BUCKET_ID']!,
-        fileId: fileName,
-      );
+  //   try {
+  //     await storage.getFile(
+  //       bucketId: dotenv.env['USER_BUCKET_ID']!,
+  //       fileId: fileName,
+  //     );
 
-      await storage.deleteFile(
-        bucketId: dotenv.env['USER_BUCKET_ID']!,
-        fileId: fileName,
-      );
-    } catch (e) {
-      // TODO: Should probaly handle
-    }
+  //     await storage.deleteFile(
+  //       bucketId: dotenv.env['USER_BUCKET_ID']!,
+  //       fileId: fileName,
+  //     );
+  //   } catch (e) {
+  //     // TODO: Should probaly handle
+  //   }
 
-    try {
-      final file = await storage.createFile(
-        bucketId: dotenv.env['USER_BUCKET_ID']!,
-        fileId: fileName,
-        file: InputFile.fromPath(path: _imageFile!.path, filename: fileName),
-      );
+  //   try {
+  //     final file = await storage.createFile(
+  //       bucketId: dotenv.env['USER_BUCKET_ID']!,
+  //       fileId: fileName,
+  //       file: InputFile.fromPath(path: _imageFile!.path, filename: fileName),
+  //     );
 
-      print("Image uploaded successfully: $file");
-      setState(() {
-        //hei
-      });
-      AppNavigator.replaceWithPage(const ProfilePageDisplay());
-    } catch (e) {
-      print("Error uploading image: $e");
-    }
-  }
+  //     print("Image uploaded successfully: $file");
+  //     setState(() {
+  //       //hei
+  //     });
+  //     context.go('/menu/profile');
+  //     AppNavigator.replaceWithPage(const ProfilePageDisplay());
+  //   } catch (e) {
+  //     print("Error uploading image: $e");
+  //   }
+  // }
 
-  void initiateDeletion(BuildContext context) {
-    final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+  // void delete() {
+  //   final userInfo = io.Client.userCache.value;
 
-    if (isIOS) {
-      showCupertinoDialog(context: context, builder: (context) => cupertionDeleteDialog());
-    } else {
-      showDialog(context: context, builder: (context) => materialDeleteDialog());
-    }
-  }
+  //   if (userInfo == null) return;
 
-  Widget cupertionDeleteDialog() {
-    return CupertinoAlertDialog(
-      title: const Text('Bekreft sletting'),
-      content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
-      actions: [
-        CupertinoDialogAction(
-          child: const Text('Avbryt'),
-          onPressed: () {
-            AppNavigator.pop();
-          },
-        ),
-        CupertinoDialogAction(
-          isDestructiveAction: true,
-          onPressed: delete,
-          child: const Text('Slett'),
-        ),
-      ],
-    );
-  }
-
-  Widget materialDeleteDialog() {
-    return AlertDialog(
-      title: const Text('Bekreft sletting'),
-      content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
-      actions: [
-        TextButton(
-          onPressed: () {
-            AppNavigator.pop();
-          },
-          child: const Text('Avbryt'),
-        ),
-        TextButton(
-          onPressed: delete,
-          child: const Text('Slett'),
-        ),
-      ],
-    );
-  }
-
-  void delete() {
-    final userInfo = io.Client.userCache.value;
-
-    if (userInfo == null) return;
-
-    AppNavigator.pop();
-    deletePixelUserInfo(userInfo);
-    setState(() {
-      // TODO: Test this
-      Authenticator.logout();
-    });
-    AppNavigator.replaceWithPage(
-      const DeleteUserDisplay(),
-    );
-  }
+  //   AppNavigator.pop();
+  //   deletePixelUserInfo(userInfo);
+  //   setState(() {
+  //     // TODO: Test this
+  //     Authenticator.logout();
+  //   });
+  //   AppNavigator.replaceWithPage(
+  //     const DeleteUserDisplay(),
+  //   );
+  // }
 
   Widget profilePicture(UserModel? user) {
     if (user == null) {
@@ -557,7 +505,7 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           child: SingleChildScrollView(
             child: Padding(
-              padding: padding,
+              padding: padding + EdgeInsets.symmetric(vertical: 64),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -573,10 +521,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             onTap: () async {
                               if (!accepted) return;
 
-                              await pickImage(ImageSource.gallery);
-                              if (_imageFile != null) {
-                                await uploadImage(theUser);
-                              }
+                              // TODO: Re-implement profile images?
+
+                              // await pickImage(ImageSource.gallery);
+                              // if (_imageFile != null) {
+                              //   await uploadImage(theUser);
+                              // }
                             },
                             childBuilder: (context, hover, pointerDown) {
                               return profilePicture(theUser);
@@ -592,8 +542,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   contactCard(theUser),
                   const SizedBox(height: 24),
                   studyCard(theUser),
-                  // const SizedBox(height: 24),
-                  // const SettingsPage(),
                   const SizedBox(height: 24 + 24),
                   Row(
                     children: [
@@ -601,8 +549,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: AnimatedButton(
                           onTap: () async {
                             await Authenticator.logout();
-                            // AppNavigator.replaceWithPage(const LoginPage());
-                            Navbar.navigateTo(NavbarPage.home);
+
+                            if (context.mounted) {
+                              context.go('/menu');
+                            }
                           },
                           childBuilder: (context, hover, pointerDown) {
                             final theme = OnlineTheme.current;

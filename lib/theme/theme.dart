@@ -119,7 +119,7 @@ sealed class OnlineTheme {
   static const hundredGradientEndColor = Color(0xFF9354B9);
   static const hundredDotColor = Color(0xFFA87DCF);
 
-  static const horizontalPadding = EdgeInsets.symmetric(horizontal: 20);
+  static const horizontalPadding = EdgeInsets.symmetric(horizontal: 16);
 
   static bool isMobile(BuildContext context) {
     return MediaQuery.of(context).size.width < 500;

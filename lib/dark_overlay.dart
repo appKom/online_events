@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import '/services/app_navigator.dart';
+import 'package:flutter/material.dart';
+
+import '/router.dart';
 
 abstract class DarkOverlay extends ModalRoute<void> {
   Widget content(BuildContext context, Animation<double> animation);
@@ -16,11 +17,11 @@ abstract class DarkOverlay extends ModalRoute<void> {
   String? get barrierLabel => null;
 
   void show(BuildContext context) {
-    AppNavigator.navigateOverlayPage(this);
+    rootNavigator.currentState!.push(this);
   }
 
   void hide() {
-    AppNavigator.pop();
+    rootNavigator.currentState!.pop();
   }
 
   @override

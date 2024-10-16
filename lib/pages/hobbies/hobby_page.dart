@@ -12,7 +12,7 @@ import '/pages/event/cards/event_card.dart';
 import '/theme/theme.dart';
 
 class HobbyPage extends ScrollablePage {
-  final HobbyModel hobby;
+  final GroupModel hobby;
   final ScrollController scrollController = ScrollController();
   HobbyPage({super.key, required this.hobby});
 
@@ -94,7 +94,7 @@ class HobbyPage extends ScrollablePage {
     final padding = MediaQuery.of(context).padding;
 
     return Padding(
-      padding: padding,
+      padding: padding + EdgeInsets.symmetric(vertical: 64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

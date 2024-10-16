@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '/components/animated_button.dart';
-import '/components/navbar.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
 import '/pages/event/cards/event_card.dart';
-import '/pages/menu/menu_page.dart';
-import '/pages/profile/profile_page.dart';
-import '/services/app_navigator.dart';
 import '/services/authenticator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
@@ -15,16 +12,21 @@ import '/theme/themed_icon.dart';
 class ProfileCard extends StaticPage {
   const ProfileCard({super.key});
 
-  Future<void> _logout() async {
+  Future<void> _logout(BuildContext context) async {
     await Authenticator.logout();
-    AppNavigator.replaceWithPage(const MenuPageDisplay());
+
+    if (context.mounted) {
+      context.go('/menu');
+    }
   }
 
-  Widget logoutButton(ThemeConfig theme) {
+  Widget logoutButton(ThemeConfig theme, BuildContext context) {
     return SizedBox(
       height: 40,
       child: AnimatedButton(
-        onTap: _logout,
+        onTap: () {
+          _logout(context);
+        },
         childBuilder: (context, hover, pointerDown) {
           return Container(
             height: OnlineTheme.buttonHeight,
@@ -47,13 +49,11 @@ class ProfileCard extends StaticPage {
     );
   }
 
-  Widget loggedInCard(ThemeConfig theme) {
+  Widget loggedInCard(ThemeConfig theme, BuildContext context) {
     return AnimatedButton(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        if (Authenticator.isLoggedIn()) {
-          AppNavigator.navigateToPage(const ProfilePageDisplay());
-        }
+        context.go('/menu/profile');
       },
       childBuilder: (context, hover, pointerDown) {
         return OnlineCard(
@@ -88,19 +88,20 @@ class ProfileCard extends StaticPage {
     );
   }
 
-  Future<void> _login() async {
+  Future<void> _login(BuildContext context) async {
     final response = await Authenticator.login();
 
     if (response != null) {
-      AppNavigator.replaceWithPage(const MenuPageDisplay());
-      NavbarState.setActiveMenu();
+      if (context.mounted) {
+        context.go('/menu');
+      }
     }
   }
 
-  AnimatedButton loginButton(ThemeConfig theme) {
+  AnimatedButton loginButton(ThemeConfig theme, BuildContext context) {
     return AnimatedButton(
       onTap: () async {
-        _login();
+        await _login(context);
       },
       childBuilder: (context, hover, pointerDown) {
         return Container(
@@ -123,7 +124,7 @@ class ProfileCard extends StaticPage {
     );
   }
 
-  Widget notLoggedInCard(ThemeConfig theme) {
+  Widget notLoggedInCard(ThemeConfig theme, BuildContext context) {
     return SizedBox(
       height: 164,
       child: OnlineCard(
@@ -149,7 +150,7 @@ class ProfileCard extends StaticPage {
             const SizedBox(height: 24),
             SizedBox(
               height: 40,
-              child: loginButton(theme),
+              child: loginButton(theme, context),
             ),
           ],
         ),
@@ -160,8 +161,12 @@ class ProfileCard extends StaticPage {
   @override
   Widget content(BuildContext context) {
     final theme = OnlineTheme.current;
-    bool loggedIn = Authenticator.isLoggedIn();
 
-    return loggedIn ? loggedInCard(theme) : notLoggedInCard(theme);
+    return ValueListenableBuilder(
+      valueListenable: Authenticator.loggedIn,
+      builder: (context, loggedIn, child) {
+        return loggedIn ? loggedInCard(theme, context) : notLoggedInCard(theme, context);
+      },
+    );
   }
 }

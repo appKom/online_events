@@ -19,7 +19,7 @@ class InfoPage extends ScrollablePage {
     final theme = OnlineTheme.current;
 
     return Padding(
-      padding: padding,
+      padding: padding + EdgeInsets.symmetric(vertical: 64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

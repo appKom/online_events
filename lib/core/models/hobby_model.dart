@@ -1,6 +1,6 @@
 import 'image_model.dart';
 
-class HobbyModel {
+class GroupModel {
   final int id;
   final String title;
   final String? description;
@@ -9,7 +9,7 @@ class HobbyModel {
   final int? priority;
   final bool active;
 
-  HobbyModel({
+  GroupModel({
     required this.id,
     required this.title,
     this.description,
@@ -19,8 +19,8 @@ class HobbyModel {
     required this.active,
   });
 
-  factory HobbyModel.fromJson(Map<String, dynamic> json) {
-    return HobbyModel(
+  factory GroupModel.fromJson(Map<String, dynamic> json) {
+    return GroupModel(
       id: json['id'],
       title: json['title'],
       description: json['description'],

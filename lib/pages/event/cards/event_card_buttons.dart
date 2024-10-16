@@ -1,14 +1,16 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:native_ios_dialog/native_ios_dialog.dart';
+import 'package:online/router.dart';
 import 'package:online/services/authenticator.dart';
 
 import '/components/animated_button.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/event_model.dart';
-import '/pages/event/event_page.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 bool isRegistered = false;
@@ -32,7 +34,7 @@ class EventCardButtons extends StatefulWidget {
 }
 
 class _EventCardButtonsState extends State<EventCardButtons> {
-  Future<void> unregisterForEvent(int eventId) async {
+  Future<void> unregisterForEvent(int eventId, BuildContext context) async {
     final String apiUrl = 'https://old.online.ntnu.no/api/v1/event/attendance-events/$eventId/unregister/';
 
     try {
@@ -45,13 +47,17 @@ class _EventCardButtonsState extends State<EventCardButtons> {
       );
 
       if (response.statusCode == 204) {
-        // Handle successful unregistration
-        // ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
-        //   const SnackBar(content: Text("Du har blitt avmeldt arrangementet")),
-        // );
+        // TODO: More sophisticated approach of doing this
+
         widget.onUnregisterSuccess(); // Call the callback
-        AppNavigator.replaceWithPage(EventPage(model: widget.model));
-        print("Successfully unregistered from the event");
+
+        if (context.mounted) {
+          final dir = GoRouter.of(context).routeInformationProvider.value.uri.toString();
+          context.go(dir);
+        }
+
+        // AppNavigator.replaceWithPage(EventPage(model: widget.model));
+        // print("Successfully unregistered from the event");
       } else {
         // Handle error
         print("Failed to unregister from the event: ${response.body}");
@@ -153,37 +159,21 @@ class _EventCardButtonsState extends State<EventCardButtons> {
   }
 
   void showUnregisterDialog() {
-    final context = AppNavigator.navigatorKey.currentContext;
-
-    if (context == null) return;
-
-    final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+    final bool isIOS = Platform.isIOS;
 
     if (isIOS) {
-      showCupertinoDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: const Text('Bekreft avmelding'),
-            content: const Text('Er du sikker på at du vil melde deg av?'),
-            actions: [
-              const CupertinoDialogAction(
-                onPressed: AppNavigator.pop,
-                child: Text('Avbryt'),
-              ),
-              CupertinoDialogAction(
-                isDestructiveAction: true,
-                onPressed: () {
-                  AppNavigator.pop();
-                  unregisterForEvent(widget.model.id);
-                },
-                child: const Text('Meld av'),
-              ),
-            ],
-          );
-        },
-      );
+      NativeIosDialog(title: 'Bekreft avmelding', actions: [
+        NativeIosDialogAction(
+          text: 'Avbryt',
+          style: NativeIosDialogActionStyle.cancel,
+        ),
+        NativeIosDialogAction(
+          text: 'Bekreft',
+          style: NativeIosDialogActionStyle.destructive,
+        ),
+      ]).show();
     } else {
+      // TODO: Implement Android dialog
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -191,15 +181,15 @@ class _EventCardButtonsState extends State<EventCardButtons> {
             title: const Text('Bekreft avemelding'),
             content: const Text('Er du sikker på at du vil melde av?'),
             actions: [
-              const TextButton(
-                onPressed: AppNavigator.pop,
+              TextButton(
+                onPressed: () => rootNavigator.currentState!.pop(),
                 child: Text('Avbryt'),
               ),
               TextButton(
                 child: const Text('Meld av'),
                 onPressed: () {
-                  AppNavigator.pop();
-                  unregisterForEvent(widget.model.id);
+                  rootNavigator.currentState!.pop();
+                  unregisterForEvent(widget.model.id, context);
                 },
               ),
             ],

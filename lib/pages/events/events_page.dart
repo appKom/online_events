@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online/core/models/event_model.dart';
 
 import '/components/navbar.dart';
 import '/core/client/client.dart';
@@ -23,26 +24,30 @@ class EventsPageState extends State<EventsPage> {
     final nextPage = currentPage + 1;
     try {
       final moreEventsPage = await Client.getEvents(pages: [nextPage]);
-      final events = Client.eventsCache.value.toList();
-      print('fecthing events from page $nextPage');
+      // final events = Client.eventsCache.value.values.toList();
+      // print('fecthing events from page $nextPage');
 
-      if (mounted) {
+      if (mounted && moreEventsPage != null) {
         setState(() {
-          if (moreEventsPage != null) {
-            for (var event in moreEventsPage) {
-              if (!events.any((existingEvent) => existingEvent.id == event.id)) {
-                events.add(event);
-              }
-            }
-            events.sort((a, b) {
-              final aEndDate = DateTime.parse(a.endDate);
-              final bEndDate = DateTime.parse(b.endDate);
-              return aEndDate.compareTo(bEndDate);
-            });
-            Client.eventsCache.value = Set.from(events);
-          }
+          Client.eventsCache.value.addAll(moreEventsPage);
           currentPage = nextPage;
         });
+        // setState(() {
+        //   // if (moreEventsPage != null) {
+        //   //   for (var event in moreEventsPage.entries) {
+        //   //     if (!events.any((existingEvent) => existingEvent.id == event.value.id)) {
+        //   //       events.add(event.value);
+        //   //     }
+        //   //   }
+        //   //   events.sort((a, b) {
+        //   //     final aEndDate = DateTime.parse(a.endDate);
+        //   //     final bEndDate = DateTime.parse(b.endDate);
+        //   //     return aEndDate.compareTo(bEndDate);
+        //   //   });
+        //   //   Client.eventsCache.value = Set.from(events);
+        //   // }
+        //   // currentPage = nextPage;
+        // });
       }
     } catch (e) {
       print("Failed to fetch events: $e");
@@ -56,25 +61,29 @@ class EventsPageState extends State<EventsPage> {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     final now = DateTime.now();
 
-    final futureEvents = Client.eventsCache.value.where((event) {
-      final today = DateTime.now();
-      final eventDate = DateTime.parse(event.endDate);
-      return eventDate.isAfter(today);
-    }).toList();
+    final List<EventModel> futureEvents = [];
+    final List<EventModel> pastEvents = [];
 
-    final pastEvents = Client.eventsCache.value.where((event) {
-      final endDate = DateTime.parse(event.endDate);
-      return endDate.isBefore(now);
-    }).toList()
-      ..sort((a, b) {
-        final aEndDate = DateTime.parse(a.endDate);
-        final bEndDate = DateTime.parse(b.endDate);
-        return bEndDate.compareTo(aEndDate);
-      });
+    for (MapEntry<String, EventModel> entry in Client.eventsCache.value.entries) {
+      final event = entry.value;
+      final eventDate = DateTime.parse(event.endDate);
+
+      if (eventDate.isAfter(now)) {
+        futureEvents.add(event);
+      } else if (eventDate.isBefore(now)) {
+        pastEvents.add(event);
+      }
+    }
+
+    pastEvents.sort((a, b) {
+      final aEndDate = DateTime.parse(a.endDate);
+      final bEndDate = DateTime.parse(b.endDate);
+      return bEndDate.compareTo(aEndDate);
+    });
 
     return Container(
       color: OnlineTheme.current.bg,
-      padding: EdgeInsets.only(left: padding.left, right: padding.right, top: padding.top),
+      padding: padding + EdgeInsets.symmetric(vertical: 64),
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.95;
@@ -87,14 +96,11 @@ class EventsPageState extends State<EventsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // const SizedBox(
-              //   height: 24,
-              // ),
-              // CalendarCardEvents(upcomingEvents: futureEvents, pastEvents: pastEvents),
               const SizedBox(height: 24),
               Text(
                 'Kommende Arrangementer',
                 style: OnlineTheme.header(),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
               SizedBox(
@@ -113,10 +119,12 @@ class EventsPageState extends State<EventsPage> {
                   children: List.generate(2, (_) => EventCard.skeleton()),
                 ),
               if (pastEvents.isNotEmpty) const SizedBox(height: 24),
+              if (pastEvents.isNotEmpty) const SizedBox(height: 24),
               if (pastEvents.isNotEmpty)
                 Text(
                   'Tidligere Arrangementer',
                   style: OnlineTheme.header(),
+                  textAlign: TextAlign.center,
                 ),
               if (pastEvents.isNotEmpty) const SizedBox(height: 24),
               if (pastEvents.isNotEmpty)

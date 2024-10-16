@@ -1,7 +1,7 @@
 name: online
 description: Online App
 publish_to: "none"
-version: 1.1.2
+version: 1.1.3
 
 environment:
   sdk: ">=3.1.0 <4.0.0"
@@ -41,7 +41,7 @@ dependencies:
   shared_preferences: ^2.2.2
   swipeable_page_route: ^0.4.2
   native_ios_dialog: ^0.2.1
-  accordion: ^2.6.0
+  go_router: ^14.3.0
 
 dev_dependencies:
   flutter_test:

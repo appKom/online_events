@@ -1,10 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:online/pages/games/hundred_questions/hundred_questions_page.dart';
-import 'package:online/pages/games/roulette_page.dart';
+import 'package:go_router/go_router.dart';
+import 'package:online/components/navbar.dart';
+import 'package:online/router.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
+import '/pages/games/hundred_questions/hundred_questions_page.dart';
+import '/pages/games/roulette_page.dart';
 import '/pages/games/spin_line_page.dart';
 import '/services/app_navigator.dart';
 import '/theme/theme.dart';
@@ -20,15 +23,19 @@ class GamesPage extends ScrollablePage {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
-      padding: padding,
+      padding: padding + EdgeInsets.symmetric(vertical: 64),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 24),
           DrikkeSanger(carouselOptions: getCarouselOptions(context)),
           const SizedBox(height: 24),
           const SizedBox(height: 24),
-          Text('Spill', style: OnlineTheme.header()),
+          Text(
+            'Spill',
+            style: OnlineTheme.header(),
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 24),
           CarouselSlider(
             items: [
@@ -36,35 +43,37 @@ class GamesPage extends ScrollablePage {
                 name: 'Terning',
                 imageSource: 'assets/images/diceHeader.jpg',
                 onTap: () {
-                  AppNavigator.navigateToPage(const DicePage(), withHeaderNavbar: false);
+                  context.go('/social/games/dice');
                 },
               ),
               GameCard(
                 name: 'Hundre spørsmål',
                 imageSource: 'assets/images/hundred-questions.png',
                 onTap: () {
-                  AppNavigator.navigateToPage(HundredQuestionsInfo(), withHeaderNavbar: false);
+                  context.go('/social/games/hundred_questions');
                 },
               ),
               GameCard(
                 name: 'SpinLine',
                 imageSource: 'assets/images/SpinLine.png',
                 onTap: () {
-                  AppNavigator.navigateToPage(const SpinLinePage(), withHeaderNavbar: false);
+                  context.go('/social/games/spinline');
                 },
               ),
               GameCard(
                 name: 'Roulette',
                 imageSource: 'assets/images/roulette.png',
                 onTap: () {
-                  AppNavigator.navigateToPage(const RoulettePage(), withHeaderNavbar: false);
+                  context.go('/social/games/roulette');
+                  // AppNavigator.navigateToPage(const RoulettePage(), withHeaderNavbar: false);
                 },
               ),
               GameCard(
                 name: 'Bits',
                 imageSource: 'assets/images/bits.png',
                 onTap: () {
-                  AppNavigator.navigateToPage(const BitsHomePage(), withHeaderNavbar: false);
+                  context.go('/social/games/bits');
+                  // AppNavigator.navigateToPage(const BitsHomePage(), withHeaderNavbar: false);
                 },
               ),
             ],
@@ -83,9 +92,8 @@ class GamesPage extends ScrollablePage {
       height: 200,
       enableInfiniteScroll: true,
       padEnds: true,
-      enlargeCenterPage: isMobile,
+      enlargeCenterPage: false,
       viewportFraction: isMobile ? 0.75 : 0.3,
-      enlargeFactor: 0.2,
       clipBehavior: Clip.none,
     );
   }

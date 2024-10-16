@@ -65,12 +65,19 @@ class FeedPageState extends State<FeedPage> {
         attendedEventIds.add(event.id);
       }
     }
-    // print('fetching ids: $attendedEventIds');
+
     if (attendedEventIds.isNotEmpty) {
-      Set<EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
+      Map<String, EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
       if (fetchedEvents != null) {
-        allAttendedEvents = fetchedEvents.toList();
-        Set<int> fetchedEventIds = fetchedEvents.map((e) => e.id).toSet();
+        allAttendedEvents = fetchedEvents.values.toList();
+
+        Set<int> fetchedEventIds = {};
+
+        for (var entry in fetchedEvents.entries) {
+          fetchedEventIds.add(entry.value.id);
+        }
+
+        // Set<int> fetchedEventIds = fetchedEvents.map((key, value) => value.id).values.toSet();
         attendedEventIds.removeWhere((id) => fetchedEventIds.contains(id));
       }
     } else {
@@ -113,33 +120,42 @@ class FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    final upcomingEvents = Client.eventsIdsCache.value.where((event) {
-      final today = DateTime.now();
-      final eventDate = DateTime.parse(event.endDate);
-      return eventDate.isAfter(today);
-    }).toList();
 
-    final pastEvents = Client.eventsIdsCache.value.where((event) {
-      final endDate = DateTime.parse(event.endDate);
-      return endDate.isBefore(now);
-    }).toList()
-      ..sort((a, b) {
-        final aEndDate = DateTime.parse(a.endDate);
-        final bEndDate = DateTime.parse(b.endDate);
-        return bEndDate.compareTo(aEndDate);
-      });
+    final List<EventModel> futureEvents = [];
+    final List<EventModel> pastEvents = [];
+
+    for (MapEntry<String, EventModel> entry in Client.eventsCache.value.entries) {
+      final event = entry.value;
+      final eventDate = DateTime.parse(event.endDate);
+
+      if (eventDate.isAfter(now)) {
+        futureEvents.add(event);
+      } else if (eventDate.isBefore(now)) {
+        pastEvents.add(event);
+      }
+    }
+
+    pastEvents.sort((a, b) {
+      final aEndDate = DateTime.parse(a.endDate);
+      final bEndDate = DateTime.parse(b.endDate);
+      return bEndDate.compareTo(aEndDate);
+    });
+
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     if (hasAttendedAnyEvent == false) {
-      return const NoFeedEvents();
+      return Padding(
+        padding: padding + EdgeInsets.symmetric(vertical: 64),
+        child: const NoFeedEvents(),
+      );
     }
 
     if (isLoading || allAttendedEvents.isEmpty) {
       return skeletonLoader(context);
     }
 
-    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
     return Padding(
-      padding: padding,
+      padding: padding + EdgeInsets.symmetric(vertical: 64),
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.95;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '/components/online_scaffold.dart';
-// import '/components/separator.dart';
 import '/theme/theme.dart';
 
 class NuKlingerPage extends ScrollablePage {
@@ -53,10 +52,10 @@ Også sitter vi i himmelen og stemmer i vår replikk;\n
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
-      padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom),
+      padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom) + const EdgeInsets.symmetric(vertical: 64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

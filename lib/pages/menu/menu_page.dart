@@ -1,16 +1,14 @@
-import 'package:accordion/accordion.dart';
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:native_ios_dialog/native_ios_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../profile/delete_user.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart' as io;
 import '/core/models/user_model.dart';
 import '/pages/event/cards/event_card.dart';
-import '/pages/home/info_page.dart';
 import '/pages/menu/profile_card.dart';
 import '/pages/menu/settings.dart';
 import '/services/app_navigator.dart';
@@ -18,6 +16,7 @@ import '/services/authenticator.dart';
 import '/services/env.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
+import '../profile/delete_user.dart';
 
 class Foldout extends StatefulWidget {
   final Widget? leading;
@@ -115,30 +114,29 @@ class MenuPageState extends State<MenuPage> {
     final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     if (isIOS) {
-      showCupertinoDialog(context: context, builder: (context) => cupertionDeleteDialog());
+      cupertionDeleteDialog();
     } else {
       showDialog(context: context, builder: (context) => materialDeleteDialog());
     }
   }
 
-  Widget cupertionDeleteDialog() {
-    return CupertinoAlertDialog(
-      title: const Text('Bekreft sletting'),
-      content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
+  void cupertionDeleteDialog() {
+    NativeIosDialog(
+      title: 'Bekreft sletting',
+      message: 'Er du sikker på at du vil slette brukerdataene dine?',
       actions: [
-        CupertinoDialogAction(
-          child: const Text('Avbryt'),
-          onPressed: () {
-            AppNavigator.pop();
-          },
+        NativeIosDialogAction(
+          text: 'Avbryt',
+          style: NativeIosDialogActionStyle.cancel,
+          onPressed: () {},
         ),
-        CupertinoDialogAction(
-          isDestructiveAction: true,
-          onPressed: delete,
-          child: const Text('Slett'),
+        NativeIosDialogAction(
+          text: 'Slett',
+          style: NativeIosDialogActionStyle.destructive,
+          onPressed: deleteUserData,
         ),
       ],
-    );
+    ).show();
   }
 
   Widget materialDeleteDialog() {
@@ -153,14 +151,14 @@ class MenuPageState extends State<MenuPage> {
           child: const Text('Avbryt'),
         ),
         TextButton(
-          onPressed: delete,
+          onPressed: deleteUserData,
           child: const Text('Slett'),
         ),
       ],
     );
   }
 
-  void delete() {
+  void deleteUserData() {
     final userInfo = io.Client.userCache.value;
 
     if (userInfo == null) return;
@@ -231,7 +229,7 @@ class MenuPageState extends State<MenuPage> {
           Row(
             children: [
               AnimatedButton(onTap: () {
-                AppNavigator.navigateToPage(const InfoPage());
+                context.go('/menu/info');
               }, childBuilder: (context, hover, pointerDown) {
                 return Row(
                   children: [
@@ -336,7 +334,7 @@ class MenuPageState extends State<MenuPage> {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
-      padding: padding,
+      padding: padding + EdgeInsets.symmetric(vertical: 64),
       child: Column(
         children: [
           const SizedBox(

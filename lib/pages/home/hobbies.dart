@@ -3,13 +3,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 import '/components/animated_button.dart';
 import '/components/image_default.dart';
 import '/components/skeleton_loader.dart';
 import '/core/models/hobby_model.dart';
-import '/pages/hobbies/hobby_page.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 
 class Hobbies extends StatelessWidget {
@@ -18,7 +17,7 @@ class Hobbies extends StatelessWidget {
     required this.hobbies,
   });
 
-  final Set<HobbyModel> hobbies;
+  final Map<String, GroupModel> hobbies;
 
   static Widget skeleton(BuildContext context) {
     return Column(
@@ -27,7 +26,8 @@ class Hobbies extends StatelessWidget {
         const SizedBox(height: 24),
         Text(
           'Interessegrupper',
-          style: OnlineTheme.textStyle(size: 20, weight: 7),
+          style: OnlineTheme.header(),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
         CarouselSlider(
@@ -48,24 +48,34 @@ class Hobbies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<HobbyModel> interesseGrupper =
-        hobbies.where((hobby) => hobby.active && !hobby.title.contains("[inaktiv]")).toList();
+    // List<GroupModel> interesseGrupper =
+    //     hobbies.where((hobby) => hobby.active && !hobby.title.contains("[inaktiv]")).toList();
+
+    List<GroupModel> interestGroups = [];
+
+    for (var entry in hobbies.entries) {
+      if (entry.value.active && !entry.value.title.contains("[inaktiv]")) {
+        interestGroups.add(entry.value);
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 24),
         Text(
           'Interessegrupper',
-          style: OnlineTheme.textStyle(size: 20, weight: 7),
+          style: OnlineTheme.header(),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
         CarouselSlider(
           options: getCarouselOptions(context),
           items: List.generate(
-            interesseGrupper.length,
+            interestGroups.length,
             (i) {
               return HobbiesCard(
-                model: interesseGrupper[i],
+                model: interestGroups[i],
               );
             },
           ),
@@ -92,10 +102,10 @@ class Hobbies extends StatelessWidget {
 class HobbiesCard extends StatelessWidget {
   const HobbiesCard({super.key, required this.model});
 
-  final HobbyModel model;
+  final GroupModel model;
 
-  void showInfo() {
-    AppNavigator.navigateToPage(HobbyPage(hobby: model));
+  void showInfo(BuildContext context) {
+    context.go('/groups/${model.id}');
   }
 
   Widget defaultWithBorder() {
@@ -148,7 +158,7 @@ class HobbiesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
-      onTap: showInfo,
+      onTap: () => showInfo(context),
       childBuilder: (context, hover, pointerDown) {
         return Stack(children: [
           hobbyIcon(),

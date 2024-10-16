@@ -62,14 +62,16 @@ abstract class Client {
     }
   }
 
-  static final ValueNotifier<Set<EventModel>> eventsCache = ValueNotifier({});
-  static final ValueNotifier<Set<EventModel>> eventsIdsCache = ValueNotifier({});
+  static final ValueNotifier<Map<String, EventModel>> eventsCache = ValueNotifier({});
+  // static final ValueNotifier<Set<EventModel>> eventsIdsCache = ValueNotifier({});
   static final ValueNotifier<UserModel?> userCache = ValueNotifier(null);
   static final ValueNotifier<Set<EventAttendanceModel>> eventAttendanceCache = ValueNotifier({});
-  static final ValueNotifier<Set<HobbyModel>> hobbiesCache = ValueNotifier({});
+  static final ValueNotifier<Map<String, GroupModel>> hobbiesCache = ValueNotifier({});
 
-  static Future<Set<EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
-    Set<EventModel> allEvents = {};
+  static Future<Map<String, EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
+    Map<String, EventModel> eventMap = {};
+
+    // TODO: Optimize using Future.wait (no reason for these to happen after each other)
 
     for (int page in pages) {
       String url = '$endpoint/api/v1/event/events/?page=$page';
@@ -78,22 +80,24 @@ abstract class Client {
       if (response.statusCode == 200) {
         final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
         final jsonResponse = jsonDecode(responseBody);
-        final events = jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
+        final List<EventModel> events =
+            jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
 
-        allEvents.addAll(events);
+        for (int i = 0; i < events.length; i++) {
+          final event = events[i];
+          final id = event.id.toString();
+          eventMap.putIfAbsent(id, () => event);
+        }
       }
     }
 
-    // Add any new events fetched
-    if (allEvents.isNotEmpty) {
-      eventsCache.value = Set.from(eventsCache.value)..addAll(allEvents);
-    }
+    eventsCache.value = Map.from(eventsCache.value)..addAll(eventMap);
 
-    return allEvents;
+    return eventsCache.value;
   }
 
-  static Future<Set<EventModel>?> getEventsWithIds({List<int> eventIds = const []}) async {
-    Set<EventModel> eventsWithId = {};
+  static Future<Map<String, EventModel>?> getEventsWithIds({List<int> eventIds = const []}) async {
+    Map<String, EventModel> eventMap = {};
 
     var futures = eventIds.map((eventId) {
       String url = '$endpoint/api/v1/event/events/$eventId';
@@ -115,15 +119,13 @@ abstract class Client {
 
     for (var event in results) {
       if (event != null) {
-        eventsWithId.add(event);
+        eventMap.putIfAbsent(event.id.toString(), () => event);
       }
     }
 
-    if (eventsWithId.isNotEmpty) {
-      eventsIdsCache.value = Set.from(eventsIdsCache.value)..addAll(eventsWithId);
-    }
+    eventsCache.value = Map.from(eventsCache.value)..addAll(eventMap);
 
-    return eventsWithId;
+    return eventsCache.value;
   }
 
   static Future<UserModel?> getUserProfile() async {
@@ -275,18 +277,23 @@ abstract class Client {
     }
   }
 
-  static ValueNotifier<Set<ArticleModel>> articlesCache = ValueNotifier({});
+  static ValueNotifier<Map<String, ArticleModel>> articlesCache = ValueNotifier({});
 
-  static Future<List<ArticleModel>?> fetchArticles(int pageNumber) async {
+  static Future<List<ArticleModel>> fetchArticles(int pageNumber) async {
     final articles = await fetch(
       '$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber',
       ArticleModel.fromJson,
     );
 
-    // Add any new articles fetched
-    if (articles != null) {
-      articlesCache.value = Set.from(articlesCache.value)..addAll(articles);
+    if (articles == null) return [];
+
+    Map<String, ArticleModel> articleMap = {};
+
+    for (var article in articles) {
+      articleMap.putIfAbsent(article.createdDate, () => article);
     }
+
+    articlesCache.value = Map.from(articlesCache.value)..addAll(articleMap);
 
     return articles;
   }
@@ -305,8 +312,8 @@ abstract class Client {
     return null;
   }
 
-  static Future<void> getHobbies() async {
-    Set<HobbyModel> allHobbies = {};
+  static Future<void> getGroups() async {
+    Map<String, GroupModel> groupMap = {};
 
     String initialUrl = '$endpoint/api/v1/hobbys/?ordering=-priority&page=1';
     var initialResponse = await http.get(Uri.parse(initialUrl));
@@ -330,15 +337,16 @@ abstract class Client {
         if (response.statusCode == 200) {
           final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
           final jsonResponse = jsonDecode(responseBody);
-          final hobbies =
-              jsonResponse['results'].map<HobbyModel>((hobbyJson) => HobbyModel.fromJson(hobbyJson)).toList();
+          final groups =
+              jsonResponse['results'].map<GroupModel>((hobbyJson) => GroupModel.fromJson(hobbyJson)).toList();
 
-          allHobbies.addAll(hobbies);
+          for (var group in groups) {
+            groupMap.putIfAbsent(group.id.toString(), () => group);
+          }
         }
       }
-      if (allHobbies.isNotEmpty) {
-        hobbiesCache.value = Set.from(hobbiesCache.value)..addAll(allHobbies);
-      }
     }
+
+    hobbiesCache.value = Map.from(hobbiesCache.value)..addAll(groupMap);
   }
 }

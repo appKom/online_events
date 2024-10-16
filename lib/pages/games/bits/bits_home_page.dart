@@ -141,7 +141,7 @@ class BitsHomePageState extends State<BitsHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     final theme = OnlineTheme.current;
 
@@ -159,23 +159,23 @@ class BitsHomePageState extends State<BitsHomePage> {
             ),
           ),
           SingleChildScrollView(
-            padding: MediaQuery.of(context).padding,
+            padding: MediaQuery.of(context).padding + EdgeInsets.symmetric(vertical: 64),
             child: Column(
               children: [
                 const SizedBox(height: 12),
-                Row(children: [
-                  const SizedBox(width: 10),
-                  AnimatedButton(onTap: () {
-                    AppNavigator.pop();
-                  }, childBuilder: (context, hover, pointerDown) {
-                    return Icon(
-                      Icons.close_outlined,
-                      color: theme.fg,
-                      size: 30,
-                    );
-                  }),
-                  const Spacer(),
-                ]),
+                // Row(children: [
+                //   const SizedBox(width: 10),
+                //   AnimatedButton(onTap: () {
+                //     AppNavigator.pop();
+                //   }, childBuilder: (context, hover, pointerDown) {
+                //     return Icon(
+                //       Icons.close_outlined,
+                //       color: theme.fg,
+                //       size: 30,
+                //     );
+                //   }),
+                //   const Spacer(),
+                // ]),
                 Text(
                   'Bits',
                   style: OnlineTheme.textStyle(size: 32, weight: 5),
@@ -207,7 +207,8 @@ class BitsHomePageState extends State<BitsHomePage> {
                                 decoration: BoxDecoration(
                                   color: const Color.fromARGB(255, 248, 98, 6).withOpacity(0.4),
                                   borderRadius: BorderRadius.circular(5.0),
-                                  border: Border.fromBorderSide(BorderSide(color: theme.fg, width: 2)),
+                                  border: Border.fromBorderSide(
+                                      BorderSide(color: const Color.fromARGB(255, 248, 98, 6), width: 2)),
                                 ),
                                 child: Text(
                                   'Legg til spiller',

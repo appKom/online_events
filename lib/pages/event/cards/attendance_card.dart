@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:online/main.dart';
-import 'package:online/services/app_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -164,45 +163,6 @@ class AttendanceCardState extends State<AttendanceCard> {
     'Sosialt': false,
     'Annet': false,
   };
-  void _showInfoAndroid() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const AlertDialog(
-          title: Text("Automatiske varslinger"),
-          content: Text(
-              "Du har huket av for automatiske varslinger for denne typen arrangementer. Du vil motta varsling 15 minutter før påmeldingsstart for arrangementet. "),
-          actions: [
-            TextButton(
-              onPressed: AppNavigator.pop,
-              child: Text("Lukk"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // void _showInfoDialogIOS() {
-  //   showCupertinoDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return CupertinoAlertDialog(
-  //         title: const Text("Automatiske varslinger"),
-  //         content: const Text(
-  //             "Du har huket av for automatiske varslinger for denne typen arrangementer. Du vil motta varsling 15 minutter før påmeldingsstart for arrangementet."),
-  //         actions: <Widget>[
-  //           CupertinoDialogAction(
-  //             child: const Text("Lukk"),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget isAlreadyNotifiedWidget() {
     String eventType = '';

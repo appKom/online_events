@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:online/components/image_default.dart';
 
 import '/components/animated_button.dart';
 import '/components/icon_label.dart';
 import '/components/skeleton_loader.dart';
 import '/core/models/article_model.dart';
-import '/pages/article/article_page.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 
@@ -78,10 +77,10 @@ class ArticleCarousel extends StatelessWidget {
     );
   }
 
-  Widget articleCard(ArticleModel article) {
+  Widget articleCard(ArticleModel article, BuildContext context) {
     final timeToRead = calculateReadingTime(article.content, article.ingress);
     return AnimatedButton(
-      onTap: () => AppNavigator.navigateToPage(ArticlePage(article: article)),
+      onTap: () => context.go('/articles/${article.createdDate}'),
       childBuilder: (context, hover, pointerDown) {
         return Container(
           width: 250,
@@ -151,9 +150,8 @@ class ArticleCarousel extends StatelessWidget {
       height: 300,
       enableInfiniteScroll: true,
       padEnds: true,
-      enlargeCenterPage: isMobile,
+      enlargeCenterPage: false,
       viewportFraction: isMobile ? 0.75 : 0.3,
-      enlargeFactor: 0.2,
       clipBehavior: Clip.none,
     );
   }
@@ -165,9 +163,7 @@ class ArticleCarousel extends StatelessWidget {
       items: List.generate(
         articles.length,
         (i) {
-          return articleCard(
-            articles[i],
-          );
+          return articleCard(articles[i], context);
         },
       ),
     );

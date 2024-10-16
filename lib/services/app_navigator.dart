@@ -21,8 +21,8 @@ abstract class AppNavigator {
   static void navigateToPage(Widget page, {bool withHeaderNavbar = true}) {
     final route = SwipeablePageRoute(
       builder: (context) => OnlineScaffold(
-        child: page,
         showHeaderNavbar: withHeaderNavbar, // Pass the flag
+        child: page,
       ),
     );
 
@@ -30,10 +30,10 @@ abstract class AppNavigator {
   }
 
   static void replaceWithPage(Widget page, {bool withHeaderNavbar = true}) {
-    final route = MaterialPageRoute(
+    final route = NoAnimationPageRoute(
       builder: (context) => OnlineScaffold(
-        child: page,
         showHeaderNavbar: withHeaderNavbar, // Pass the flag
+        child: page,
       ),
     );
 
@@ -47,8 +47,8 @@ abstract class AppNavigator {
       // Wrap the existing route's page in OnlineScaffold
       wrappedRoute = MaterialPageRoute(
         builder: (context) => OnlineScaffold(
-          child: (route.settings as MaterialPageRoute).builder(context),
           showHeaderNavbar: withHeaderNavbar,
+          child: (route.settings as MaterialPageRoute).builder(context),
         ),
       );
     } else {

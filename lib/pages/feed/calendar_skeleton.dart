@@ -12,7 +12,7 @@ Widget skeletonLoader(BuildContext context) {
   int year = time.year;
 
   return Padding(
-    padding: padding,
+    padding: padding + EdgeInsets.symmetric(vertical: 64),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

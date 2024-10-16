@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../events/events_page.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/core/client/client.dart';
 import '/core/models/event_model.dart';
 import '/pages/home/event_card.dart';
 import '/pages/home/hobbies.dart';
-import '/services/app_navigator.dart';
 import '/theme/theme.dart';
 import 'article_carousel.dart';
 import 'bedpres.dart';
-import 'info_page.dart';
 
 class HomePage extends ScrollablePage {
   const HomePage({super.key});
@@ -22,30 +20,33 @@ class HomePage extends ScrollablePage {
     final theme = OnlineTheme.current;
 
     return Padding(
-      padding: padding,
+      padding: padding + EdgeInsets.only(top: 64, bottom: 64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Kommende Arrangementer',
-                style: OnlineTheme.header(),
-              ),
-            ],
+          Text(
+            'Kommende Arrangementer',
+            style: OnlineTheme.header(),
+            textAlign: TextAlign.center,
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 24),
-            child: ValueListenableBuilder<Set<EventModel>>(
+            child: ValueListenableBuilder(
               valueListenable: Client.eventsCache,
-              builder: (context, Set<EventModel> eventSet, child) {
-                final today = DateTime.now();
-                final futureEvents = eventSet.where((event) {
+              builder: (context, events, child) {
+                final now = DateTime.now();
+
+                final List<EventModel> futureEvents = [];
+
+                for (MapEntry<String, EventModel> entry in events.entries) {
+                  final event = entry.value;
                   final eventDate = DateTime.parse(event.endDate);
-                  return eventDate.isAfter(today);
-                }).toList();
+
+                  if (eventDate.isAfter(now)) {
+                    futureEvents.add(event);
+                  }
+                }
 
                 if (futureEvents.isEmpty) {
                   return Column(
@@ -78,7 +79,8 @@ class HomePage extends ScrollablePage {
               return AnimatedButton(
                 onTap: () {
                   if (events.isEmpty) return;
-                  AppNavigator.navigateToPage(const EventsPage());
+                  // AppNavigator.navigateToPage(const EventsPage());
+                  context.go('/events');
                 },
                 behavior: HitTestBehavior.opaque,
                 childBuilder: (context, hover, pointerDown) {
@@ -121,19 +123,23 @@ class HomePage extends ScrollablePage {
             },
           ),
           const SizedBox(height: 24 + 24),
-          Text('Artikler', style: OnlineTheme.header()),
+          Text(
+            'Artikler',
+            style: OnlineTheme.header(),
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 24),
           ValueListenableBuilder(
             valueListenable: Client.articlesCache,
             builder: (context, articles, child) {
               if (articles.isEmpty) return Center(child: ArticleCarousel.skeleton(context));
-              return Center(child: ArticleCarousel(articles: articles.take(3).toList()));
+              return Center(child: ArticleCarousel(articles: articles.values.take(5).toList()));
             },
           ),
           const SizedBox(height: 24 + 24),
           AnimatedButton(
             onTap: () {
-              AppNavigator.navigateToPage(const InfoPage());
+              context.go('/info');
             },
             childBuilder: (context, hover, pointerDown) {
               return Container(

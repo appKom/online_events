@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:online/components/navbar.dart';
+import 'package:online/router.dart';
 
-import '../../services/app_navigator.dart';
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
@@ -75,10 +77,10 @@ class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderSta
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
 
-    return Scaffold(
-      backgroundColor: OnlineTheme.current.bg,
-      body: Padding(
-        padding: padding,
+    return Material(
+      color: OnlineTheme.current.bg,
+      child: Padding(
+        padding: padding + EdgeInsets.symmetric(vertical: 64),
         child: Stack(
           children: [
             Column(
@@ -109,19 +111,19 @@ class StatefulDiceState extends State<StatefulDice> with SingleTickerProviderSta
                 ),
               ],
             ),
-            Positioned(
-              top: padding.right,
-              right: 0,
-              child: AnimatedButton(onTap: () {
-                AppNavigator.pop();
-              }, childBuilder: (context, hover, pointerDown) {
-                return Icon(
-                  Icons.close_outlined,
-                  color: OnlineTheme.current.fg,
-                  size: 32,
-                );
-              }),
-            ),
+            // Positioned(
+            //   top: padding.right,
+            //   right: 0,
+            //   child: AnimatedButton(onTap: () {
+            //     context.go('/social');
+            //   }, childBuilder: (context, hover, pointerDown) {
+            //     return Icon(
+            //       Icons.close_outlined,
+            //       color: OnlineTheme.current.fg,
+            //       size: 32,
+            //     );
+            //   }),
+            // ),
           ],
         ),
       ),

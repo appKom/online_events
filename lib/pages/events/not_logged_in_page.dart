@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:online/components/navbar.dart';
-import 'package:online/pages/profile/profile_page.dart';
-import 'package:online/services/app_navigator.dart';
 import 'package:online/services/authenticator.dart';
 
-import '../../components/animated_button.dart';
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
+import '../../components/animated_button.dart';
 
 // TODO: Redundant? Could provide header to LoginPage and make it reusable
 class NotLoggedInPage extends StaticPage {
@@ -32,7 +31,7 @@ class NotLoggedInPage extends StaticPage {
           ),
           const SizedBox(height: 24),
           AnimatedButton(
-            onTap: login,
+            onTap: () => login(context),
             childBuilder: (context, hover, pointerDown) {
               return Container(
                 alignment: Alignment.center,
@@ -53,11 +52,14 @@ class NotLoggedInPage extends StaticPage {
     );
   }
 
-  Future login() async {
+  Future login(BuildContext context) async {
     final response = await Authenticator.login();
 
     if (response != null) {
-      AppNavigator.replaceWithPage(const ProfilePageDisplay());
+      // AppNavigator.replaceWithPage(const ProfilePageDisplay());
+
+      context.go('/menu/profile');
+
       NavbarState.setActiveMenu();
     }
   }

@@ -1,11 +1,10 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:online/services/authenticator.dart';
-import 'package:online/theme/themed_icon.dart';
+import 'package:go_router/go_router.dart';
+import '/services/authenticator.dart';
+import '/theme/themed_icon.dart';
 
-import '../../components/animated_button.dart';
-import '../../services/app_navigator.dart';
 import '/components/separator.dart';
 import '/core/client/client.dart';
 import '/core/models/attendee_info_model.dart';
@@ -13,6 +12,9 @@ import '/core/models/attendees_list.dart';
 import '/core/models/event_model.dart';
 import '/dark_overlay.dart';
 import '/theme/theme.dart';
+import '../../components/animated_button.dart';
+
+// TODO: Test this page again
 
 enum Role {
   none,
@@ -49,8 +51,8 @@ class ParticipantOverlay extends DarkOverlay {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            buildList('Påmeldte', attendeesFuture),
-            if (Authenticator.isLoggedIn()) buildList('Venteliste', waitlistFuture),
+            buildList('Påmeldte', attendeesFuture, context),
+            if (Authenticator.isLoggedIn()) buildList('Venteliste', waitlistFuture, context),
           ],
         ),
       ),
@@ -122,7 +124,7 @@ class ParticipantOverlay extends DarkOverlay {
     );
   }
 
-  Widget loginPrompt() {
+  Widget loginPrompt(BuildContext context) {
     final theme = OnlineTheme.current;
     return Column(
       children: [
@@ -135,7 +137,7 @@ class ParticipantOverlay extends DarkOverlay {
           height: 24,
         ),
         AnimatedButton(
-          onTap: login,
+          onTap: () => login(context),
           childBuilder: (context, hover, pointerDown) {
             return Container(
               height: OnlineTheme.buttonHeight,
@@ -156,7 +158,7 @@ class ParticipantOverlay extends DarkOverlay {
     );
   }
 
-  Widget buildList<T>(String header, Future<List<AttendeesList>?> listFuture) {
+  Widget buildList<T>(String header, Future<List<AttendeesList>?> listFuture, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -180,7 +182,7 @@ class ParticipantOverlay extends DarkOverlay {
 
               if (sortedAttendees.isEmpty) {
                 if (!Authenticator.isLoggedIn()) {
-                  return loginPrompt();
+                  return loginPrompt(context);
                 } else {
                   return Text(
                     'Ingen',
@@ -252,11 +254,12 @@ class ParticipantOverlay extends DarkOverlay {
     );
   }
 
-  Future login() async {
+  Future login(BuildContext context) async {
     final response = await Authenticator.login();
 
     if (response != null) {
-      AppNavigator.pop();
+      // AppNavigator.pop();
+      context.go('/menu/profile');
       // AppNavigator.replaceWithPage(const ProfilePage());
     }
   }

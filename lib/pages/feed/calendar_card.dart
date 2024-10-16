@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../core/models/event_model.dart';
-import '../../services/app_navigator.dart';
-import '../../theme/theme.dart';
-import '../event/event_page.dart';
+import '/core/models/event_model.dart';
+import '/theme/theme.dart';
 
 final List<String> norwegianMonths = [
   'Januar',
@@ -153,7 +152,8 @@ class CalendarCardState extends State<CalendarCard> {
             List<EventModel> eventsForSelectedDay = getEventsForDay(selectedDay);
 
             if (eventsForSelectedDay.isNotEmpty) {
-              AppNavigator.navigateToPage(EventPageDisplay(model: eventsForSelectedDay.first));
+              final event = eventsForSelectedDay.first;
+              context.go('/events/${event.id}');
             }
           },
           eventLoader: (day) => getEventsForDay(day),

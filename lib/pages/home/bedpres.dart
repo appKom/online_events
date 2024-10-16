@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:online/components/icon_label.dart';
 import 'package:online/components/image_default.dart';
 import 'package:online/services/app_navigator.dart';
 
+import '../../core/client/client.dart';
 import '../../theme/themed_icon.dart';
 import '/components/animated_button.dart';
 import '/components/skeleton_loader.dart';
@@ -18,7 +20,7 @@ class Bedpres extends StatelessWidget {
     required this.models,
   });
 
-  final Set<EventModel> models;
+  final Map<String, EventModel> models;
 
   static Widget skeleton(BuildContext context) {
     return Column(
@@ -52,19 +54,26 @@ class Bedpres extends StatelessWidget {
       height: 320,
       enableInfiniteScroll: true,
       padEnds: true,
-      enlargeCenterPage: isMobile,
+      enlargeCenterPage: false,
       viewportFraction: isMobile ? 0.75 : 0.3,
-      enlargeFactor: 0.2,
       clipBehavior: Clip.none,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final futureEvents = models.where((event) {
+    final now = DateTime.now();
+
+    final List<EventModel> futureEvents = [];
+
+    for (MapEntry<String, EventModel> entry in Client.eventsCache.value.entries) {
+      final event = entry.value;
       final eventDate = DateTime.parse(event.endDate);
-      return eventDate.isAfter(DateTime.now());
-    }).toList();
+
+      if (eventDate.isAfter(now)) {
+        futureEvents.add(event);
+      }
+    }
 
     final filteredModels = futureEvents.where((model) => model.eventType == 2 || model.eventType == 3).toList();
 
@@ -75,6 +84,7 @@ class Bedpres extends StatelessWidget {
           Text(
             'Bedpresser & Kurs',
             style: OnlineTheme.header(),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24 + 24),
           Center(
@@ -93,6 +103,7 @@ class Bedpres extends StatelessWidget {
         Text(
           'Bedpresser & Kurs',
           style: OnlineTheme.header(),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
         CarouselSlider(
@@ -145,10 +156,8 @@ class BedpresCard extends StatelessWidget {
     return (text.length <= maxLength) ? text : '${text.substring(0, maxLength)}...';
   }
 
-  void showInfo() {
-    AppNavigator.navigateToPage(EventPageDisplay(
-      model: model,
-    ));
+  void showInfo(BuildContext context) {
+    context.go('/event/${model.id}');
   }
 
   String getEventTypeDisplay() {
@@ -209,7 +218,7 @@ class BedpresCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
-      onTap: showInfo,
+      onTap: () => showInfo(context),
       childBuilder: (context, hover, pointerDown) {
         return Stack(
           children: [

@@ -72,9 +72,9 @@ abstract class Authenticator {
     credentials = null;
     loggedIn.value = false;
 
-    //Remove attended Events from cache when logging out
+    // Remove attended Events from cache when logging out
     allAttendedEvents.clear();
-    Client.eventsIdsCache.value.clear();
+    // Client.eventsIdsCache.value.clear();
     Client.userCache.value = null;
   }
 }

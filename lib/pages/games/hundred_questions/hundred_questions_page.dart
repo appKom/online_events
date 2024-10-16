@@ -23,7 +23,7 @@ class HundredQuestionsInfo extends StaticPage {
     List<String> shuffledQuestions = List.from(questions)..shuffle();
 
     return Container(
-      padding: MediaQuery.of(context).padding,
+      padding: MediaQuery.of(context).padding + EdgeInsets.symmetric(vertical: 64),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [OnlineTheme.hundredGradientStartColor, OnlineTheme.hundredGradientEndColor],
@@ -65,16 +65,16 @@ class HundredQuestionsInfo extends StaticPage {
               },
             ),
           ),
-          AnimatedButton(
-            onTap: AppNavigator.pop,
-            scale: 0.9,
-            childBuilder: (context, hover, pointerDown) {
-              return ThemedIcon(
-                icon: IconType.cross,
-                size: 24,
-              );
-            },
-          )
+          // AnimatedButton(
+          //   onTap: AppNavigator.pop,
+          //   scale: 0.9,
+          //   childBuilder: (context, hover, pointerDown) {
+          //     return ThemedIcon(
+          //       icon: IconType.cross,
+          //       size: 24,
+          //     );
+          //   },
+          // )
         ],
       ),
     );

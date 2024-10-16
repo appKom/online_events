@@ -111,7 +111,7 @@ class _EventPageState extends State<EventPage> {
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
     return Padding(
-      padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom),
+      padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom) + EdgeInsets.symmetric(vertical: 64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

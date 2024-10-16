@@ -1,17 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:online/components/icon_label.dart';
-import 'package:online/services/app_navigator.dart';
 import 'package:online/theme/themed_icon.dart';
 
-import '../../components/image_default.dart';
 import '/components/animated_button.dart';
 import '/components/separator.dart';
 import '/components/skeleton_loader.dart';
 import '/core/models/event_model.dart';
-import '/pages/event/event_page.dart';
 import '/theme/theme.dart';
+import '../../components/image_default.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({
@@ -73,10 +72,14 @@ class EventCard extends StatelessWidget {
     return '${model.numberOfSeatsTaken}/${model.maxCapacity}';
   }
 
-  void showInfo() {
-    AppNavigator.navigateToPage(EventPageDisplay(
-      model: model,
-    ));
+  void showInfo(BuildContext context) {
+    String dir = GoRouter.of(context).routeInformationProvider.value.uri.toString();
+
+    if (dir[dir.length - 1] == '/') {
+      dir = dir.substring(0, dir.length - 1);
+    }
+
+    context.go('$dir/event/${model.id}');
   }
 
   String participants() {
@@ -100,7 +103,7 @@ class EventCard extends StatelessWidget {
                   child: SkeletonLoader(borderRadius: OnlineTheme.buttonRadius),
                 ),
                 SizedBox(
-                  width: 24,
+                  width: 16,
                 ),
                 Expanded(
                   child: Column(
@@ -187,7 +190,7 @@ class EventCard extends StatelessWidget {
         children: [
           AnimatedButton(
             behavior: HitTestBehavior.opaque,
-            onTap: showInfo,
+            onTap: () => showInfo(context),
             childBuilder: (context, hover, pointerDown) {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -198,9 +201,7 @@ class EventCard extends StatelessWidget {
                       dimension: 80,
                       child: eventIcon(),
                     ),
-                    const SizedBox(
-                      width: 24,
-                    ),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,

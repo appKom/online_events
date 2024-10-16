@@ -3,13 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:online/components/animated_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../theme/theme.dart';
 import '/pages/home/home_page.dart';
-import '/pages/loading/loading_display_page.dart';
 import '/services/app_navigator.dart';
+import '../theme/theme.dart';
 import 'navbar.dart';
 
-abstract class ScrollablePage extends OnlinePage {
+abstract class ScrollablePage extends _OnlinePage {
   const ScrollablePage({super.key});
 
   @override
@@ -29,7 +28,7 @@ abstract class ScrollablePage extends OnlinePage {
   }
 }
 
-abstract class StaticPage extends OnlinePage {
+abstract class StaticPage extends _OnlinePage {
   const StaticPage({super.key});
 
   @override
@@ -41,8 +40,8 @@ abstract class StaticPage extends OnlinePage {
   }
 }
 
-abstract class OnlinePage extends StatelessWidget {
-  const OnlinePage({super.key});
+abstract class _OnlinePage extends StatelessWidget {
+  const _OnlinePage({super.key});
 
   Widget content(BuildContext context);
 }

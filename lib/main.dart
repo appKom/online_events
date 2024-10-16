@@ -1,18 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:online/router.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-import '/components/online_scaffold.dart';
-import '/services/app_navigator.dart';
 import '/services/authenticator.dart';
 import '/services/env.dart';
 import '/services/secure_storage.dart';
+import '/theme/theme.dart';
 import 'core/client/client.dart';
 import 'core/models/event_model.dart';
 import 'firebase_options.dart';
-import '/pages/home/home_page.dart';
 
 List<EventModel> allAttendedEvents = [];
 
@@ -43,6 +43,8 @@ Future main() async {
   SecureStorage.initialize();
   tz.initializeTimeZones();
 
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   runApp(const OnlineApp());
@@ -57,7 +59,7 @@ Future main() async {
   if (Authenticator.isLoggedIn()) {
     await Client.getUserProfile();
   }
-  Client.getHobbies();
+  Client.getGroups();
 
   //No await here, because it's not necessary to wait for this to finish
   if (Authenticator.isLoggedIn()) {
@@ -97,9 +99,9 @@ Future<void> fetchAttendeeInfo() async {
     attendedEventIds.add(event.id);
   }
   // print('Number of pages is: $numberOfPages');
-  Set<EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
+  Map<String, EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
   if (fetchedEvents != null) {
-    allAttendedEvents = fetchedEvents.toList();
+    allAttendedEvents = fetchedEvents.values.toList();
   }
 
   //Temporary solution to prevent duplicate fetching
@@ -111,15 +113,32 @@ class OnlineApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: AppNavigator.navigatorKey, // Use the single navigator key
+    return MaterialApp.router(
       title: 'Online',
       debugShowCheckedModeBanner: false,
-      home: const OnlineScaffold(
-        child: HomePage(), 
-        showHeaderNavbar: true, // Default to showing header and navbar on HomePage
-      ),
+      themeMode: ThemeMode.dark,
+      routerConfig: router,
+      color: OnlineTheme.current.bg,
     );
+    // return MaterialApp(
+    //   navigatorKey: AppNavigator.navigatorKey, // Use the single navigator key
+    //   title: 'Online',
+    //   debugShowCheckedModeBanner: false,
+    //   home: const OnlineScaffold(
+    //     showHeaderNavbar: true, // Default to showing header and navbar on HomePage
+    //     child: HomePage(),
+    //   ),
+    // );
   }
 }
 
+// Routes
+// /
+// /calendar
+// /groups:id
+// /events/:id
+// /articles/:id
+// /profile
+// /games
+// /social/songs/:id
+// /social/games/:id

@@ -1,12 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:online/pages/feed/feed_page.dart';
-import 'package:online/pages/menu/menu_page.dart';
+import 'dart:ui';
 
-import '../pages/games/games_page.dart';
-import '/pages/events/not_logged_in_page.dart';
-import '/pages/home/home_page.dart';
-import '/services/app_navigator.dart';
-import '/services/authenticator.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
 import '/theme/theme.dart';
 import '/theme/themed_icon.dart';
 
@@ -22,44 +18,7 @@ class Navbar extends StatefulWidget {
 
   static double height(BuildContext context) {
     final padding = MediaQuery.of(context).padding.bottom;
-    return padding + 40 + 24;
-  }
-
-  static void _navigateHome() {
-    AppNavigator.replaceWithPage(const HomePage());
-    NavbarState.selected.value = 0;
-  }
-
-  static void _navigateEvents() {
-    if (Authenticator.isLoggedIn()) {
-      AppNavigator.replaceWithPage(const FeedPageDisplay());
-    } else {
-      AppNavigator.replaceWithPage(const NotLoggedInPage());
-    }
-    NavbarState.selected.value = 1;
-  }
-
-  static void _navigateGames() {
-    AppNavigator.replaceWithPage(const GamesPage());
-    NavbarState.selected.value = 2;
-  }
-
-  static void _navigateMenu() {
-    AppNavigator.replaceWithPage(const MenuPageDisplay());
-    NavbarState.selected.value = 3;
-  }
-
-  static void navigateTo(NavbarPage page) {
-    switch (page) {
-      case NavbarPage.home:
-        return _navigateHome();
-      case NavbarPage.events:
-        return _navigateEvents();
-      case NavbarPage.games:
-        return _navigateGames();
-      case NavbarPage.menu:
-        return _navigateMenu();
-    }
+    return padding + 64;
   }
 
   @override
@@ -77,30 +36,30 @@ class NavbarState extends State<Navbar> {
     selected.value = 3;
   }
 
-  static const List<NavbarButton> _buttons = [
+  static final List<NavbarButton> _buttons = [
     NavbarButton(
       icon: IconType.home,
       activeIcon: IconType.homeFilled,
-      onPressed: Navbar._navigateHome,
+      onPressed: (context) => context.go('/'),
     ),
     NavbarButton(
       icon: IconType.calendarClock,
       activeIcon: IconType.calendarClockFilled,
-      onPressed: Navbar._navigateEvents,
+      onPressed: (context) => context.go('/calendar'),
     ),
     NavbarButton(
       icon: IconType.dices,
       activeIcon: IconType.dicesFilled,
-      onPressed: Navbar._navigateGames,
+      onPressed: (context) => context.go('/social'),
     ),
     NavbarButton(
       icon: IconType.menu,
       activeIcon: IconType.menuFilled,
-      onPressed: Navbar._navigateMenu,
+      onPressed: (context) => context.go('/menu'),
     ),
   ];
 
-  Widget navButton(int i, double padding) {
+  Widget navButton(int i, double padding, BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: selected,
       builder: (context, selected, child) {
@@ -111,12 +70,12 @@ class NavbarState extends State<Navbar> {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                _buttons[i].onPressed?.call();
+                _buttons[i].onPressed?.call(context);
 
                 NavbarState.selected.value = i;
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 child: ThemedIcon(
                   key: UniqueKey(),
                   icon: active ? _buttons[i].activeIcon : _buttons[i].icon,
@@ -135,17 +94,22 @@ class NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: OnlineTheme.current.bg.withOpacity(0.9),
-        border: Border(top: BorderSide(width: 1, color: OnlineTheme.current.border)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: List.generate(
-          _buttons.length,
-          (i) => navButton(i, padding.bottom),
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: OnlineTheme.current.bg.withOpacity(0.8),
+            border: Border(top: BorderSide(width: 1, color: OnlineTheme.current.border)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: List.generate(
+              _buttons.length,
+              (i) => navButton(i, padding.bottom, context),
+            ),
+          ),
         ),
       ),
     );
@@ -155,7 +119,7 @@ class NavbarState extends State<Navbar> {
 class NavbarButton {
   final IconType icon;
   final IconType activeIcon;
-  final void Function()? onPressed;
+  final void Function(BuildContext context)? onPressed;
 
   const NavbarButton({
     this.onPressed,

@@ -131,7 +131,7 @@ class ArticlePage extends ScrollablePage {
     final padding = MediaQuery.of(context).padding;
 
     return Padding(
-      padding: padding,
+      padding: padding + EdgeInsets.symmetric(vertical: 64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -151,7 +151,8 @@ class ArticlePage extends ScrollablePage {
                 Text('Les Mer', style: OnlineTheme.header()),
                 const SizedBox(height: 24),
                 ArticleCarousel(
-                  articles: Client.articlesCache.value.toList()..removeWhere((a) => a.heading == article.heading),
+                  articles: Client.articlesCache.value.values.toList()
+                    ..removeWhere((a) => a.heading == article.heading),
                 ),
                 const SizedBox(height: 24),
               ],

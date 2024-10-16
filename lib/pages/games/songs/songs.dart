@@ -1,16 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:online/pages/games/songs/himmelseng.dart';
-import 'package:online/pages/games/songs/kamerater_hev_glasset.dart';
-import 'package:online/pages/games/songs/studenter_visen.dart';
-import 'package:online/services/app_navigator.dart';
+import 'package:go_router/go_router.dart';
 
 import '/components/animated_button.dart';
 import '/theme/theme.dart';
-import 'fader_abraham.dart';
-import 'lambo.dart';
-import 'nu_klinger.dart';
-import 'we_like_to_drink.dart';
 
 class DrikkeSanger extends StatelessWidget {
   const DrikkeSanger({super.key, required this.carouselOptions});
@@ -25,6 +18,7 @@ class DrikkeSanger extends StatelessWidget {
         Text(
           'Sanger',
           style: OnlineTheme.header(),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
         CarouselSlider(
@@ -33,51 +27,37 @@ class DrikkeSanger extends StatelessWidget {
             SongCard(
               name: 'Lambo',
               imageSource: 'assets/images/lambo.jpg',
-              onTap: () => AppNavigator.navigateToPage(
-                const LamboPage(),
-              ),
+              onTap: () => context.go('/social/songs/lambo'),
             ),
             SongCard(
               name: 'Nu Klinger',
               imageSource: 'assets/images/nu_klinger.jpg',
-              onTap: () => AppNavigator.navigateToPage(
-                const NuKlingerPage(),
-              ),
+              onTap: () => context.go('/social/songs/nu_klinger'),
             ),
             SongCard(
               name: 'Studenter Visen',
               imageSource: 'assets/images/studentervisen.png',
-              onTap: () => AppNavigator.navigateToPage(
-                const StudenterVisenPage(),
-              ),
+              onTap: () => context.go('/social/songs/studenter_visen'),
             ),
             SongCard(
               name: 'Kamerater Hev Nu Glasset!',
               imageSource: 'assets/images/kameraterhevglasset.png',
-              onTap: () => AppNavigator.navigateToPage(
-                const KameraterHevGlassetPage(),
-              ),
+              onTap: () => context.go('/social/songs/kamerater_hev_glasset'),
             ),
             SongCard(
               name: 'Himmelseng',
               imageSource: 'assets/images/himmelseng.png',
-              onTap: () => AppNavigator.navigateToPage(
-                const HimmelsengPage(),
-              ),
+              onTap: () => context.go('/social/songs/himmelseng'),
             ),
             SongCard(
               name: 'Fader Abraham',
               imageSource: 'assets/images/faderabraham.png',
-              onTap: () => AppNavigator.navigateToPage(
-                const FaderAbrahamPage(),
-              ),
+              onTap: () => context.go('/social/songs/fader_abraham'),
             ),
             SongCard(
               name: 'We like to drink with',
               imageSource: 'assets/images/we_like_to_drink.png',
-              onTap: () => AppNavigator.navigateToPage(
-                const WeLikeToDrinkPage(),
-              ),
+              onTap: () => context.go('/social/songs/we_like_to_drink'),
             ),
           ],
         ),

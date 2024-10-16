@@ -139,10 +139,10 @@ jeg vet hvor jeg er deilig
 
   @override
   Widget content(BuildContext context) {
-    final padding = MediaQuery.of(context).padding + const EdgeInsets.symmetric(horizontal: 25);
+    final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return Padding(
-      padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom),
+      padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom) + EdgeInsets.symmetric(vertical: 64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
