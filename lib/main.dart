@@ -57,14 +57,11 @@ Future main() async {
   await Authenticator.fetchStoredCredentials();
 
   if (Authenticator.isLoggedIn()) {
-    await Client.getUserProfile();
+    final user = await Client.getUserProfile();
+    fetchAttendeeInfo(user!.id);
   }
-  Client.getGroups();
 
-  //No await here, because it's not necessary to wait for this to finish
-  if (Authenticator.isLoggedIn()) {
-    fetchAttendeeInfo();
-  }
+  Client.getGroups();
 }
 
 Future _configureFirebase() async {
@@ -87,18 +84,15 @@ Future _configureFirebase() async {
   await FirebaseMessaging.instance.getToken();
 }
 
-Future<void> fetchAttendeeInfo() async {
-  final user = Client.userCache.value;
-
-  if (user == null) return;
+Future<void> fetchAttendeeInfo(int userId) async {
   List<int> attendedEventIds = [];
 
-  await Client.getAttendanceEvents(userId: user.id, page: 1);
+  await Client.getAttendanceEvents(userId: userId, page: 1);
 
   for (final event in Client.eventAttendanceCache.value) {
-    attendedEventIds.add(event.id);
+    attendedEventIds.add(event.eventId);
   }
-  // print('Number of pages is: $numberOfPages');
+
   Map<String, EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
   if (fetchedEvents != null) {
     allAttendedEvents = fetchedEvents.values.toList();

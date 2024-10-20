@@ -1,5 +1,6 @@
 import 'image_model.dart';
 
+/// Info about an event. Event title, info, organizer, location, date, etc.
 class EventModel {
   final int id;
   final String title;
@@ -12,13 +13,23 @@ class EventModel {
   final String location;
   final int eventType;
   final String eventTypeDisplay;
+
+  /// Who's responsible for organizing this event? See event_organizers.dart
   final int organizer;
   final Author? author;
   final List<ImageModel> images;
   final List<String> companies;
+
+  /// Is this an event where the users have to register to attend?
   final bool isAttendanceEvent;
+
+  /// Maximum number of attendees for the event (if any).
   final int? maxCapacity;
+
+  /// Is there a waitlist for the event?
   final bool? waitlist;
+
+  /// Number of seats taken for the event.
   final int? numberOfSeatsTaken;
 
   EventModel({

@@ -2,54 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:online/core/models/hobby_model.dart';
+import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../models/event_model.dart';
 import '/core/models/article_model.dart';
 import '/core/models/attendee_info_model.dart';
 import '/core/models/attendees_list.dart';
+import '/core/models/hobby_model.dart';
 import '/core/models/user_model.dart';
 import '/services/authenticator.dart';
-
-/// Info about user's attendance at an event.
-/// Is the event paid, has the user paid for the event, did the user show up, etc.
-class EventAttendanceModel {
-  final int id;
-  final bool attended;
-  final String timestamp;
-  final bool isPaidEvent;
-  final bool hasPaidForEvent;
-
-  EventAttendanceModel({
-    required this.id,
-    required this.attended,
-    required this.timestamp,
-    required this.isPaidEvent,
-    required this.hasPaidForEvent,
-  });
-
-  factory EventAttendanceModel.fromJson(Map<String, dynamic> json) {
-    return EventAttendanceModel(
-      id: json['event'],
-      attended: json['attended'],
-      timestamp: json['timestamp'],
-      isPaidEvent: json['paid'],
-      hasPaidForEvent: json['has_paid'],
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! EventAttendanceModel) return false;
-    if (other.runtimeType != runtimeType) return false;
-    return id == other.id;
-  }
-
-  @override
-  int get hashCode => id.hashCode;
-}
+import '../models/event_attendance_model.dart';
+import '../models/event_model.dart';
 
 abstract class Client {
   static const endpoint = 'https://old.online.ntnu.no';
@@ -63,57 +26,68 @@ abstract class Client {
   }
 
   static final ValueNotifier<Map<String, EventModel>> eventsCache = ValueNotifier({});
-  // static final ValueNotifier<Set<EventModel>> eventsIdsCache = ValueNotifier({});
   static final ValueNotifier<UserModel?> userCache = ValueNotifier(null);
   static final ValueNotifier<Set<EventAttendanceModel>> eventAttendanceCache = ValueNotifier({});
   static final ValueNotifier<Map<String, GroupModel>> hobbiesCache = ValueNotifier({});
+  static ValueNotifier<Map<String, ArticleModel>> articlesCache = ValueNotifier({});
+
+  static Future<Map<String, EventModel>> fetchEventsForPage(int page) async {
+    String url = '$endpoint/api/v1/event/events/?page=$page';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final bodyJson = jsonDecode(body);
+      final List<EventModel> events =
+          bodyJson['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
+
+      Map<String, EventModel> eventMap = {};
+      for (int i = 0; i < events.length; i++) {
+        final event = events[i];
+        final id = event.id.toString();
+        eventMap.putIfAbsent(id, () => event);
+      }
+      return eventMap;
+    } else {
+      return {};
+    }
+  }
 
   static Future<Map<String, EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
-    Map<String, EventModel> eventMap = {};
+    List<Future<Map<String, EventModel>>> futures = pages.map((page) => fetchEventsForPage(page)).toList();
+    List<Map<String, EventModel>> results = await Future.wait(futures);
 
-    // TODO: Optimize using Future.wait (no reason for these to happen after each other)
-
-    for (int page in pages) {
-      String url = '$endpoint/api/v1/event/events/?page=$page';
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-        final jsonResponse = jsonDecode(responseBody);
-        final List<EventModel> events =
-            jsonResponse['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
-
-        for (int i = 0; i < events.length; i++) {
-          final event = events[i];
-          final id = event.id.toString();
-          eventMap.putIfAbsent(id, () => event);
-        }
-      }
+    Map<String, EventModel> combinedEventMap = {};
+    for (var result in results) {
+      combinedEventMap.addAll(result);
     }
 
-    eventsCache.value = Map.from(eventsCache.value)..addAll(eventMap);
+    eventsCache.value = Map.from(eventsCache.value)..addAll(combinedEventMap);
 
     return eventsCache.value;
+  }
+
+  static Future<EventModel?> getEventWithId(int eventId) async {
+    String url = '$endpoint/api/v1/event/events/$eventId';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+        final bodyJson = jsonDecode(body);
+        return EventModel.fromJson(bodyJson);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      print('Error fetching event with id $eventId: $error');
+      return null;
+    }
   }
 
   static Future<Map<String, EventModel>?> getEventsWithIds({List<int> eventIds = const []}) async {
     Map<String, EventModel> eventMap = {};
 
-    var futures = eventIds.map((eventId) {
-      String url = '$endpoint/api/v1/event/events/$eventId';
-      return http.get(Uri.parse(url)).then((response) {
-        if (response.statusCode == 200) {
-          final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-          final jsonResponse = jsonDecode(responseBody);
-          return EventModel.fromJson(jsonResponse);
-        } else {
-          return null;
-        }
-      }).catchError((error) {
-        print('Error fetching event with id $eventId: $error');
-        return null;
-      });
-    });
+    var futures = eventIds.map((eventId) => getEventWithId(eventId));
 
     final results = await Future.wait(futures);
 
@@ -143,16 +117,16 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-      final jsonResponse = jsonDecode(responseBody);
-      userCache.value = UserModel.fromJson(jsonResponse);
+      final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final bodyJson = jsonDecode(body);
+      userCache.value = UserModel.fromJson(bodyJson);
       return userCache.value;
     }
 
     return null;
   }
 
-  /// Get all events that user has attended or is attending
+  /// Get all events that user has attended or is attending.
   static Future<List<EventAttendanceModel>> getAttendanceEvents({
     required int userId,
     required int page,
@@ -178,7 +152,7 @@ abstract class Client {
     if (jsonResults != null) {
       for (var json in jsonResults) {
         var event = EventAttendanceModel.fromJson(json);
-        if (!eventAttendanceCache.value.any((cachedEvent) => cachedEvent.id == event.id)) {
+        if (!eventAttendanceCache.value.any((cachedEvent) => cachedEvent.eventId == event.eventId)) {
           results.add(event);
         }
       }
@@ -198,9 +172,9 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final String decodedResponseBody = utf8.decode(response.bodyBytes);
-      final jsonResponse = jsonDecode(decodedResponseBody);
-      return AttendeeInfoModel.fromJson(jsonResponse);
+      final body = utf8.decode(response.bodyBytes);
+      final bodyJson = jsonDecode(body);
+      return AttendeeInfoModel.fromJson(bodyJson);
     } else {
       return null;
     }
@@ -221,9 +195,9 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final String decodedResponseBody = utf8.decode(response.bodyBytes);
-      final jsonResponse = jsonDecode(decodedResponseBody);
-      return AttendeeInfoModel.fromJson(jsonResponse);
+      final body = utf8.decode(response.bodyBytes);
+      final bodyJson = jsonDecode(body);
+      return AttendeeInfoModel.fromJson(bodyJson);
     } else {
       return null;
     }
@@ -244,10 +218,10 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-      final jsonResponse = jsonDecode(responseBody) as List;
+      final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final bodyJson = jsonDecode(body) as List;
 
-      return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
+      return bodyJson.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
     } else {
       return [];
     }
@@ -268,16 +242,14 @@ abstract class Client {
     );
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-      final jsonResponse = jsonDecode(responseBody) as List;
+      final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final bodyJson = jsonDecode(body) as List;
 
-      return jsonResponse.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
+      return bodyJson.map<AttendeesList>((json) => AttendeesList.fromJson(json)).toList();
     } else {
       return [];
     }
   }
-
-  static ValueNotifier<Map<String, ArticleModel>> articlesCache = ValueNotifier({});
 
   static Future<List<ArticleModel>> fetchArticles(int pageNumber) async {
     final articles = await fetch(
@@ -302,48 +274,56 @@ abstract class Client {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-      final jsonResponse = jsonDecode(responseBody);
+      final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final bodyJson = jsonDecode(body);
 
       // DO NOT CHANGE. HOLY LINE
-      return jsonResponse['results'].map((json) => jsonReviver(json)).cast<T>().toList();
+      return bodyJson['results'].map((json) => jsonReviver(json)).cast<T>().toList();
     }
 
     return null;
   }
 
+  static Future<int> _getGroupPageCount() async {
+    String url = '$endpoint/api/v1/hobbys/?ordering=-priority&page=1';
+    Response response = await http.get(Uri.parse(url));
+
+    if (response.statusCode != 200) return 0;
+
+    final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+    final bodyJson = jsonDecode(body);
+    final totalCount = bodyJson['count'];
+    final pageSize = bodyJson['results'].length;
+    final pageCount = (totalCount / pageSize).ceil();
+
+    return pageCount;
+  }
+
   static Future<void> getGroups() async {
     Map<String, GroupModel> groupMap = {};
 
-    String initialUrl = '$endpoint/api/v1/hobbys/?ordering=-priority&page=1';
-    var initialResponse = await http.get(Uri.parse(initialUrl));
-    if (initialResponse.statusCode == 200) {
-      final initialResponseBody = utf8.decode(initialResponse.bodyBytes, allowMalformed: true);
-      final initialJsonResponse = jsonDecode(initialResponseBody);
-      final totalCount = initialJsonResponse['count'];
-      final pageSize = initialJsonResponse['results'].length;
-      final pageCount = (totalCount / pageSize).ceil();
+    int pageCount = await _getGroupPageCount();
 
-      List<int> pages = List.generate(pageCount, (index) => index + 1);
+    if (pageCount == 0) return;
 
-      var futures = pages.map((page) {
-        String url = '$endpoint/api/v1/hobbys/?page=$page';
-        return http.get(Uri.parse(url));
-      }).toList();
+    List<int> pages = List.generate(pageCount, (index) => index + 1);
 
-      var responses = await Future.wait(futures);
+    var futures = pages.map((page) {
+      String url = '$endpoint/api/v1/hobbys/?page=$page';
+      return http.get(Uri.parse(url));
+    }).toList();
 
-      for (var response in responses) {
-        if (response.statusCode == 200) {
-          final responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-          final jsonResponse = jsonDecode(responseBody);
-          final groups =
-              jsonResponse['results'].map<GroupModel>((hobbyJson) => GroupModel.fromJson(hobbyJson)).toList();
+    var responses = await Future.wait(futures);
 
-          for (var group in groups) {
-            groupMap.putIfAbsent(group.id.toString(), () => group);
-          }
-        }
+    for (Response response in responses) {
+      if (response.statusCode != 200) continue;
+
+      final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+      final bodyJson = jsonDecode(body);
+      final groups = bodyJson['results'].map<GroupModel>((hobbyJson) => GroupModel.fromJson(hobbyJson)).toList();
+
+      for (GroupModel group in groups) {
+        groupMap.putIfAbsent(group.id.toString(), () => group);
       }
     }
 

@@ -1,9 +1,8 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:native_ios_dialog/native_ios_dialog.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
@@ -54,8 +53,8 @@ class FoldoutState extends State<Foldout> {
   }
 
   Widget header() {
-    return Listener(
-      onPointerUp: (event) {
+    return GestureDetector(
+      onTap: () {
         setState(() {
           open = !open;
         });

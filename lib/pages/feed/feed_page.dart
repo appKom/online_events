@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:online/components/online_scaffold.dart';
+import 'package:online/pages/events/not_logged_in_page.dart';
 import 'package:online/pages/feed/no_feed_events.dart';
+import 'package:online/services/authenticator.dart';
 import '/components/animated_button.dart';
 import '/core/client/client.dart';
 import '/core/models/event_model.dart';
@@ -62,7 +64,7 @@ class FeedPageState extends State<FeedPage> {
     final events = Client.eventAttendanceCache.value;
     if (events.isNotEmpty) {
       for (final event in events) {
-        attendedEventIds.add(event.id);
+        attendedEventIds.add(event.eventId);
       }
     }
 
@@ -229,11 +231,20 @@ class FeedPageState extends State<FeedPage> {
   }
 }
 
-class FeedPageDisplay extends ScrollablePage {
+class FeedPageDisplay extends StaticPage {
   const FeedPageDisplay({super.key});
 
   @override
   Widget content(BuildContext context) {
-    return const FeedPage();
+    return ValueListenableBuilder(
+      valueListenable: Authenticator.loggedIn,
+      builder: (context, loggedIn, child) {
+        if (loggedIn) {
+          return SingleChildScrollView(padding: EdgeInsets.zero, child: const FeedPage());
+        } else {
+          return const NotLoggedInPage();
+        }
+      },
+    );
   }
 }

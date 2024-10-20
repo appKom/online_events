@@ -52,9 +52,6 @@ class _EventCardButtonsState extends State<EventCardButtons> {
           final dir = GoRouter.of(context).routeInformationProvider.value.uri.toString();
           context.go(dir);
         }
-
-        // AppNavigator.replaceWithPage(EventPage(model: widget.model));
-        // print("Successfully unregistered from the event");
       } else {
         // Handle error
         print("Failed to unregister from the event: ${response.body}");
