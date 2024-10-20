@@ -24,12 +24,19 @@ class Foldout extends StatefulWidget {
   final String title;
   final List<Widget> children;
 
+  final EdgeInsets? headerPadding;
+  final EdgeInsets? contentPadding;
+  final bool open;
+
   const Foldout({
     super.key,
     required this.title,
     required this.children,
     this.leading,
     this.trailing,
+    this.headerPadding,
+    this.contentPadding,
+    this.open = false,
   });
 
   @override
@@ -39,6 +46,12 @@ class Foldout extends StatefulWidget {
 class FoldoutState extends State<Foldout> {
   bool open = false;
 
+  @override
+  void initState() {
+    super.initState();
+    open = widget.open;
+  }
+
   Widget header() {
     return Listener(
       onPointerUp: (event) {
@@ -47,22 +60,42 @@ class FoldoutState extends State<Foldout> {
         });
       },
       behavior: HitTestBehavior.opaque,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          if (widget.leading != null) widget.leading!,
-          Expanded(child: Text(widget.title, style: OnlineTheme.textStyle())),
-          AnimatedRotation(
-            turns: open ? -0.5 : 0,
-            duration: Duration(milliseconds: 100),
-            child: widget.trailing ??
-                Lucide(
-                  LucideIcon.chevronDown,
-                  size: 20,
-                ),
+      child: Padding(
+        padding: widget.headerPadding ?? EdgeInsets.zero,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            if (widget.leading != null) widget.leading!,
+            Expanded(child: Text(widget.title, style: OnlineTheme.textStyle())),
+            AnimatedRotation(
+              turns: open ? 0.5 : 0,
+              duration: Duration(milliseconds: 100),
+              child: widget.trailing ??
+                  Lucide(
+                    LucideIcon.chevronDown,
+                    size: 20,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget content() {
+    return ClipRect(
+      child: AnimatedAlign(
+        alignment: open ? Alignment.topCenter : Alignment.topCenter,
+        heightFactor: open ? 1.0 : 0.0,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+        child: Padding(
+          padding: widget.contentPadding ?? EdgeInsets.zero,
+          child: Column(
+            children: widget.children,
           ),
-        ],
+        ),
       ),
     );
   }
@@ -72,17 +105,7 @@ class FoldoutState extends State<Foldout> {
     return Column(
       children: [
         header(),
-        ClipRect(
-          child: AnimatedAlign(
-            alignment: open ? Alignment.topCenter : Alignment.topCenter,
-            heightFactor: open ? 1.0 : 0.0,
-            duration: Duration(milliseconds: 200),
-            curve: Curves.easeInOut,
-            child: Column(
-              children: widget.children,
-            ),
-          ),
-        ),
+        content(),
       ],
     );
   }
@@ -198,9 +221,12 @@ class MenuPageState extends State<MenuPage> {
 
   Widget helpAndSupportCard() {
     return OnlineCard(
+      padding: EdgeInsets.all(8),
       child: Foldout(
         title: "Hjelp og Støtte",
         leading: Padding(padding: EdgeInsets.only(right: 16), child: Lucide(LucideIcon.users, size: 24)),
+        headerPadding: EdgeInsets.all(16),
+        contentPadding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
         children: [
           const SizedBox(height: 16),
           Row(
@@ -281,9 +307,12 @@ class MenuPageState extends State<MenuPage> {
 
   Widget settingsAndPrivacyCard() {
     return OnlineCard(
+      padding: EdgeInsets.all(8),
       child: Foldout(
         title: 'Din Data',
         leading: Padding(padding: EdgeInsets.only(right: 16), child: Lucide(LucideIcon.database, size: 24)),
+        headerPadding: EdgeInsets.all(16),
+        contentPadding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
         children: [
           const SizedBox(height: 16),
           AnimatedButton(onTap: () {

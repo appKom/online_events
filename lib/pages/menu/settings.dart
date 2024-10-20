@@ -69,48 +69,16 @@ class SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  // void _showInfoAndroid() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text("Automatiske varslinger"),
-  //         content: const Text(
-  //             "Huk av for de type arrangementer du ønsker å motta varslinger for. Du vil motta varslinger 15 minutter før påmeldingsstart for arrangementene."),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text("Lukk"),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-  // void _showInfoDialogIOS() {
-  //   NativeIosDialog(
-  //     title: "Automatiske varslinger",
-  //     message:
-  //         "Huk av for de arrangementene du ønsker å få varslinger for. Du vil motta varslinger 15 minutter før påmeldingsstart.",
-  //     actions: [
-  //       NativeIosDialogAction(
-  //         text: "Lukk",
-  //         style: NativeIosDialogActionStyle.cancel,
-  //         onPressed: () {},
-  //       ),
-  //     ],
-  //   ).show();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return OnlineCard(
+      padding: EdgeInsets.all(8),
       child: Foldout(
         leading: Padding(padding: EdgeInsets.only(right: 16), child: Lucide(LucideIcon.notification, size: 24)),
         title: 'Varslinger',
+        headerPadding: EdgeInsets.all(16),
+        contentPadding: EdgeInsets.only(left: 16, right: 6),
+        open: true,
         children: eventCategories.keys.map(
           (String key) {
             return CheckboxListTile(
@@ -127,23 +95,5 @@ class SettingsPageState extends State<SettingsPage> {
         ).toList(),
       ),
     );
-    // return OnlineCard(
-    //   child: MenuPageState.accordion(
-    //     "Varslinger",
-    //     Lucide(LucideIcon.notification, size: 24),
-    //     eventCategories.keys.map((String key) {
-    //       return CheckboxListTile(
-    //         title: Text(key, style: OnlineTheme.textStyle()),
-    //         value: eventCategories[key],
-    //         activeColor: OnlineTheme.current.pos,
-    //         checkColor: OnlineTheme.current.fg,
-    //         contentPadding: EdgeInsets.zero,
-    //         onChanged: (bool? value) {
-    //           _handleSubscription(key, value);
-    //         },
-    //       );
-    //     }).toList(),
-    //   ),
-    // );
   }
 }
