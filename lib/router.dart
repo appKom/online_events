@@ -204,7 +204,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/calendar',
           pageBuilder: (context, state) => NoTransitionPage<void>(
-            child: Authenticator.isLoggedIn() ? const FeedPageDisplay() : const NotLoggedInPage(),
+            child: FeedPageDisplay(),
           ),
           routes: [
             _eventSubRoute,
