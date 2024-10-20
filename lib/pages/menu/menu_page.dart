@@ -135,8 +135,6 @@ class MenuPageState extends State<MenuPage> {
   }
 
   Future<void> initiateDeletion(BuildContext context) async {
-    final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
-
     final result = await FlutterPlatformAlert.showCustomAlert(
       windowTitle: 'Bekreft sletting',
       text: 'Er du sikker på at du vil slette brukerdataene dine?',
