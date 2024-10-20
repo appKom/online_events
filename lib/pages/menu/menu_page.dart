@@ -128,46 +128,7 @@ class MenuPageState extends State<MenuPage> {
     if (result == CustomButton.negativeButton) {
       deleteUserData();
     }
-
-    // if (isIOS) {
-    //   cupertionDeleteDialog();
-    // } else {
-    //   showDialog(context: context, builder: (context) => materialDeleteDialog());
-    // }
   }
-
-  // void cupertionDeleteDialog() {
-  //   NativeIosDialog(
-  //     title: 'Bekreft sletting',
-  //     message: 'Er du sikker på at du vil slette brukerdataene dine?',
-  //     actions: [
-  //       NativeIosDialogAction(
-  //         text: 'Avbryt',
-  //         style: NativeIosDialogActionStyle.cancel,
-  //         onPressed: () {},
-  //       ),
-  //       NativeIosDialogAction(
-  //         text: 'Slett',
-  //         style: NativeIosDialogActionStyle.destructive,
-  //         onPressed: deleteUserData,
-  //       ),
-  //     ],
-  //   ).show();
-  // }
-
-  // materialDeleteDialog() async {
-  //   final result = await FlutterPlatformAlert.showCustomAlert(
-  //       windowTitle: 'Bekreft sletting',
-  //       text: 'Er du sikker på at du vil slette brukerdataene dine?',
-  //       iconStyle: IconStyle.warning,
-  //       negativeButtonTitle: 'Slett',
-  //       neutralButtonTitle: 'Avbryt',
-  //       options: PlatformAlertOptions(
-  //         windows: WindowsAlertOptions(preferMessageBox: true),
-  //       ),
-  //     );
-  //   return result;
-  // }
 
   void deleteUserData() {
     final userInfo = io.Client.userCache.value;

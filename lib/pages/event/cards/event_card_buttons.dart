@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:native_ios_dialog/native_ios_dialog.dart';
@@ -158,48 +159,20 @@ class _EventCardButtonsState extends State<EventCardButtons> {
     );
   }
 
-  void showUnregisterDialog() {
-    final bool isIOS = Platform.isIOS;
+  Future<void> showUnregisterDialog() async {
+    final result = await FlutterPlatformAlert.showCustomAlert(
+      windowTitle: 'Bekreft avmelding',
+      text: 'Er du sikker på at du vil melde deg av?',
+      iconStyle: IconStyle.warning,
+      negativeButtonTitle: 'Meld av',
+      neutralButtonTitle: 'Avbryt',
+      options: PlatformAlertOptions(
+        windows: WindowsAlertOptions(preferMessageBox: true),
+      ),
+    );
 
-    if (isIOS) {
-      NativeIosDialog(title: 'Bekreft avmelding', actions: [
-        NativeIosDialogAction(
-          text: 'Avbryt',
-          style: NativeIosDialogActionStyle.cancel,
-          onPressed: () {},
-        ),
-        NativeIosDialogAction(
-          text: 'Bekreft',
-          style: NativeIosDialogActionStyle.destructive,
-          onPressed: () {
-            unregisterForEvent(widget.model.id, context);
-          },
-        ),
-      ]).show();
-    } else {
-      // TODO: Implement Android dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Bekreft avemelding'),
-            content: const Text('Er du sikker på at du vil melde av?'),
-            actions: [
-              TextButton(
-                onPressed: () => rootNavigator.currentState!.pop(),
-                child: Text('Avbryt'),
-              ),
-              TextButton(
-                child: const Text('Meld av'),
-                onPressed: () {
-                  rootNavigator.currentState!.pop();
-                  unregisterForEvent(widget.model.id, context);
-                },
-              ),
-            ],
-          );
-        },
-      );
+    if (result == CustomButton.negativeButton) {
+      unregisterForEvent(widget.model.id, context);
     }
   }
 
