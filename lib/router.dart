@@ -170,9 +170,11 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: '/',
-          builder: (BuildContext context, GoRouterState state) {
-            return const HomePage();
-          },
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: HomePage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => child,
+          ),
           routes: [
             GoRoute(path: 'info', builder: (context, state) => const InfoPage()),
             _eventsSubRoute,
@@ -205,22 +207,22 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: '/calendar',
-          builder: (context, state) {
-            if (Authenticator.isLoggedIn()) {
-              return const FeedPageDisplay();
-            } else {
-              return const NotLoggedInPage();
-            }
-          },
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: Authenticator.isLoggedIn() ? const FeedPageDisplay() : const NotLoggedInPage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => child,
+          ),
           routes: [
             _eventSubRoute,
           ],
         ),
         GoRoute(
           path: '/social',
-          builder: (context, state) {
-            return const GamesPage();
-          },
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: GamesPage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => child,
+          ),
           routes: [
             GoRoute(
                 path: 'songs',
@@ -313,9 +315,11 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: '/menu',
-          builder: (BuildContext context, GoRouterState state) {
-            return const MenuPageDisplay();
-          },
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: MenuPageDisplay(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => child,
+          ),
           routes: [
             GoRoute(
               path: 'profile',
