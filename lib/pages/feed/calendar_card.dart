@@ -153,7 +153,7 @@ class CalendarCardState extends State<CalendarCard> {
 
             if (eventsForSelectedDay.isNotEmpty) {
               final event = eventsForSelectedDay.first;
-              context.go('/events/${event.id}');
+              context.go('/calendar/event/${event.id}');
             }
           },
           eventLoader: (day) => getEventsForDay(day),
