@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:native_ios_dialog/native_ios_dialog.dart';
-import 'package:online/router.dart';
 import 'package:online/services/authenticator.dart';
 
 import '/components/animated_button.dart';
