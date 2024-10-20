@@ -170,9 +170,9 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: '/',
-          builder: (BuildContext context, GoRouterState state) {
-            return const HomePage();
-          },
+          pageBuilder: (context, state) => NoTransitionPage<void>(
+            child: const HomePage(),
+          ),
           routes: [
             GoRoute(path: 'info', builder: (context, state) => const InfoPage()),
             _eventsSubRoute,
@@ -205,22 +205,18 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: '/calendar',
-          builder: (context, state) {
-            if (Authenticator.isLoggedIn()) {
-              return const FeedPageDisplay();
-            } else {
-              return const NotLoggedInPage();
-            }
-          },
+          pageBuilder: (context, state) => NoTransitionPage<void>(
+            child: Authenticator.isLoggedIn() ? const FeedPageDisplay() : const NotLoggedInPage(),
+          ),
           routes: [
             _eventSubRoute,
           ],
         ),
         GoRoute(
           path: '/social',
-          builder: (context, state) {
-            return const GamesPage();
-          },
+          pageBuilder: (context, state) => NoTransitionPage<void>(
+            child: const GamesPage(),
+          ),
           routes: [
             GoRoute(
                 path: 'songs',
@@ -313,9 +309,9 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: '/menu',
-          builder: (BuildContext context, GoRouterState state) {
-            return const MenuPageDisplay();
-          },
+          pageBuilder: (context, state) => NoTransitionPage<void>(
+            child: const MenuPageDisplay(),
+          ),
           routes: [
             GoRoute(
               path: 'profile',
