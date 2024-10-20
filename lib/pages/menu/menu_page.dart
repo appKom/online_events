@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:native_ios_dialog/native_ios_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 
 import '/components/animated_button.dart';
 import '/components/online_scaffold.dart';
@@ -110,53 +111,63 @@ class MenuPageState extends State<MenuPage> {
     database = Databases(client);
   }
 
-  void initiateDeletion(BuildContext context) {
+  Future<void> initiateDeletion(BuildContext context) async {
     final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
-    if (isIOS) {
-      cupertionDeleteDialog();
-    } else {
-      showDialog(context: context, builder: (context) => materialDeleteDialog());
-    }
-  }
-
-  void cupertionDeleteDialog() {
-    NativeIosDialog(
-      title: 'Bekreft sletting',
-      message: 'Er du sikker på at du vil slette brukerdataene dine?',
-      actions: [
-        NativeIosDialogAction(
-          text: 'Avbryt',
-          style: NativeIosDialogActionStyle.cancel,
-          onPressed: () {},
-        ),
-        NativeIosDialogAction(
-          text: 'Slett',
-          style: NativeIosDialogActionStyle.destructive,
-          onPressed: deleteUserData,
-        ),
-      ],
-    ).show();
-  }
-
-  Widget materialDeleteDialog() {
-    return AlertDialog(
-      title: const Text('Bekreft sletting'),
-      content: const Text('Er du sikker på at du vil slette brukerdataene dine?'),
-      actions: [
-        TextButton(
-          onPressed: () {
-            AppNavigator.pop();
-          },
-          child: const Text('Avbryt'),
-        ),
-        TextButton(
-          onPressed: deleteUserData,
-          child: const Text('Slett'),
-        ),
-      ],
+    final result = await FlutterPlatformAlert.showCustomAlert(
+      windowTitle: 'Bekreft sletting',
+      text: 'Er du sikker på at du vil slette brukerdataene dine?',
+      iconStyle: IconStyle.warning,
+      negativeButtonTitle: 'Slett',
+      neutralButtonTitle: 'Avbryt',
+      options: PlatformAlertOptions(
+        windows: WindowsAlertOptions(preferMessageBox: true),
+      ),
     );
+
+    if (result == CustomButton.negativeButton) {
+      deleteUserData();
+    }
+
+    // if (isIOS) {
+    //   cupertionDeleteDialog();
+    // } else {
+    //   showDialog(context: context, builder: (context) => materialDeleteDialog());
+    // }
   }
+
+  // void cupertionDeleteDialog() {
+  //   NativeIosDialog(
+  //     title: 'Bekreft sletting',
+  //     message: 'Er du sikker på at du vil slette brukerdataene dine?',
+  //     actions: [
+  //       NativeIosDialogAction(
+  //         text: 'Avbryt',
+  //         style: NativeIosDialogActionStyle.cancel,
+  //         onPressed: () {},
+  //       ),
+  //       NativeIosDialogAction(
+  //         text: 'Slett',
+  //         style: NativeIosDialogActionStyle.destructive,
+  //         onPressed: deleteUserData,
+  //       ),
+  //     ],
+  //   ).show();
+  // }
+
+  // materialDeleteDialog() async {
+  //   final result = await FlutterPlatformAlert.showCustomAlert(
+  //       windowTitle: 'Bekreft sletting',
+  //       text: 'Er du sikker på at du vil slette brukerdataene dine?',
+  //       iconStyle: IconStyle.warning,
+  //       negativeButtonTitle: 'Slett',
+  //       neutralButtonTitle: 'Avbryt',
+  //       options: PlatformAlertOptions(
+  //         windows: WindowsAlertOptions(preferMessageBox: true),
+  //       ),
+  //     );
+  //   return result;
+  // }
 
   void deleteUserData() {
     final userInfo = io.Client.userCache.value;
