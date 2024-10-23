@@ -1,5 +1,6 @@
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:online/core/client/calendar_client.dart';
 import 'package:online/services/env.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -50,7 +51,9 @@ abstract class Authenticator {
       loggedIn.value = true;
       credentials = response;
 
-      await Client.getUserProfile();
+      final user = await Client.getUserProfile();
+
+      await CalendarClient.getCalendarEventIds(userId: user!.id, eventIdPage: eventIdPage);
 
       return response;
     } catch (e) {
@@ -74,7 +77,9 @@ abstract class Authenticator {
     loggedIn.value = false;
 
     // Remove attended Events from cache when logging out
-    allAttendedEvents.clear();
+
     Client.userCache.value = null;
+    CalendarClient.calendarEventCache.value = null;
+    CalendarClient.calendarIdCache.value = null;
   }
 }

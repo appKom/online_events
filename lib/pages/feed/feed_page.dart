@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:online/components/online_scaffold.dart';
+import 'package:online/core/client/calendar_client.dart';
 import 'package:online/pages/events/not_logged_in_page.dart';
 import 'package:online/pages/feed/no_feed_events.dart';
 import 'package:online/services/authenticator.dart';
 import '/components/animated_button.dart';
-import '/core/client/client.dart';
 import '/core/models/event_model.dart';
 import '/theme/theme.dart';
 import '../home/event_card.dart';
@@ -46,8 +46,7 @@ class FeedPageState extends State<FeedPage> {
     final List<EventModel> futureEvents = [];
     final List<EventModel> pastEvents = [];
 
-    for (MapEntry<String, EventModel> entry in Client.eventsCache.value.entries) {
-      final event = entry.value;
+    for (EventModel event in CalendarClient.calendarEventCache.value ?? []) {
       final eventDate = DateTime.parse(event.endDate);
 
       if (eventDate.isAfter(now)) {
@@ -72,7 +71,7 @@ class FeedPageState extends State<FeedPage> {
       );
     }
 
-    if (isLoading || allAttendedEvents.isEmpty) {
+    if (isLoading || CalendarClient.calendarEventCache.value == null) {
       return skeletonLoader(context);
     }
 
