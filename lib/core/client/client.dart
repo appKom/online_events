@@ -126,44 +126,6 @@ abstract class Client {
     return null;
   }
 
-  /// Get all events that user has attended or is attending.
-  static Future<List<EventAttendanceModel>> getAttendanceEvents({
-    required int userId,
-    required int page,
-  }) async {
-    final accessToken = Authenticator.credentials?.accessToken;
-
-    if (accessToken == null) return [];
-
-    final url = '$endpoint/api/v1/event/attendees/?page=$page&ordering=-id&user=$userId';
-
-    final response = await http.get(
-      Uri.parse(url),
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
-
-    final results = <EventAttendanceModel>[];
-
-    final body = utf8.decode(response.bodyBytes, allowMalformed: true);
-    final jsonResults = jsonDecode(body)['results'];
-
-    if (jsonResults != null) {
-      for (var json in jsonResults) {
-        var event = EventAttendanceModel.fromJson(json);
-        if (!eventAttendanceCache.value.any((cachedEvent) => cachedEvent.eventId == event.eventId)) {
-          results.add(event);
-        }
-      }
-      if (results.isNotEmpty) {
-        eventAttendanceCache.value = Set.from(eventAttendanceCache.value)..addAll(results);
-      }
-    }
-
-    return results;
-  }
-
   static Future<AttendeeInfoModel?> getEventAttendance(int eventId) async {
     final url = '$endpoint/api/v1/event/attendance-events/$eventId/';
 

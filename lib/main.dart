@@ -56,10 +56,7 @@ Future main() async {
 
   await Authenticator.fetchStoredCredentials();
 
-  if (Authenticator.isLoggedIn()) {
-    final user = await Client.getUserProfile();
-    fetchAttendeeInfo(user!.id);
-  }
+  await Client.getUserProfile();
 
   Client.getGroups();
 }
@@ -82,24 +79,6 @@ Future _configureFirebase() async {
 
   await messaging.subscribeToTopic('allUsers');
   await FirebaseMessaging.instance.getToken();
-}
-
-Future<void> fetchAttendeeInfo(int userId) async {
-  List<int> attendedEventIds = [];
-
-  await Client.getAttendanceEvents(userId: userId, page: 1);
-
-  for (final event in Client.eventAttendanceCache.value) {
-    attendedEventIds.add(event.eventId);
-  }
-
-  Map<String, EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
-  if (fetchedEvents != null) {
-    allAttendedEvents = fetchedEvents.values.toList();
-  }
-
-  //Temporary solution to prevent duplicate fetching
-  Client.eventAttendanceCache.value.clear();
 }
 
 class OnlineApp extends StatelessWidget {

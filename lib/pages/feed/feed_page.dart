@@ -36,87 +36,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    //If attended events has not yet been fetched, it wil fetch the first page, else it will display the events without loading
-    if (allAttendedEvents.isEmpty) {
-      fetchAttendeeInfo(
-        page: 1,
-        shouldUpdatePageCount: false,
-      );
-      isLoading = true;
-    } else {
-      isLoading = false;
-    }
-  }
-
-  Future<void> fetchAttendeeInfo({
-    required int page,
-    required bool shouldUpdatePageCount,
-  }) async {
-    if (isFetching || !hasMoreEventsToFetch) return;
-    isFetching = true;
-    final user = Client.userCache.value;
-
-    if (user == null) return;
-    List<int> attendedEventIds = [];
-
-    await Client.getAttendanceEvents(userId: user.id, page: page);
-
-    final events = Client.eventAttendanceCache.value;
-    if (events.isNotEmpty) {
-      for (final event in events) {
-        attendedEventIds.add(event.eventId);
-      }
-    }
-
-    if (attendedEventIds.isNotEmpty) {
-      Map<String, EventModel>? fetchedEvents = await Client.getEventsWithIds(eventIds: attendedEventIds);
-      if (fetchedEvents != null) {
-        allAttendedEvents = fetchedEvents.values.toList();
-
-        Set<int> fetchedEventIds = {};
-
-        for (var entry in fetchedEvents.entries) {
-          fetchedEventIds.add(entry.value.id);
-        }
-
-        // Set<int> fetchedEventIds = fetchedEvents.map((key, value) => value.id).values.toSet();
-        attendedEventIds.removeWhere((id) => fetchedEventIds.contains(id));
-      }
-    } else {
-      if (mounted) {
-        setState(() {
-          hasMoreEventsToFetch = false;
-        });
-      }
-    }
-    if (page == 1 && attendedEventIds.isEmpty && allAttendedEvents.isEmpty) {
-      if (mounted) {
-        setState(() {
-          hasAttendedAnyEvent = false;
-        });
-      }
-    }
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-    Client.eventAttendanceCache.value.clear();
-    isFetching = false;
-    if (shouldUpdatePageCount) {
-      whatAttendencePageShouldBeFetched += 1;
-    }
-  }
-
-  Future<void> fetchReload({
-    required int pageCount,
-    required bool shouldUpdatePageCount,
-  }) async {
-    await fetchAttendeeInfo(page: pageCount, shouldUpdatePageCount: shouldUpdatePageCount);
-
-    setState(() {
-      reloading = false;
-    });
+    //TODO
   }
 
   @override
@@ -159,13 +79,13 @@ class FeedPageState extends State<FeedPage> {
     return Padding(
       padding: padding + EdgeInsets.symmetric(vertical: 64),
       child: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.95;
-          if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold && hasMoreEventsToFetch) {
-            fetchAttendeeInfo(page: whatAttendencePageShouldBeFetched, shouldUpdatePageCount: true);
-          }
-          return true;
-        },
+        // onNotification: (ScrollNotification scrollInfo) {
+        //   double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.95;
+        //   if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold && hasMoreEventsToFetch) {
+        //     fetchAttendeeInfo(page: whatAttendencePageShouldBeFetched, shouldUpdatePageCount: true);
+        //   }
+        //   return true;
+        // },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -177,17 +97,6 @@ class FeedPageState extends State<FeedPage> {
             Row(
               children: [
                 Text('Mine Arrangementer', style: OnlineTheme.header()),
-                const Spacer(),
-                AnimatedButton(onTap: () {
-                  fetchReload(pageCount: 1, shouldUpdatePageCount: false);
-                  if (mounted) setState(() => reloading = true);
-                }, childBuilder: (context, hover, pointerDown) {
-                  return Icon(
-                    Icons.refresh_outlined,
-                    color: OnlineTheme.current.fg,
-                    size: 32,
-                  );
-                }),
               ],
             ),
             const SizedBox(height: 24),
