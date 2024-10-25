@@ -5,13 +5,15 @@ import '../models/event_attendance_model.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
+int eventIdPage = 1;
+
 abstract class CalendarClient {
   static const endpoint = 'https://old.online.ntnu.no';
 
   static final ValueNotifier<List<int?>?> calendarIdCache = ValueNotifier<List<int?>?>(null);
   static final ValueNotifier<List<EventModel>?> calendarEventCache = ValueNotifier<List<EventModel>?>(null);
 
-  Future fetchEventsForCalendarCache({
+  static Future fetchEventsForCalendarCache({
     required int userId,
   }) async {
     final calendarIds = calendarIdCache.value;
@@ -98,7 +100,7 @@ abstract class CalendarClient {
 
     if (jsonResults['next'] != null) {
       eventIdPage++;
-      await getCalendarEventIds(userId: userId, eventIdPage: eventIdPage);
+      await fetchEventsForCalendarCache(userId: userId);
     }
   }
 }
