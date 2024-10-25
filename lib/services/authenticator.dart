@@ -55,6 +55,8 @@ abstract class Authenticator {
 
       await CalendarClient.getCalendarEventIds(userId: user!.id, eventIdPage: eventIdPage);
 
+      CalendarClient.getCalendarEventIds(userId: user.id, eventIdPage: eventIdPage);
+
       return response;
     } catch (e) {
       // User cancelled login

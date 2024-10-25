@@ -16,8 +16,6 @@ import 'core/client/client.dart';
 import 'core/models/event_model.dart';
 import 'firebase_options.dart';
 
-int eventIdPage = 1;
-
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 // Initialization settings for Android
@@ -61,7 +59,7 @@ Future main() async {
   final user = await Client.getUserProfile();
 
   if (Authenticator.credentials != null && user != null) {
-    await CalendarClient.getCalendarEventIds(userId: user.id, eventIdPage: eventIdPage);
+    CalendarClient.getCalendarEventIds(userId: user.id, eventIdPage: eventIdPage);
   }
 
   Client.getGroups();
