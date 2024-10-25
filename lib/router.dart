@@ -136,7 +136,8 @@ class OnlineShell extends StatelessWidget {
 final GoRoute _eventSubRoute = GoRoute(
   path: 'event/:id',
   builder: (context, state) {
-    final event = Client.eventsCache.value[state.pathParameters['id']];
+    final id = int.parse(state.pathParameters['id']!);
+    final event = Client.eventsCache.value[id];
 
     if (event != null) {
       return EventPageDisplay(model: event);

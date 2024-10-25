@@ -64,7 +64,7 @@ class EventsPageState extends State<EventsPage> {
     final List<EventModel> futureEvents = [];
     final List<EventModel> pastEvents = [];
 
-    for (MapEntry<String, EventModel> entry in Client.eventsCache.value.entries) {
+    for (MapEntry<int, EventModel> entry in Client.eventsCache.value.entries) {
       final event = entry.value;
       final eventDate = DateTime.parse(event.endDate);
 

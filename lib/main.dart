@@ -50,9 +50,10 @@ Future main() async {
   runApp(const OnlineApp());
 
   Client.getEvents(pages: [1]);
-  Client.fetchArticles(1);
+  Client.getArticlesOnPage(1);
+  Client.getAllGroups();
 
-  await _configureFirebase();
+  _configureFirebase();
 
   await Authenticator.fetchStoredCredentials();
 
@@ -61,8 +62,6 @@ Future main() async {
   if (Authenticator.credentials != null && user != null) {
     CalendarClient.getCalendarEventIds(userId: user.id, eventIdPage: eventIdPage);
   }
-
-  Client.getGroups();
 }
 
 Future _configureFirebase() async {

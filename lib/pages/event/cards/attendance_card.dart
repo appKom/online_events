@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:online/main.dart';
@@ -118,7 +116,15 @@ class AttendanceCardState extends State<AttendanceCard> {
         EventCardCountdown(eventTime: widget.attendeeInfo.registrationStart),
         const SizedBox(height: 24),
         if (isAlreadyNotified == false) notifyEventRegistration(),
-        if (isAlreadyNotified) isAlreadyNotifiedWidget(),
+        if (isAlreadyNotified)
+          Text(
+            'Du får varsel 15 min før påmelding starter',
+            textAlign: TextAlign.center,
+            style: OnlineTheme.textStyle(
+              weight: 5,
+              color: OnlineTheme.current.fg,
+            ),
+          )
       ],
     );
   }
@@ -164,38 +170,6 @@ class AttendanceCardState extends State<AttendanceCard> {
     'Annet': false,
   };
 
-  Widget isAlreadyNotifiedWidget() {
-    String eventType = '';
-
-    if (widget.event.eventTypeDisplay == 'Kurs') {
-      eventType = 'for alle kurs';
-    } else if (widget.event.eventTypeDisplay == 'Bedriftspresentasjoner') {
-      eventType = 'for alle bedpresser';
-    } else if (widget.event.eventTypeDisplay == 'Sosialt') {
-      eventType = 'for sosiale arrangementer';
-    } else {
-      eventType = 'for arrangementet';
-    }
-    return Container(
-      height: OnlineTheme.buttonHeight,
-      decoration: BoxDecoration(
-        color: OnlineTheme.gray15.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(5.0),
-        border: const Border.fromBorderSide(
-          BorderSide(color: OnlineTheme.gray15, width: 2),
-        ),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        'Varsling på ${eventType.toLowerCase()}',
-        style: OnlineTheme.textStyle(
-          weight: 5,
-          color: OnlineTheme.current.fg,
-        ),
-      ),
-    );
-  }
-
   Widget notifyEventRegistration() {
     Future registerNotification() async {
       await _saveNotificationPref(_notificationPrefKeyBeforeRegistration, true);
@@ -210,17 +184,14 @@ class AttendanceCardState extends State<AttendanceCard> {
         body: 'Påmelding til ${widget.event.title} starter om 15 minutter.',
       );
 
-      if (Platform.isIOS) {
-        flutterLocalNotificationsPlugin.show(
-          0,
-          'Varsling På',
-          'Du vil bli varslet 15 min før påmelding starter.',
-          const NotificationDetails(
-            iOS: DarwinNotificationDetails(),
-          ),
-        );
-      }
-      if (Platform.isAndroid) print("Varsling På");
+      flutterLocalNotificationsPlugin.show(
+        0,
+        'Varsling På',
+        'Du vil bli varslet 15 min før påmelding starter.',
+        const NotificationDetails(
+          iOS: DarwinNotificationDetails(),
+        ),
+      );
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         notification.id,
@@ -237,18 +208,14 @@ class AttendanceCardState extends State<AttendanceCard> {
       await _saveNotificationPref(_notificationPrefKeyBeforeRegistration, false);
       willNotifyBeforeRegistration.value = false;
 
-      if (Platform.isIOS) {
-        flutterLocalNotificationsPlugin.show(
-          0,
-          'Varsling Av',
-          'Du vil ikke lenger bli varslet før påmelding starter.',
-          const NotificationDetails(
-            iOS: DarwinNotificationDetails(),
-          ),
-        );
-      }
-
-      if (Platform.isAndroid) print("Varsling Av");
+      flutterLocalNotificationsPlugin.show(
+        0,
+        'Varsling Av',
+        'Du vil ikke lenger bli varslet før påmelding starter.',
+        const NotificationDetails(
+          iOS: DarwinNotificationDetails(),
+        ),
+      );
 
       await flutterLocalNotificationsPlugin.cancel(widget.event.id);
     }
@@ -298,66 +265,66 @@ class AttendanceCardState extends State<AttendanceCard> {
 
   final ValueNotifier<bool> willNotifyBeforeEventStart = ValueNotifier(false);
 
-  Widget notifyAttendance() {
-    Future eventStartNotification() async {
-      await _saveNotificationPref(_notificationPrefKeyBeforeEventStart, true);
-      willNotifyBeforeEventStart.value = true;
+  Future eventStartNotification() async {
+    await _saveNotificationPref(_notificationPrefKeyBeforeEventStart, true);
+    willNotifyBeforeEventStart.value = true;
 
-      final DateTime parsedStartDate = DateTime.parse(widget.event.startDate);
+    final DateTime parsedStartDate = DateTime.parse(widget.event.startDate);
 
-      final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
+    final scheduleNotificationDateTime = parsedStartDate.subtract(const Duration(minutes: 60));
 
-      final notification = NotificationModel(
-        id: widget.event.id,
-        time: scheduleNotificationDateTime,
-        header: 'Arrangement starter snart!',
-        body: '${widget.event.title} starter om 1 time.',
-      );
+    final notification = NotificationModel(
+      id: widget.event.id,
+      time: scheduleNotificationDateTime,
+      header: 'Arrangement starter snart!',
+      body: '${widget.event.title} starter om 1 time.',
+    );
 
-      flutterLocalNotificationsPlugin.show(
-        0,
-        'Varsling På',
-        'Du vil bli varslet 1 time før arrangementet starter.',
-        const NotificationDetails(
-          iOS: DarwinNotificationDetails(),
-        ),
-      );
-
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        notification.id,
-        notification.header,
-        notification.body,
-        notification.zonedTime(),
-        NotificationModel.platformChannelSpecifics,
-        androidScheduleMode: AndroidScheduleMode.alarmClock,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-      );
-    }
-
-    Future eventEndNotification() async {
-      await _saveNotificationPref(_notificationPrefKeyBeforeEventStart, false);
-      willNotifyBeforeEventStart.value = false;
-
-      var notificationDetails = const NotificationDetails(
+    flutterLocalNotificationsPlugin.show(
+      0,
+      'Varsling På',
+      'Du vil bli varslet 1 time før arrangementet starter.',
+      const NotificationDetails(
         iOS: DarwinNotificationDetails(),
-        android: AndroidNotificationDetails(
-          'event_reminders_channel',
-          'Avmeldelt varsling',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-      );
+      ),
+    );
 
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Varsling Av',
-        'Du vil ikke lenger bli varslet før arrangementet starter.',
-        notificationDetails,
-      );
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      notification.id,
+      notification.header,
+      notification.body,
+      notification.zonedTime(),
+      NotificationModel.platformChannelSpecifics,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
 
-      await flutterLocalNotificationsPlugin.cancel(widget.event.id);
-    }
+  Future eventEndNotification() async {
+    await _saveNotificationPref(_notificationPrefKeyBeforeEventStart, false);
+    willNotifyBeforeEventStart.value = false;
 
+    var notificationDetails = const NotificationDetails(
+      iOS: DarwinNotificationDetails(),
+      android: AndroidNotificationDetails(
+        'event_reminders_channel',
+        'Avmeldelt varsling',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Varsling Av',
+      'Du vil ikke lenger bli varslet før arrangementet starter.',
+      notificationDetails,
+    );
+
+    await flutterLocalNotificationsPlugin.cancel(widget.event.id);
+  }
+
+  Widget notifyAttendance() {
     final theme = OnlineTheme.current;
 
     return Column(

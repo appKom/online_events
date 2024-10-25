@@ -39,7 +39,7 @@ class HomePage extends ScrollablePage {
 
                 final List<EventModel> futureEvents = [];
 
-                for (MapEntry<String, EventModel> entry in events.entries) {
+                for (MapEntry<int, EventModel> entry in events.entries) {
                   final event = entry.value;
                   final eventDate = DateTime.parse(event.endDate);
 

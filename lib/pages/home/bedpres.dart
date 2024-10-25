@@ -18,7 +18,7 @@ class Bedpres extends StatelessWidget {
     required this.models,
   });
 
-  final Map<String, EventModel> models;
+  final Map<int, EventModel> models;
 
   static Widget skeleton(BuildContext context) {
     return Column(
@@ -64,7 +64,7 @@ class Bedpres extends StatelessWidget {
 
     final List<EventModel> futureEvents = [];
 
-    for (MapEntry<String, EventModel> entry in Client.eventsCache.value.entries) {
+    for (MapEntry<int, EventModel> entry in Client.eventsCache.value.entries) {
       final event = entry.value;
       final eventDate = DateTime.parse(event.endDate);
 

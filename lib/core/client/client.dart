@@ -25,13 +25,13 @@ abstract class Client {
     }
   }
 
-  static final ValueNotifier<Map<String, EventModel>> eventsCache = ValueNotifier({});
+  static final ValueNotifier<Map<int, EventModel>> eventsCache = ValueNotifier({});
   static final ValueNotifier<UserModel?> userCache = ValueNotifier(null);
   static final ValueNotifier<Set<EventAttendanceModel>> eventAttendanceCache = ValueNotifier({});
   static final ValueNotifier<Map<String, GroupModel>> hobbiesCache = ValueNotifier({});
   static ValueNotifier<Map<String, ArticleModel>> articlesCache = ValueNotifier({});
 
-  static Future<Map<String, EventModel>> fetchEventsForPage(int page) async {
+  static Future<Map<int, EventModel>> fetchEventsForPage(int page) async {
     String url = '$endpoint/api/v1/event/events/?page=$page';
     final response = await http.get(Uri.parse(url));
 
@@ -41,10 +41,10 @@ abstract class Client {
       final List<EventModel> events =
           bodyJson['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
 
-      Map<String, EventModel> eventMap = {};
+      Map<int, EventModel> eventMap = {};
       for (int i = 0; i < events.length; i++) {
         final event = events[i];
-        final id = event.id.toString();
+        final id = event.id;
         eventMap.putIfAbsent(id, () => event);
       }
       return eventMap;
@@ -53,11 +53,11 @@ abstract class Client {
     }
   }
 
-  static Future<Map<String, EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
-    List<Future<Map<String, EventModel>>> futures = pages.map((page) => fetchEventsForPage(page)).toList();
-    List<Map<String, EventModel>> results = await Future.wait(futures);
+  static Future<Map<int, EventModel>?> getEvents({List<int> pages = const [1, 2, 3, 4]}) async {
+    List<Future<Map<int, EventModel>>> futures = pages.map((page) => fetchEventsForPage(page)).toList();
+    List<Map<int, EventModel>> results = await Future.wait(futures);
 
-    Map<String, EventModel> combinedEventMap = {};
+    Map<int, EventModel> combinedEventMap = {};
     for (var result in results) {
       combinedEventMap.addAll(result);
     }
@@ -84,8 +84,8 @@ abstract class Client {
     }
   }
 
-  static Future<Map<String, EventModel>?> getEventsWithIds({List<int> eventIds = const []}) async {
-    Map<String, EventModel> eventMap = {};
+  static Future<Map<int, EventModel>?> getEventsWithIds({List<int> eventIds = const []}) async {
+    Map<int, EventModel> eventMap = {};
 
     var futures = eventIds.map((eventId) => getEventWithId(eventId));
 
@@ -93,7 +93,7 @@ abstract class Client {
 
     for (var event in results) {
       if (event != null) {
-        eventMap.putIfAbsent(event.id.toString(), () => event);
+        eventMap.putIfAbsent(event.id, () => event);
       }
     }
 
@@ -125,6 +125,46 @@ abstract class Client {
 
     return null;
   }
+
+  /// Get event attendances for current user. (Attendance information about events they are attending)
+  static Future<void> getEventAttendances({
+    required int page,
+  }) async {
+    final accessToken = Authenticator.credentials?.accessToken;
+
+    if (accessToken == null) return;
+
+    final userId = userCache.value?.id;
+
+    final url = '$endpoint/api/v1/event/attendees/?page=$page&ordering=-id&user=$userId';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    final body = utf8.decode(response.bodyBytes, allowMalformed: true);
+    final jsonResults = jsonDecode(body)['results'];
+
+    if (jsonResults == null) return;
+
+    final results = <EventAttendanceModel>{};
+
+    for (var json in jsonResults) {
+      final event = EventAttendanceModel.fromJson(json);
+      results.add(event);
+    }
+
+    eventAttendanceCache.value = Set.from(eventAttendanceCache.value)..addAll(results);
+  }
+
+  // Get events user is attenting or has attended
+  // static Future<void> getAttendanceEvents() {
+  //   // Utilize caching
+  //   // Find all events
+  // }
 
   static Future<AttendeeInfoModel?> getEventAttendance(int eventId) async {
     final url = '$endpoint/api/v1/event/attendance-events/$eventId/';
@@ -213,7 +253,7 @@ abstract class Client {
     }
   }
 
-  static Future<List<ArticleModel>> fetchArticles(int pageNumber) async {
+  static Future<List<ArticleModel>> getArticlesOnPage(int pageNumber) async {
     final articles = await fetch(
       '$endpoint/api/v1/articles/?ordering=-created_date&page=$pageNumber',
       ArticleModel.fromJson,
@@ -261,7 +301,7 @@ abstract class Client {
     return pageCount;
   }
 
-  static Future<void> getGroups() async {
+  static Future<void> getAllGroups() async {
     Map<String, GroupModel> groupMap = {};
 
     int pageCount = await _getGroupPageCount();
