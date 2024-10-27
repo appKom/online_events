@@ -24,7 +24,7 @@ import 'core/client/client.dart';
 import 'pages/article/article_page.dart';
 import 'pages/event/event_page.dart';
 import 'pages/events/events_page.dart';
-import 'pages/feed/feed_page.dart';
+import 'pages/calendar/calendar_page.dart';
 import 'pages/games/games_page.dart';
 import 'pages/hobbies/hobby_page.dart';
 import 'pages/home/home_page.dart';
@@ -210,7 +210,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/calendar',
           pageBuilder: (context, state) => NoTransitionPage<void>(
-            child: FeedPageDisplay(),
+            child: CalendarPageDisplay(),
           ),
           routes: [
             _eventSubRoute,

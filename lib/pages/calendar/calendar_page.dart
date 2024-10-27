@@ -11,14 +11,14 @@ import '../home/event_card.dart';
 import 'calendar_card.dart';
 import 'calendar_skeleton.dart';
 
-class FeedPage extends StatefulWidget {
-  const FeedPage({super.key});
+class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
 
   @override
-  FeedPageState createState() => FeedPageState();
+  CalendarPageState createState() => CalendarPageState();
 }
 
-class FeedPageState extends State<FeedPage> {
+class CalendarPageState extends State<CalendarPage> {
   bool isLoadingMoreEvents = false;
 
   ({List<EventModel> futureEvents, List<EventModel> pastEvents}) futureAndPastEvents() {
@@ -129,8 +129,8 @@ class FeedPageState extends State<FeedPage> {
   }
 }
 
-class FeedPageDisplay extends StaticPage {
-  const FeedPageDisplay({super.key});
+class CalendarPageDisplay extends StaticPage {
+  const CalendarPageDisplay({super.key});
 
   @override
   Widget content(BuildContext context) {
@@ -138,7 +138,7 @@ class FeedPageDisplay extends StaticPage {
       valueListenable: Authenticator.loggedIn,
       builder: (context, loggedIn, child) {
         if (loggedIn) {
-          return const FeedPage();
+          return const CalendarPage();
         } else {
           return const NotLoggedInPage();
         }
