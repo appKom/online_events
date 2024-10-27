@@ -48,13 +48,13 @@ Future main() async {
 
   runApp(const OnlineApp());
 
+  await Authenticator.fetchStoredCredentials();
+
   Client.getEvents(pages: [1]);
   Client.getArticlesOnPage(1);
   Client.getAllGroups();
 
   _configureFirebase();
-
-  await Authenticator.fetchStoredCredentials();
 
   final user = await Client.getUserProfile();
 
