@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:online/core/client/calendar_client.dart';
 import 'package:online/router.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -11,8 +10,8 @@ import '/services/authenticator.dart';
 import '/services/env.dart';
 import '/services/secure_storage.dart';
 import '/theme/theme.dart';
+import 'core/client/calendar_client.dart';
 import 'core/client/client.dart';
-
 import 'core/models/event_model.dart';
 import 'firebase_options.dart';
 

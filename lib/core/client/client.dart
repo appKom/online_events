@@ -84,24 +84,6 @@ abstract class Client {
     }
   }
 
-  static Future<Map<int, EventModel>?> getEventsWithIds({List<int> eventIds = const []}) async {
-    Map<int, EventModel> eventMap = {};
-
-    var futures = eventIds.map((eventId) => getEventWithId(eventId));
-
-    final results = await Future.wait(futures);
-
-    for (var event in results) {
-      if (event != null) {
-        eventMap.putIfAbsent(event.id, () => event);
-      }
-    }
-
-    eventsCache.value = Map.from(eventsCache.value)..addAll(eventMap);
-
-    return eventsCache.value;
-  }
-
   static Future<UserModel?> getUserProfile() async {
     final accessToken = Authenticator.credentials?.accessToken;
 
