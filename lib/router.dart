@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:online/pages/games/bits/bits_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '/pages/games/bits/bits_home_page.dart';
@@ -305,6 +306,13 @@ final GoRouter router = GoRouter(
                   path: 'bits',
                   builder: (context, state) {
                     return BitsHomePage();
+                  },
+                ),
+                GoRoute(
+                  path: 'bitsgame',
+                  builder: (context, state) {
+                    final playerNames = state.extra as List<String>? ?? [];
+                    return BitsGame(playerNames: playerNames);
                   },
                 ),
               ],

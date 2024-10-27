@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:online/components/separator.dart';
 import 'package:online/pages/games/bits/bits_page.dart';
 import '../../../components/animated_button.dart';
@@ -128,7 +129,7 @@ class BitsHomePageState extends State<BitsHomePage> {
     return filledFields >= 2;
   }
 
-  void _startGame() {
+  void _startGame(BuildContext context) {
     bool anyFieldEmpty = controllers.any((controller) => controller.text.trim().isEmpty);
 
     if (anyFieldEmpty) {
@@ -136,7 +137,8 @@ class BitsHomePageState extends State<BitsHomePage> {
     }
 
     List<String> playerNames = controllers.map((c) => c.text.trim()).toList();
-    AppNavigator.navigateToPage(BitsGame(playerNames: playerNames), withHeaderNavbar: false);
+
+    context.go('/social/games/bitsgame', extra: playerNames);
   }
 
   @override
@@ -226,7 +228,7 @@ class BitsHomePageState extends State<BitsHomePage> {
                       Expanded(
                         child: AnimatedButton(
                           onTap: () async {
-                            _startGame();
+                            _startGame(context);
                           },
                           childBuilder: (context, hover, pointerDown) {
                             return Padding(
