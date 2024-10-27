@@ -59,7 +59,7 @@ Future main() async {
   final user = await Client.getUserProfile();
 
   if (Authenticator.credentials != null && user != null) {
-    CalendarClient.getCalendarEventIds(userId: user.id, eventIdPage: eventIdPage);
+    CalendarClient.getCalendarEventIds(userId: user.id);
   }
 }
 

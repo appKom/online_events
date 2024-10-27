@@ -19,6 +19,7 @@ import '/pages/games/songs/we_like_to_drink.dart';
 import '/pages/games/spin_line_page.dart';
 import 'components/animated_button.dart';
 import 'components/navbar.dart';
+import 'core/client/calendar_client.dart';
 import 'core/client/client.dart';
 import 'pages/article/article_page.dart';
 import 'pages/event/event_page.dart';
@@ -137,7 +138,11 @@ final GoRoute _eventSubRoute = GoRoute(
   path: 'event/:id',
   builder: (context, state) {
     final id = int.parse(state.pathParameters['id']!);
-    final event = Client.eventsCache.value[id];
+
+    final event = Client.eventsCache.value[id] ??
+        CalendarClient.calendarEventCache.value?.firstWhere(
+          (e) => e.id == id,
+        );
 
     if (event != null) {
       return EventPageDisplay(model: event);

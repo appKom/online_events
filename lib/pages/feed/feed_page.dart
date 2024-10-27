@@ -19,7 +19,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedPageState extends State<FeedPage> {
-  bool isLoading = true;
+  bool isLoadingMoreEvents = false;
 
   ({List<EventModel> futureEvents, List<EventModel> pastEvents}) futureAndPastEvents() {
     final now = DateTime.now();
@@ -51,72 +51,81 @@ class FeedPageState extends State<FeedPage> {
     final padding = MediaQuery.of(context).padding + OnlineTheme.horizontalPadding;
 
     return ValueListenableBuilder(
-        valueListenable: CalendarClient.calendarEventCache,
-        builder: (context, events, child) {
-          if (events == null) return skeletonLoader(context);
+      valueListenable: CalendarClient.calendarEventCache,
+      builder: (context, events, child) {
+        if (events == null) return skeletonLoader(context);
 
-          var eventsTuple = futureAndPastEvents();
-          List<EventModel> futureEvents = eventsTuple.futureEvents;
-          List<EventModel> pastEvents = eventsTuple.pastEvents;
+        var eventsTuple = futureAndPastEvents();
+        List<EventModel> futureEvents = eventsTuple.futureEvents;
+        List<EventModel> pastEvents = eventsTuple.pastEvents;
 
-          return Padding(
-            padding: padding + EdgeInsets.symmetric(vertical: 64),
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.95;
-                if (scrollInfo.metrics.pixels > triggerFetchMoreThreshold) {
-                  print('Fetching more events');
-                  CalendarClient.getCalendarEventIds(userId: Client.userCache.value!.id, eventIdPage: eventIdPage);
-                }
-                return true;
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 24),
-                  CalendarCard(upcomingEvents: futureEvents, pastEvents: pastEvents),
-                  const SizedBox(height: 24 + 24),
-                  Row(
-                    children: [
-                      Text('Mine Arrangementer', style: OnlineTheme.header()),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    height: 100.0 * futureEvents.length,
-                    child: ListView.builder(
-                      itemCount: futureEvents.length,
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => EventCard(
-                        model: futureEvents[index],
-                      ),
+        return NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            double triggerFetchMoreThreshold = scrollInfo.metrics.maxScrollExtent * 0.95;
+            if (!isLoadingMoreEvents && scrollInfo.metrics.pixels > triggerFetchMoreThreshold) {
+              setState(() {
+                isLoadingMoreEvents = true;
+              });
+              CalendarClient.getCalendarEventIds(
+                userId: Client.userCache.value!.id,
+              ).then((_) {
+                setState(() {
+                  isLoadingMoreEvents = false;
+                });
+              });
+            }
+            return true;
+          },
+          child: SingleChildScrollView(
+            padding: padding + const EdgeInsets.symmetric(vertical: 64),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 24),
+                CalendarCard(upcomingEvents: futureEvents, pastEvents: pastEvents),
+                const SizedBox(height: 24 + 24),
+                Row(
+                  children: [
+                    Text('Mine Arrangementer', style: OnlineTheme.header()),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  height: 100.0 * futureEvents.length,
+                  child: ListView.builder(
+                    itemCount: futureEvents.length,
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => EventCard(
+                      model: futureEvents[index],
                     ),
                   ),
-                  const SizedBox(height: 24 + 24),
-                  Text('Tidligere Arrangementer', style: OnlineTheme.header()),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    height: 100.0 * pastEvents.length,
-                    child: ListView.builder(
-                      itemCount: pastEvents.length,
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => EventCard(
-                        model: pastEvents[index],
-                      ),
+                ),
+                const SizedBox(height: 24 + 24),
+                Text('Tidligere Arrangementer', style: OnlineTheme.header()),
+                const SizedBox(height: 24),
+                SizedBox(
+                  height: 100.0 * pastEvents.length,
+                  child: ListView.builder(
+                    itemCount: pastEvents.length,
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => EventCard(
+                      model: pastEvents[index],
                     ),
                   ),
-                  if (pastEvents.isNotEmpty)
-                    Column(
-                      children: List.generate(2, (_) => EventCard.skeleton()),
-                    ),
-                  const SizedBox(height: 24),
-                ],
-              ),
+                ),
+                if (pastEvents.isNotEmpty && fetchedAllCalendarEvents == false)
+                  Column(
+                    children: List.generate(2, (_) => EventCard.skeleton()),
+                  ),
+                const SizedBox(height: 24),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -129,7 +138,7 @@ class FeedPageDisplay extends StaticPage {
       valueListenable: Authenticator.loggedIn,
       builder: (context, loggedIn, child) {
         if (loggedIn) {
-          return SingleChildScrollView(padding: EdgeInsets.zero, child: const FeedPage());
+          return const FeedPage();
         } else {
           return const NotLoggedInPage();
         }

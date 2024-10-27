@@ -60,7 +60,7 @@ abstract class Authenticator {
 
       final user = await Client.getUserProfile();
 
-      CalendarClient.getCalendarEventIds(userId: user!.id, eventIdPage: eventIdPage);
+      CalendarClient.getCalendarEventIds(userId: user!.id);
 
       return response;
     } catch (e) {

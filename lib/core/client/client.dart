@@ -32,8 +32,19 @@ abstract class Client {
   static ValueNotifier<Map<String, ArticleModel>> articlesCache = ValueNotifier({});
 
   static Future<Map<int, EventModel>> fetchEventsForPage(int page) async {
+    final accessToken = Authenticator.credentials?.accessToken;
+
     String url = '$endpoint/api/v1/event/events/?page=$page';
-    final response = await http.get(Uri.parse(url));
+
+    Map<String, String> headers = {};
+    if (accessToken != null) {
+      headers['Authorization'] = 'Bearer $accessToken';
+    }
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: headers,
+    );
 
     if (response.statusCode == 200) {
       final body = utf8.decode(response.bodyBytes, allowMalformed: true);
@@ -42,10 +53,8 @@ abstract class Client {
           bodyJson['results'].map<EventModel>((eventJson) => EventModel.fromJson(eventJson)).toList();
 
       Map<int, EventModel> eventMap = {};
-      for (int i = 0; i < events.length; i++) {
-        final event = events[i];
-        final id = event.id;
-        eventMap.putIfAbsent(id, () => event);
+      for (final event in events) {
+        eventMap[event.id] = event;
       }
       return eventMap;
     } else {
@@ -68,9 +77,19 @@ abstract class Client {
   }
 
   static Future<EventModel?> getEventWithId(int eventId) async {
+    final accessToken = Authenticator.credentials?.accessToken;
+
+    Map<String, String> headers = {};
+    if (accessToken != null) {
+      headers['Authorization'] = 'Bearer $accessToken';
+    }
+
     String url = '$endpoint/api/v1/event/events/$eventId';
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
       if (response.statusCode == 200) {
         final body = utf8.decode(response.bodyBytes, allowMalformed: true);
         final bodyJson = jsonDecode(body);

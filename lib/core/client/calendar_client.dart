@@ -5,7 +5,10 @@ import '../models/event_attendance_model.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
+import 'client.dart';
+
 int eventIdPage = 1;
+bool fetchedAllCalendarEvents = false;
 
 abstract class CalendarClient {
   static const endpoint = 'https://old.online.ntnu.no';
@@ -15,6 +18,7 @@ abstract class CalendarClient {
 
   static Future fetchEventsForCalendarCache({
     required int userId,
+    required List<int> eventIds,
   }) async {
     final calendarIds = calendarIdCache.value;
     if (calendarIds == null || calendarIds.isEmpty) {
@@ -22,40 +26,9 @@ abstract class CalendarClient {
       return;
     }
 
-    Future<List<EventModel>> fetchEventsForCalendarId(int calendarId) async {
-      final url = '$endpoint/api/v1/event/events/$calendarId';
-      final accessToken = Authenticator.credentials?.accessToken;
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {
-          'Authorization': 'Bearer $accessToken',
-        },
-      );
-
-      final results = <EventModel>[];
-
-      if (response.statusCode == 200) {
-        final body = utf8.decode(response.bodyBytes, allowMalformed: true);
-        final jsonResults = jsonDecode(body);
-
-        if (jsonResults != null) {
-          final event = EventModel.fromJson(jsonResults);
-          results.add(event);
-        }
-      } else {
-        print('Error fetching events for calendarId: $calendarId');
-      }
-
-      return results;
-    }
-
     List<Future<List<EventModel>>> fetchFutures = [];
 
-    for (int? calendarId in calendarIds) {
-      if (calendarId != null) {
-        fetchFutures.add(fetchEventsForCalendarId(calendarId));
-      }
-    }
+    fetchFutures = [getEventsWithIds(eventIds: eventIds)];
 
     final allResults = await Future.wait(fetchFutures);
     final allFetchedEvents = allResults.expand((events) => events).toList();
@@ -69,7 +42,6 @@ abstract class CalendarClient {
 
   static Future getCalendarEventIds({
     required int userId,
-    required int eventIdPage,
   }) async {
     final url = '$endpoint/api/v1/event/attendees/?page=$eventIdPage&ordering=-id&user=$userId';
     final accessToken = Authenticator.credentials?.accessToken;
@@ -86,6 +58,16 @@ abstract class CalendarClient {
     final body = utf8.decode(response.bodyBytes, allowMalformed: true);
     final jsonResults = jsonDecode(body);
 
+    if (jsonResults['detail'] == 'Ugyldig side') {
+      fetchedAllCalendarEvents = true;
+      return;
+    }
+
+    if (response.statusCode != 200) {
+      print('Error fetching event IDs');
+      return;
+    }
+
     if (jsonResults != null) {
       for (var result in jsonResults['results']) {
         results.add(result['event']);
@@ -98,9 +80,22 @@ abstract class CalendarClient {
       calendarIdCache.value = results;
     }
 
-    if (jsonResults['next'] != null) {
-      eventIdPage++;
-      await fetchEventsForCalendarCache(userId: userId);
+    eventIdPage += 1;
+    await fetchEventsForCalendarCache(userId: userId, eventIds: results);
+  }
+
+  static Future<List<EventModel>> getEventsWithIds({List<int> eventIds = const []}) async {
+    Map<int, EventModel> eventMap = {};
+
+    var futures = eventIds.map((eventId) => Client.getEventWithId(eventId));
+    final results = await Future.wait(futures);
+
+    for (var event in results) {
+      if (event != null) {
+        eventMap.putIfAbsent(event.id, () => event);
+      }
     }
+
+    return results.whereType<EventModel>().toList();
   }
 }
