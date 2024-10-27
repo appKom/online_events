@@ -29,9 +29,15 @@ abstract class Authenticator {
   /// If none were found, nothing is returned.
   static Future<Credentials?> fetchStoredCredentials() async {
     if (await auth0!.credentialsManager.hasValidCredentials()) {
-      credentials = await auth0!.credentialsManager.credentials();
-      loggedIn.value = true;
-      return credentials;
+      try {
+        credentials = await auth0!.credentialsManager.credentials();
+        loggedIn.value = true;
+        return credentials;
+      } catch (e) {
+        await auth0!.credentialsManager.clearCredentials();
+        loggedIn.value = false;
+        return null;
+      }
     }
 
     loggedIn.value = false;
@@ -44,8 +50,9 @@ abstract class Authenticator {
     }
 
     try {
-      //final scheme = dotenv.env['AUTH0_CUSTOM_SCHEME'];
-      final response = await auth0!.webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME']).login();
+      final response = await auth0!.webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME']).login(
+        parameters: {'scope': 'openid profile email offline_access'},
+      );
       await auth0!.credentialsManager.storeCredentials(response);
 
       loggedIn.value = true;
@@ -59,7 +66,6 @@ abstract class Authenticator {
 
       return response;
     } catch (e) {
-      // User cancelled login
       return null;
     }
   }
