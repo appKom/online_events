@@ -1,11 +1,10 @@
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:online/services/env.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:online/services/env.dart';
 
 import '../core/client/calendar_client.dart';
 import '../core/client/client.dart';
-import '../main.dart';
 
 abstract class Authenticator {
   static Auth0? auth0;

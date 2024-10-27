@@ -1,10 +1,10 @@
-import 'package:online/core/models/event_model.dart';
-import 'package:http/http.dart' as http;
-import '../../services/authenticator.dart';
-import '../models/event_attendance_model.dart';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:online/core/models/event_model.dart';
+
+import '../../services/authenticator.dart';
 import 'client.dart';
 
 int eventIdPage = 1;

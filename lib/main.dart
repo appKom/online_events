@@ -12,7 +12,6 @@ import '/services/secure_storage.dart';
 import '/theme/theme.dart';
 import 'core/client/calendar_client.dart';
 import 'core/client/client.dart';
-import 'core/models/event_model.dart';
 import 'firebase_options.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
