@@ -10,7 +10,7 @@ import '/theme/theme.dart';
 class InfoPage extends ScrollablePage {
   const InfoPage({super.key});
 
-  static const _version = '1.1.0';
+  static const _version = '1.2.0';
 
   @override
   Widget content(BuildContext context) {

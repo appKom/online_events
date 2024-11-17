@@ -224,98 +224,83 @@ final GoRouter router = GoRouter(
           ),
           routes: [
             GoRoute(
-                path: 'songs',
-                builder: (context, state) {
-                  return GamesPage();
-                },
-                routes: [
-                  GoRoute(
-                    path: 'lambo',
-                    builder: (context, state) {
-                      return LamboPage();
-                    },
-                  ),
-                  GoRoute(
-                    path: 'nu_klinger',
-                    builder: (context, state) {
-                      return NuKlingerPage();
-                    },
-                  ),
-                  GoRoute(
-                    path: 'studenter_visen',
-                    builder: (context, state) {
-                      return StudenterVisenPage();
-                    },
-                  ),
-                  GoRoute(
-                    path: 'kamerater_hev_glasset',
-                    builder: (context, state) {
-                      return KameraterHevGlassetPage();
-                    },
-                  ),
-                  GoRoute(
-                    path: 'himmelseng',
-                    builder: (context, state) {
-                      return HimmelsengPage();
-                    },
-                  ),
-                  GoRoute(
-                    path: 'fader_abraham',
-                    builder: (context, state) {
-                      return FaderAbrahamPage();
-                    },
-                  ),
-                  GoRoute(
-                    path: 'we_like_to_drink',
-                    builder: (context, state) {
-                      return WeLikeToDrinkPage();
-                    },
-                  ),
-                ]),
-            GoRoute(
-              path: 'games',
+              path: 'lambo',
               builder: (context, state) {
-                return GamesPage();
+                return LamboPage();
               },
-              routes: [
-                GoRoute(
-                  path: 'dice',
-                  builder: (context, state) {
-                    return DicePage();
-                  },
-                ),
-                GoRoute(
-                  path: 'hundred_questions',
-                  builder: (context, state) {
-                    return HundredQuestionsInfo();
-                  },
-                ),
-                GoRoute(
-                  path: 'spinline',
-                  builder: (context, state) {
-                    return SpinLinePage();
-                  },
-                ),
-                GoRoute(
-                  path: 'roulette',
-                  builder: (context, state) {
-                    return RoulettePage();
-                  },
-                ),
-                GoRoute(
-                  path: 'bits',
-                  builder: (context, state) {
-                    return BitsHomePage();
-                  },
-                ),
-                GoRoute(
-                  path: 'bitsgame',
-                  builder: (context, state) {
-                    final playerNames = state.extra as List<String>? ?? [];
-                    return BitsGame(playerNames: playerNames);
-                  },
-                ),
-              ],
+            ),
+            GoRoute(
+              path: 'nu_klinger',
+              builder: (context, state) {
+                return NuKlingerPage();
+              },
+            ),
+            GoRoute(
+              path: 'studenter_visen',
+              builder: (context, state) {
+                return StudenterVisenPage();
+              },
+            ),
+            GoRoute(
+              path: 'kamerater_hev_glasset',
+              builder: (context, state) {
+                return KameraterHevGlassetPage();
+              },
+            ),
+            GoRoute(
+              path: 'himmelseng',
+              builder: (context, state) {
+                return HimmelsengPage();
+              },
+            ),
+            GoRoute(
+              path: 'fader_abraham',
+              builder: (context, state) {
+                return FaderAbrahamPage();
+              },
+            ),
+            GoRoute(
+              path: 'we_like_to_drink',
+              builder: (context, state) {
+                return WeLikeToDrinkPage();
+              },
+            ),
+            GoRoute(
+              path: 'dice',
+              builder: (context, state) {
+                return DicePage();
+              },
+            ),
+            GoRoute(
+              path: 'hundred_questions',
+              builder: (context, state) {
+                return HundredQuestionsInfo();
+              },
+            ),
+            GoRoute(
+              path: 'spinline',
+              builder: (context, state) {
+                return SpinLinePage();
+              },
+            ),
+            GoRoute(
+              path: 'roulette',
+              builder: (context, state) {
+                return RoulettePage();
+              },
+            ),
+            GoRoute(
+              path: 'bits',
+              builder: (context, state) {
+                return BitsHomePage();
+              },
+            ),
+            GoRoute(
+              path: 'bitsgame',
+              builder: (context, state) {
+                final playerNames = state.extra as List<String>? ?? [];
+                return BitsGame(playerNames: playerNames);
+              },
             ),
           ],
         ),

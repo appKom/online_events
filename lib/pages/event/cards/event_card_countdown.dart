@@ -46,10 +46,10 @@ class EventCardCountdownState extends State<EventCardCountdown> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          numberColumn(days, days == 1 ? 'Dag' : 'Dager'),
-          numberColumn(hours, hours == 1 ? 'Time' : 'Timer'),
-          numberColumn(minutes, minutes == 1 ? 'Minutt' : 'Minutter'),
-          numberColumn(seconds, seconds == 1 ? 'Sekund' : 'Sekunder'),
+          numberColumn(days, 'Dager'),
+          numberColumn(hours, 'Timer'),
+          numberColumn(minutes, 'Minutter'),
+          numberColumn(seconds, 'Sekunder'),
         ],
       ),
     );
