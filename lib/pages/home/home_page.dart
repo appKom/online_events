@@ -28,7 +28,7 @@ class HomePage extends ScrollablePage {
       padding: EdgeInsets.only(top: padding.top + 64, bottom: 64),
       child: Column(
         children: [
-          // Show christmas countdown as long as it is 24 and not after 24th
+          // Show christmas countdown as long as it is 2024 and not after December 24th
           if (year == 2024 && !(month == 12 && day > 24)) ChristmasCountdown(),
           Padding(
             padding: EdgeInsets.only(left: padding.left, right: padding.right),
