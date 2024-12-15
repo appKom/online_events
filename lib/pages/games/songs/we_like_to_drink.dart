@@ -20,6 +20,11 @@ And when we drink with *NAVN* \n
 **3!** \n
 **2!** \n
 **1!** \n
+---
+### **Hvis glasset ikke er tømt:**
+Why was he born so beautiful, why was he born at all? \n
+He's no fucking use to anyone, he's no fucking use at all! \n
+He's a cunt he's a cunt, he's a C U N T cunt!
 ''';
   }
 
