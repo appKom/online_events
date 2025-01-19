@@ -55,7 +55,7 @@ class ChristmasCountdownState extends State<ChristmasCountdown> {
           Container(
             padding: OnlineTheme.horizontalPadding,
             decoration: BoxDecoration(
-              color: OnlineTheme.current.bg.withOpacity(0.6),
+              color: OnlineTheme.current.bg.withValues(alpha: 0.6),
               border: Border(
                 bottom: BorderSide(
                   color: OnlineTheme.current.border,
@@ -90,7 +90,7 @@ class ChristmasCountdownState extends State<ChristmasCountdown> {
           Container(
             padding: OnlineTheme.horizontalPadding,
             decoration: BoxDecoration(
-              color: OnlineTheme.current.bg.withOpacity(0.6),
+              color: OnlineTheme.current.bg.withValues(alpha: 0.6),
               border: Border(
                 bottom: BorderSide(
                   color: OnlineTheme.current.border,

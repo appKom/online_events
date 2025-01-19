@@ -94,15 +94,6 @@ class OnlineApp extends StatelessWidget {
       routerConfig: router,
       color: OnlineTheme.current.bg,
     );
-    // return MaterialApp(
-    //   navigatorKey: AppNavigator.navigatorKey, // Use the single navigator key
-    //   title: 'Online',
-    //   debugShowCheckedModeBanner: false,
-    //   home: const OnlineScaffold(
-    //     showHeaderNavbar: true, // Default to showing header and navbar on HomePage
-    //     child: HomePage(),
-    //   ),
-    // );
   }
 }
 

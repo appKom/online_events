@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:online/components/separator.dart';
-import 'package:online/pages/games/bits/bits_page.dart';
+
 import '../../../components/animated_button.dart';
-import '../../../services/app_navigator.dart';
 import '../../../theme/theme.dart';
 
 class BitsHomePage extends StatefulWidget {
@@ -207,7 +206,7 @@ class BitsHomePageState extends State<BitsHomePage> {
                                 height: 40,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 248, 98, 6).withOpacity(0.4),
+                                  color: const Color.fromARGB(255, 248, 98, 6).withValues(alpha: 0.4),
                                   borderRadius: BorderRadius.circular(5.0),
                                   border: Border.fromBorderSide(
                                       BorderSide(color: const Color.fromARGB(255, 248, 98, 6), width: 2)),

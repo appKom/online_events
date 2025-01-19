@@ -99,7 +99,7 @@ class NavbarState extends State<Navbar> {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           decoration: BoxDecoration(
-            color: OnlineTheme.current.bg.withOpacity(0.8),
+            color: OnlineTheme.current.bg.withValues(alpha: 0.8),
             border: Border(top: BorderSide(width: 1, color: OnlineTheme.current.border)),
           ),
           child: Row(

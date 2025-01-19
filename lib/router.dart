@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:online/pages/games/bits/bits_page.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '/pages/games/bits/bits_home_page.dart';
 import '/pages/games/dice.dart';
@@ -23,9 +22,9 @@ import 'components/navbar.dart';
 import 'core/client/calendar_client.dart';
 import 'core/client/client.dart';
 import 'pages/article/article_page.dart';
+import 'pages/calendar/calendar_page.dart';
 import 'pages/event/event_page.dart';
 import 'pages/events/events_page.dart';
-import 'pages/calendar/calendar_page.dart';
 import 'pages/games/games_page.dart';
 import 'pages/hobbies/hobby_page.dart';
 import 'pages/home/home_page.dart';
@@ -50,7 +49,7 @@ class OnlineShell extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           decoration: BoxDecoration(
-            color: OnlineTheme.current.bg.withOpacity(0.8),
+            color: OnlineTheme.current.bg.withValues(alpha: 0.8),
             border: Border(
               bottom: BorderSide(
                 color: OnlineTheme.current.border,
@@ -67,7 +66,7 @@ class OnlineShell extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Header content (like the logo, buttons)
@@ -82,23 +81,6 @@ class OnlineShell extends StatelessWidget {
                         height: 36,
                       );
                     }),
-                  ),
-                  const Spacer(),
-                  // External link or other widgets
-                  AnimatedButton(
-                    onTap: () {
-                      launchUrl(
-                        Uri.parse('https://bekk.no'),
-                        mode: LaunchMode.externalApplication,
-                      );
-                    },
-                    childBuilder: (context, hover, pointerDown) {
-                      return SvgPicture.asset(
-                        'assets/svg/bekk.svg',
-                        height: 36,
-                        colorFilter: ColorFilter.mode(OnlineTheme.current.fg, BlendMode.srcIn),
-                      );
-                    },
                   ),
                 ],
               ),

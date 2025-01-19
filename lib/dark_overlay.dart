@@ -8,7 +8,7 @@ abstract class DarkOverlay extends ModalRoute<void> {
   Widget content(BuildContext context, Animation<double> animation);
 
   @override
-  Color? get barrierColor => Colors.black.withOpacity(0.8);
+  Color? get barrierColor => Colors.black.withValues(alpha: 0.8);
 
   @override
   bool get barrierDismissible => true;

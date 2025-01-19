@@ -125,7 +125,7 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Colors.grey.withValues(alpha: 0.5),
                             spreadRadius: 1,
                             blurRadius: 1,
                             offset: const Offset(0, 1),
@@ -151,7 +151,7 @@ class LikesCardState extends State<LikesCard> with SingleTickerProviderStateMixi
                 ),
               ScaleTransition(
                 scale: _animation,
-                child: Icon(Icons.favorite, size: 250, color: Colors.red.withOpacity(_animation.value)),
+                child: Icon(Icons.favorite, size: 250, color: Colors.red.withValues(alpha: _animation.value)),
               ),
             ],
           ),

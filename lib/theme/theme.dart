@@ -230,20 +230,12 @@ extension ColorEffects on Color {
   Color lighten(double pct) {
     pct = (pct / 100) + 1;
 
-    int r = (red * pct).toInt().clamp(0, 255);
-    int g = (green * pct).toInt().clamp(0, 255);
-    int b = (blue * pct).toInt().clamp(0, 255);
-
-    return Color.fromARGB(alpha, r, g, b);
+    return withValues(red: r * pct, green: g * pct, blue: b * pct);
   }
 
   Color darken(double pct) {
     pct = 1 - (pct / 100);
 
-    int r = (red * pct).toInt().clamp(0, 255);
-    int g = (green * pct).toInt().clamp(0, 255);
-    int b = (blue * pct).toInt().clamp(0, 255);
-
-    return Color.fromARGB(alpha, r, g, b);
+    return withValues(red: r * pct, green: g * pct, blue: b * pct);
   }
 }

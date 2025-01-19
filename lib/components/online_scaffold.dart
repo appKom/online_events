@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online/components/animated_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '/pages/home/home_page.dart';
 import '/services/app_navigator.dart';
@@ -59,7 +58,7 @@ class OnlineScaffold extends StatelessWidget {
       preferredSize: const Size.fromHeight(75),
       child: AppBar(
         shape: Border(bottom: BorderSide(width: 1, color: OnlineTheme.current.border)),
-        backgroundColor: OnlineTheme.current.bg.withOpacity(0.9),
+        backgroundColor: OnlineTheme.current.bg.withValues(alpha: 0.9),
         elevation: 0,
         scrolledUnderElevation: 0,
         flexibleSpace: Padding(
@@ -87,23 +86,6 @@ class OnlineScaffold extends StatelessWidget {
                       height: 36,
                     );
                   }),
-                ),
-                const Spacer(),
-                // External link or other widgets
-                AnimatedButton(
-                  onTap: () {
-                    launchUrl(
-                      Uri.parse('https://bekk.no'),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  },
-                  childBuilder: (context, hover, pointerDown) {
-                    return SvgPicture.asset(
-                      'assets/svg/bekk.svg',
-                      height: 36,
-                      colorFilter: ColorFilter.mode(OnlineTheme.current.fg, BlendMode.srcIn),
-                    );
-                  },
                 ),
               ],
             ),

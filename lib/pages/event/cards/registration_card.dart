@@ -64,7 +64,7 @@ class RegistrationCard extends StatelessWidget {
           ),
           CardBadge(
             text: badgeText,
-            fill: color.withOpacity(0.4),
+            fill: color.withValues(alpha: 0.4),
             border: color,
           ),
         ],
