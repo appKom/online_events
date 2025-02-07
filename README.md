@@ -1,5 +1,5 @@
 # online_events
-Online-Appendix er den ultimate appen for alle informatikk-studenter! I Online er det alt for mye som skjer til at en enkelt Onliner skal klare å henge med. Derfor tilbyr appen varslinger til arrangementer du ønsker å melde deg på eller har meldt deg på. I tillegg får du oversikt over hva som skjer, hvor det skjer, og når det skjer.
+Online-Appen er den ultimate appen for alle informatikk-studenter! I Online er det alt for mye som skjer til at en enkelt Onliner skal klare å henge med. Derfor tilbyr appen varslinger til arrangementer du ønsker å melde deg på eller har meldt deg på. I tillegg får du oversikt over hva som skjer, hvor det skjer, og når det skjer.
 
 Appen er utstyrt med en kalender der du enkelt får oversikt over den innholdsrike hverdagen din. Var det torsdag eller fredag det var bedpress? Nå har du svaret. (Kalenderen er også fin å vise frem til dine ikke-Online venner for å gjøre dem misunnelige)
 
