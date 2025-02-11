@@ -59,6 +59,11 @@ class DrikkeSanger extends StatelessWidget {
               imageSource: 'assets/images/we_like_to_drink.png',
               onTap: () => context.go('/social/we_like_to_drink'),
             ),
+            SongCard(
+              name: 'Forever Alone',
+              imageSource: 'assets/images/forever_alone.webp',
+              onTap: () => context.go('/social/forever_alone'),
+            )
           ],
         ),
       ],

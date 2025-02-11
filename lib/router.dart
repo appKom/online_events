@@ -16,6 +16,7 @@ import '/pages/games/songs/lambo.dart';
 import '/pages/games/songs/nu_klinger.dart';
 import '/pages/games/songs/studenter_visen.dart';
 import '/pages/games/songs/we_like_to_drink.dart';
+import '/pages/games/songs/forever_alone.dart';
 import '/pages/games/spin_line_page.dart';
 import 'components/animated_button.dart';
 import 'components/navbar.dart';
@@ -245,6 +246,12 @@ final GoRouter router = GoRouter(
               path: 'we_like_to_drink',
               builder: (context, state) {
                 return WeLikeToDrinkPage();
+              },
+            ),
+            GoRoute(
+              path: 'forever_alone',
+              builder: (context, state) {
+                return ForeverAlonePage();
               },
             ),
             GoRoute(
