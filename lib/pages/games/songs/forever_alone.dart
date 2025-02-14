@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '/components/online_scaffold.dart';
 import '/theme/theme.dart';
 
+int year = DateTime.now().year;
+
 class ForeverAlonePage extends ScrollablePage {
   const ForeverAlonePage({super.key});
 
@@ -44,7 +46,7 @@ class ForeverAlonePage extends ScrollablePage {
       ["Har spydd på A4", "Why do I do this to myself?"],
       ["Tar opp fag", "Feels like my love for you"],
       ["Går med kjole", "Is stopping you from being you"],
-      ["Har grått i 2025", "You shine best without me"],
+      ["Har grått i $year", "You shine best without me"],
       ["Har jukset på eksamen", "Like all the ones I had before"],
       ["Har farget håret sitt før", "I am forever alone"],
       ["Har tatovering (vis)", "When I'm with you, you tell me you love me"],
@@ -52,7 +54,7 @@ class ForeverAlonePage extends ScrollablePage {
       ["Har vært på dobbeldate", "If I ask you if you want to hang with me"],
       ["Alle trøndere", "You got a thousand excuses rehearsed"],
       ["Har bart", "But when you're drunk and got no place to hide"],
-      ["HAr fylleringt noen", "Who's the one you always call?"],
+      ["Har fylleringt noen", "Who's the one you always call?"],
       ["Har lappen", "Feels like my love for you"],
       ["Alle fra bøgda", "Is stopping you from being you"],
       ["Elsker denne sangen", "You shine best without me"],
